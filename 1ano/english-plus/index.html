@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENGLISH+ · Trimester Review · 1º ano A</title>
+<style>
+  :root{
+    --red:#e50914; --red2:#ff2d3f; --bg:#0b0b0f; --bg2:#141419;
+    --card:#1c1c24; --ink:#f5f5f7; --dim:#9a9aa8; --gold:#ffd93d;
+    --ok:#2ecc71; --bad:#ff4d5e; --cy:#22d3ee; --vio:#a855f7;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); color:var(--ink); font-family:"Segoe UI",system-ui,"Helvetica Neue",sans-serif;}
+  body{overflow-x:hidden;}
+  ::-webkit-scrollbar{height:10px; width:10px;}
+  ::-webkit-scrollbar-thumb{background:#333; border-radius:99px;}
+
+  /* ================= NAV ================= */
+  #nav{
+    position:fixed; top:0; left:0; right:0; height:62px; z-index:200;
+    display:flex; align-items:center; gap:16px; padding:0 22px;
+    background:linear-gradient(180deg, rgba(0,0,0,.95), rgba(0,0,0,.55) 70%, transparent);
+  }
+  #logo{
+    font-weight:900; font-size:26px; letter-spacing:-1.5px; color:var(--red);
+    text-shadow:0 2px 12px rgba(229,9,20,.6); cursor:pointer; white-space:nowrap;
+  }
+  #logo span{color:var(--ink); font-size:20px; letter-spacing:0;}
+  .navlink{
+    background:none; border:0; color:var(--dim); font:inherit; font-size:15px; font-weight:700;
+    cursor:pointer; padding:6px 4px; white-space:nowrap;
+  }
+  .navlink:hover,.navlink.on{color:var(--ink);}
+  .grow{flex:1;}
+  .chip{
+    display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.09);
+    border:1px solid rgba(255,255,255,.16); border-radius:99px; padding:6px 13px;
+    font-weight:800; font-size:14px; white-space:nowrap;
+  }
+  .chip b{color:var(--gold);}
+  .ibtn{
+    background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); color:var(--ink);
+    border-radius:10px; padding:7px 12px; font:inherit; font-weight:800; font-size:14px; cursor:pointer;
+  }
+  .ibtn:hover{background:var(--red); border-color:var(--red);}
+  .ibtn.on{background:var(--red); border-color:var(--red);}
+
+  /* XP bar */
+  #xpwrap{width:170px;}
+  #xplabel{font-size:11px; color:var(--dim); font-weight:800; letter-spacing:1px; margin-bottom:3px;}
+  #xpbar{height:7px; background:rgba(255,255,255,.14); border-radius:99px; overflow:hidden;}
+  #xpfill{height:100%; width:0%; background:linear-gradient(90deg,var(--red),var(--gold)); transition:width .5s;}
+
+  /* ================= HERO ================= */
+  #hero{
+    position:relative; min-height:78vh; display:flex; flex-direction:column; justify-content:center;
+    padding:90px 5vw 60px;
+    background:
+      radial-gradient(900px 520px at 78% 22%, rgba(229,9,20,.42), transparent 62%),
+      radial-gradient(700px 480px at 12% 78%, rgba(168,85,247,.32), transparent 60%),
+      linear-gradient(180deg, #17121c 0%, #0b0b0f 92%);
+  }
+  #hero::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 2px, transparent 2px 6px);
+  }
+  .badge-new{
+    display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:900; letter-spacing:2px;
+    color:var(--red2); margin-bottom:10px;
+  }
+  .badge-new i{width:8px; height:8px; border-radius:99px; background:var(--red2); animation:blip 1.4s infinite;}
+  @keyframes blip{50%{opacity:.25;}}
+  #hero h1{
+    font-size:clamp(38px,7vw,86px); line-height:.96; font-weight:900; letter-spacing:-3px; max-width:15ch;
+    text-shadow:0 6px 30px rgba(0,0,0,.7);
+  }
+  #hero h1 em{font-style:normal; color:var(--red2);}
+  .meta{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:16px 0 12px; font-size:15px; color:var(--dim); font-weight:700;}
+  .meta .box{border:1px solid rgba(255,255,255,.3); padding:1px 7px; border-radius:4px; font-size:12px;}
+  #hero p.syn{max-width:60ch; font-size:18px; line-height:1.55; color:#ddd; margin-bottom:22px;}
+  .cta{display:flex; gap:12px; flex-wrap:wrap;}
+  .play{
+    background:var(--ink); color:#000; border:0; border-radius:8px; padding:14px 30px;
+    font:inherit; font-weight:900; font-size:19px; cursor:pointer; display:flex; align-items:center; gap:10px;
+  }
+  .play:hover{background:var(--red); color:#fff;}
+  .play.ghost{background:rgba(140,140,160,.45); color:#fff;}
+  .play.ghost:hover{background:rgba(140,140,160,.7);}
+
+  /* ================= ROWS ================= */
+  main{padding:0 0 90px;}
+  .row{margin:34px 0;}
+  .rowhead{display:flex; align-items:baseline; gap:12px; padding:0 5vw 12px;}
+  .rowhead h2{font-size:clamp(19px,2.2vw,26px); font-weight:900; letter-spacing:-.5px;}
+  .rowhead small{color:var(--dim); font-weight:700; font-size:13px;}
+  .strip{display:flex; gap:14px; overflow-x:auto; padding:6px 5vw 18px; scroll-behavior:smooth;}
+  .cardw{flex:0 0 232px;}
+  @media(max-width:640px){ .cardw{flex:0 0 180px;} }
+
+  .card{
+    width:100%; text-align:left; border:0; cursor:pointer; background:none; padding:0;
+    font:inherit; color:inherit; transition:transform .18s;
+  }
+  .card:hover{transform:scale(1.07);}
+  .poster{
+    position:relative; aspect-ratio:16/10; border-radius:10px; overflow:hidden;
+    display:flex; flex-direction:column; justify-content:flex-end; padding:12px;
+    box-shadow:0 10px 26px rgba(0,0,0,.6);
+  }
+  .poster .emoji{position:absolute; top:8px; right:12px; font-size:40px; opacity:.9;}
+  .poster .kind{
+    position:absolute; top:10px; left:10px; font-size:9px; font-weight:900; letter-spacing:1.6px;
+    background:rgba(0,0,0,.55); padding:3px 7px; border-radius:4px;
+  }
+  .poster .ttl{font-weight:900; font-size:17px; line-height:1.1; text-shadow:0 2px 8px rgba(0,0,0,.8);}
+  .poster .sub{font-size:11px; font-weight:700; opacity:.85; margin-top:3px;}
+  .pbar{height:4px; background:rgba(255,255,255,.28); border-radius:99px; margin-top:9px; overflow:hidden;}
+  .pbar i{display:block; height:100%; background:var(--red2); width:0%;}
+  .cardmeta{display:flex; align-items:center; gap:7px; margin-top:7px; font-size:11px; color:var(--dim); font-weight:800;}
+  .cardmeta .xp{color:var(--gold);}
+  .done{position:absolute; inset:0; background:rgba(0,0,0,.55); display:grid; place-items:center; font-size:40px;}
+
+  /* ================= PLAYER ================= */
+  #player{
+    position:fixed; inset:0; z-index:300; background:var(--bg); display:none;
+    overflow-y:auto; padding:70px 5vw 130px;
+  }
+  #player.on{display:block;}
+  #pbarTop{
+    position:fixed; top:0; left:0; right:0; height:60px; z-index:310; display:flex; align-items:center; gap:14px;
+    padding:0 22px; background:rgba(11,11,15,.96); border-bottom:1px solid rgba(255,255,255,.1);
+  }
+  #ptitle{font-weight:900; font-size:17px;}
+  #ptitle small{display:block; color:var(--dim); font-size:12px; font-weight:700;}
+  #pfoot{
+    position:fixed; bottom:0; left:0; right:0; z-index:310; display:flex; align-items:center; gap:12px;
+    padding:12px 22px; background:rgba(11,11,15,.96); border-top:1px solid rgba(255,255,255,.1);
+  }
+  #pfoot small{color:var(--dim); font-size:12px;}
+
+  h3.sec{font-size:clamp(24px,3.4vw,40px); font-weight:900; letter-spacing:-1px; margin-bottom:6px;}
+  p.sub{color:var(--dim); font-size:17px; margin-bottom:20px;}
+  .tip{
+    background:rgba(34,211,238,.1); border-left:4px solid var(--cy); border-radius:0 10px 10px 0;
+    padding:11px 16px; font-size:15px; color:#cbeef7; margin-bottom:18px;
+  }
+  .tip b{color:var(--cy);}
+
+  /* vocab flip cards */
+  .vgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(258px,1fr)); gap:14px;}
+  .vc{
+    background:var(--card); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:16px;
+    cursor:pointer; transition:.16s; min-height:112px; display:flex; flex-direction:column; justify-content:center;
+  }
+  .vc:hover{border-color:var(--red); transform:translateY(-3px);}
+  .vc .w{font-size:24px; font-weight:900; letter-spacing:-.5px;}
+  .vc .tapme{font-size:11px; color:var(--dim); font-weight:800; letter-spacing:1.5px; margin-top:6px;}
+  .vc .back{display:none;}
+  .vc.flip{border-color:var(--gold); background:linear-gradient(160deg,#241d10,#1c1c24);}
+  .vc.flip .front{display:none;} .vc.flip .back{display:block;}
+  .vc .pt{color:var(--gold); font-weight:900; font-size:19px;}
+  .vc .def{font-size:14px; color:#ddd; margin:6px 0;}
+  .vc .ex{font-size:13px; color:var(--cy); font-style:italic;}
+
+  /* word-order builder */
+  .wo{background:var(--card); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:16px 18px; margin-bottom:14px;}
+  .wo .num{font-size:11px; font-weight:900; letter-spacing:1.6px; color:var(--dim); margin-bottom:9px;}
+  .slot{
+    min-height:52px; border:2px dashed rgba(255,255,255,.2); border-radius:10px; padding:8px;
+    display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-color:var(--ok); border-style:solid; background:rgba(46,204,113,.12);}
+  .slot.no{border-color:var(--bad); border-style:solid; background:rgba(255,77,94,.1);}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:8px;}
+  .chipw{
+    background:#2a2a35; border:1px solid rgba(255,255,255,.16); color:var(--ink);
+    border-radius:8px; padding:9px 14px; font:inherit; font-weight:800; font-size:18px; cursor:pointer;
+  }
+  .chipw:hover{background:var(--vio); border-color:var(--vio);}
+  .chipw.used{opacity:.22; pointer-events:none;}
+  .chipw.inslot{background:var(--vio); border-color:var(--vio);}
+  .worow{display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
+  .fb{font-weight:900; font-size:16px;}
+  .fb .why{display:block; font-weight:600; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* pick / mcq */
+  .qbox{background:var(--card); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:16px 18px; margin-bottom:13px;}
+  .qstem{font-size:clamp(18px,2vw,23px); font-weight:800; margin-bottom:12px; line-height:1.35;}
+  .qstem .num{color:var(--red2); margin-right:8px;}
+  .opts{display:grid; gap:9px;}
+  .opt{
+    text-align:left; font:inherit; font-size:18px; font-weight:700; cursor:pointer; color:var(--ink);
+    background:rgba(255,255,255,.055); border:2px solid rgba(255,255,255,.14); border-radius:11px; padding:13px 16px;
+    transition:.12s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--cy); transform:translateX(5px);}
+  .opt b{color:var(--gold); margin-right:9px;}
+  .opt.right{background:rgba(46,204,113,.24); border-color:var(--ok);}
+  .opt.wrongpick{background:rgba(255,77,94,.18); border-color:var(--bad); opacity:.7;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  @media(max-width:700px){.opts.two{grid-template-columns:1fr;}}
+
+  /* reading */
+  .rd{
+    background:#fdfaf3; color:#17131f; border-radius:16px; padding:22px 26px; margin-bottom:20px;
+    font-family:Georgia,"Times New Roman",serif; font-size:17.5px; line-height:1.62;
+  }
+  .rd h4{font-family:"Segoe UI",sans-serif; font-size:22px; color:#a10711; margin-bottom:12px; letter-spacing:-.5px;}
+  .rd p{margin-bottom:11px;}
+  .rd .gl{font-family:"Segoe UI",sans-serif; font-size:13.5px; color:#5a4a6b; border-left:3px solid var(--red); padding-left:11px; margin-top:14px;}
+  .rd .src{font-family:"Segoe UI",sans-serif; font-size:11.5px; color:#7a6f8a; font-style:italic; margin-top:9px;}
+
+  /* quiz show */
+  .tier{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:18px;}
+  .tbtn{
+    background:rgba(255,255,255,.07); border:2px solid rgba(255,255,255,.16); color:var(--dim);
+    border-radius:99px; padding:8px 17px; font:inherit; font-weight:900; font-size:14px; cursor:pointer;
+  }
+  .tbtn.on{color:#000; background:var(--gold); border-color:var(--gold);}
+  #qmeta{display:flex; align-items:center; gap:14px; margin-bottom:14px; font-weight:900; color:var(--dim); font-size:14px;}
+  #qmeta .pts{color:var(--gold); font-size:17px;}
+
+  /* teams */
+  #teams{
+    position:fixed; right:16px; top:74px; z-index:320; display:none;
+    background:rgba(20,20,25,.97); border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:12px;
+    box-shadow:0 18px 44px rgba(0,0,0,.7); min-width:212px;
+  }
+  #teams h5{font-size:10px; letter-spacing:2px; color:var(--dim); text-align:center; margin-bottom:10px;}
+  .trow{display:flex; align-items:center; gap:6px; margin-bottom:7px;}
+  .trow b{width:62px; font-size:13px;}
+  .trow .p{width:48px; text-align:center; font-weight:900; font-size:19px; color:var(--gold);}
+  .trow button{width:27px; height:27px; border-radius:8px; border:0; background:rgba(255,255,255,.13); color:#fff; font-weight:900; cursor:pointer;}
+  .trow button:hover{background:var(--red);}
+
+  /* badges */
+  .bgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;}
+  .bg{
+    background:var(--card); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:14px;
+    text-align:center; opacity:.34; transition:.2s;
+  }
+  .bg.got{opacity:1; border-color:var(--gold); box-shadow:0 0 22px rgba(255,217,61,.22);}
+  .bg .ic{font-size:34px;}
+  .bg .n{font-weight:900; font-size:13px; margin-top:5px;}
+  .bg .d{font-size:11px; color:var(--dim); margin-top:2px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:88px; transform:translateX(-50%) translateY(30px); z-index:400;
+    background:var(--gold); color:#1a1400; font-weight:900; padding:13px 24px; border-radius:99px;
+    box-shadow:0 12px 34px rgba(0,0,0,.6); opacity:0; pointer-events:none; transition:.3s; font-size:16px;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  body.big{font-size:1.14em;}
+  body.big .qstem{font-size:clamp(22px,2.5vw,30px);}
+  body.big .opt{font-size:21px;}
+  body.big .chipw{font-size:21px;}
+  body.big .rd{font-size:20px;}
+  body.big .vc .w{font-size:28px;}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<div id="nav">
+  <a href="../../" style="text-decoration:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:8px;padding:7px 12px;font-weight:800;font-size:13px;white-space:nowrap">⌂ Início</a>
+  <div id="logo" onclick="home()">E<span>NGLISH+</span></div>
+  <button class="navlink on" onclick="home()">Home</button>
+  <button class="navlink" onclick="jumpRow('r-vocab')">Vocabulary</button>
+  <button class="navlink" onclick="jumpRow('r-gram')">Grammar</button>
+  <button class="navlink" onclick="jumpRow('r-read')">Reading</button>
+  <button class="navlink" onclick="jumpRow('r-final')">Finale</button>
+  <div class="grow"></div>
+  <div id="xpwrap">
+    <div id="xplabel">LEVEL 1 · EXTRA</div>
+    <div id="xpbar"><div id="xpfill"></div></div>
+  </div>
+  <div class="chip">⚡ <b id="xpnum">0</b> XP</div>
+  <button class="ibtn" onclick="toggleTeams()" title="tecla P">🏆 Teams</button>
+  <button class="ibtn" id="bigbtn" onclick="toggleBig()" title="fontes maiores para projetar">🔍 Projeção</button>
+</div>
+
+<div id="teams">
+  <h5>SCOREBOARD</h5>
+  <div id="trows"></div>
+  <button class="ibtn" style="width:100%; margin-top:6px; font-size:12px" onclick="resetTeams()">zerar</button>
+</div>
+
+<!-- ================= HOME ================= -->
+<div id="home">
+  <section id="hero">
+    <div class="badge-new"><i></i> NEW SEASON · 1º ANO A</div>
+    <h1>TRIMESTER <em>REVIEW</em></h1>
+    <div class="meta">
+      <span class="box">A2–B1</span>
+      <span>2026</span>
+      <span class="box">13 EPISODES</span>
+      <span>Vocabulary · Grammar · Reading</span>
+      <span class="box">HD</span>
+    </div>
+    <p class="syn">Thirteen episodes. Real films, real series, real songs, real events from 2026 — and every single
+      grammar point you need for the vocabulary and grammar quizzes. Pick an episode, beat your team, level up.</p>
+    <div class="cta">
+      <button class="play" onclick="openEp('v1')">▶ Play Episode 1</button>
+      <button class="play ghost" onclick="openEp('info')">ℹ️ How it works</button>
+    </div>
+  </section>
+  <main id="rows"></main>
+</div>
+
+<!-- ================= PLAYER ================= -->
+<div id="player">
+  <div id="pbarTop">
+    <button class="ibtn" onclick="home()">✕ Voltar ao catálogo</button>
+    <div id="ptitle"></div>
+    <div class="grow"></div>
+    <div class="chip">⚡ <b id="xpnum2">0</b> XP</div>
+  </div>
+  <div id="pbody"></div>
+  <div id="pfoot">
+    <button class="ibtn" onclick="prevEp()">◀ anterior</button>
+    <button class="ibtn" onclick="nextEp()">próximo ▶</button>
+    <button class="ibtn" onclick="revealAll()">👀 revelar tudo (tecla R)</button>
+    <div class="grow"></div>
+    <small>P placar · R revelar · ESC voltar</small>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+
+/* ---------- VOCABULARY ---------- */
+const VOCAB = {
+  v1: [
+    {w:"box office", pt:"bilheteria", def:"the money a film makes, or the place where you buy tickets", ex:"Spider-Man: Brand New Day is breaking box office records this year."},
+    {w:"plot", pt:"trama, história", def:"the series of events that make the story of a film or book", ex:"Don't tell me the plot! I'm watching it tonight."},
+    {w:"cast", pt:"elenco", def:"all the actors in a film or series", ex:"The cast is amazing, yet the plot is confusing."},
+    {w:"sequel", pt:"continuação", def:"a film that continues the story of an earlier film", ex:"Toy Story 5 is a sequel. Do you like sequels?"},
+    {w:"soundtrack", pt:"trilha sonora", def:"the music used in a film", ex:"I always listen to the soundtrack after the film."},
+    {w:"trailer", pt:"trailer", def:"a short preview of a film before it comes out", ex:"They are watching the trailer right now."},
+    {w:"subtitles", pt:"legendas", def:"the translated text at the bottom of the screen", ex:"Do you watch series with subtitles, or dubbed?"},
+    {w:"spoiler", pt:"spoiler", def:"information that ruins the surprise of a story", ex:"My cousin never gives spoilers. He is a good person."},
+    {w:"release", pt:"lançamento / lançar", def:"the moment a film or song becomes available to the public", ex:"The release date is in December."},
+    {w:"review", pt:"crítica, resenha", def:"a text that gives an opinion about a film, book or album", ex:"This review says the film is slow. Yet everybody loves it."}
+  ],
+  v2: [
+    {w:"to binge-watch", pt:"maratonar", def:"to watch many episodes of a series one after another", ex:"My friends are binge-watching Bridgerton this weekend."},
+    {w:"episode", pt:"episódio", def:"one single part of a series", ex:"How many episodes does this season have?"},
+    {w:"cliffhanger", pt:"gancho, final em suspense", def:"an ending that leaves the audience waiting for the answer", ex:"That cliffhanger is cruel."},
+    {w:"subscription", pt:"assinatura", def:"a regular payment that gives you access to a service", ex:"My subscription is expensive, so I share it with my cousins."},
+    {w:"plot twist", pt:"reviravolta", def:"a surprising change in the story", ex:"The plot twist in His & Hers is all over TikTok."},
+    {w:"main character", pt:"protagonista", def:"the most important person in the story", ex:"Who is the main character of the series?"},
+    {w:"spin-off", pt:"série derivada", def:"a new series created from one character of another series", ex:"They are making a spin-off about the villain."},
+    {w:"watchlist", pt:"lista para assistir", def:"the list of films and series you plan to watch", ex:"My watchlist is longer than my life."},
+    {w:"to stream", pt:"transmitir / assistir online", def:"to watch or listen to something online in real time", ex:"Where are you streaming the match?"},
+    {w:"recap", pt:"resumo do episódio anterior", def:"a short summary of what happened before", ex:"I always watch the recap because I forget everything."}
+  ],
+  v3: [
+    {w:"lyrics", pt:"letra (de música)", def:"the words of a song", ex:"I don't understand the lyrics. Yet I sing them every day."},
+    {w:"chart", pt:"parada de sucessos", def:"the official list of the most popular songs", ex:"Olivia Dean is number one on the UK chart this year."},
+    {w:"single", pt:"single", def:"one song released on its own", ex:"Her new single is extremely catchy."},
+    {w:"tour", pt:"turnê", def:"a series of concerts in different cities", ex:"Are they coming to Brazil on this tour?"},
+    {w:"to headline", pt:"ser a atração principal", def:"to be the main artist of a festival or show", ex:"Who is headlining the festival this year?"},
+    {w:"catchy", pt:"chiclete, fácil de lembrar", def:"easy to remember and repeat", ex:"That chorus is so catchy that I can't stop singing it."},
+    {w:"hit", pt:"sucesso", def:"a very successful song", ex:"It is the biggest hit of 2026."},
+    {w:"chorus", pt:"refrão", def:"the part of a song that repeats", ex:"Everybody knows the chorus, nobody knows the verses."},
+    {w:"to drop", pt:"lançar (informal)", def:"to release a song or album, usually as a surprise", ex:"She is dropping a new album in October."},
+    {w:"audience", pt:"público, plateia", def:"the people who watch or listen to something", ex:"The audience is screaming."}
+  ],
+  v4: [
+    {w:"to host", pt:"sediar, receber", def:"to organise an event in your city or country", ex:"Canada, Mexico and the United States hosted the 2026 World Cup."},
+    {w:"extra time", pt:"prorrogação", def:"additional minutes played when the score is a draw", ex:"Spain scored in extra time."},
+    {w:"substitute", pt:"reserva, substituto", def:"a player who comes on during the match", ex:"The substitute scored the winning goal."},
+    {w:"to score", pt:"marcar (gol, ponto)", def:"to get a goal or a point", ex:"Who scores more, your team or mine?"},
+    {w:"award", pt:"prêmio, premiação", def:"a prize given for an achievement", ex:"The film won six awards in one night."},
+    {w:"nominee", pt:"indicado", def:"a person or work chosen to compete for a prize", ex:"All the nominees are on the red carpet."},
+    {w:"red carpet", pt:"tapete vermelho", def:"where celebrities arrive at a big ceremony", ex:"They are walking the red carpet right now."},
+    {w:"sold out", pt:"esgotado", def:"with no tickets left", ex:"The tickets are sold out. Mine cost a fortune."},
+    {w:"opening night", pt:"noite de estreia", def:"the first public performance of a show", ex:"Opening night is always full."},
+    {w:"trophy", pt:"troféu", def:"the object a winner receives", ex:"Spain lifted the trophy for the second time."}
+  ]
+};
+
+/* ---------- WORD ORDER ---------- */
+const ORDER = {
+  g1: {
+    tip:"WH question = <b>WH word + auxiliar + sujeito + verbo</b>. Com o verbo BE, o próprio BE vem antes do sujeito.",
+    items:[
+      {w:["Who","is","your","favorite","actor"], a:"Who is your favorite actor?", q:true, why:"WH + BE + possessivo + substantivo."},
+      {w:["What","are","you","watching","tonight"], a:"What are you watching tonight?", q:true, why:"Present continuous: BE antes do sujeito."},
+      {w:["Where","does","she","live"], a:"Where does she live?", q:true, why:"Simple present: does + sujeito + verbo no infinitivo (sem -s)."},
+      {w:["When","does","the","new","season","start"], a:"When does the new season start?", q:true, why:"O -s da 3ª pessoa fica no <i>does</i>, não no verbo."},
+      {w:["Why","do","you","like","this","series"], a:"Why do you like this series?", q:true, why:"Sujeito <i>you</i> → auxiliar <i>do</i>."},
+      {w:["How","many","episodes","does","it","have"], a:"How many episodes does it have?", q:true, why:"<i>How many</i> anda junto com o substantivo plural."}
+    ]
+  },
+  g2: {
+    tip:"Simple present = rotina, fato, opinião. 3ª pessoa (he/she/it) ganha <b>-s</b>. Negativa e pergunta usam <b>do / does</b> — e aí o verbo perde o -s.",
+    items:[
+      {w:["She","watches","three","episodes","every","night"], a:"She watches three episodes every night.", why:"<i>Every night</i> = rotina → simple present + -s."},
+      {w:["My","brother","doesn't","like","sequels"], a:"My brother doesn't like sequels.", why:"<i>doesn't</i> + verbo no infinitivo (nunca <i>doesn't likes</i>)."},
+      {w:["Do","you","listen","to","the","soundtrack"], a:"Do you listen to the soundtrack?", q:true, why:"Pergunta com <i>you</i> → do."},
+      {w:["The","film","starts","at","eight","o'clock"], a:"The film starts at eight o'clock.", why:"Horário fixo → simple present."},
+      {w:["Spain","usually","plays","very","well"], a:"Spain usually plays very well.", why:"Advérbio de frequência vem antes do verbo principal."},
+      {w:["Does","your","mother","watch","this","series"], a:"Does your mother watch this series?", q:true, why:"<i>Does</i> + sujeito + <i>watch</i> sem -s."}
+    ]
+  },
+  g3: {
+    tip:"Present continuous = <b>am / is / are + verbo -ing</b>. Ação agora ou temporária. Pistas: <i>now, right now, at the moment, today, this week, look!, listen!</i>",
+    items:[
+      {w:["They","are","streaming","the","final","right","now"], a:"They are streaming the final right now.", why:"<i>Right now</i> → continuous."},
+      {w:["I","am","not","watching","TV","at","the","moment"], a:"I am not watching TV at the moment.", why:"Negativa: BE + not + -ing."},
+      {w:["Is","she","crying","at","the","cliffhanger"], a:"Is she crying at the cliffhanger?", q:true, why:"Pergunta: BE antes do sujeito."},
+      {w:["We","are","binge-watching","the","whole","season"], a:"We are binge-watching the whole season.", why:"<i>We</i> → are."},
+      {w:["What","is","happening","in","this","episode"], a:"What is happening in this episode?", q:true, why:"WH + BE + verbo -ing (sem sujeito extra)."},
+      {w:["My","phone","is","downloading","the","album"], a:"My phone is downloading the album.", why:"Sujeito singular → is."}
+    ]
+  }
+};
+
+/* ---------- PICK (MCQ) ---------- */
+const PICK = {
+  g4: {
+    tip:"<b>Simple present</b> para rotina, fato e verbos de estado (<i>have, like, want, know, come from</i>). <b>Present continuous</b> para o que acontece agora ou é temporário.",
+    two:true,
+    items:[
+      {q:"Look! Ferran Torres ______ the ball.", o:["kicks","is kicking"], a:1, e:"<i>Look!</i> = está acontecendo agora."},
+      {q:"Spain ______ two World Cup titles.", o:["has","is having"], a:0, e:"<i>Have</i> de posse não vai para o continuous."},
+      {q:"My sister ______ Bridgerton every Friday.", o:["watches","is watching"], a:0, e:"<i>Every Friday</i> = rotina."},
+      {q:"Be quiet! I ______ to the lyrics.", o:["listen","am listening"], a:1, e:"Ação neste momento."},
+      {q:"Olivia Dean ______ from England.", o:["comes","is coming"], a:0, e:"Origem é um fato permanente."},
+      {q:"This month, everybody ______ about that plot twist.", o:["talks","is talking"], a:1, e:"<i>This month</i> = situação temporária."},
+      {q:"The cinema ______ at 10 a.m. on Sundays.", o:["opens","is opening"], a:0, e:"Horário de funcionamento é fato."},
+      {q:"Why ______ crying? The film isn't sad!", o:["do you","are you"], a:1, e:"Está chorando agora → continuous."}
+    ]
+  },
+  g5: {
+    tip:"<b>Sujeito</b> faz a ação (I, you, he…). <b>Objeto</b> recebe, e vem depois de verbo ou preposição (me, him, us…). <b>Possessive adjective</b> vem antes de substantivo (my, their). <b>Possessive pronoun</b> fica sozinho (mine, theirs). <b>Reflexive</b> quando sujeito e objeto são a mesma pessoa.",
+    two:true,
+    items:[
+      {q:"That's my favorite actor. I follow ______ on Instagram.", o:["him","his"], a:0, e:"Depois do verbo <i>follow</i> → pronome objeto."},
+      {q:"This isn't my ticket. ______ has seat 12.", o:["Mine","My"], a:0, e:"Está sozinho, no lugar do substantivo → possessive pronoun."},
+      {q:"______ and my friends are going to the premiere.", o:["I","Me"], a:0, e:"É o sujeito da frase."},
+      {q:"She recorded ______ singing the chorus.", o:["her","herself"], a:1, e:"Sujeito e objeto são a mesma pessoa."},
+      {q:"Look at ______ new album cover!", o:["their","theirs"], a:0, e:"Vem antes do substantivo <i>cover</i>."},
+      {q:"The band wrote the song by ______.", o:["them","themselves"], a:1, e:"<i>by + reflexive</i> = sozinhos, sem ajuda."},
+      {q:"Do you want to watch the final with ______?", o:["we","us"], a:1, e:"Depois da preposição <i>with</i> → objeto."},
+      {q:"My watchlist is long, but ______ is longer.", o:["your","yours"], a:1, e:"Sozinho → possessive pronoun."}
+    ]
+  }
+};
+
+/* ---------- READING ---------- */
+const READ = {
+  r1: {
+    title:"The Streaming Wars",
+    src:"Dados: Netflix Tudum / TV Guide — séries mais assistidas no 1º semestre de 2026.",
+    gloss:"views = visualizações · behind = atrás · to reach = alcançar · set in = ambientado em · to complain = reclamar",
+    body:[
+      "In the first half of 2026, one series broke the internet. <i>His &amp; Hers</i>, a mystery thriller, became Netflix's most-watched show of the year with about 104 million views. Right behind it, <i>I Will Find You</i> collected 101.7 million views in only six weeks, and the fourth season of <i>Bridgerton</i> reached 100 million.",
+      "The list also shows how global the platform is today. <i>Teach You a Lesson</i>, a South Korean action drama set in a school, got 48 million views, and the second season of <i>One Piece</i>, based on the Japanese manga, got 47 million.",
+      "Numbers like these are changing the way we talk about television. We don't “watch a programme” any more — we binge a whole season in a weekend and then complain that there is nothing to watch."
+    ],
+    qs:[
+      {q:"According to the text, Netflix's most-watched series of 2026 so far is", o:["His &amp; Hers.","Bridgerton, season 4.","I Will Find You.","One Piece, season 2."], a:0, e:"Cerca de 104 milhões de views — o maior número do texto."},
+      {q:"In “Right behind <b>it</b>”, the pronoun <b>it</b> refers to", o:["the internet.","the platform.","His &amp; Hers.","Bridgerton."], a:2, e:"O referente é a série citada imediatamente antes."},
+      {q:"The author mentions the Korean and the Japanese titles mainly to show that", o:["Netflix is losing money.","Netflix's audience is global.","Korean series are the best.","manga is better than novels."], a:1, e:"“shows how global the platform is today”."},
+      {q:"In the last paragraph, the author's tone about binge-watching is", o:["technical and neutral.","angry and aggressive.","sad and nostalgic.","slightly ironic."], a:3, e:"A ironia está em maratonar tudo e depois reclamar que não há nada para assistir."}
+    ]
+  },
+  r2: {
+    title:"Extra Time",
+    src:"Fatos: FIFA / NPR / CBS News — final da Copa do Mundo de 2026, 19 de julho de 2026.",
+    gloss:"enough = suficiente · draw = empate · bench = banco de reservas · to lift = levantar · host = anfitrião",
+    body:[
+      "On 19 July 2026, at MetLife Stadium in New Jersey, ninety minutes were not enough. Spain and Argentina finished the World Cup final at 0-0, and the match went to extra time.",
+      "Then a substitute changed history. Ferran Torres came off the bench and scored the only goal of the night. Spain won 1-0 and lifted the trophy for the second time, sixteen years after their first title in 2010.",
+      "For Argentina, it was the end of a long road. For the three host countries — Canada, Mexico and the United States — it was the end of the biggest World Cup ever played.",
+      "And for the millions of people who are still watching that goal on repeat, it was ninety-plus minutes they will never forget."
+    ],
+    qs:[
+      {q:"At the end of the ninety minutes, the score was", o:["1-0 to Spain.","1-0 to Argentina.","0-0.","2-1 to Spain."], a:2, e:"O gol veio na prorrogação; nos 90 minutos o jogo estava 0-0."},
+      {q:"The expression “came off the bench” suggests that Ferran Torres", o:["entered the game during the match.","started the match.","was injured.","was the team's coach."], a:0, e:"Sair do banco = entrar durante a partida."},
+      {q:"“sixteen years after their first title in 2010” means that Spain has won the World Cup in", o:["1994 and 2026.","only 2026.","2010 and 2022.","2010 and 2026."], a:3, e:"Segundo título: 2010 e 2026."},
+      {q:"The pronoun <b>they</b> in “minutes <b>they</b> will never forget” refers to", o:["the players of Spain.","the millions of people watching.","the host countries.","the ninety minutes."], a:1, e:"O sujeito da oração anterior são as pessoas que assistem ao gol."}
+    ]
+  },
+  r3: {
+    title:"And the Oscar goes to…",
+    src:"Fatos: ABC News / PBS / Al Jazeera — 98ª cerimônia do Oscar, 16 de março de 2026.",
+    gloss:"to take home = levar para casa · saga = saga · resistance = resistência · to fill = encher · statue = estatueta",
+    body:[
+      "On 16 March 2026, the 98th Academy Awards had a very clear winner. <i>One Battle After Another</i>, directed by Paul Thomas Anderson, took home six Oscars, including Best Picture, Best Director and Best Adapted Screenplay. Sean Penn won Best Supporting Actor for the same film.",
+      "Critics describe the movie as a comic, multi-generational American saga about political resistance — which is not the kind of description that usually fills cinemas. Yet the film did both: it won the industry and it found an audience.",
+      "Six statues in one night is rare. It also says something about the year: while blockbusters like <i>Spider-Man: Brand New Day</i> were breaking box office records, the Academy chose a story about people who refuse to give up."
+    ],
+    qs:[
+      {q:"How many Oscars did One Battle After Another win?", o:["Three.","One.","Two.","Six."], a:3, e:"“took home six Oscars”."},
+      {q:"In “Yet the film did <b>both</b>”, the word <b>both</b> refers to", o:["comedy and drama.","winning awards and finding an audience.","Best Picture and Best Director.","critics and directors."], a:1, e:"“it won the industry and it found an audience”."},
+      {q:"The linking word <b>while</b> in the last sentence introduces", o:["a contrast.","a consequence.","an addition.","a condition."], a:0, e:"Contraste entre os blockbusters e a escolha da Academia."},
+      {q:"The expression “refuse to give up” means that the characters", o:["change their minds easily.","give presents to each other.","do not stop fighting.","leave the country."], a:2, e:"<i>To give up</i> = desistir."}
+    ]
+  }
+};
+
+/* ---------- FINALE ---------- */
+const FINALE = [
+  {t:1, q:"“Bilheteria”, in English, is ______.", o:["box office","soundtrack","plot","cast"], a:0, e:"Box office = bilheteria."},
+  {t:1, q:"Which question is CORRECT?", o:["Where she lives?","Where does she lives?","Where does she live?","Where do she live?"], a:2, e:"does + sujeito + verbo no infinitivo, sem -s."},
+  {t:1, q:"“Look! They ______ the trailer.”", o:["is watching","are watching","watch","watches"], a:1, e:"<i>Look!</i> + sujeito plural → are + -ing."},
+  {t:1, q:"To watch many episodes one after another is to ______.", o:["stream","recap","release","binge-watch"], a:3, e:"Binge-watch = maratonar."},
+  {t:1, q:"“My watchlist is long, but ______ is longer.”", o:["yours","your","you","yourself"], a:0, e:"Está sozinho → possessive pronoun."},
+  {t:1, q:"A player who comes on during the match is a ______.", o:["nominee","audience","substitute","director"], a:2, e:"Substitute = reserva que entra em campo."},
+  {t:1, q:"“How many episodes ______ this season have?”", o:["do","is","are","does"], a:3, e:"<i>This season</i> = 3ª pessoa do singular → does."},
+
+  {t:2, q:"“Spain ______ two World Cup titles.”", o:["has","have","is having","are having"], a:0, e:"<i>Have</i> de posse não vai para o continuous; Spain é singular → has."},
+  {t:2, q:"“______ and my friends are streaming the final.”", o:["Me","Mine","I","Myself"], a:2, e:"É o sujeito da frase."},
+  {t:2, q:"A “cliffhanger” is ______.", o:["a music chart","a film review","a kind of subtitle","an ending that leaves you waiting"], a:3, e:"Final em suspense."},
+  {t:2, q:"“She recorded ______ singing the chorus.”", o:["herself","her","hers","she"], a:0, e:"Sujeito e objeto são a mesma pessoa → reflexivo."},
+  {t:2, q:"“I have a test tomorrow. ______, I'm still watching Netflix.”", o:["So","Yet","Because","Then"], a:1, e:"Yet marca contraste com o esperado."},
+  {t:2, q:"“The cinema ______ at 10 a.m. on Sundays.”", o:["is opening","is open","opens","open"], a:2, e:"Horário de funcionamento é fato → simple present."},
+  {t:2, q:"“to drop an album” means to ______ it.", o:["lose","review","translate","release"], a:3, e:"Gíria para lançar."},
+
+  {t:3, q:"Which sentence is CORRECT?", o:["Why you are crying?","Why do you crying?","Why are you crying?","Why you crying?"], a:2, e:"WH + BE + sujeito + verbo -ing."},
+  {t:3, q:"“Everybody ______ about that plot twist this month.”", o:["is talking","talk","talks","are talking"], a:0, e:"<i>Everybody</i> é singular e <i>this month</i> é temporário → is talking."},
+  {t:3, q:"“To headline a festival” means to ______.", o:["buy the tickets","write the reviews","sell the merchandise","be the main artist"], a:3, e:"Ser a atração principal."},
+  {t:3, q:"Which country won the 2026 FIFA World Cup?", o:["Argentina","Spain","Brazil","the United States"], a:1, e:"Espanha 1-0 Argentina, gol na prorrogação, em 19/07/2026."},
+  {t:3, q:"The film that won Best Picture at the 98th Academy Awards (2026) was", o:["Toy Story 5","Spider-Man: Brand New Day","His &amp; Hers","One Battle After Another"], a:3, e:"Seis Oscars, incluindo Melhor Filme e Melhor Direção."},
+  {t:3, q:"According to the 2026 UK Official Charts, the biggest song of the year so far is by", o:["Olivia Dean","RAYE","Dave and Tems","Bella Kay"], a:0, e:"“Man I Need”, de Olivia Dean."}
+];
+
+/* ---------- CATALOG ---------- */
+const EPS = {
+  info:{ttl:"How it works",sub:"Regras da temporada",kind:"info",xp:0,emoji:"🎬",c:["#3b0d12","#7a1220"]},
+  v1:{ttl:"Movie Night",sub:"Cinema vocabulary · 10 words",kind:"vocab",xp:60,emoji:"🍿",c:["#4a0d1a","#a3122c"],data:"v1"},
+  v2:{ttl:"Now Streaming",sub:"Series vocabulary · 10 words",kind:"vocab",xp:60,emoji:"📺",c:["#12213f","#1d4ed8"],data:"v2"},
+  v3:{ttl:"Sound On",sub:"Music vocabulary · 10 words",kind:"vocab",xp:60,emoji:"🎧",c:["#2a0f3d","#7e22ce"],data:"v3"},
+  v4:{ttl:"Big Events",sub:"Sport & awards vocabulary · 10 words",kind:"vocab",xp:60,emoji:"🏆",c:["#3d2a08","#b45309"],data:"v4"},
+  g1:{ttl:"Ask Me Anything",sub:"WH questions · build 6 questions",kind:"order",xp:90,emoji:"❓",c:["#0d3a3f","#0e7490"],data:"g1"},
+  g2:{ttl:"Every Single Day",sub:"Simple present · build 6 sentences",kind:"order",xp:90,emoji:"🔁",c:["#0f3a1e","#15803d"],data:"g2"},
+  g3:{ttl:"Right Now",sub:"Present continuous · build 6 sentences",kind:"order",xp:90,emoji:"⏱️",c:["#3f1d0d","#c2410c"],data:"g3"},
+  g4:{ttl:"The Showdown",sub:"Simple present vs continuous · 8 items",kind:"pick",xp:110,emoji:"⚔️",c:["#3d0d2a","#be185d"],data:"g4"},
+  g5:{ttl:"Pronoun Patrol",sub:"Subject · object · possessive · reflexive",kind:"pick",xp:110,emoji:"🕵️",c:["#1d1d3f","#4338ca"],data:"g5"},
+  r1:{ttl:"The Streaming Wars",sub:"Reading · Netflix 2026 · 4 questions",kind:"read",xp:120,emoji:"📖",c:["#3d0d10","#dc2626"],data:"r1"},
+  r2:{ttl:"Extra Time",sub:"Reading · World Cup 2026 · 4 questions",kind:"read",xp:120,emoji:"⚽",c:["#0d3320","#059669"],data:"r2"},
+  r3:{ttl:"And the Oscar goes to…",sub:"Reading · Oscars 2026 · 4 questions",kind:"read",xp:120,emoji:"🏅",c:["#3d3208","#ca8a04"],data:"r3"},
+  fin:{ttl:"SEASON FINALE",sub:"20 questions · 3 difficulty tiers",kind:"finale",xp:300,emoji:"👑",c:["#450a0a","#e50914"]}
+};
+
+const ROWS = [
+  {id:"r-cont", ttl:"Continue Watching", note:"onde a turma parou", eps:["v1","g1","r1"]},
+  {id:"r-vocab", ttl:"🎬 Vocabulary Trainer", note:"toque no card para virar a palavra", eps:["v1","v2","v3","v4"]},
+  {id:"r-gram", ttl:"🧩 Grammar Originals", note:"monte a frase clicando nas palavras", eps:["g1","g2","g3","g4","g5"]},
+  {id:"r-read", ttl:"📖 Documentaries · Reading", note:"textos com fatos reais de 2026", eps:["r1","r2","r3"]},
+  {id:"r-final", ttl:"👑 Season Finale", note:"o boss final", eps:["fin","info"]}
+];
+
+const ORDERED = ["v1","v2","v3","v4","g1","g2","g3","g4","g5","r1","r2","r3","fin"];
+
+const BADGES = [
+  {ic:"🍿", n:"WORD NERD", d:"4 vocabulary trainers", test:s=>["v1","v2","v3","v4"].every(k=>s[k])},
+  {ic:"❓", n:"QUESTION MASTER", d:"WH questions completo", test:s=>s.g1},
+  {ic:"⚔️", n:"TENSE POLICE", d:"present simple vs continuous", test:s=>s.g4},
+  {ic:"🕵️", n:"PRONOUN PATROL", d:"todos os pronomes", test:s=>s.g5},
+  {ic:"📖", n:"CRITIC", d:"3 readings completos", test:s=>["r1","r2","r3"].every(k=>s[k])},
+  {ic:"👑", n:"SEASON CHAMPION", d:"Season Finale terminado", test:s=>s.fin}
+];
+
+const LEVELS = [
+  {xp:0, n:"EXTRA"}, {xp:250, n:"SUPPORTING ROLE"}, {xp:600, n:"MAIN CHARACTER"},
+  {xp:1000, n:"DIRECTOR"}, {xp:1500, n:"LEGEND"}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let xp = 0;
+const doneEp = {};
+const progress = {};
+let curEp = null;
+const teams = [{n:"TEAM A",p:0},{n:"TEAM B",p:0},{n:"TEAM C",p:0},{n:"TEAM D",p:0}];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s);
+
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove("on"), 2200);
+}
+
+function addXp(n){
+  xp += n;
+  let lv = 0;
+  LEVELS.forEach((l,i)=>{ if(xp >= l.xp) lv = i; });
+  const next = LEVELS[lv+1] ? LEVELS[lv+1].xp : LEVELS[lv].xp + 1;
+  const base = LEVELS[lv].xp;
+  const pct = LEVELS[lv+1] ? Math.min(100,((xp-base)/(next-base))*100) : 100;
+  $("xpfill").style.width = pct + "%";
+  $("xplabel").textContent = "LEVEL " + (lv+1) + " · " + LEVELS[lv].n;
+  $("xpnum").textContent = xp;
+  $("xpnum2").textContent = xp;
+}
+
+function setProgress(id, pct){
+  progress[id] = Math.max(progress[id]||0, pct);
+  if(pct >= 100 && !doneEp[id]){
+    doneEp[id] = true;
+    addXp(EPS[id].xp);
+    toast("✅ " + EPS[id].ttl + " concluído · +" + EPS[id].xp + " XP");
+    checkBadges();
+  }
+  drawRows();
+}
+
+let gotBadges = {};
+function checkBadges(){
+  BADGES.forEach(b=>{
+    if(!gotBadges[b.n] && b.test(doneEp)){ gotBadges[b.n] = true; toast("🏅 Medalha desbloqueada: " + b.n); }
+  });
+}
+
+/* =========================================================
+   HOME / ROWS
+   ========================================================= */
+function drawRows(){
+  $("rows").innerHTML = ROWS.map(r=>`
+    <section class="row" id="${r.id}">
+      <div class="rowhead"><h2>${r.ttl}</h2><small>${r.note}</small></div>
+      <div class="strip">${r.eps.map(k=>cardHTML(k)).join("")}</div>
+    </section>`).join("") + badgeRow();
+}
+
+function cardHTML(k){
+  const e = EPS[k];
+  const pc = progress[k] || 0;
+  return `<div class="cardw"><button class="card" onclick="openEp('${k}')">
+    <div class="poster" style="background:linear-gradient(150deg,${e.c[0]},${e.c[1]})">
+      <span class="kind">${e.kind.toUpperCase()}</span>
+      <span class="emoji">${e.emoji}</span>
+      <span class="ttl">${e.ttl}</span>
+      <span class="sub">${e.sub}</span>
+      ${pc>0?`<div class="pbar"><i style="width:${pc}%"></i></div>`:""}
+      ${doneEp[k]?`<div class="done">✅</div>`:""}
+    </div>
+    <div class="cardmeta"><span class="xp">⚡ ${e.xp} XP</span><span>·</span><span>${pc>0?pc+"%":"novo"}</span></div>
+  </button></div>`;
+}
+
+function badgeRow(){
+  return `<section class="row"><div class="rowhead"><h2>🏅 Achievements</h2><small>desbloqueiam sozinhas</small></div>
+    <div style="padding:0 5vw"><div class="bgrid">${BADGES.map(b=>`
+      <div class="bg ${gotBadges[b.n]?"got":""}"><div class="ic">${b.ic}</div><div class="n">${b.n}</div><div class="d">${b.d}</div></div>
+    `).join("")}</div></div></section>`;
+}
+
+function home(){ $("player").classList.remove("on"); $("home").style.display="block"; curEp=null; window.scrollTo(0,0); }
+function jumpRow(id){ home(); setTimeout(()=>{ const el=$(id); if(el) el.scrollIntoView({behavior:"smooth"}); },60); }
+
+/* =========================================================
+   PLAYER
+   ========================================================= */
+function openEp(k){
+  curEp = k;
+  const e = EPS[k];
+  $("home").style.display = "none";
+  $("player").classList.add("on");
+  $("ptitle").innerHTML = e.ttl + "<small>" + e.sub + " · ⚡" + e.xp + " XP</small>";
+  const b = $("pbody");
+  if(k === "info") b.innerHTML = infoHTML();
+  else if(e.kind === "vocab") b.innerHTML = vocabHTML(e.data);
+  else if(e.kind === "order") b.innerHTML = orderHTML(e.data);
+  else if(e.kind === "pick") b.innerHTML = pickHTML(e.data);
+  else if(e.kind === "read") b.innerHTML = readHTML(e.data);
+  else if(e.kind === "finale") b.innerHTML = finaleHTML();
+  if(e.kind === "order") initOrder(e.data);
+  if(e.kind === "pick") initPick(e.data);
+  if(e.kind === "read") initRead(e.data);
+  if(e.kind === "finale") initFinale();
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i = ORDERED.indexOf(curEp);
+  if(i < 0){ openEp(ORDERED[0]); return; }
+  openEp(ORDERED[Math.max(0, Math.min(ORDERED.length-1, i+d))]);
+}
+function nextEp(){ stepEp(1); }
+function prevEp(){ stepEp(-1); }
+
+function infoHTML(){
+  return `<h3 class="sec">HOW IT WORKS</h3>
+  <p class="sub">Regras da temporada — leia com a turma em 60 segundos.</p>
+  <div class="tip"><b>1.</b> A turma se divide em 4 equipes. O placar fica no botão <b>🏆 Teams</b> (ou tecla <b>P</b>).</div>
+  <div class="tip"><b>2.</b> Cada episódio vale XP. A barra no topo sobe e a turma muda de nível: EXTRA → SUPPORTING ROLE → MAIN CHARACTER → DIRECTOR → LEGEND.</div>
+  <div class="tip"><b>3.</b> Resposta certa = 10 pontos para a equipe. Respondeu em inglês completo = <b>+5 de bônus</b> (botão ✦ no placar).</div>
+  <div class="tip"><b>4.</b> Nos episódios de gramática, a equipe monta a frase clicando nas palavras <b>na ordem certa</b>. Erro não tira ponto — passa a vez.</div>
+  <div class="tip"><b>5.</b> Botão <b>🔍 Projeção</b> aumenta todas as fontes. Tecla <b>R</b> revela as respostas do episódio. <b>ESC</b> volta ao catálogo.</div>
+  <div class="bgrid" style="margin-top:22px">${BADGES.map(b=>`<div class="bg got"><div class="ic">${b.ic}</div><div class="n">${b.n}</div><div class="d">${b.d}</div></div>`).join("")}</div>`;
+}
+
+/* ---------- VOCAB ---------- */
+function vocabHTML(key){
+  const list = VOCAB[key];
+  return `<h3 class="sec">${EPS[curEp].ttl}</h3>
+  <p class="sub">Clique no card para revelar tradução, definição e exemplo. Peça a tradução <i>antes</i> de virar.</p>
+  <div class="tip">Dinâmica sugerida: a equipe arrisca a tradução em voz alta → você vira o card → acertou, 10 pontos. Depois, alguém lê o exemplo em inglês em voz alta para ganhar o bônus.</div>
+  <div class="vgrid">${list.map((v,i)=>`
+    <div class="vc" onclick="flipCard(this,'${key}')">
+      <div class="front"><div class="w">${v.w}</div><div class="tapme">CLIQUE PARA VIRAR</div></div>
+      <div class="back">
+        <div class="pt">${v.pt}</div>
+        <div class="def">${v.def}</div>
+        <div class="ex">“${v.ex}”</div>
+      </div>
+    </div>`).join("")}</div>`;
+}
+function flipCard(el, key){
+  el.classList.toggle("flip");
+  const all = document.querySelectorAll("#pbody .vc");
+  const f = document.querySelectorAll("#pbody .vc.flip").length;
+  setProgress(curEp, Math.round(f/all.length*100));
+}
+
+/* ---------- WORD ORDER ---------- */
+function orderHTML(key){
+  const d = ORDER[key];
+  return `<h3 class="sec">${EPS[curEp].ttl}</h3>
+  <p class="sub">Clique nas palavras na ordem correta. Clique de novo na palavra do quadro de cima para devolvê-la.</p>
+  <div class="tip">${d.tip}</div>
+  ${d.items.map((it,i)=>`
+    <div class="wo" data-i="${i}">
+      <div class="num">SENTENCE ${i+1} / ${d.items.length}</div>
+      <div class="slot" id="slot-${i}"></div>
+      <div class="bank" id="bank-${i}"></div>
+      <div class="worow">
+        <button class="ibtn" onclick="checkOrder(${i})">✔ Check</button>
+        <button class="ibtn" onclick="resetOrder(${i})">↺ Reset</button>
+        <button class="ibtn" onclick="showOrder(${i})">👀 Answer</button>
+        <span class="fb" id="fb-${i}"></span>
+      </div>
+    </div>`).join("")}`;
+}
+let ORD = null;
+function initOrder(key){
+  ORD = ORDER[key];
+  ORD.items.forEach((it,i)=>{
+    const shuffled = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    $("bank-"+i).innerHTML = shuffled.map(o=>
+      `<button class="chipw" data-w="${o.w.replace(/"/g,'&quot;')}" onclick="pickWord(${i},this)">${o.w}</button>`
+    ).join("");
+    $("slot-"+i).innerHTML = "";
+  });
+}
+function pickWord(i, btn){
+  const chip = document.createElement("button");
+  chip.className = "chipw inslot";
+  chip.textContent = btn.dataset.w;
+  chip.onclick = () => { chip.remove(); btn.classList.remove("used"); };
+  $("slot-"+i).appendChild(chip);
+  btn.classList.add("used");
+}
+function resetOrder(i){
+  $("slot-"+i).innerHTML = "";
+  $("slot-"+i).className = "slot";
+  $("fb-"+i).innerHTML = "";
+  $("bank-"+i).querySelectorAll(".chipw").forEach(c=>c.classList.remove("used"));
+}
+function checkOrder(i){
+  const it = ORD.items[i];
+  const built = [...$("slot-"+i).children].map(c=>c.textContent).join(" ");
+  const target = it.a.replace(/[?.]$/,"");
+  const slot = $("slot-"+i);
+  if(built === target){
+    slot.className = "slot ok";
+    $("fb-"+i).innerHTML = `<span style="color:var(--ok)">✅ ${it.a}</span><span class="why">${it.why}</span>`;
+    bumpOrder();
+  } else {
+    slot.className = "slot no";
+    $("fb-"+i).innerHTML = `<span style="color:var(--bad)">❌ Not yet — check the word order.</span>`;
+  }
+}
+function showOrder(i){
+  const it = ORD.items[i];
+  resetOrder(i);
+  $("slot-"+i).innerHTML = it.a.replace(/[?.]$/,"").split(" ")
+    .map(w=>`<span class="chipw inslot">${w}</span>`).join("");
+  $("slot-"+i).className = "slot ok";
+  $("bank-"+i).querySelectorAll(".chipw").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML = `<span style="color:var(--ok)">✅ ${it.a}</span><span class="why">${it.why}</span>`;
+  bumpOrder();
+}
+function bumpOrder(){
+  const ok = document.querySelectorAll("#pbody .slot.ok").length;
+  setProgress(curEp, Math.round(ok/ORD.items.length*100));
+}
+
+/* ---------- PICK ---------- */
+function pickHTML(key){
+  const d = PICK[key];
+  return `<h3 class="sec">${EPS[curEp].ttl}</h3>
+  <p class="sub">Escolha a forma correta. Clique e o feedback aparece na hora.</p>
+  <div class="tip">${d.tip}</div>
+  ${d.items.map((it,i)=>`
+    <div class="qbox" data-q="${i}">
+      <div class="qstem"><span class="num">${i+1}.</span>${it.q}</div>
+      <div class="opts ${d.two?"two":""}">${it.o.map((o,j)=>
+        `<button class="opt" onclick="pickAns(${i},${j},${it.a})"><b>${"abcd"[j]})</b>${o}</button>`).join("")}</div>
+      <div class="fb" id="pf-${i}" style="margin-top:10px"></div>
+    </div>`).join("")}`;
+}
+let PK = null;
+function initPick(key){ PK = PICK[key]; }
+function pickAns(i, j, a){
+  const box = document.querySelector(`#pbody .qbox[data-q="${i}"]`);
+  if(box.dataset.done) return;
+  box.dataset.done = "1";
+  box.querySelectorAll(".opt").forEach((b,k)=>{
+    b.disabled = true;
+    if(k === a) b.classList.add("right");
+    else if(k === j) b.classList.add("wrongpick");
+  });
+  $("pf-"+i).innerHTML = (j===a
+    ? `<span style="color:var(--ok)">✅ Correct!</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) +
+    `<span class="why">${PK.items[i].e}</span>`;
+  const done = document.querySelectorAll('#pbody .qbox[data-done="1"]').length;
+  setProgress(curEp, Math.round(done/PK.items.length*100));
+}
+
+/* ---------- READ ---------- */
+function readHTML(key){
+  const d = READ[key];
+  return `<h3 class="sec">${d.title}</h3>
+  <p class="sub">Leia em voz alta, dois parágrafos por aluno. Depois responda.</p>
+  <div class="rd">
+    <h4>${d.title}</h4>
+    ${d.body.map(p=>`<p>${p}</p>`).join("")}
+    <div class="gl"><b>Glossary:</b> ${d.gloss}</div>
+    <div class="src">${d.src}</div>
+  </div>
+  ${d.qs.map((it,i)=>`
+    <div class="qbox" data-q="${i}">
+      <div class="qstem"><span class="num">${i+1}.</span>${it.q}</div>
+      <div class="opts">${it.o.map((o,j)=>
+        `<button class="opt" onclick="readAns(${i},${j},${it.a})"><b>${"abcd"[j]})</b>${o}</button>`).join("")}</div>
+      <div class="fb" id="pf-${i}" style="margin-top:10px"></div>
+    </div>`).join("")}`;
+}
+let RD = null;
+function initRead(key){ RD = READ[key]; }
+function readAns(i, j, a){
+  const box = document.querySelector(`#pbody .qbox[data-q="${i}"]`);
+  if(box.dataset.done) return;
+  box.dataset.done = "1";
+  box.querySelectorAll(".opt").forEach((b,k)=>{
+    b.disabled = true;
+    if(k === a) b.classList.add("right");
+    else if(k === j) b.classList.add("wrongpick");
+  });
+  $("pf-"+i).innerHTML = (j===a
+    ? `<span style="color:var(--ok)">✅ Correct!</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) +
+    `<span class="why">${RD.qs[i].e}</span>`;
+  const done = document.querySelectorAll('#pbody .qbox[data-done="1"]').length;
+  setProgress(curEp, Math.round(done/RD.qs.length*100));
+}
+
+/* ---------- FINALE ---------- */
+let fTier = 1, fIdx = 0, fHit = 0, fAns = {};
+function finaleHTML(){
+  return `<h3 class="sec">SEASON FINALE</h3>
+  <p class="sub">20 questions. Três níveis. Vale para a equipe.</p>
+  <div class="tier">
+    <button class="tbtn on" id="t1" onclick="setTier(1)">🟢 EASY · 10 pts</button>
+    <button class="tbtn" id="t2" onclick="setTier(2)">🟡 MEDIUM · 20 pts</button>
+    <button class="tbtn" id="t3" onclick="setTier(3)">🔴 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="qbox" id="fbox"></div>
+  <div class="worow" style="margin-top:14px">
+    <button class="ibtn" onclick="fGo(-1)">◀ prev</button>
+    <button class="ibtn" onclick="fGo(1)">next ▶</button>
+    <span class="fb" id="fscore" style="color:var(--gold)"></span>
+  </div>`;
+}
+function initFinale(){ fTier=1; fIdx=0; fRender(); }
+function tierList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===fTier); }
+function setTier(t){
+  fTier = t; fIdx = 0;
+  [1,2,3].forEach(k=>$("t"+k).classList.toggle("on", k===t));
+  fRender();
+}
+function fRender(){
+  const list = tierList();
+  if(fIdx >= list.length) fIdx = list.length-1;
+  const cur = list[fIdx];
+  const pts = fTier*10;
+  $("qmeta").innerHTML = `<span>QUESTION ${fIdx+1} / ${list.length}</span><span>·</span>
+    <span class="pts">${pts} POINTS</span><span>·</span><span>TIER ${["","EASY","MEDIUM","HARD"][fTier]}</span>`;
+  $("fbox").innerHTML = `<div class="qstem">${cur.q.q}</div>
+    <div class="opts">${cur.q.o.map((o,j)=>
+      `<button class="opt" onclick="fPick(${cur.i},${j})"><b>${"abcd"[j]})</b>${o}</button>`).join("")}</div>
+    <div class="fb" id="ffb" style="margin-top:12px"></div>`;
+  if(fAns[cur.i] !== undefined) fShow(cur.i, fAns[cur.i]);
+  $("fscore").textContent = "acertos: " + fHit + " / " + Object.keys(fAns).length;
+}
+function fPick(gi, j){
+  if(fAns[gi] !== undefined) return;
+  fAns[gi] = j;
+  if(j === FINALE[gi].a) fHit++;
+  fShow(gi, j);
+  $("fscore").textContent = "acertos: " + fHit + " / " + Object.keys(fAns).length;
+  setProgress("fin", Math.round(Object.keys(fAns).length/FINALE.length*100));
+}
+function fShow(gi, pick){
+  const q = FINALE[gi];
+  document.querySelectorAll("#fbox .opt").forEach((b,k)=>{
+    b.disabled = true;
+    if(k === q.a) b.classList.add("right");
+    else if(k === pick) b.classList.add("wrongpick");
+  });
+  $("ffb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${fTier*10} points</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="why">${q.e}</span>`;
+}
+function fGo(d){
+  const list = tierList();
+  fIdx = Math.max(0, Math.min(list.length-1, fIdx+d));
+  fRender();
+}
+
+/* ---------- REVEAL ALL ---------- */
+function revealAll(){
+  if(!curEp) return;
+  const e = EPS[curEp];
+  if(e.kind === "vocab"){
+    document.querySelectorAll("#pbody .vc").forEach(c=>c.classList.add("flip"));
+    setProgress(curEp, 100);
+  } else if(e.kind === "order"){
+    ORD.items.forEach((_,i)=>showOrder(i));
+  } else if(e.kind === "pick"){
+    PK.items.forEach((it,i)=>pickAns(i, it.a, it.a));
+  } else if(e.kind === "read"){
+    RD.qs.forEach((it,i)=>readAns(i, it.a, it.a));
+  } else if(e.kind === "finale"){
+    const list = tierList(); const cur = list[fIdx];
+    if(fAns[cur.i] === undefined) fPick(cur.i, FINALE[cur.i].a);
+  }
+}
+
+/* ---------- TEAMS / UI ---------- */
+function drawTeams(){
+  $("trows").innerHTML = teams.map((t,i)=>`
+    <div class="trow"><b>${t.n}</b>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="p">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button>
+      <button onclick="tp(${i},5)" title="+5 bônus por falar inglês">✦</button>
+    </div>`).join("");
+}
+function tp(i,v){ teams[i].p = Math.max(0, teams[i].p+v); drawTeams(); }
+function resetTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleTeams(){
+  const el = $("teams");
+  el.style.display = el.style.display === "block" ? "none" : "block";
+}
+function toggleBig(){
+  document.body.classList.toggle("big");
+  $("bigbtn").classList.toggle("on", document.body.classList.contains("big"));
+}
+
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape") home();
+  else if(e.key === "p" || e.key === "P") toggleTeams();
+  else if(e.key === "r" || e.key === "R") revealAll();
+  else if(e.key === "ArrowRight" && curEp) nextEp();
+  else if(e.key === "ArrowLeft" && curEp) prevEp();
+});
+
+drawTeams();
+drawRows();
+addXp(0);
+</script>
+</body>
+</html>

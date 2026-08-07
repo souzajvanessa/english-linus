@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENGLISH REWIND — Chapters 1–5 | 1º ano A</title>
+<style>
+  :root{
+    --bg:#120a2a; --bg2:#1d0f45; --pink:#ff2e7e; --purple:#8b3dff; --cyan:#00e5ff;
+    --lime:#c6ff3d; --yellow:#ffd60a; --ink:#f4f0ff; --dim:#b3a6d9; --card:#241150;
+    --ok:#00d97e; --bad:#ff4d5e;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    background:radial-gradient(1200px 700px at 15% 0%, #34156e 0%, transparent 60%),
+               radial-gradient(1000px 600px at 90% 100%, #6d1747 0%, transparent 55%),
+               var(--bg);
+    color:var(--ink); min-height:100vh; overflow-x:hidden;
+  }
+
+  /* ---------- TOP BAR ---------- */
+  #bar{
+    position:fixed; top:0; left:0; right:0; height:56px; z-index:100;
+    display:flex; align-items:center; gap:12px; padding:0 16px;
+    background:rgba(18,10,42,.86); backdrop-filter:blur(10px);
+    border-bottom:2px solid rgba(255,46,126,.35);
+  }
+  #bar .brand{font-weight:900; letter-spacing:1px; font-size:15px; color:var(--yellow); white-space:nowrap;}
+  #bar .brand span{color:var(--cyan);}
+  .btn{
+    border:0; cursor:pointer; font-family:inherit; font-weight:800; border-radius:10px;
+    padding:8px 14px; font-size:14px; background:var(--purple); color:#fff; transition:.15s;
+  }
+  .btn:hover{transform:translateY(-2px); filter:brightness(1.15);}
+  .btn.ghost{background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);}
+  .btn.pink{background:var(--pink);} .btn.cy{background:var(--cyan); color:#0a0520;}
+  .spacer{flex:1;}
+  #clock{
+    font-weight:900; font-size:20px; font-variant-numeric:tabular-nums;
+    background:#000; padding:6px 12px; border-radius:10px; color:var(--lime);
+    border:2px solid var(--lime); min-width:88px; text-align:center;
+  }
+  #clock.warn{color:var(--yellow); border-color:var(--yellow);}
+  #clock.over{color:var(--bad); border-color:var(--bad); animation:pulse .8s infinite;}
+  @keyframes pulse{50%{opacity:.45;}}
+  #counter{font-weight:800; color:var(--dim); font-size:14px; white-space:nowrap;}
+  #prog{position:fixed; top:56px; left:0; height:4px; background:linear-gradient(90deg,var(--pink),var(--cyan)); z-index:100; transition:width .3s;}
+
+  /* ---------- SCOREBOARD ---------- */
+  #score{
+    position:fixed; right:14px; top:70px; z-index:99; display:none;
+    background:rgba(36,17,80,.95); border:2px solid var(--purple); border-radius:14px; padding:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+  }
+  #score h4{font-size:11px; letter-spacing:2px; color:var(--dim); margin-bottom:8px; text-align:center;}
+  .team{display:flex; align-items:center; gap:6px; margin-bottom:6px;}
+  .team b{width:66px; font-size:13px;}
+  .team .pts{width:44px; text-align:center; font-weight:900; font-size:18px; color:var(--lime); font-variant-numeric:tabular-nums;}
+  .team button{width:26px; height:26px; border-radius:7px; border:0; cursor:pointer; font-weight:900; background:rgba(255,255,255,.14); color:#fff;}
+  .team button:hover{background:var(--pink);}
+
+  /* ---------- SLIDES ---------- */
+  .slide{display:none; padding:80px 5vw 120px; min-height:100vh; animation:in .35s ease;}
+  .slide.on{display:block;}
+  @keyframes in{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;}}
+  .kicker{font-size:13px; letter-spacing:3px; font-weight:900; color:var(--cyan); margin-bottom:6px;}
+  h1{font-size:clamp(30px,5.2vw,64px); line-height:1.02; font-weight:900; letter-spacing:-1px; margin-bottom:14px;}
+  h1 em{font-style:normal; background:linear-gradient(90deg,var(--pink),var(--yellow)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  h2{font-size:clamp(22px,3vw,36px); font-weight:900; margin-bottom:14px;}
+  h3{font-size:19px; font-weight:900; color:var(--yellow); margin:18px 0 8px;}
+  p{font-size:17px; line-height:1.55; color:#e9e2ff; margin-bottom:10px;}
+  .lead{font-size:20px; color:var(--dim);}
+  .pt{color:var(--lime); font-size:15px;}
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media(max-width:900px){.cols{grid-template-columns:1fr;}}
+
+  .card{background:var(--card); border:2px solid rgba(139,61,255,.5); border-radius:16px; padding:18px 20px; margin-bottom:16px;}
+  .card.warn{border-color:var(--yellow);} .card.cy{border-color:var(--cyan);} .card.pk{border-color:var(--pink);}
+  .tag{display:inline-block; background:var(--pink); color:#fff; font-weight:900; font-size:11px; letter-spacing:2px; padding:5px 11px; border-radius:99px; margin-bottom:10px;}
+  .tag.cy{background:var(--cyan); color:#0a0520;} .tag.li{background:var(--lime); color:#0a0520;} .tag.yl{background:var(--yellow); color:#0a0520;}
+
+  /* exercise list */
+  ol.ex{list-style:none; counter-reset:e;}
+  ol.ex>li{
+    counter-increment:e; position:relative; padding:12px 14px 12px 48px; margin-bottom:9px;
+    background:rgba(255,255,255,.05); border-radius:12px; border-left:4px solid var(--purple);
+    font-size:19px; line-height:1.5;
+  }
+  ol.ex>li::before{
+    content:counter(e,lower-alpha); position:absolute; left:14px; top:12px;
+    width:24px; height:24px; border-radius:7px; background:var(--purple); color:#fff;
+    display:grid; place-items:center; font-weight:900; font-size:13px;
+  }
+  .scr{font-family:"Courier New",monospace; background:rgba(0,0,0,.35); padding:2px 8px; border-radius:6px; letter-spacing:.5px;}
+  .ans{display:none; margin-top:7px; font-weight:900; color:var(--ok); font-size:18px;}
+  .ans.show{display:block; animation:in .2s;}
+  .ans .why{display:block; font-weight:600; color:var(--dim); font-size:14px; margin-top:3px;}
+  .wrong{color:var(--bad); text-decoration:line-through; text-decoration-color:var(--bad);}
+
+  /* grammar box */
+  table{width:100%; border-collapse:collapse; margin:10px 0; font-size:16px;}
+  th{background:var(--purple); padding:8px; text-align:left; font-size:13px; letter-spacing:1px;}
+  td{padding:7px 8px; border-bottom:1px solid rgba(255,255,255,.12);}
+  td b{color:var(--yellow);}
+
+  /* meme */
+  .meme{
+    background:#0b0620; border:3px solid var(--yellow); border-radius:14px; padding:16px;
+    text-align:center; font-family:Impact,"Arial Black",sans-serif; text-transform:uppercase;
+    letter-spacing:1px; line-height:1.2; margin:14px 0;
+  }
+  .meme .big{font-size:44px; margin:6px 0;}
+  .meme .t{font-size:19px; color:var(--yellow);}
+  .meme .b{font-size:17px; color:var(--cyan); margin-top:6px;}
+  .drake{display:grid; grid-template-columns:56px 1fr; gap:0; border:2px solid var(--dim); border-radius:12px; overflow:hidden; margin:12px 0;}
+  .drake div{padding:12px 14px; display:flex; align-items:center; font-size:17px; font-weight:700;}
+  .drake .no{background:rgba(255,77,94,.18);} .drake .yes{background:rgba(0,217,126,.18);}
+  .drake .ic{font-size:30px; justify-content:center; background:rgba(255,255,255,.06);}
+
+  /* quiz engine */
+  #qwrap{max-width:1000px; margin:0 auto;}
+  #qtxt{font-size:clamp(20px,2.6vw,30px); font-weight:900; line-height:1.35; margin:8px 0 20px;}
+  .opts{display:grid; gap:11px;}
+  .opt{
+    text-align:left; font-family:inherit; font-size:19px; font-weight:700; cursor:pointer;
+    padding:15px 18px; border-radius:13px; border:2px solid rgba(255,255,255,.22);
+    background:rgba(255,255,255,.06); color:var(--ink); transition:.12s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--cyan); transform:translateX(5px);}
+  .opt.right{background:rgba(0,217,126,.28); border-color:var(--ok);}
+  .opt.wrongpick{background:rgba(255,77,94,.22); border-color:var(--bad); opacity:.75;}
+  .opt b{color:var(--yellow); margin-right:10px;}
+  #qfb{margin-top:16px; font-size:17px; font-weight:800; min-height:30px;}
+  #qfb .exp{display:block; font-weight:600; color:var(--dim); font-size:15px; margin-top:5px;}
+  #qnav{display:flex; align-items:center; gap:12px; margin-top:20px;}
+  #qpos{font-weight:900; color:var(--dim);}
+
+  /* misc */
+  .pill{display:inline-block; background:rgba(0,229,255,.16); border:1px solid var(--cyan); color:var(--cyan);
+    padding:5px 12px; border-radius:99px; font-weight:800; font-size:14px; margin:3px 4px 3px 0;}
+  a{color:var(--cyan); font-weight:800;}
+  .txtbox{background:#fffdf5; color:#20143f; border-radius:14px; padding:18px 22px; font-family:Georgia,serif; font-size:17px; line-height:1.6;}
+  .txtbox h4{font-family:"Trebuchet MS",sans-serif; font-size:19px; margin-bottom:8px; color:#7a1a5c; text-transform:uppercase; letter-spacing:1px;}
+  .txtbox .src{font-size:12px; color:#6a5f85; margin-top:10px; font-style:italic;}
+  .gloss{font-size:14px; color:#5c3a7a; border-left:3px solid var(--pink); padding-left:10px; margin-top:10px;}
+  .hint{font-size:14px; color:var(--dim); font-style:italic;}
+  .footnav{position:fixed; bottom:0; left:0; right:0; z-index:100; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(18,10,42,.9); border-top:1px solid rgba(255,255,255,.12);}
+  .footnav small{color:var(--dim);}
+  .dots{display:flex; gap:5px; flex-wrap:wrap;}
+  .dot{width:9px; height:9px; border-radius:99px; background:rgba(255,255,255,.22); cursor:pointer;}
+  .dot.act{background:var(--pink); transform:scale(1.4);}
+  @media print{ #bar,#score,.footnav,#prog{display:none;} .slide{display:block!important; page-break-after:always;} .ans{display:block!important;} }
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <a href="../../" style="text-decoration:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:8px;padding:7px 12px;font-weight:800;font-size:13px;white-space:nowrap">⌂ Início</a>
+  <div class="brand">ENGLISH <span>REWIND</span> · 1º A</div>
+  <button class="btn ghost" onclick="go(-1)">◀</button>
+  <button class="btn ghost" onclick="go(1)">▶</button>
+  <span id="counter">1 / 1</span>
+  <div class="spacer"></div>
+  <button class="btn cy" onclick="toggleScore()">🏆 Placar</button>
+  <button class="btn pink" onclick="startT(5)">⏱ 5min</button>
+  <button class="btn pink" onclick="startT(8)">8min</button>
+  <button class="btn ghost" onclick="stopT()">⏹</button>
+  <div id="clock">00:00</div>
+</div>
+<div id="prog" style="width:0%"></div>
+
+<div id="score">
+  <h4>PLACAR</h4>
+  <div id="teams"></div>
+  <button class="btn ghost" style="width:100%; margin-top:6px; font-size:12px" onclick="resetScore()">zerar</button>
+</div>
+
+<!-- ============ 1 · CAPA ============ -->
+<section class="slide on">
+  <div class="kicker">PROF.ª VANESSA · 1º ANO A · LÍNGUA INGLESA</div>
+  <h1>ENGLISH <em>REWIND</em><br>Chapters 1 → 5</h1>
+  <p class="lead">50 minutes. 4 rounds. 1 champion team.<br>Identity · Friendship · Teen World · Time · Consumerism</p>
+
+  <div class="meme">
+    <div class="t">quando a professora diz "vamos revisar tudo"</div>
+    <div class="big">😰📚😰</div>
+    <div class="b">a revisão: memes, músicas e um quiz valendo aura points</div>
+  </div>
+
+  <div class="cols">
+    <div class="card cy">
+      <span class="tag cy">HOW IT WORKS</span>
+      <p>4 teams. Every correct answer = <b>10 aura points</b>.<br>
+      Wrong answer? The next team can steal it. 🪄</p>
+      <p class="pt">Regra da casa: respondeu em inglês, ganha +5 de bônus.</p>
+    </div>
+    <div class="card warn">
+      <span class="tag yl">TODAY'S GRAMMAR</span>
+      <p><span class="pill">verb BE</span><span class="pill">subject / object pronouns</span>
+      <span class="pill">possessive adjectives &amp; pronouns</span><span class="pill">reflexive pronouns</span>
+      <span class="pill">WH questions</span><span class="pill">present continuous</span>
+      <span class="pill">so / yet</span><span class="pill">time idioms</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · WARM-UP ============ -->
+<section class="slide">
+  <div class="kicker">WARM-UP · 3 MIN</div>
+  <h1>WHO ARE YOU, <em>REALLY?</em></h1>
+  <p class="lead">Chapter 1 opened with this poem. Let's read it again — out loud, together.</p>
+
+  <div class="cols">
+    <div>
+      <div class="txtbox">
+        <h4>who are you, really?</h4>
+        <p>you are not a name<br>or a height, or a weight<br>or a gender<br>you are not an age<br>
+        and you are not where you are from</p>
+        <p>you are your favorite books<br>and the songs stuck in your head<br>you are your thoughts<br>
+        and what you eat for breakfast<br>on Saturday mornings</p>
+        <div class="src">KUHN, Madisen. <i>Hello Poetry</i>, 2013. (Chapter 1, p. 4)</div>
+      </div>
+    </div>
+    <div>
+      <div class="card pk">
+        <span class="tag">TALK TO YOUR TEAM · 60 SECONDS</span>
+        <p><b>1.</b> What are you watching <i>right now</i>? (série, filme, canal)</p>
+        <p><b>2.</b> Who is your comfort character?</p>
+        <p><b>3.</b> Are you a <b>saver</b> or a <b>spender</b>? 💸</p>
+        <p><b>4.</b> Complete: <span class="scr">You are your favorite ______.</span></p>
+      </div>
+      <div class="meme">
+        <div class="t">the poem, in 2013:</div>
+        <div class="b">"you are not a name, you are your thoughts"</div>
+        <div class="big">🫡</div>
+        <div class="t">your for you page, in 2026:</div>
+        <div class="b">"you are 47 unfinished series and 3 gym plans"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · ROUND 1 TITLE ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 1 · 8 MIN</div>
+  <h1>IDENTITY &amp; <em>FRIENDSHIP</em></h1>
+  <p class="lead">Chapters 1 &amp; 2 — verb <b>BE</b>, subject pronouns, possessive adjectives, WH questions.</p>
+
+  <div class="cols">
+    <div class="card">
+      <span class="tag li">CHEAT SHEET · VERB BE</span>
+      <table>
+        <tr><th>+ affirmative</th><th>− negative</th><th>? question</th></tr>
+        <tr><td>I <b>am</b> (I'm)</td><td>I <b>am not</b> (I'm not)</td><td><b>Am</b> I…?</td></tr>
+        <tr><td>You / We / They <b>are</b></td><td><b>are not</b> (aren't)</td><td><b>Are</b> you…?</td></tr>
+        <tr><td>He / She / It <b>is</b></td><td><b>is not</b> (isn't)</td><td><b>Is</b> he…?</td></tr>
+      </table>
+      <p class="pt">⚠️ Idade em inglês usa BE, não HAVE: <b>I am 15</b> (nunca "I have 15").</p>
+    </div>
+    <div class="card cy">
+      <span class="tag cy">PRONOUNS + POSSESSIVES</span>
+      <table>
+        <tr><th>subject</th><th>possessive adj.</th><th>example</th></tr>
+        <tr><td>I</td><td><b>my</b></td><td>my playlist</td></tr>
+        <tr><td>you</td><td><b>your</b></td><td>your story</td></tr>
+        <tr><td>he</td><td><b>his</b></td><td>his hoodie</td></tr>
+        <tr><td>she</td><td><b>her</b></td><td>her album</td></tr>
+        <tr><td>it</td><td><b>its</b></td><td>its battery</td></tr>
+        <tr><td>we</td><td><b>our</b></td><td>our group chat</td></tr>
+        <tr><td>they</td><td><b>their</b></td><td>their tour</td></tr>
+      </table>
+      <p class="pt">WH: <b>Who</b> (pessoa) · <b>What</b> (coisa) · <b>Where</b> (lugar) · <b>When</b> (tempo) · <b>How old</b> (idade)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 · WORD ORDER 1 ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 1 · EXERCISE A</div>
+  <h2>🧩 WORD ORDER — make the question</h2>
+  <p class="hint">Cada equipe escreve na folha. Depois clique para conferir. <b>10 pontos por acerto.</b></p>
+  <ol class="ex" id="wo1">
+    <li><span class="scr">is / who / your / favorite / singer</span>
+      <span class="ans">Who is your favorite singer?<span class="why">WH + BE + possessivo + substantivo.</span></span></li>
+    <li><span class="scr">old / how / are / you</span>
+      <span class="ans">How old are you?<span class="why">"How old" anda junto, sempre com BE.</span></span></li>
+    <li><span class="scr">from / is / where / Billie Eilish</span>
+      <span class="ans">Where is Billie Eilish from?<span class="why">O <i>from</i> vai para o fim da pergunta.</span></span></li>
+    <li><span class="scr">their / best / what / album / is</span>
+      <span class="ans">What is their best album?</span></li>
+    <li><span class="scr">this / our / is / classroom</span>
+      <span class="ans">Is this our classroom?<span class="why">Pergunta = BE antes do sujeito.</span></span></li>
+    <li><span class="scr">friends / here / are / your</span>
+      <span class="ans">Are your friends here?</span></li>
+  </ol>
+  <button class="btn" onclick="reveal('wo1')">👀 Reveal answers</button>
+</section>
+
+<!-- ============ 5 · SPOT THE MISTAKE 1 ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 1 · EXERCISE B</div>
+  <h2>🔎 SPOT THE MISTAKE — fix the sentence</h2>
+  <p class="hint">Uma equipe acha o erro, a outra explica <i>por quê</i>. Explicação certa = +5.</p>
+  <ol class="ex" id="sm1">
+    <li><span class="wrong">She have 15 years old.</span>
+      <span class="ans">She <u>is</u> 15 years old.<span class="why">Idade com BE, sem "years old" duplicado com have.</span></span></li>
+    <li><span class="wrong">My friends is from Vitória.</span>
+      <span class="ans">My friends <u>are</u> from Vitória.<span class="why">Sujeito plural → are.</span></span></li>
+    <li><span class="wrong">Who is you best friend?</span>
+      <span class="ans">Who is <u>your</u> best friend?<span class="why">Antes de substantivo usa-se o possessivo <i>your</i>.</span></span></li>
+    <li><span class="wrong">Billie Eilish no is Brazilian.</span>
+      <span class="ans">Billie Eilish <u>isn't</u> Brazilian.<span class="why">Negativa: is + not, nunca "no".</span></span></li>
+    <li><span class="wrong">Where Anitta is from?</span>
+      <span class="ans">Where <u>is Anitta</u> from?<span class="why">Em pergunta, o verbo BE vem antes do sujeito.</span></span></li>
+    <li><span class="wrong">Their are our favorite team.</span>
+      <span class="ans"><u>They</u> are our favorite team.<span class="why"><i>Their</i> é possessivo; o sujeito é <i>they</i>.</span></span></li>
+  </ol>
+  <button class="btn" onclick="reveal('sm1')">👀 Reveal answers</button>
+  <div class="drake">
+    <div class="ic no">👎</div><div class="no">"I have 15 years old"</div>
+    <div class="ic yes">👍</div><div class="yes">"I'm 15" — clean, correct, +100 aura</div>
+  </div>
+</section>
+
+<!-- ============ 6 · ROUND 2 TITLE ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 2 · 12 MIN</div>
+  <h1>TEEN <em>WORLD</em></h1>
+  <p class="lead">Chapter 3 — <b>present continuous</b> + <b>object pronouns</b>. What is happening <i>right now</i>?</p>
+
+  <div class="cols">
+    <div class="card warn">
+      <span class="tag yl">PRESENT CONTINUOUS</span>
+      <p><b>Forma:</b> verbo BE + verbo principal + <b>-ing</b></p>
+      <table>
+        <tr><th>+</th><th>−</th><th>?</th></tr>
+        <tr><td>I <b>am watching</b></td><td>I'm <b>not watching</b></td><td><b>Am</b> I watching?</td></tr>
+        <tr><td>She <b>is posting</b></td><td>She <b>isn't posting</b></td><td><b>Is</b> she posting?</td></tr>
+        <tr><td>They <b>are playing</b></td><td>They <b>aren't playing</b></td><td><b>Are</b> they playing?</td></tr>
+      </table>
+      <p class="pt">Uso: ação AGORA (<i>now, right now, at this moment</i>) ou em andamento nestes dias.</p>
+      <p class="pt">Spelling: come→co<b>m</b>ing · run→ru<b>nn</b>ing · lie→l<b>y</b>ing · sit→si<b>tt</b>ing</p>
+    </div>
+    <div class="card cy">
+      <span class="tag cy">SUBJECT vs OBJECT</span>
+      <table>
+        <tr><th>subject (faz)</th><th>object (recebe)</th></tr>
+        <tr><td>I</td><td><b>me</b></td></tr>
+        <tr><td>you</td><td><b>you</b></td></tr>
+        <tr><td>he</td><td><b>him</b></td></tr>
+        <tr><td>she</td><td><b>her</b></td></tr>
+        <tr><td>it</td><td><b>it</b></td></tr>
+        <tr><td>we</td><td><b>us</b></td></tr>
+        <tr><td>they</td><td><b>them</b></td></tr>
+      </table>
+      <p class="pt">Regra rápida: depois de <b>verbo</b> ou <b>preposição</b> (to, with, for, at) → pronome objeto.<br>
+      <i>She is calling <b>him</b>, but he is ignoring <b>her</b>.</i></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 · LYRICSTRAINING ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 2 · LISTENING · 5 MIN</div>
+  <h1>🎧 LYRICS<em>TRAINING</em></h1>
+  <p class="lead">Chapter 3 usou uma música para falar de adolescência. Vamos atualizar a playlist.</p>
+  <div class="cols">
+    <div class="card pk">
+      <span class="tag">HOW TO PLAY</span>
+      <p>1. Abra <a href="https://lyricstraining.com/" target="_blank">lyricstraining.com</a> → escolha <b>English</b> → <b>Beginner</b> ou <b>Intermediate</b>.</p>
+      <p>2. Projete e jogue <b>com a turma inteira</b>: eles gritam a palavra, você digita.</p>
+      <p>3. Equipe que acertar a palavra da lacuna primeiro leva 10 pontos.</p>
+      <p class="pt">Dica: modo "Beginner" deixa só 10% das palavras em branco — perfeito para 5 minutos.</p>
+    </div>
+    <div class="card">
+      <span class="tag li">SUGESTÕES (busca direta)</span>
+      <p><a href="https://lyricstraining.com/search?ar=Billie%20Eilish" target="_blank">Billie Eilish</a> — <i>Birds of a Feather</i> / <i>What Was I Made For?</i> (present continuous e identidade)</p>
+      <p><a href="https://lyricstraining.com/search?ar=Shakira" target="_blank">Shakira</a> · <a href="https://lyricstraining.com/search?ar=BTS" target="_blank">BTS</a> · <a href="https://lyricstraining.com/search?ar=Anitta" target="_blank">Anitta</a> · <a href="https://lyricstraining.com/search?ar=Taylor%20Swift" target="_blank">Taylor Swift</a> · <a href="https://lyricstraining.com/search?ar=Ed%20Sheeran" target="_blank">Ed Sheeran</a></p>
+      <p class="hint">Sem internet? Vá direto para o exercício do slide seguinte — a aula não depende disso.</p>
+    </div>
+  </div>
+  <div class="meme">
+    <div class="t">professora: "vamos ouvir uma música em inglês"</div>
+    <div class="big">👀🔊</div>
+    <div class="b">a turma inteira virando tradutor jurado em 3 segundos</div>
+  </div>
+</section>
+
+<!-- ============ 8 · WORD ORDER 2 ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 2 · EXERCISE C</div>
+  <h2>🧩 WORD ORDER — present continuous questions</h2>
+  <p class="hint">Modelo do livro (Chapter 3, p. 22). Todas viram <b>perguntas</b>.</p>
+  <ol class="ex" id="wo2">
+    <li><span class="scr">are / what / watching / you / on Netflix</span>
+      <span class="ans">What are you watching on Netflix?</span></li>
+    <li><span class="scr">your / friends / doing / what / are</span>
+      <span class="ans">What are your friends doing?</span></li>
+    <li><span class="scr">working / your / is / cell phone</span>
+      <span class="ans">Is your cell phone working?</span></li>
+    <li><span class="scr">game / are / playing / they / what</span>
+      <span class="ans">What game are they playing?</span></li>
+    <li><span class="scr">is / everybody / why / screaming</span>
+      <span class="ans">Why is everybody screaming?</span></li>
+    <li><span class="scr">me / to / you / are / listening</span>
+      <span class="ans">Are you listening to me?<span class="why">Depois da preposição <i>to</i> → pronome objeto <i>me</i>.</span></span></li>
+  </ol>
+  <button class="btn" onclick="reveal('wo2')">👀 Reveal answers</button>
+</section>
+
+<!-- ============ 9 · OBJECT PRONOUNS ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 2 · EXERCISE D</div>
+  <h2>🎯 OBJECT PRONOUNS — fill in the blanks</h2>
+  <p class="hint">me · you · him · her · it · us · them</p>
+  <ol class="ex" id="op1">
+    <li>I love that series! I watch <span class="scr">______</span> every single night.
+      <span class="ans">it</span></li>
+    <li>My friends sent 40 memes. I answered <span class="scr">______</span> with one voice message.
+      <span class="ans">them</span></li>
+    <li>Anitta is on tour. Everybody in Brazil knows <span class="scr">______</span>.
+      <span class="ans">her</span></li>
+    <li>Can you help <span class="scr">______</span> with my English homework, please?
+      <span class="ans">me</span></li>
+    <li>That's my little brother. Don't leave <span class="scr">______</span> alone with the PS5!
+      <span class="ans">him</span></li>
+    <li>We're the best team in this classroom. Nobody can stop <span class="scr">______</span>.
+      <span class="ans">us</span></li>
+    <li>Spider-Man is my favorite hero, so I'm watching all <span class="scr">______</span> movies again.
+      <span class="ans">his<span class="why">Pegadinha! Antes de substantivo (<i>movies</i>) usa-se possessivo, não objeto.</span></span></li>
+  </ol>
+  <button class="btn" onclick="reveal('op1')">👀 Reveal answers</button>
+</section>
+
+<!-- ============ 10 · DIALOGUE ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 2 · EXERCISE E · SPEAKING</div>
+  <h2>💬 COMPLETE THE DIALOGUE — then act it out</h2>
+  <p class="hint">Duas pessoas leem em voz alta depois de corrigir. Sotaque dramático vale +5.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <p><b>LARA:</b> Hey! Where <span class="scr">(1)______</span> you going?</p>
+        <p><b>GABI:</b> To the mall. I <span class="scr">(2)______</span> looking for new sneakers.</p>
+        <p><b>LARA:</b> Again?! <span class="scr">(3)______</span> is your third pair this year.</p>
+        <p><b>GABI:</b> I know, I know. My mother always <span class="scr">(4)______</span> me the same thing.</p>
+        <p><b>LARA:</b> And how much <span class="scr">(5)______</span> they?</p>
+        <p><b>GABI:</b> Nine hundred reais. But they <span class="scr">(6)______</span> on sale!</p>
+        <p><b>LARA:</b> Girl. Your bank account <span class="scr">(7)______</span> crying right now.</p>
+        <p><b>GABI:</b> Don't judge <span class="scr">(8)______</span>! What about your new phone?</p>
+        <p><b>LARA:</b> That's different. My old phone wasn't working. <span class="scr">(9)______</span> was really broken.</p>
+        <p><b>GABI:</b> Sure, sure. So… are you coming with <span class="scr">(10)______</span> or not?</p>
+        <p><b>LARA:</b> Obviously I'm coming. 🛍️</p>
+      </div>
+    </div>
+    <div>
+      <div class="card cy">
+        <span class="tag cy">WORD BANK</span>
+        <p><span class="pill">are (2x)</span><span class="pill">am</span><span class="pill">is (2x)</span>
+        <span class="pill">it</span><span class="pill">me (2x)</span><span class="pill">this</span><span class="pill">tells</span></p>
+        <button class="btn" style="margin-top:10px" onclick="reveal('dlg')">👀 Reveal answers</button>
+        <ol class="ex" style="margin-top:14px" id="dlg">
+          <li><span class="scr">?</span><span class="ans">are — Where <b>are</b> you going?</span></li>
+          <li><span class="scr">?</span><span class="ans">am — I <b>am</b> looking…</span></li>
+          <li><span class="scr">?</span><span class="ans">This — <b>This</b> is your third pair.</span></li>
+          <li><span class="scr">?</span><span class="ans">tells — My mother always <b>tells</b> me…</span></li>
+          <li><span class="scr">?</span><span class="ans">are — How much <b>are</b> they?</span></li>
+          <li><span class="scr">?</span><span class="ans">are — They <b>are</b> on sale.</span></li>
+          <li><span class="scr">?</span><span class="ans">is — Your bank account <b>is</b> crying.</span></li>
+          <li><span class="scr">?</span><span class="ans">me — Don't judge <b>me</b>! (objeto após verbo)</span></li>
+          <li><span class="scr">?</span><span class="ans">It — <b>It</b> was really broken. (sujeito)</span></li>
+          <li><span class="scr">?</span><span class="ans">me — …coming with <b>me</b>? (após preposição)</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 · ROUND 3 TITLE ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 3 · 12 MIN</div>
+  <h1>TIME &amp; <em>PROCRASTINATION</em></h1>
+  <p class="lead">Chapter 4 — <b>reflexive pronouns</b>, <b>so / yet</b>, time idioms. E a pergunta mais dolorosa do ano.</p>
+
+  <div class="meme">
+    <div class="t">eu, às 23h58, com o trabalho para amanhã:</div>
+    <div class="big">🧘‍♂️📱🔥</div>
+    <div class="b">"tenho tempo" — aura points: −9000</div>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <span class="tag li">REFLEXIVE PRONOUNS</span>
+      <table>
+        <tr><th>subject</th><th>object</th><th>reflexive</th></tr>
+        <tr><td>I</td><td>me</td><td><b>myself</b></td></tr>
+        <tr><td>you</td><td>you</td><td><b>yourself</b></td></tr>
+        <tr><td>he</td><td>him</td><td><b>himself</b></td></tr>
+        <tr><td>she</td><td>her</td><td><b>herself</b></td></tr>
+        <tr><td>it</td><td>it</td><td><b>itself</b></td></tr>
+        <tr><td>we</td><td>us</td><td><b>ourselves</b></td></tr>
+        <tr><td>you (pl.)</td><td>you</td><td><b>yourselves</b></td></tr>
+        <tr><td>they</td><td>them</td><td><b>themselves</b></td></tr>
+      </table>
+      <p class="pt">Usa-se quando <b>sujeito e objeto são a mesma pessoa</b>.<br>
+      <i>by + reflexive</i> = "sozinho": <b>He did it by himself.</b><br>
+      Ênfase: <b>The singer herself</b> answered my comment.</p>
+    </div>
+    <div class="card cy">
+      <span class="tag cy">LINKING WORDS · SO / YET</span>
+      <p><b>SO</b> = consequência ("então", "por isso")<br>
+      <i>I have tests this week, <b>so</b> I'm not going out.</i></p>
+      <p><b>YET</b> = contraste ("no entanto", "mesmo assim")<br>
+      <i>I have tests this week. <b>Yet</b>, I'm not studying.</i></p>
+      <p class="pt">Truque: se a segunda parte é o resultado <b>esperado</b> → SO.<br>Se é o <b>oposto</b> do esperado → YET.</p>
+      <div class="drake" style="margin-top:12px">
+        <div class="ic no">👎</div><div class="no">"I'm tired, yet I'm sleeping." ❌ (faz sentido nenhum)</div>
+        <div class="ic yes">👍</div><div class="yes">"I'm tired, so I'm sleeping." ✅</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 · REFLEXIVE EXERCISE ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 3 · EXERCISE F</div>
+  <h2>🪞 REFLEXIVE PRONOUNS — fill in the blanks</h2>
+  <ol class="ex" id="rf1">
+    <li>I always talk to <span class="scr">______</span> when I'm studying alone.
+      <span class="ans">myself</span></li>
+    <li>She recorded <span class="scr">______</span> dancing and posted it on TikTok.
+      <span class="ans">herself</span></li>
+    <li>My phone updates <span class="scr">______</span> at 3 a.m. and I never know why.
+      <span class="ans">itself</span></li>
+    <li>We made a deal with <span class="scr">______</span>: no phones until the homework is done.
+      <span class="ans">ourselves</span></li>
+    <li>He built that whole app by <span class="scr">______</span>. No tutorial.
+      <span class="ans">himself<span class="why">by + reflexive = sozinho, sem ajuda.</span></span></li>
+    <li>Guys, don't blame <span class="scr">______</span> — that test was brutal.
+      <span class="ans">yourselves<span class="why">Plural ("guys") → yourselves.</span></span></li>
+    <li>They took a selfie of <span class="scr">______</span> at the stadium.
+      <span class="ans">themselves</span></li>
+  </ol>
+  <button class="btn" onclick="reveal('rf1')">👀 Reveal answers</button>
+</section>
+
+<!-- ============ 13 · SO / YET + IDIOMS ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 3 · EXERCISES G &amp; H</div>
+  <div class="cols">
+    <div>
+      <h2>🔗 SO or YET?</h2>
+      <ol class="ex" id="sy1">
+        <li>I have a test tomorrow. <span class="scr">______</span>, I'm still scrolling.
+          <span class="ans">Yet<span class="why">Contraste com o esperado.</span></span></li>
+        <li>My battery is at 2%, <span class="scr">______</span> I need a charger now.
+          <span class="ans">so</span></li>
+        <li>AI can write my whole essay. <span class="scr">______</span>, I want to learn to do it myself.
+          <span class="ans">Yet</span></li>
+        <li>The match was at 4 a.m., <span class="scr">______</span> nobody in my house slept.
+          <span class="ans">so</span></li>
+        <li>I set five alarms. <span class="scr">______</span>, I woke up late.
+          <span class="ans">Yet</span></li>
+      </ol>
+      <button class="btn" onclick="reveal('sy1')">👀 Reveal</button>
+    </div>
+    <div>
+      <h2>⏳ TIME IDIOMS</h2>
+      <p class="hint">Banco: <span class="pill">bad time</span><span class="pill">spare time</span><span class="pill">time's up</span><span class="pill">time after time</span><span class="pill">high time</span><span class="pill">the time of my life</span></p>
+      <ol class="ex" id="id1">
+        <li><span class="scr">______</span>! Phones down, papers to the front.
+          <span class="ans">Time's up</span></li>
+        <li>It's <span class="scr">______</span> you started studying for the finals.
+          <span class="ans">high time<span class="why">"já é hora" — está atrasado.</span></span></li>
+        <li>In my <span class="scr">______</span> I play games and watch series.
+          <span class="ans">spare time<span class="why">tempo livre.</span></span></li>
+        <li>I keep losing this game <span class="scr">______</span>!
+          <span class="ans">time after time<span class="why">repetidamente.</span></span></li>
+        <li>Sorry, is this a <span class="scr">______</span>? I can call later.
+          <span class="ans">bad time<span class="why">momento inoportuno.</span></span></li>
+        <li>Don't worry about me. I'm having <span class="scr">______</span>.
+          <span class="ans">the time of my life<span class="why">o melhor momento da vida.</span></span></li>
+      </ol>
+      <button class="btn" onclick="reveal('id1')">👀 Reveal</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 · READING 1 ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 3 · READING COMPREHENSION</div>
+  <h2>📖 TEXT 1 — <em>Are you using AI, or is AI using you?</em></h2>
+  <div class="cols">
+    <div>
+      <div class="txtbox">
+        <h4>Are you using AI, or is AI using you?</h4>
+        <p>Every student knows the feeling. The essay is due tomorrow, the document is still empty, and your brain suddenly decides that reorganizing your entire bedroom is urgent. So you open a chatbot, type three words, and forty seconds later the essay is done. Problem solved — or is it? Right now, half of this class is probably thinking about a task they are avoiding.</p>
+        <p>Researchers who study learning are not against these tools. They worry about one thing only: the difference between using AI <i>to think</i> and using it <i>so you don't have to</i>. A student who asks an AI to explain the difference between <i>its</i> and <i>it's</i> is learning something. A student who asks it to write the whole paragraph is outsourcing the one thing school is actually for.</p>
+        <p>So here is the honest question. When you open that app tonight, what are you really asking it to do?</p>
+        <div class="gloss"><b>due:</b> com prazo para · <b>essay:</b> redação · <b>to outsource:</b> terceirizar, passar para outro</div>
+      </div>
+    </div>
+    <div>
+      <div class="card pk">
+        <span class="tag">QUESTIONS · click the answer</span>
+        <div class="q" data-a="2">
+          <p><b>1.</b> According to the text, researchers are worried about</p>
+          <div class="opts">
+            <button class="opt">a) students who use technology in class.</button>
+            <button class="opt">b) the high price of AI applications.</button>
+            <button class="opt">c) students using AI instead of thinking.</button>
+            <button class="opt">d) teachers who don't understand AI.</button>
+          </div>
+        </div>
+        <div class="q" data-a="1">
+          <p><b>2.</b> The word <b>outsourcing</b> is closest in meaning to</p>
+          <div class="opts">
+            <button class="opt">a) understanding deeply.</button>
+            <button class="opt">b) passing a task to someone else.</button>
+            <button class="opt">c) refusing to do something.</button>
+            <button class="opt">d) improving a skill.</button>
+          </div>
+        </div>
+        <div class="q" data-a="3">
+          <p><b>3.</b> In "<b>So</b> you open a chatbot", the linking word <b>so</b> introduces</p>
+          <div class="opts">
+            <button class="opt">a) a contrast.</button>
+            <button class="opt">b) an addition.</button>
+            <button class="opt">c) a condition.</button>
+            <button class="opt">d) a consequence.</button>
+          </div>
+        </div>
+        <div class="card cy" style="margin-top:14px">
+          <p><b>4.</b> Find <b>three verbs in the present continuous</b> in the text.
+          <button class="btn ghost" style="margin-left:8px" onclick="reveal('pc1')">👀</button></p>
+          <ol class="ex" id="pc1" style="margin-top:8px">
+            <li><span class="scr">?</span><span class="ans">is … using (title) · is … thinking · are avoiding · are … asking</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 · ROUND 4 TITLE ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 4 · 10 MIN</div>
+  <h1>CONSUMERISM &amp; <em>POSSESSIVE PRONOUNS</em></h1>
+  <p class="lead">Chapter 5 — saver or spender? E a diferença que derruba mais gente na prova.</p>
+
+  <div class="cols">
+    <div class="card warn">
+      <span class="tag yl">THE ONE RULE</span>
+      <table>
+        <tr><th></th><th>possessive ADJECTIVE</th><th>possessive PRONOUN</th></tr>
+        <tr><td>I</td><td><b>my</b> phone</td><td><b>mine</b></td></tr>
+        <tr><td>you</td><td><b>your</b> bike</td><td><b>yours</b></td></tr>
+        <tr><td>he</td><td><b>his</b> console</td><td><b>his</b></td></tr>
+        <tr><td>she</td><td><b>her</b> watch</td><td><b>hers</b></td></tr>
+        <tr><td>it</td><td><b>its</b> battery</td><td>—</td></tr>
+        <tr><td>we</td><td><b>our</b> car</td><td><b>ours</b></td></tr>
+        <tr><td>they</td><td><b>their</b> laptop</td><td><b>theirs</b></td></tr>
+      </table>
+      <p class="pt">Adjective vem <b>antes de um substantivo</b>. Pronoun vem <b>sozinho</b>, no lugar do substantivo.<br>
+      <i>My car is old and your car is new.</i> → <i><b>Mine</b> is old and <b>yours</b> is new.</i></p>
+      <p class="pt">⚠️ Nunca existe apóstrofo: <b>yours</b>, <b>hers</b>, <b>ours</b>, <b>theirs</b> — nunca "your's".</p>
+    </div>
+    <div>
+      <div class="card">
+        <span class="tag li">SAVER OR SPENDER? · mãos ao alto</span>
+        <p><b>1.</b> The new iPhone comes out. Your phone still works fine. You…<br>
+        <span class="hint">a) keep your phone · b) beg your parents for the new one</span></p>
+        <p><b>2.</b> You get R$100. You…<br>
+        <span class="hint">a) save part of it · b) it's gone by Wednesday</span></p>
+        <p><b>3.</b> Electric bike, gaming setup, smartwatch, e-car: <b>which one is worth the money?</b> Defend in English, 1 sentence.</p>
+        <p class="pt">Mostly A → careful, methodical <b>SAVER</b>. Mostly B → big <b>SPENDER</b>! (Chapter 5, p. 36)</p>
+      </div>
+      <div class="meme">
+        <div class="t">me explaining to my parents why i need</div>
+        <div class="b">a new phone / an e-bike / a gaming chair</div>
+        <div class="big">🗣️📊💀</div>
+        <div class="t">my current phone, working perfectly:</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16 · POSSESSIVE EXERCISES ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 4 · EXERCISES I &amp; J</div>
+  <div class="cols">
+    <div>
+      <h2>💎 POSSESSIVE PRONOUNS</h2>
+      <ol class="ex" id="pp1">
+        <li>This isn't my charger. <span class="scr">______</span> is white.
+          <span class="ans">Mine</span></li>
+        <li>Nice electric bike! Is it <span class="scr">______</span>?
+          <span class="ans">yours</span></li>
+        <li>Their console is brand new; <span class="scr">______</span> is from 2019.
+          <span class="ans">ours</span></li>
+        <li>She has an Apple Watch. <span class="scr">______</span> is the newest model.
+          <span class="ans">Hers</span></li>
+        <li>My laptop is slow, but <span class="scr">______</span> is even slower.
+          <span class="ans">his / hers / theirs</span></li>
+        <li>Teacher: "Is this <span class="scr">______</span> cell phone, Ellen?" — "No, it isn't <span class="scr">______</span>."
+          <span class="ans">your / mine<span class="why">Adjective antes do substantivo, pronoun sozinho. (Chapter 5, p. 39)</span></span></li>
+      </ol>
+      <button class="btn" onclick="reveal('pp1')">👀 Reveal</button>
+    </div>
+    <div>
+      <h2>🔎 SPOT THE MISTAKE — final boss</h2>
+      <ol class="ex" id="sm2">
+        <li><span class="wrong">This new phone is my.</span>
+          <span class="ans">This new phone is <u>mine</u>.</span></li>
+        <li><span class="wrong">Their's is better than ours.</span>
+          <span class="ans"><u>Theirs</u> is better than ours.<span class="why">Sem apóstrofo. Nunca.</span></span></li>
+        <li><span class="wrong">Is this yours car?</span>
+          <span class="ans">Is this <u>your</u> car?<span class="why">Antes de substantivo → adjective.</span></span></li>
+        <li><span class="wrong">The smartwatch is her.</span>
+          <span class="ans">The smartwatch is <u>hers</u>.</span></li>
+        <li><span class="wrong">She is talking to himself.</span>
+          <span class="ans">She is talking to <u>herself</u>.</span></li>
+        <li><span class="wrong">Me and my friends is buying tickets.</span>
+          <span class="ans"><u>My friends and I are</u> buying tickets.<span class="why">Sujeito → I; plural → are.</span></span></li>
+      </ol>
+      <button class="btn" onclick="reveal('sm2')">👀 Reveal</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17 · READING 2 ============ -->
+<section class="slide">
+  <div class="kicker">ROUND 4 · READING COMPREHENSION · ENEM STYLE</div>
+  <h2>📖 TEXT 2 — <em>How many subscriptions are you paying for?</em></h2>
+  <div class="cols">
+    <div>
+      <div class="txtbox">
+        <h4>How many subscriptions are you paying for?</h4>
+        <p>Ask a teenager how much they spend on streaming and the answer is almost always "nothing — it's my parents' account". Ask the parents, and the number changes completely. One video platform, one music app, one cloud for the photos, one game pass: separately, each one looks cheap. Together, they cost more than the sneakers everybody wants.</p>
+        <p>Companies know this. They design the price so that it feels invisible: small, monthly, automatic. You don't decide to pay it every month — you simply forget to cancel it. That is not an accident; <b>it</b> is the product.</p>
+        <p>The conscious consumer question from Chapter 5 still works here. Before your next purchase, ask yourself: do I really want this, or do I just want to <i>want</i> it?</p>
+        <div class="gloss"><b>subscription:</b> assinatura · <b>cheap:</b> barato · <b>purchase:</b> compra · <b>to cancel:</b> cancelar</div>
+      </div>
+    </div>
+    <div>
+      <div class="card pk">
+        <span class="tag">QUESTIONS · click the answer</span>
+        <div class="q" data-a="2">
+          <p><b>1.</b> The main purpose of the text is to</p>
+          <div class="opts">
+            <button class="opt">a) convince the reader to cancel all streaming services.</button>
+            <button class="opt">b) compare prices of different platforms.</button>
+            <button class="opt">c) make the reader reflect on automatic, invisible spending.</button>
+            <button class="opt">d) criticise parents who pay for their children.</button>
+          </div>
+        </div>
+        <div class="q" data-a="3">
+          <p><b>2.</b> The pronoun <b>it</b> in "<b>it</b> is the product" refers to</p>
+          <div class="opts">
+            <button class="opt">a) the music app.</button>
+            <button class="opt">b) the pair of sneakers.</button>
+            <button class="opt">c) the parents' account.</button>
+            <button class="opt">d) the fact that people forget to cancel.</button>
+          </div>
+        </div>
+        <div class="q" data-a="1">
+          <p><b>3.</b> According to the text, subscriptions feel cheap because</p>
+          <div class="opts">
+            <button class="opt">a) teenagers never pay for them.</button>
+            <button class="opt">b) each one is a small, separate monthly amount.</button>
+            <button class="opt">c) the companies are losing money.</button>
+            <button class="opt">d) they are cheaper than sneakers.</button>
+          </div>
+        </div>
+        <div class="q" data-a="0">
+          <p><b>4.</b> "Do I just want to <i>want</i> it?" suggests that</p>
+          <div class="opts">
+            <button class="opt">a) the desire may come from outside, not from a real need.</button>
+            <button class="opt">b) the reader should buy the product immediately.</button>
+            <button class="opt">c) wanting things is always wrong.</button>
+            <button class="opt">d) teenagers don't know what they want.</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18 · QUIZ SHOW ============ -->
+<section class="slide">
+  <div class="kicker">FINAL ROUND · 10 MIN</div>
+  <h1>THE <em>QUIZ SHOW</em></h1>
+  <p class="lead">15 questions. Vocabulary + grammar. Chapters 1 → 5.<br>
+  <span class="pt">Equipes respondem na folha (A/B/C/D). Corrige-se na tela, uma por uma.</span></p>
+  <div id="qwrap">
+    <div class="card cy">
+      <div id="qpos">Question 1 / 15</div>
+      <div id="qtxt">—</div>
+      <div class="opts" id="qopts"></div>
+      <div id="qfb"></div>
+      <div id="qnav">
+        <button class="btn ghost" onclick="qGo(-1)">◀ prev</button>
+        <button class="btn pink" onclick="qGo(1)">next ▶</button>
+        <div class="spacer"></div>
+        <span id="qscore" style="font-weight:900; color:var(--lime)"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 19 · WRAP UP ============ -->
+<section class="slide">
+  <div class="kicker">WRAP UP · 3 MIN</div>
+  <h1>PIT <em>STOP</em></h1>
+  <p class="lead">Today we reviewed:</p>
+  <div class="cols">
+    <div class="card">
+      <span class="tag li">GRAMMAR</span>
+      <p>✅ verb <b>BE</b> (+ / − / ?)<br>
+      ✅ subject &amp; object pronouns<br>
+      ✅ possessive <b>adjectives</b> vs <b>pronouns</b><br>
+      ✅ reflexive pronouns (+ <i>by myself</i>)<br>
+      ✅ WH question words<br>
+      ✅ present continuous (+ spelling)<br>
+      ✅ linking words <b>so / yet</b><br>
+      ✅ time idioms</p>
+    </div>
+    <div class="card cy">
+      <span class="tag cy">TEXT GENRES (cai na prova!)</span>
+      <p>poem · identity document · discussion forum · institutional poster · song lyrics · survey &amp; graph · comic strip · movie review · advertisement · dictionary entry · cartoon · web page · online quiz</p>
+      <p class="pt">Pergunta clássica de prova: "<i>What type of text is this?</i>" — sempre olhe o <b>layout</b> antes de ler.</p>
+    </div>
+  </div>
+  <div class="card warn">
+    <span class="tag yl">EXIT TICKET · antes de sair</span>
+    <p>Escreva <b>uma frase em inglês</b> no fim da folha, no <b>present continuous</b>, sobre o que você está fazendo para atingir uma meta sua. Entregue para o visto. 📝</p>
+    <p class="hint">Ex.: "I'm studying English every day because I'm planning to travel."</p>
+  </div>
+  <div class="meme">
+    <div class="t">a turma que sobreviveu à revisão de 5 capítulos em 50 minutos</div>
+    <div class="big">🏆🧠🔥</div>
+    <div class="b">aura points: maxed out</div>
+  </div>
+</section>
+
+<div class="footnav">
+  <button class="btn ghost" onclick="go(-1)">◀ anterior</button>
+  <button class="btn pink" onclick="go(1)">próximo ▶</button>
+  <small>setas ← → · <b>P</b> placar · <b>R</b> revelar respostas do slide</small>
+  <div class="spacer"></div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+/* ---------- SLIDES ---------- */
+var slides = document.querySelectorAll('.slide');
+var cur = 0;
+function render(){
+  slides.forEach(function(s,i){ s.classList.toggle('on', i===cur); });
+  document.getElementById('counter').textContent = (cur+1)+' / '+slides.length;
+  document.getElementById('prog').style.width = ((cur+1)/slides.length*100)+'%';
+  document.querySelectorAll('.dot').forEach(function(d,i){ d.classList.toggle('act', i===cur); });
+  window.scrollTo(0,0);
+}
+function go(n){ cur = Math.max(0, Math.min(slides.length-1, cur+n)); render(); }
+function jump(i){ cur = i; render(); }
+var dots = document.getElementById('dots');
+slides.forEach(function(s,i){
+  var d = document.createElement('div'); d.className='dot'; d.title='slide '+(i+1);
+  d.onclick = function(){ jump(i); }; dots.appendChild(d);
+});
+
+/* ---------- REVEAL ---------- */
+function reveal(id){
+  var box = document.getElementById(id);
+  if(!box) return;
+  var on = box.getAttribute('data-open') === '1';
+  box.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show', !on); });
+  box.setAttribute('data-open', on ? '0' : '1');
+}
+function revealSlide(){
+  slides[cur].querySelectorAll('ol.ex[id]').forEach(function(o){ reveal(o.id); });
+}
+
+/* ---------- TIMER ---------- */
+var tLeft=0, tId=null;
+function paint(){
+  var m = Math.floor(Math.abs(tLeft)/60), s = Math.abs(tLeft)%60;
+  var c = document.getElementById('clock');
+  c.textContent = (tLeft<0?'-':'') + String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  c.className = tLeft<0 ? 'over' : (tLeft<=60 ? 'warn' : '');
+}
+function startT(min){ tLeft = min*60; paint(); clearInterval(tId); tId=setInterval(function(){ tLeft--; paint(); },1000); }
+function stopT(){ clearInterval(tId); tId=null; }
+
+/* ---------- SCOREBOARD ---------- */
+var teams = [
+  {n:'TEAM A', p:0}, {n:'TEAM B', p:0}, {n:'TEAM C', p:0}, {n:'TEAM D', p:0}
+];
+function drawTeams(){
+  var w = document.getElementById('teams'); w.innerHTML='';
+  teams.forEach(function(t,i){
+    var r = document.createElement('div'); r.className='team';
+    r.innerHTML = '<b>'+t.n+'</b><button onclick="pts('+i+',-10)">−</button>'+
+                  '<span class="pts">'+t.p+'</span><button onclick="pts('+i+',10)">+</button>'+
+                  '<button onclick="pts('+i+',5)" title="+5 bônus">✦</button>';
+    w.appendChild(r);
+  });
+}
+function pts(i,v){ teams[i].p = Math.max(0, teams[i].p+v); drawTeams(); }
+function resetScore(){ teams.forEach(function(t){ t.p=0; }); drawTeams(); }
+function toggleScore(){
+  var s = document.getElementById('score');
+  s.style.display = (s.style.display==='block') ? 'none' : 'block';
+}
+drawTeams();
+
+/* ---------- CLICKABLE READING QUESTIONS ---------- */
+document.querySelectorAll('.q').forEach(function(q){
+  var correct = parseInt(q.getAttribute('data-a'),10);
+  var opts = q.querySelectorAll('.opt');
+  opts.forEach(function(o,i){
+    o.onclick = function(){
+      opts.forEach(function(x,j){
+        x.disabled = true;
+        if(j===correct) x.classList.add('right');
+        else if(j===i) x.classList.add('wrongpick');
+      });
+    };
+  });
+});
+
+/* ---------- QUIZ ENGINE ---------- */
+var QUIZ = [
+ {q:'Billie Eilish and Finneas ______ from Los Angeles.',
+  o:['am','is','are','be'], a:2, e:'Sujeito plural → are.'},
+ {q:'This isn’t my charger. ______ is white.',
+  o:['Mine','My','Me','Myself'], a:0, e:'Pronome possessivo: fica sozinho, no lugar do substantivo.'},
+ {q:'I love this song. I’m listening to ______ on repeat.',
+  o:['she','it','her','its'], a:1, e:'Coisa, depois de preposição → it.'},
+ {q:'Look! The teacher ______ at us right now.',
+  o:['looks','are looking','look','is looking'], a:3, e:'"Right now" → present continuous; sujeito singular → is + -ing.'},
+ {q:'Which spelling is correct?',
+  o:['runing','running','runnning','run-ing'], a:1, e:'Consoante + vogal + consoante em sílaba tônica → dobra a consoante.'},
+ {q:'She recorded ______ dancing and posted it online.',
+  o:['himself','her','herself','hers'], a:2, e:'Sujeito e objeto são a mesma pessoa → reflexivo.'},
+ {q:'I have a test tomorrow. ______, I’m still scrolling on my phone.',
+  o:['So','Because','Then','Yet'], a:3, e:'Yet = contraste com o que se esperava.'},
+ {q:'"______ is the World Cup final?" — "On Sunday."',
+  o:['When','Where','Who','What'], a:0, e:'A resposta indica tempo → When.'},
+ {q:'"It’s high time you started studying" means',
+  o:['it’s already late — start now.','you still have plenty of time.','you don’t need to study.','the schedule is wrong.'], a:0, e:'"High time" = já passou da hora.'},
+ {q:'In Chapter 5, "to go bust" means',
+  o:['to travel by bus.','to get rich fast.','to go bankrupt.','to break the rules.'], a:2, e:'"Go bust" = ir à falência.'},
+ {q:'To "procrastinate" is to',
+  o:['finish everything early.','work without stopping.','postpone things needlessly.','make a detailed plan.'], a:2, e:'Definição do verbete do Chapter 4, p. 27.'},
+ {q:'Their console is brand new; ______ is from 2019.',
+  o:['us','our','ours','ourselves'], a:2, e:'Sozinho, no lugar de "our console" → ours.'},
+ {q:'______ and my friends are streaming the game.',
+  o:['Mine','Myself','Me','I'], a:3, e:'É o sujeito da frase → I.'},
+ {q:'My smartwatch charges itself in 40 minutes. ______ battery is amazing.',
+  o:['His','Its','It’s','Their'], a:1, e:'Its = possessivo. It’s = it is.'},
+ {q:'A person who saves money carefully is a',
+  o:['shopper.','spender.','slave.','saver.'], a:3, e:'Chapter 5: saver vs spender.'}
+];
+var qi=0, qhit=0, qdone=[];
+function qRender(){
+  var q = QUIZ[qi];
+  document.getElementById('qpos').textContent = 'Question '+(qi+1)+' / '+QUIZ.length;
+  document.getElementById('qtxt').textContent = q.q;
+  var box = document.getElementById('qopts'); box.innerHTML='';
+  var letters = ['a','b','c','d'];
+  q.o.forEach(function(t,i){
+    var b = document.createElement('button'); b.className='opt';
+    b.innerHTML = '<b>'+letters[i]+')</b> '+t;
+    b.onclick = function(){ qPick(i); };
+    box.appendChild(b);
+  });
+  var fb = document.getElementById('qfb'); fb.innerHTML='';
+  if(qdone[qi]!==undefined) qShow(qdone[qi]);
+  document.getElementById('qscore').textContent = 'correct: '+qhit+'/'+qdone.filter(function(x){return x!==undefined;}).length;
+}
+function qPick(i){
+  if(qdone[qi]!==undefined) return;
+  qdone[qi]=i;
+  if(i===QUIZ[qi].a) qhit++;
+  qShow(i);
+  document.getElementById('qscore').textContent = 'correct: '+qhit+'/'+qdone.filter(function(x){return x!==undefined;}).length;
+}
+function qShow(pick){
+  var q = QUIZ[qi];
+  var opts = document.querySelectorAll('#qopts .opt');
+  opts.forEach(function(x,j){
+    x.disabled = true;
+    if(j===q.a) x.classList.add('right');
+    else if(j===pick) x.classList.add('wrongpick');
+  });
+  var ok = pick===q.a;
+  document.getElementById('qfb').innerHTML =
+    (ok ? '<span style="color:var(--ok)">✅ Correct! +10 points</span>'
+        : '<span style="color:var(--bad)">❌ Not this one.</span>') +
+    '<span class="exp">'+q.e+'</span>';
+}
+function qGo(n){
+  qi = Math.max(0, Math.min(QUIZ.length-1, qi+n));
+  qRender();
+}
+qRender();
+
+/* ---------- KEYBOARD ---------- */
+document.addEventListener('keydown', function(e){
+  if(e.key==='ArrowRight'||e.key==='PageDown'){ go(1); }
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){ go(-1); }
+  else if(e.key==='p'||e.key==='P'){ toggleScore(); }
+  else if(e.key==='r'||e.key==='R'){ revealSlide(); }
+});
+render();
+</script>
+</body>
+</html>
