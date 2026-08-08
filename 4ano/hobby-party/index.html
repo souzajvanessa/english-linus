@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOBBY PARTY · Unit 4 Party at the library! · 4º ano</title>
+<style>
+  :root{
+    --bg:#f7f2ff; --card:#ffffff; --ink:#2a1f4a; --dim:#7b6da0; --line:#e6ddf5;
+    --red:#f5487f; --orange:#ff9f1c; --yellow:#ffd60a; --green:#1fb984; --teal:#28c2b8;
+    --blue:#4aa8ff; --purple:#8b5cf6; --pink:#f5487f;
+    --ok:#20bf7f; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(720px 420px at 88% -4%, rgba(139,92,246,.28), transparent 60%),
+      radial-gradient(680px 420px at 4% 100%, rgba(245,72,127,.20), transparent 58%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#d8cdf0; border-radius:99px;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue);} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{
+    padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;
+  }
+  #hero .truck{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--red);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{
+    background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;
+  }
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{
+    display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);
+  }
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{
+    position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;
+  }
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#f0e7db; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#eafaf1;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{
+    background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;
+  }
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:132px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--yellow);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#5a4a2a;}
+
+  /* generic exercise box */
+  .ex{
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;
+  }
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{
+    display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--purple); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;
+  }
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;
+  }
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#fffdf0;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* chips (word order + unscramble) */
+  .slot{
+    min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#fffdf6;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{
+    border:3px solid var(--ink); border-radius:12px; background:var(--blue); color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+  }
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort baskets */
+  .srow{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .srow .it{font-weight:900; font-size:20px; min-width:170px;}
+  .sb{
+    border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .sb:hover:not(:disabled){background:#fffdf0;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{
+    display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:17px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .mi:hover:not(:disabled){background:#fffdf0;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading + menu */
+  .read{
+    background:#fffdf3; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.65; font-weight:600;
+  }
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--red);}
+  .read p{margin-bottom:10px;}
+  .read .gl{
+    margin-top:14px; font-size:14px; font-weight:800; color:#6a5a3a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;
+  }
+  .menu{
+    background:#fff; border:4px solid var(--ink); border-radius:var(--r); box-shadow:0 6px 0 var(--ink);
+    padding:18px 20px; margin-bottom:16px;
+  }
+  .menu h3{text-align:center; font-size:22px; font-weight:900; letter-spacing:1px;}
+  .menu .ad{text-align:center; font-size:12.5px; color:var(--dim); font-weight:800; margin-bottom:12px;}
+  .mgrp{margin-bottom:12px;}
+  .mgrp .t{
+    font-size:13px; font-weight:900; letter-spacing:2px; background:var(--ink); color:#fff;
+    display:inline-block; padding:3px 11px; border-radius:99px; margin-bottom:7px;
+  }
+  .ln{display:flex; justify-content:space-between; gap:12px; font-size:17px; font-weight:800;
+    border-bottom:2px dotted var(--line); padding:5px 0;}
+  .ln b{color:var(--green);}
+
+  /* drill */
+  .dg{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;}
+  .dc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 12px; text-align:center; cursor:pointer; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .dc:hover{transform:translateY(-3px);}
+  .dc .pic{font-size:44px;}
+  .dc .qty{font-weight:900; font-size:16px; margin-top:5px; color:var(--purple);}
+  .dc .say{display:none; font-weight:900; font-size:17px; margin-top:9px; color:var(--green); line-height:1.3;}
+  .dc.open{background:#eafaf1;} .dc.open .say{display:block;}
+  .dc .tap{font-size:10.5px; letter-spacing:1.5px; color:var(--dim); font-weight:900; margin-top:7px;}
+  .dc.open .tap{display:none;}
+
+  /* quiz tiers */
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{
+    border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+
+  /* teams (projection) */
+  #teams{
+    display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px;
+    padding:0 5vw;
+  }
+  #teams.on{display:block;}
+  .tin{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{
+    width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;
+  }
+  .tm button:hover{background:var(--yellow);}
+
+  #foot{
+    position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96);
+    border-top:3px solid var(--line);
+  }
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJECTION MODE */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:21px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:24px;}
+  body.proj .ln{font-size:21px;}
+  body.proj .dc .pic{font-size:56px;} body.proj .dc .say{font-size:21px;}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🎈 HOBBY PARTY<span>UNIT 4 · PARTY AT THE LIBRARY! · 4º ANO</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #2a1f4a;border-radius:14px;background:#fff;color:#2a1f4a;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #2a1f4a;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill">🏅 <span id="lvl">Shopper</span></div>
+  <button class="btn y" id="projBtn" onclick="toggleProj()">🔍 Projeção</button>
+  <button class="btn b" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="tin"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="truck">🎈📚🎉</div>
+    <h1>There's a party at the <em>library!</em></h1>
+    <div class="sub">15 stations · Unit 4 · Party at the library!</div>
+    <div class="tags">
+      <span class="tag">🎨 hobbies</span>
+      <span class="tag">🔤 unscramble</span>
+      <span class="tag">🙂 likes / doesn't like</span>
+      <span class="tag">❓ Does he like…?</span>
+      <span class="tag">⭐ Are you good at…?</span>
+      <span class="tag">🧩 word order</span>
+      <span class="tag">📖 reading</span>
+      <span class="tag">📝 instructions</span>
+    </div>
+  </div>
+  <main id="mapArea"></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀</button>
+  <button class="btn" onclick="stepEp(1)">▶</button>
+  <button class="btn g" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Modo projeção liga fontes grandes e o placar de equipes</small>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =======================================================================
+   DADOS · Rise and Shine · Unit 4 "Party at the library!"
+   ======================================================================= */
+
+const VOCAB = [
+  {e:"🎮", w:"playing video games",   pt:"jogar videogame",         ex:"He likes playing video games."},
+  {e:"🤹", w:"juggling",              pt:"fazer malabarismo",       ex:"Rafa likes juggling."},
+  {e:"📷", w:"taking pictures",       pt:"tirar fotos",             ex:"Lena likes taking pictures."},
+  {e:"🎸", w:"learning an instrument",pt:"aprender um instrumento", ex:"Alicia likes learning an instrument."},
+  {e:"🎭", w:"acting",                pt:"atuar, fazer teatro",     ex:"Sara likes acting."},
+  {e:"💻", w:"coding",                pt:"programar",               ex:"Are you good at coding?"},
+  {e:"🎉", w:"having a party",        pt:"dar uma festa",           ex:"We like having a party!"},
+  {e:"🎨", w:"painting",              pt:"pintar",                  ex:"Daniel likes painting."},
+  {e:"♟️", w:"playing chess",         pt:"jogar xadrez",            ex:"He doesn't like playing chess."},
+  {e:"🃏", w:"trading cards",         pt:"trocar cards",            ex:"Alicia doesn't like trading cards."},
+  {e:"✂️", w:"doing crafts",          pt:"fazer artesanato",        ex:"Rafa doesn't like doing crafts."},
+  {e:"🌳", w:"being outside",         pt:"ficar ao ar livre",       ex:"He likes being outside!"},
+  {e:"🖥️", w:"using computers",       pt:"usar computadores",       ex:"She likes using computers."},
+  {e:"🤝", w:"helping people",        pt:"ajudar as pessoas",       ex:"Lena likes helping people."},
+  {e:"✨", w:"learning something new",pt:"aprender algo novo",      ex:"I like learning something new."},
+  {e:"⚽", w:"playing sports",        pt:"praticar esportes",       ex:"Does she like playing sports?"}
+];
+
+const SCRAMBLE = [
+  {w:"JUGGLING",  e:"🤹", pt:"malabarismo"},
+  {w:"ACTING",    e:"🎭", pt:"atuar"},
+  {w:"CODING",    e:"💻", pt:"programar"},
+  {w:"PAINTING",  e:"🎨", pt:"pintar"},
+  {w:"CHESS",     e:"♟️", pt:"xadrez"},
+  {w:"CRAFTS",    e:"✂️", pt:"artesanato"},
+  {w:"OUTSIDE",   e:"🌳", pt:"fora, ao ar livre"},
+  {w:"COMPUTERS", e:"🖥️", pt:"computadores"}
+];
+
+const SORT = {
+  cats:["INSIDE 🏠","BOTH 🔁","OUTSIDE 🌳"],
+  items:[
+    {it:"coding 💻",                c:0, e:"Precisa de computador → dentro de casa."},
+    {it:"being outside 🌳",         c:2, e:"O nome já diz: lá fora!"},
+    {it:"juggling 🤹",              c:1, e:"Dá para fazer malabarismo dentro ou fora."},
+    {it:"using computers 🖥️",       c:0, e:"Computador fica dentro."},
+    {it:"playing sports ⚽",        c:2, e:"Esporte normalmente é lá fora."},
+    {it:"taking pictures 📷",       c:1, e:"Você tira foto em qualquer lugar."},
+    {it:"playing chess ♟️",         c:0, e:"Xadrez é jogo de mesa, dentro."},
+    {it:"helping people 🤝",        c:1, e:"Ajudar dá em qualquer lugar."},
+    {it:"doing crafts ✂️",          c:0, e:"Artesanato precisa de mesa → dentro."},
+    {it:"learning something new ✨",c:1, e:"Aprender coisa nova dá em todo lugar."},
+    {it:"having a party 🎉",        c:1, e:"Festa pode ser dentro ou no quintal."}
+  ]
+};
+
+const MATCH = [
+  ["fold",  "the paper 📄"],
+  ["cut",   "out the shapes ✂️"],
+  ["stick", "on the eyes 👀"],
+  ["knit",  "with wool 🧶"],
+  ["paint", "a flower 🌸"],
+  ["draw",  "a picture ✏️"],
+  ["make",  "a scarf 🧣"],
+  ["write", "a message 💌"]
+];
+
+const WHMATCH = [
+  ["What do you like doing?",        "I like playing chess."],
+  ["Does she like acting?",          "Yes, she does."],
+  ["Are you good at coding?",        "No, I'm not. I want to learn."],
+  ["What's your favourite hobby?",   "Painting! 🎨"],
+  ["Where is the party?",            "At the library."],
+  ["Who is good at juggling?",       "Rafa."]
+];
+
+const QS = {
+  /* LIKES / DOESN'T LIKE */
+  s5:{
+    two:true,
+    items:[
+      {q:"Lena 🙂 taking pictures.<br>Lena ______ taking pictures.", o:["likes","doesn't like"], a:0, e:"Carinha feliz 🙂 → likes."},
+      {q:"Rafa 🙁 doing crafts.<br>Rafa ______ doing crafts.", o:["likes","doesn't like"], a:1, e:"Carinha triste 🙁 → doesn't like."},
+      {q:"Daniel 🙂 painting.<br>Daniel ______ painting.", o:["likes","doesn't like"], a:0, e:"🙂 → likes painting."},
+      {q:"Alicia 🙁 trading cards.<br>Alicia ______ trading cards.", o:["likes","doesn't like"], a:1, e:"🙁 → doesn't like."},
+      {q:"Rafa 🙂 juggling.<br>Rafa ______ juggling.", o:["likes","doesn't like"], a:0, e:"🙂 → likes juggling."},
+      {q:"Lena 🙁 acting.<br>Lena ______ acting.", o:["likes","doesn't like"], a:1, e:"🙁 → doesn't like acting."},
+      {q:"Alicia 🙂 learning an instrument.<br>Alicia ______ learning an instrument.", o:["likes","doesn't like"], a:0, e:"🙂 → likes."},
+      {q:"Rafa 🙂 being outside.<br>Rafa ______ being outside.", o:["likes","doesn't like"], a:0, e:"🙂 → likes being outside."}
+    ]
+  },
+  /* THE -ING RULE */
+  s6:{
+    two:true,
+    items:[
+      {q:"She likes ______ pictures.", o:["taking","take"], a:0, e:"Depois de <b>like</b>, o verbo ganha <b>-ing</b>."},
+      {q:"He doesn't like ______ chess.", o:["play","playing"], a:1, e:"like + verbo + <b>-ing</b> → playing."},
+      {q:"I like ______ people.", o:["helping","help"], a:0, e:"help → help<b>ing</b>."},
+      {q:"Do you like ______ crafts?", o:["do","doing"], a:1, e:"do → do<b>ing</b>."},
+      {q:"Rafa likes ______ outside.", o:["being","be"], a:0, e:"be → <b>being</b>."},
+      {q:"Are you good at ______?", o:["code","coding"], a:1, e:"Depois de <b>good at</b> também vem -ing. code → cod<b>ing</b> (o e sai)."},
+      {q:"She's good at ______ an instrument.", o:["learning","learn"], a:0, e:"learn → learn<b>ing</b>."},
+      {q:"We like ______ a party!", o:["have","having"], a:1, e:"have → hav<b>ing</b> (o e sai)."}
+    ]
+  },
+  /* SHORT ANSWERS · Does he/she like…? */
+  s7b:{
+    two:true,
+    items:[
+      {q:"Does <b>she</b> like playing sports? 🙂", o:["Yes, she does.","Yes, he does."], a:0, e:"A pergunta é sobre <b>she</b> → Yes, <b>she</b> does."},
+      {q:"Does <b>he</b> like being outside? 🙁", o:["No, he doesn't.","No, she doesn't."], a:0, e:"A pergunta é sobre <b>he</b> → No, <b>he</b> doesn't."},
+      {q:"Does <b>Lena</b> like doing crafts? 🙂", o:["Yes, he does.","Yes, she does."], a:1, e:"Lena é menina → <b>she</b> does."},
+      {q:"Does <b>Rafa</b> like playing chess? 🙁", o:["No, she doesn't.","No, he doesn't."], a:1, e:"Rafa é menino → <b>he</b> doesn't."}
+    ]
+  },
+  /* ARE YOU GOOD AT…? */
+  s8:{
+    two:true,
+    items:[
+      {q:"Are you good at coding? ✔", o:["Yes, I am.","Yes, I do."], a:0, e:"A pergunta usa <b>are</b> → responde com <b>am</b>."},
+      {q:"Are you good at juggling? ✘", o:["No, I don't.","No, I'm not."], a:1, e:"A pergunta usa <b>are</b> → No, I'<b>m not</b>."},
+      {q:"______ you good at painting?", o:["Do","Are"], a:1, e:"good at vem com o verbo BE → <b>Are</b> you good at…?"},
+      {q:"Are you good at ______?", o:["singing","sing"], a:0, e:"Depois de <b>good at</b> vem verbo + -ing."},
+      {q:"“No, I'm not. I want to ______.”", o:["learn","learning"], a:0, e:"Depois de <b>want to</b> vem o verbo simples: to <b>learn</b>."},
+      {q:"Are you good at doing crafts? ✔", o:["Yes, I'm.","Yes, I am."], a:1, e:"Em resposta curta não se abrevia: <b>Yes, I am.</b>"}
+    ]
+  },
+  /* SCHOOL CLUBS */
+  s10:{
+    two:false,
+    items:[
+      {q:"When is Chess Club?", o:["Monday","Tuesday","Wednesday","Friday"], a:2, e:"Chess Club = Wednesday."},
+      {q:"When is Crafts Club?", o:["Monday","Tuesday","Thursday","Friday"], a:0, e:"Crafts Club = Monday."},
+      {q:"Which club is on Friday?", o:["Chess Club","Sports Club","Crafts Club","Music Club"], a:3, e:"Friday = Music Club."},
+      {q:"Shaun isn't good at coding. He wants to learn. Which day does he go?", o:["Monday","Tuesday","Wednesday","Thursday"], a:1, e:"Coding Club = Tuesday."},
+      {q:"“I'm good at football.” Which club is for you?", o:["Coding Club","Crafts Club","Sports Club","Music Club"], a:2, e:"Futebol é esporte → Sports Club (Thursday)."},
+      {q:"Lena likes doing crafts. Which day is her club?", o:["Monday","Wednesday","Thursday","Friday"], a:0, e:"Crafts Club = Monday."}
+    ]
+  },
+  /* READING 1 */
+  s11:{
+    two:false,
+    items:[
+      {q:"Where is the party?", o:["At school.","At the library.","At the park.","At home."], a:1, e:"“There's a party at the <b>library</b>!”"},
+      {q:"Rafa doesn't like", o:["being outside.","juggling.","doing crafts.","helping people."], a:2, e:"“Rafa doesn't like doing crafts.”"},
+      {q:"What does Rafa like doing?", o:["Being outside.","Doing crafts.","Painting.","Playing chess."], a:0, e:"“he likes being outside!”"},
+      {q:"What is Rafa good at?", o:["Coding.","Acting.","Painting.","Juggling."], a:3, e:"“I'm good at juggling!”"},
+      {q:"Who does Rafa teach to juggle?", o:["Only Lena.","Lena, Alicia and Daniel.","The teacher.","Nobody."], a:1, e:"“Rafa teaches Lena, Alicia and Daniel to juggle.”"}
+    ]
+  },
+  /* READING 2 */
+  s12:{
+    two:false,
+    items:[
+      {q:"What does the word “origami” mean?", o:["To cut paper.","To fold paper.","To paint paper.","To buy paper."], a:1, e:"“It means ‘to fold paper’.”"},
+      {q:"Yuki is very good at making", o:["flowers.","scarves.","frogs and birds.","scrapbooks."], a:2, e:"“I'm very good at making frogs and birds.”"},
+      {q:"What does Ana do with the pictures?", o:["She paints them.","She knits them.","She folds them.","She cuts and sticks them."], a:3, e:"“She finds and cuts pictures and sticks them in her scrapbook.”"},
+      {q:"What do you use for finger knitting?", o:["Wool.","Paper.","Paint.","A camera."], a:0, e:"“You use your fingers to knit with <b>wool</b>.”"},
+      {q:"Bia makes scarves for", o:["her mother.","her dolls and teddy bears.","her school.","the library."], a:1, e:"“…scarves for her dolls and teddy bears.”"}
+    ]
+  }
+};
+
+const ORDER = {
+  s7:{
+    tip:"Pergunta com <b>Does</b>: <b>Does</b> + he/she/nome + <b>like</b> + verbo com <b>-ing</b>. Repare que o <i>like</i> não ganha -s aqui!",
+    items:[
+      {w:["Does","she","like","playing","sports"],   a:"Does she like playing sports?", why:"Does + she + like + playing."},
+      {w:["Does","he","like","being","outside"],     a:"Does he like being outside?",   why:"be → being."},
+      {w:["Does","Lena","like","doing","crafts"],    a:"Does Lena like doing crafts?",  why:"Com nome também usa Does."},
+      {w:["Does","he","like","acting"],              a:"Does he like acting?",          why:"act → acting."},
+      {w:["Does","she","like","taking","pictures"],  a:"Does she like taking pictures?",why:"take → taking (o e sai)."},
+      {w:["Does","Marco","like","helping","people"], a:"Does Marco like helping people?",why:"help → helping."}
+    ]
+  },
+  s9:{
+    tip:"Ordem da frase: <b>quem</b> + <b>likes / doesn't like</b> + verbo com <b>-ing</b>.",
+    items:[
+      {w:["She","likes","taking","pictures"],              a:"She likes taking pictures.", why:"she → like<b>s</b>."},
+      {w:["He","doesn't","like","playing","chess"],         a:"He doesn't like playing chess.", why:"Na negativa: doesn't + like (sem -s)."},
+      {w:["I'm","good","at","juggling"],                    a:"I'm good at juggling.", why:"good at + verbo -ing."},
+      {w:["There's","a","party","at","the","library"],       a:"There's a party at the library!", why:"A frase da música da unidade."},
+      {w:["I","want","to","learn","something","new"],        a:"I want to learn something new.", why:"want to + verbo simples."},
+      {w:["Rafa","doesn't","like","doing","crafts"],         a:"Rafa doesn't like doing crafts.", why:"do → doing."},
+      {w:["Are","you","good","at","coding"],                a:"Are you good at coding?", why:"Pergunta: Are + you + good at."},
+      {w:["Let's","decorate","the","library"],              a:"Let's decorate the library!", why:"Let's + verbo simples."}
+    ]
+  },
+  s13:{
+    tip:"Coloque os passos na ordem certa. Comece pelo que você faz <b>primeiro</b>.",
+    items:[
+      {w:["Cut out the paper.","Fold green and yellow paper.","Stick on the head and the eyes."],
+       a:"1) Cut out the paper. → 2) Fold green and yellow paper. → 3) Stick on the head and the eyes.",
+       why:"Making a paper animal 🐍 — primeiro cortar, depois dobrar, por último colar."},
+      {w:["Fold a piece of card.","Draw a picture of flowers on a piece of paper.","Cut out the flowers.","Stick your flowers onto the card.","Write a message inside."],
+       a:"1) Fold a piece of card. → 2) Draw a picture of flowers on a piece of paper. → 3) Cut out the flowers. → 4) Stick your flowers onto the card. → 5) Write a message inside.",
+       why:"Making a birthday card 💌 — dobrar, desenhar, cortar, colar e escrever."}
+    ]
+  }
+};
+
+const DRILL = [
+  {pic:"🙂 📷", qty:"Lena",        say:"Lena likes taking pictures."},
+  {pic:"🙁 ♟️", qty:"he",          say:"He doesn't like playing chess."},
+  {pic:"🙂 🎨", qty:"Daniel",      say:"Daniel likes painting."},
+  {pic:"🙁 ✂️", qty:"Rafa",        say:"Rafa doesn't like doing crafts."},
+  {pic:"🙂 🌳", qty:"Rafa",        say:"Rafa likes being outside."},
+  {pic:"⭐ 🤹", qty:"I",           say:"I'm good at juggling."},
+  {pic:"❓ ⚽", qty:"she",         say:"Does she like playing sports?"},
+  {pic:"❓ 💻", qty:"you",         say:"Are you good at coding?"},
+  {pic:"🙂 🤝", qty:"Lena",        say:"Lena likes helping people."},
+  {pic:"🙁 🎮", qty:"Rafa",        say:"Rafa doesn't like playing video games."},
+  {pic:"🙂 ✨", qty:"I",           say:"I like learning something new."},
+  {pic:"🎉 📚", qty:"today!",      say:"There's a party at the library!"}
+];
+
+const FINALE = [
+  {t:1,q:"“Malabarismo”, in English, is",o:["acting","coding","painting","juggling"],a:3,e:"juggling 🤹"},
+  {t:1,q:"She ______ taking pictures. 🙂",o:["like","don't like","likes","doesn't like"],a:2,e:"she → like<b>s</b>."},
+  {t:1,q:"He ______ playing chess. 🙁",o:["likes","doesn't like","don't like","like"],a:1,e:"he → doesn't like."},
+  {t:1,q:"“Programar”, in English, is",o:["cooking","acting","knitting","coding"],a:3,e:"coding 💻"},
+  {t:1,q:"I like ______ crafts.",o:["do","does","doing","did"],a:2,e:"like + verbo -ing → doing."},
+  {t:1,q:"Are you good at painting?",o:["Yes, I do.","Yes, I am.","Yes, I'm.","Yes, he is."],a:1,e:"Are…? → Yes, I am."},
+  {t:1,q:"“Artesanato”, in English, is",o:["crafts","cards","chess","computers"],a:0,e:"crafts ✂️"},
+
+  {t:2,q:"Does she like acting? 🙂",o:["Yes, she does.","Yes, she is.","Yes, he does.","Yes, she do."],a:0,e:"Does…? → Yes, she does."},
+  {t:2,q:"______ he like being outside?",o:["Do","Is","Does","Are"],a:2,e:"he → <b>Does</b> he like…?"},
+  {t:2,q:"Origami means “to ______ paper”.",o:["cut","fold","paint","stick"],a:1,e:"fold = dobrar."},
+  {t:2,q:"I'm good ______ juggling.",o:["in","on","to","at"],a:3,e:"A expressão é <b>good at</b>."},
+  {t:2,q:"You use ______ to knit.",o:["wool","paper","glue","a camera"],a:0,e:"wool 🧶 = lã."},
+  {t:2,q:"Chess Club is on Wednesday. Coding Club is on",o:["Monday","Tuesday","Thursday","Friday"],a:1,e:"Tuesday."},
+  {t:2,q:"“No, I'm not. I want to ______.”",o:["learning","learns","learn","learned"],a:2,e:"want to + verbo simples → to learn."},
+
+  {t:3,q:"Choose the CORRECT sentence.",o:["She like painting.","She likes paint.","She likes painting.","She does like painting."],a:2,e:"she → likes · like + verbo -ing."},
+  {t:3,q:"Put in order: like / Does / he / juggling",o:["Does he like juggling?","He does like juggling?","Like does he juggling?","Does like he juggling?"],a:0,e:"Does + he + like + juggling."},
+  {t:3,q:"Rafa doesn't like doing crafts, but he ______ being outside.",o:["don't like","likes","like","doesn't like"],a:1,e:"<i>but</i> mostra o contrário → he <b>likes</b>."},
+  {t:3,q:"Which activity is usually OUTSIDE?",o:["coding","using computers","playing chess","playing sports"],a:3,e:"Esporte normalmente é lá fora."},
+  {t:3,q:"“I want to learn” means",o:["I know it already.","I don't want to try.","I want to try something new.","I am very good at it."],a:2,e:"Quero aprender = quero tentar algo novo."},
+  {t:3,q:"Which question asks about ABILITY (what you do well)?",o:["Do you like coding?","Are you good at coding?","Does he like coding?","Is there a Coding Club?"],a:1,e:"<b>good at</b> pergunta habilidade."}
+];
+
+const STATIONS = {
+  intro:{n:"How to play",       d:"as regras da festa",                 em:"🗺️", kind:"intro", stars:0},
+  s1: {n:"Hobby Cards",         d:"16 palavras · vocabulary",           em:"🃏", kind:"vocab",  stars:5},
+  s2: {n:"Word Scramble",       d:"8 palavras embaralhadas",            em:"🔤", kind:"scram",  stars:5},
+  s3: {n:"Inside or Outside?",  d:"inside · both · outside",            em:"🏠", kind:"sort",   stars:5},
+  s4: {n:"Craft Corner",        d:"fold · cut · stick · knit…",         em:"✂️", kind:"match",  stars:5},
+  s5: {n:"Likes / Doesn't like",d:"8 frases com 🙂 e 🙁",               em:"🙂", kind:"mcq", set:"s5", stars:5},
+  s6: {n:"The -ING Rule",       d:"like + verbo + -ing · 8 frases",     em:"🔁", kind:"mcq", set:"s6", stars:5},
+  s7: {n:"Does he like…?",      d:"montar perguntas + short answers",   em:"❓", kind:"ask",   stars:7},
+  s8: {n:"Are you good at…?",   d:"6 respostas curtas",                 em:"⭐", kind:"mcq", set:"s8", stars:5},
+  s9: {n:"Sentence Builder",    d:"8 frases · word order",              em:"🧩", kind:"order", set:"s9", stars:7},
+  s10:{n:"School Clubs",        d:"o quadro dos clubes · 6 perguntas",  em:"📅", kind:"clubs", stars:6},
+  s11:{n:"Party at the Library",d:"reading · 5 perguntas",              em:"📚", kind:"read1", stars:7},
+  s12:{n:"Crafts Around the World", d:"reading · 5 perguntas",          em:"🌏", kind:"read2", stars:7},
+  s13:{n:"Instructions",        d:"coloque os passos em ordem",          em:"📝", kind:"steps", stars:6},
+  s14:{n:"Drill Zone",          d:"12 cartas · fale a frase completa",  em:"🗣️", kind:"drill", stars:5},
+  s15:{n:"THE BIG QUIZ",        d:"20 questões · 3 níveis",             em:"🏆", kind:"quiz",  stars:12}
+};
+
+const MAP = [
+  {t:"🎈 VOCABULARY · as palavras", eps:["s1","s2","s3","s4"]},
+  {t:"🙂 GRAMMAR · likes / doesn't like", eps:["s5","s6","s7","s8","s9"]},
+  {t:"💬 CLUBS &amp; SPEAKING", eps:["s10","s14"]},
+  {t:"📖 READING &amp; WRITING", eps:["s11","s12","s13"]},
+  {t:"🏆 FINAL CHALLENGE", eps:["s15","intro"]}
+];
+
+const ORDERED = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s14","s11","s12","s13","s15"];
+
+const LEVELS = [
+  {s:0,n:"Guest 🎈"},{s:15,n:"Helper 🤝"},{s:35,n:"Party Star ⭐"},
+  {s:60,n:"Hobby Hero 🦸"},{s:80,n:"LIBRARY LEGEND 👑"}
+];
+
+/* =======================================================================
+   MOTOR
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------- HOME ---------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>=0?`<span class="no">${i+1}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ $("play").classList.remove("on"); $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------- PLAYER ---------- */
+let ORD = null, PK = null, mSel = null, mDone = 0, mRight = [];
+
+function openEp(k){
+  cur=k; hits=0; total=0; ORD=null; PK=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = head + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    total=VOCAB.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">Dinâmica: você mostra a carta, a turma tenta o significado, depois vira. <b>Acertou = 10 pontos.</b> Depois pergunte: <i>Do you like it?</i></p>
+      <div class="vg">${VOCAB.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="scram"){
+    total=SCRAMBLE.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">Dica: leia a tradução primeiro. <b>Depois procure a primeira letra.</b></p>
+      ${SCRAMBLE.map((s2,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${s2.e} &nbsp;<span class="hint">${s2.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="sort"){
+    total=SORT.items.length;
+    b.innerHTML = head + `<p class="how">Onde você faz cada atividade?</p>
+      <p class="tip" style="border-left-color:var(--green)">🏠 <b>INSIDE</b> = dentro de casa &nbsp;·&nbsp; 🌳 <b>OUTSIDE</b> = lá fora &nbsp;·&nbsp; 🔁 <b>BOTH</b> = dá para os dois</p>
+      ${SORT.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SORT.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="match"){ total=MATCH.length; b.innerHTML = head + matchHTML(MATCH,"VERB","WHAT?",
+      "Clique no verbo, depois no objeto certo.",
+      "Estes são os <b>verbos de instrução</b> dos crafts: fold, cut, stick, knit, paint, draw, make, write."); }
+
+  else if(s.kind==="whmatch"){ total=WHMATCH.length; b.innerHTML = head + matchHTML(WHMATCH,"QUESTION","ANSWER",
+      "Clique na pergunta, depois na resposta certa.",
+      "<b>What</b> = o quê · <b>Where</b> = onde · <b>Who</b> = quem · <b>Does he/she like…?</b> = ele/ela gosta de…?"); }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    const tips = {
+      s5:"🙂 = <b>likes</b> &nbsp;·&nbsp; 🙁 = <b>doesn't like</b>. Com he / she / um nome, o verbo ganha <b>-s</b>: he like<b>s</b>.",
+      s6:"Depois de <b>like</b> e de <b>good at</b>, o verbo ganha <b>-ing</b>: like <b>painting</b>, good at <b>coding</b>.",
+      s8:"A pergunta <b>Are you good at…?</b> se responde com <b>am</b>: Yes, I <b>am</b>. / No, I'<b>m not</b>."
+    };
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. O feedback aparece na hora.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${tips[s.set]||""}</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="ask"){
+    ORD=ORDER.s7; PK="s7b"; total=ORDER.s7.items.length + QS.s7b.items.length;
+    b.innerHTML = head + `<p class="how">Primeiro monte as perguntas. Depois escolha a resposta curta certa.</p>
+      <p class="tip" style="border-left-color:var(--purple)">${ORDER.s7.tip}</p>`
+      + orderHTML("s7")
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">🙋 Short answers</h2>`
+      + mcqHTML("s7b");
+    initOrder();
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER.s9; total=ORDER.s9.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas palavras na ordem certa para montar a frase.</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORDER.s9.tip}</p>` + orderHTML("s9");
+    initOrder();
+  }
+
+  else if(s.kind==="clubs"){
+    PK="s10"; total=QS.s10.items.length;
+    b.innerHTML = head + `<p class="how">Leia o quadro dos clubes da escola e responda.</p>
+      <p class="tip" style="border-left-color:var(--purple)">Para perguntar: <b>Are you good at</b> coding? &nbsp;·&nbsp; <b>When is</b> Chess Club?</p>`
+      + clubsHTML() + mcqHTML("s10");
+  }
+  else if(s.kind==="steps"){
+    ORD=ORDER.s13; total=ORDER.s13.items.length;
+    b.innerHTML = head + `<p class="how">Clique nos passos na ordem certa para montar as instruções.</p>
+      <p class="tip" style="border-left-color:var(--green)">${ORDER.s13.tip}</p>` + orderHTML("s13");
+    initOrder();
+  }
+
+  else if(s.kind==="read1"){
+    PK="s11"; total=QS.s11.items.length;
+    b.innerHTML = head + `<div class="read">
+        <h3>📚 Party at the library!</h3>
+        <p>Today there's a <b>party at the library</b>! There are a lot of different hobbies to do.</p>
+        <p>Lena and Alicia find Rafa and Daniel in the reading corner. Lena and Alicia <b>like doing crafts</b>.
+        But Rafa <b>doesn't like doing crafts</b> — he <b>likes being outside</b>!</p>
+        <p>“Don't worry, Rafa,” says Alicia. “I <b>like helping people</b>. We can help you!”
+        “Let's decorate the library!” says Daniel. The children make paper flowers and stars for the reading corner.</p>
+        <p>Then Rafa has an idea. “Can I help you learn something new? <b>I'm good at juggling!</b>”
+        So Rafa <b>teaches Lena, Alicia and Daniel to juggle</b>.</p>
+        <p>“Wow! It's beautiful!” says the teacher. There's a hobby for everyone!</p>
+        <div class="gl">🔑 <b>library</b> = biblioteca · <b>reading corner</b> = cantinho da leitura · <b>crafts</b> = artesanato ·
+        <b>decorate</b> = decorar · <b>teach</b> = ensinar · <b>everyone</b> = todo mundo</div>
+      </div>` + mcqHTML("s11");
+  }
+
+  else if(s.kind==="read2"){
+    PK="s12"; total=QS.s12.items.length;
+    b.innerHTML = head + `<div class="read">
+        <h3>🌏 Crafts around the world</h3>
+        <p>Hello! My name is Yuki and I <b>like doing crafts</b>. My favourite craft is <b>origami</b>.
+        Origami is a Japanese word. It means <b>“to fold paper”</b>. I'm very good at making frogs and birds.
+        My sister likes origami too. She's good at making flowers.</p>
+        <p>My friend Ana likes making <b>scrapbooks</b>. She finds and <b>cuts</b> pictures and <b>sticks</b> them
+        in her scrapbook. She's very good at taking pictures.</p>
+        <p>My friend Bia likes <b>finger knitting</b>. You use your fingers to <b>knit</b> with <b>wool</b>.
+        She's good at making beautiful scarves for her dolls and teddy bears.</p>
+        <p>There's a craft for everyone!</p>
+        <div class="gl">🔑 <b>fold</b> = dobrar · <b>cut</b> = cortar · <b>stick</b> = colar · <b>knit</b> = tricotar ·
+        <b>wool</b> = lã · <b>scarf</b> = cachecol</div>
+      </div>` + mcqHTML("s12");
+  }
+
+  else if(s.kind==="drill"){
+    total=DRILL.length;
+    b.innerHTML = head + `<p class="how">Olhe a carta, diga a frase completa em voz alta, depois toque para conferir.</p>
+      <p class="tip" style="border-left-color:var(--red)">Ótimo para repetição em grupo: a turma inteira fala junto, <b>depois</b> você toca na carta. 🙂 = likes · 🙁 = doesn't like · ⭐ = good at · ❓ = pergunta.</p>
+      <div class="dg">${DRILL.map(d=>`
+        <div class="dc" onclick="openDrill(this)">
+          <div class="pic">${d.pic}</div>
+          <div class="qty">${d.qty}</div>
+          <div class="tap">TOQUE PARA CONFERIR</div>
+          <div class="say">${d.say}</div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>1.</b> São 15 estações. Você pode fazer na ordem ou escolher no mapa 🗺️.</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Guest → Helper → Party Star → Hobby Hero → LIBRARY LEGEND.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>3.</b> Errou? Sem problema. O jogo explica o porquê e você segue.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>4.</b> Botão <b>🔍 Projeção</b>: letras gigantes e placar de 4 equipes, para jogar com a turma inteira no telão.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>5.</b> Botão <b>👀 Answers</b> mostra todas as respostas da estação — use só na correção!</p>`;
+}
+
+/* ---------- vocab ---------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------- scramble ---------- */
+function initScram(){
+  SCRAMBLE.forEach((s,i)=>{
+    const letters = s.w.split("").map((c,j)=>({c,j})).sort(()=>Math.random()-0.5);
+    $("bk-"+i).innerHTML = letters.map(o=>
+      `<button class="ch let" onclick="pickLet(${i},this)">${o.c}</button>`).join("");
+    $("sl-"+i).innerHTML = "";
+  });
+}
+function pickLet(i,btn){
+  const c=document.createElement("button");
+  c.className="ch let"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("sl-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).innerHTML="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckScram(i){
+  const sl=$("sl-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join("");
+  if(built===SCRAMBLE[i].w){
+    sl.className="slot ok";
+    $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SCRAMBLE[i].w}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("fb-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shScram(i){
+  const already = $("sl-"+i).classList.contains("ok");
+  rsScram(i);
+  $("sl-"+i).innerHTML = SCRAMBLE[i].w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  $("sl-"+i).className="slot ok";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SCRAMBLE[i].w}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- sort ---------- */
+function pickSort(i,j){
+  const row=document.querySelector(`#body .srow[data-i="${i}"]`);
+  if(row.dataset.done) return; row.dataset.done="1";
+  const c=SORT.items[i].c;
+  row.querySelectorAll(".sb").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===c) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $("sf-"+i).innerHTML = (j===c?`<span style="color:var(--ok)">✅ </span>`:`<span style="color:var(--bad)">❌ </span>`)
+    + `<span class="wy">${SORT.items[i].e}</span>`;
+  bump();
+}
+
+/* ---------- match ---------- */
+function matchHTML(pairs,l,r,how,tip){
+  mRight = pairs.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-0.5);
+  return `<p class="how">${how}</p><p class="tip" style="border-left-color:var(--purple)">${tip}</p>
+  <div class="mg">
+    <div><div class="mh">${l}</div>${pairs.map((p,i)=>
+      `<button class="mi" id="L-${i}" onclick="mPick('L',${i})">${p[0]}</button>`).join("")}</div>
+    <div><div class="mh">${r}</div>${mRight.map((o,k)=>
+      `<button class="mi" id="R-${k}" onclick="mPick('R',${k})">${o.t}</button>`).join("")}</div>
+  </div>
+  <div class="fb" id="mfb" style="margin-top:14px"></div>`;
+}
+function mPick(side,idx){
+  const el=$(side+"-"+idx);
+  if(el.classList.contains("got")) return;
+  if(side==="L"){
+    document.querySelectorAll("#body .mi.sel").forEach(x=>x.classList.remove("sel"));
+    mSel=idx; el.classList.add("sel"); return;
+  }
+  if(mSel===null){ $("mfb").innerHTML=`<span style="color:var(--bad)">👈 Escolha primeiro na coluna da esquerda.</span>`; return; }
+  if(mRight[idx].i===mSel){
+    const L=$("L-"+mSel); L.classList.remove("sel"); L.classList.add("got"); el.classList.add("got");
+    mDone++; mSel=null;
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+    bump();
+  } else {
+    el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320);
+    $("mfb").innerHTML=`<span style="color:var(--bad)">❌ Not this one. Try again!</span>`;
+  }
+}
+
+/* ---------- mcq ---------- */
+function mcqHTML(ns){
+  const d=QS[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-ns="${ns}" data-q="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+      <div class="opts ${d.two?"two":"four"}">${it.o.map((o,j)=>
+        `<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}</div>
+      <div class="fb" id="f-${ns}-${i}"></div>
+    </div>`).join("");
+}
+function ansMcq(ns,i,j){
+  const box=document.querySelector(`#body .ex[data-ns="${ns}"][data-q="${i}"]`);
+  if(!box || box.dataset.done) return; box.dataset.done="1";
+  const it=QS[ns].items[i];
+  box.querySelectorAll(".op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===it.a) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $(`f-${ns}-${i}`).innerHTML =
+    (j===it.a?`<span style="color:var(--ok)">✅ Correct!</span>`:`<span style="color:var(--bad)">❌ Not this one.</span>`)
+    + `<span class="wy">${it.e}</span>`;
+  bump();
+}
+
+/* ---------- word order ---------- */
+function orderHTML(ns){
+  return ORDER[ns].items.map((it,i)=>`
+    <div class="ex" data-o="${i}">
+      <div class="qn"><span class="n">${i+1}</span>Build the sentence</div>
+      <div class="slot" id="os-${i}"></div>
+      <div class="bank" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  if(!ORD) return;
+  ORD.items.forEach((it,i)=>{
+    const sh = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    const bk = $("ob-"+i); if(!bk) return;
+    bk.innerHTML = sh.map(o=>`<button class="ch" onclick="pickWord(${i},this)">${o.w}</button>`).join("");
+    $("os-"+i).innerHTML="";
+  });
+}
+function pickWord(i,btn){
+  const c=document.createElement("button");
+  c.className="ch"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("os-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsOrd(i){
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"; $("of-"+i).innerHTML="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckOrd(i){
+  const it=ORD.items[i], sl=$("os-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join(" ");
+  const target=it.w.join(" ");
+  if(built===target){
+    sl.className="slot ok";
+    $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${it.a}</span><span class="wy">${it.why}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("of-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shOrd(i){
+  const it=ORD.items[i];
+  const already = $("os-"+i).classList.contains("ok");
+  rsOrd(i);
+  $("os-"+i).innerHTML = it.w.map(w=>`<span class="ch">${w}</span>`).join("");
+  $("os-"+i).className="slot ok";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${it.a}</span><span class="wy">${it.why}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- drill ---------- */
+function openDrill(el){
+  if(!el.classList.contains("open")){ el.classList.add("open"); bump(); }
+}
+
+/* ---------- quadro dos clubes ---------- */
+function clubsHTML(){
+  const rows=[["Monday","🎨 CRAFTS CLUB"],["Tuesday","💻 CODING CLUB"],["Wednesday","♟️ CHESS CLUB"],
+              ["Thursday","⚽ SPORTS CLUB"],["Friday","🎸 MUSIC CLUB"]];
+  return `<div class="menu">
+    <h3>🏫 SCHOOL CLUBS</h3>
+    <div class="ad">Escolha um clube e aprenda algo novo!</div>
+    <div class="mgrp">
+      ${rows.map(r=>`<div class="ln"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}
+    </div>
+  </div>`;
+}
+
+/* ---------- quiz ---------- */
+let qT=1, qI=0, qHit=0; const qA={};
+function quizHTML(){
+  return `<p class="how">20 questões em 3 níveis. Comece pelo bronze!</p>
+  <div class="tiers">
+    <button class="tb on" id="t1" onclick="setT(1)">🥉 EASY · 10 pts</button>
+    <button class="tb" id="t2" onclick="setT(2)">🥈 MEDIUM · 20 pts</button>
+    <button class="tb" id="t3" onclick="setT(3)">🥇 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="ex" id="qbox"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" onclick="qGo(-1)">◀ prev</button>
+    <button class="btn b" onclick="qGo(1)">next ▶</button>
+    <span class="fb" id="qsc"></span>
+  </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(qI>=L.length) qI=L.length-1;
+  const c=L[qI];
+  $("qmeta").innerHTML = `QUESTION ${qI+1} / ${L.length} · <b>${qT*10} points</b>`;
+  $("qbox").innerHTML = `<div class="qn">${c.q.q}</div>
+    <div class="opts four">${c.q.o.map((o,j)=>
+      `<button class="op" onclick="qPick(${c.i},${j})">${o}</button>`).join("")}</div>
+    <div class="fb" id="qfb"></div>`;
+  if(qA[c.i]!==undefined) qShow(c.i,qA[c.i]);
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; if(j===FINALE[gi].a) qHit++;
+  qShow(gi,j); bump();
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qShow(gi,pick){
+  const q=FINALE[gi];
+  document.querySelectorAll("#qbox .op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===q.a) b.classList.add("right"); else if(k===pick) b.classList.add("wrong");
+  });
+  $("qfb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${qT*10}</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="wy">${q.e}</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+/* ---------- reveal ---------- */
+function revealAll(){
+  if(!cur) return;
+  const k=STATIONS[cur].kind;
+  if(k==="vocab") document.querySelectorAll("#body .vc").forEach(c=>flip(c));
+  else if(k==="scram") SCRAMBLE.forEach((_,i)=>shScram(i));
+  else if(k==="sort") SORT.items.forEach((it,i)=>pickSort(i,it.c));
+  else if(k==="match"||k==="whmatch"){
+    const pairs = (k==="match")?MATCH:WHMATCH;
+    pairs.forEach((p,i)=>{
+      const ri = mRight.findIndex(o=>o.i===i);
+      const L=$("L-"+i), R=$("R-"+ri);
+      if(L&&R&&!L.classList.contains("got")){ L.classList.add("got"); L.classList.remove("sel"); R.classList.add("got"); mDone++; bump(); }
+    });
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+  }
+  else if(k==="mcq") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="ask"){ ORD.items.forEach((_,i)=>shOrd(i)); QS.s7b.items.forEach((it,i)=>ansMcq("s7b",i,it.a)); }
+  else if(k==="order") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="clubs") QS.s10.items.forEach((it,i)=>ansMcq("s10",i,it.a));
+  else if(k==="steps") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="read1") QS.s11.items.forEach((it,i)=>ansMcq("s11",i,it.a));
+  else if(k==="read2") QS.s12.items.forEach((it,i)=>ansMcq("s12",i,it.a));
+  else if(k==="drill"){ document.querySelectorAll("#body .dc").forEach(c=>openDrill(c)); }
+  else if(k==="quiz"){ const c=tList()[qI]; if(qA[c.i]===undefined) qPick(c.i,FINALE[c.i].a); }
+}
+
+/* ---------- projeção / equipes ---------- */
+function drawTeams(){
+  $("tin").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button></div>`).join("")
+    + `<div class="tm"><button onclick="rsTeams()" style="width:auto;padding:4px 10px">zerar</button></div>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Modo aluno" : "🔍 Projeção";
+}
+
+/* ---------- inicia ---------- */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") home();
+  else if(e.key==="ArrowRight" && cur) stepEp(1);
+  else if(e.key==="ArrowLeft" && cur) stepEp(-1);
+});
+
+drawTeams(); drawMap(); addStars(0);
+</script>
+</body>
+</html>
