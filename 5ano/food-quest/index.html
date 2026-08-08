@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUPERMARKET QUEST · Unit 4 Food for everyone! · 5º ano</title>
+<style>
+  :root{
+    --bg:#fff6ec; --card:#ffffff; --ink:#2c2140; --dim:#7a6f92; --line:#eadfd2;
+    --red:#ff5a5f; --orange:#ff9f1c; --yellow:#ffd60a; --green:#20bf7f; --teal:#2ec4b6;
+    --blue:#4cc9f0; --purple:#9b5de5; --pink:#ff70a6;
+    --ok:#20bf7f; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(720px 420px at 88% -4%, rgba(255,214,10,.35), transparent 60%),
+      radial-gradient(680px 420px at 4% 100%, rgba(46,196,182,.28), transparent 58%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#e0d3c2; border-radius:99px;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue);} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{
+    padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;
+  }
+  #hero .truck{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--red);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{
+    background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;
+  }
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{
+    display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);
+  }
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{
+    position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;
+  }
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#f0e7db; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#eafaf1;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{
+    background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;
+  }
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:132px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--yellow);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#5a4a2a;}
+
+  /* generic exercise box */
+  .ex{
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;
+  }
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{
+    display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--purple); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;
+  }
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;
+  }
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#fffdf0;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* chips (word order + unscramble) */
+  .slot{
+    min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#fffdf6;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{
+    border:3px solid var(--ink); border-radius:12px; background:var(--blue); color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+  }
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort baskets */
+  .srow{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .srow .it{font-weight:900; font-size:20px; min-width:170px;}
+  .sb{
+    border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .sb:hover:not(:disabled){background:#fffdf0;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{
+    display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:17px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .mi:hover:not(:disabled){background:#fffdf0;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading + menu */
+  .read{
+    background:#fffdf3; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.65; font-weight:600;
+  }
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--red);}
+  .read p{margin-bottom:10px;}
+  .read .gl{
+    margin-top:14px; font-size:14px; font-weight:800; color:#6a5a3a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;
+  }
+  .menu{
+    background:#fff; border:4px solid var(--ink); border-radius:var(--r); box-shadow:0 6px 0 var(--ink);
+    padding:18px 20px; margin-bottom:16px;
+  }
+  .menu h3{text-align:center; font-size:22px; font-weight:900; letter-spacing:1px;}
+  .menu .ad{text-align:center; font-size:12.5px; color:var(--dim); font-weight:800; margin-bottom:12px;}
+  .mgrp{margin-bottom:12px;}
+  .mgrp .t{
+    font-size:13px; font-weight:900; letter-spacing:2px; background:var(--ink); color:#fff;
+    display:inline-block; padding:3px 11px; border-radius:99px; margin-bottom:7px;
+  }
+  .ln{display:flex; justify-content:space-between; gap:12px; font-size:17px; font-weight:800;
+    border-bottom:2px dotted var(--line); padding:5px 0;}
+  .ln b{color:var(--green);}
+
+  /* drill */
+  .dg{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;}
+  .dc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 12px; text-align:center; cursor:pointer; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .dc:hover{transform:translateY(-3px);}
+  .dc .pic{font-size:44px;}
+  .dc .qty{font-weight:900; font-size:16px; margin-top:5px; color:var(--purple);}
+  .dc .say{display:none; font-weight:900; font-size:17px; margin-top:9px; color:var(--green); line-height:1.3;}
+  .dc.open{background:#eafaf1;} .dc.open .say{display:block;}
+  .dc .tap{font-size:10.5px; letter-spacing:1.5px; color:var(--dim); font-weight:900; margin-top:7px;}
+  .dc.open .tap{display:none;}
+
+  /* quiz tiers */
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{
+    border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+
+  /* teams (projection) */
+  #teams{
+    display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px;
+    padding:0 5vw;
+  }
+  #teams.on{display:block;}
+  .tin{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{
+    width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;
+  }
+  .tm button:hover{background:var(--yellow);}
+
+  #foot{
+    position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96);
+    border-top:3px solid var(--line);
+  }
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJECTION MODE */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:21px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:24px;}
+  body.proj .ln{font-size:21px;}
+  body.proj .dc .pic{font-size:56px;} body.proj .dc .say{font-size:21px;}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🛒 SUPERMARKET QUEST<span>UNIT 4 · FOOD FOR EVERYONE! · 5º ANO</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #2c2140;border-radius:14px;background:#fff;color:#2c2140;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #2c2140;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill">🏅 <span id="lvl">Shopper</span></div>
+  <button class="btn y" id="projBtn" onclick="toggleProj()">🔍 Projeção</button>
+  <button class="btn b" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="tin"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="truck">🚚🍎🛒</div>
+    <h1>Let's go <em>shopping!</em></h1>
+    <div class="sub">15 stations · Unit 4 · Food for everyone!</div>
+    <div class="tags">
+      <span class="tag">🍎 vocabulary</span>
+      <span class="tag">🔤 unscramble</span>
+      <span class="tag">🧩 word order</span>
+      <span class="tag">❓ WH questions</span>
+      <span class="tag">📖 reading</span>
+      <span class="tag">🔗 matching</span>
+      <span class="tag">✅ there is / there are</span>
+      <span class="tag">💰 how much?</span>
+    </div>
+  </div>
+  <main id="mapArea"></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀</button>
+  <button class="btn" onclick="stepEp(1)">▶</button>
+  <button class="btn g" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Modo projeção liga fontes grandes e o placar de equipes</small>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =======================================================================
+   DADOS · Rise and Shine · Unit 4 "Food for everyone!"
+   ======================================================================= */
+
+const VOCAB = [
+  {e:"🍎", w:"apples",       pt:"maçãs",     ex:"There are a lot of apples."},
+  {e:"🍇", w:"grapes",       pt:"uvas",      ex:"There are many grapes."},
+  {e:"🍍", w:"pineapples",   pt:"abacaxis",  ex:"There are two pineapples."},
+  {e:"🍋", w:"lemons",       pt:"limões",    ex:"There aren't any lemons."},
+  {e:"🍯", w:"honey",        pt:"mel",       ex:"There's a lot of honey."},
+  {e:"🥔", w:"potatoes",     pt:"batatas",   ex:"There are a lot of potatoes."},
+  {e:"🧁", w:"sugar",        pt:"açúcar",    ex:"There's some sugar."},
+  {e:"🥫", w:"beans",        pt:"feijão",    ex:"There are some beans."},
+  {e:"🍚", w:"rice",         pt:"arroz",     ex:"There's a bag of rice."},
+  {e:"🌾", w:"flour",        pt:"farinha",   ex:"There isn't any flour."},
+  {e:"🥕", w:"carrots",      pt:"cenouras",  ex:"There are some carrots."},
+  {e:"🍅", w:"tomatoes",     pt:"tomates",   ex:"There are a lot of tomatoes."},
+  {e:"🥛", w:"milk",         pt:"leite",     ex:"There's some milk."},
+  {e:"🍞", w:"bread",        pt:"pão",       ex:"There isn't any bread."},
+  {e:"🥣", w:"cereal",       pt:"cereal",    ex:"There's some cereal."},
+  {e:"🍓", w:"strawberries", pt:"morangos",  ex:"There aren't any strawberries."},
+  {e:"🥚", w:"eggs",         pt:"ovos",      ex:"There are eight eggs."},
+  {e:"🥤", w:"juice",        pt:"suco",      ex:"There's a bottle of juice."}
+];
+
+const SCRAMBLE = [
+  {w:"APPLES",       e:"🍎", pt:"maçãs"},
+  {w:"GRAPES",       e:"🍇", pt:"uvas"},
+  {w:"HONEY",        e:"🍯", pt:"mel"},
+  {w:"POTATOES",     e:"🥔", pt:"batatas"},
+  {w:"SUGAR",        e:"🧁", pt:"açúcar"},
+  {w:"BEANS",        e:"🥫", pt:"feijão"},
+  {w:"FLOUR",        e:"🌾", pt:"farinha"},
+  {w:"CARROTS",      e:"🥕", pt:"cenouras"},
+  {w:"PINEAPPLE",    e:"🍍", pt:"abacaxi"},
+  {w:"STRAWBERRIES", e:"🍓", pt:"morangos"}
+];
+
+const SORT = {
+  cats:["FRUIT 🍎","VEGETABLES 🥕","OTHER 🍚"],
+  items:[
+    {it:"apples 🍎",       c:0, e:"Maçã é fruta."},
+    {it:"potatoes 🥔",     c:1, e:"Batata é legume."},
+    {it:"flour 🌾",        c:2, e:"Farinha não é fruta nem legume."},
+    {it:"pineapples 🍍",   c:0, e:"Abacaxi é fruta."},
+    {it:"honey 🍯",        c:2, e:"Mel vem das abelhas — vai em OTHER."},
+    {it:"rice 🍚",         c:2, e:"Arroz é grão — OTHER."},
+    {it:"beans 🥫",        c:1, e:"No livro, beans entra em vegetables."},
+    {it:"lemons 🍋",       c:0, e:"Limão é fruta."},
+    {it:"grapes 🍇",       c:0, e:"Uva é fruta."},
+    {it:"sugar 🧁",        c:2, e:"Açúcar — OTHER."},
+    {it:"carrots 🥕",      c:1, e:"Cenoura é legume."},
+    {it:"tomatoes 🍅",     c:1, e:"Na cozinha, tomate entra em vegetables."},
+    {it:"strawberries 🍓", c:0, e:"Morango é fruta."},
+    {it:"milk 🥛",         c:2, e:"Leite — OTHER."},
+    {it:"bread 🍞",        c:2, e:"Pão — OTHER."}
+  ]
+};
+
+const MATCH = [
+  ["a bag of",    "rice 🍚"],
+  ["a bottle of", "juice 🥤"],
+  ["a glass of",  "water 💧"],
+  ["a cup of",    "hot chocolate ☕"],
+  ["a piece of",  "fruit 🍏"],
+  ["a box of",    "fruit and vegetables 📦"],
+  ["a slice of",  "pizza 🍕"],
+  ["a can of",    "beans 🥫"]
+];
+
+const WHMATCH = [
+  ["How much is the lemonade?",     "It's $1.99."],
+  ["How many apples are there?",    "There are eight."],
+  ["What's your favourite food?",   "Honey! 🍯"],
+  ["Where is the no-waste café?",   "At the museum."],
+  ["Who is the chef?",              "Ben."],
+  ["What do you want to make?",     "A rainbow fruit salad."]
+];
+
+const QS = {
+  /* THERE IS / THERE ARE */
+  s5:{
+    two:false,
+    items:[
+      {q:"______ some rice in the bag.", o:["There's","There are","There isn't","There aren't"], a:0, e:"<b>rice</b> não tem plural → There's."},
+      {q:"______ a lot of potatoes.", o:["There's","There are","There isn't","There aren't"], a:1, e:"<b>potatoes</b> é plural → There are."},
+      {q:"______ any bread. 🍞❌", o:["There's","There are","There isn't","There aren't"], a:2, e:"Negativa + palavra sem plural → There isn't any."},
+      {q:"______ any lemons. 🍋❌", o:["There's","There are","There isn't","There aren't"], a:3, e:"Negativa + plural → There aren't any."},
+      {q:"______ many grapes on the table.", o:["There's","There are","There isn't","There aren't"], a:1, e:"<b>grapes</b> é plural → There are."},
+      {q:"______ a lot of honey. 🍯", o:["There's","There are","There isn't","There aren't"], a:0, e:"<b>honey</b> não tem plural → There's."},
+      {q:"______ any flour. 🌾❌", o:["There's","There are","There isn't","There aren't"], a:2, e:"Negativa + flour → There isn't any."},
+      {q:"______ two bottles of juice.", o:["There's","There are","There isn't","There aren't"], a:1, e:"<b>two bottles</b> é plural → There are."},
+      {q:"______ any strawberries. 🍓❌", o:["There's","There are","There isn't","There aren't"], a:3, e:"Negativa + plural → There aren't any."},
+      {q:"______ some milk in the glass.", o:["There's","There are","There isn't","There aren't"], a:0, e:"<b>milk</b> não tem plural → There's."}
+    ]
+  },
+  /* SOME or ANY */
+  s6:{
+    two:true,
+    items:[
+      {q:"There's ______ milk in the glass.", o:["some","any"], a:0, e:"Frase afirmativa → some."},
+      {q:"There aren't ______ lemons.", o:["some","any"], a:1, e:"Frase negativa → any."},
+      {q:"Are there ______ apples?", o:["some","any"], a:1, e:"Pergunta → any."},
+      {q:"There are ______ carrots in the box.", o:["some","any"], a:0, e:"Afirmativa → some."},
+      {q:"There isn't ______ bread.", o:["some","any"], a:1, e:"Negativa → any."},
+      {q:"Is there ______ honey?", o:["some","any"], a:1, e:"Pergunta → any."},
+      {q:"There's ______ sugar in my cake.", o:["some","any"], a:0, e:"Afirmativa → some."},
+      {q:"We don't have ______ potatoes.", o:["some","any"], a:1, e:"Negativa (don't) → any."}
+    ]
+  },
+  /* HOW MANY or HOW MUCH */
+  s7:{
+    two:true,
+    items:[
+      {q:"How ______ apples are there?", o:["many","much"], a:0, e:"<b>apples</b> tem plural → how many."},
+      {q:"How ______ rice is there?", o:["many","much"], a:1, e:"<b>rice</b> não tem plural → how much."},
+      {q:"How ______ is a bottle of juice?", o:["many","much"], a:1, e:"Preço é sempre <b>how much</b>."},
+      {q:"How ______ potatoes do you want?", o:["many","much"], a:0, e:"potatoes → how many."},
+      {q:"How ______ honey is there?", o:["many","much"], a:1, e:"honey → how much."},
+      {q:"How ______ eggs are there?", o:["many","much"], a:0, e:"eggs → how many."},
+      {q:"How ______ are those grapes?", o:["many","much"], a:1, e:"Preço → how much."},
+      {q:"How ______ people are there in your family?", o:["many","much"], a:0, e:"people é plural → how many."}
+    ]
+  },
+  /* SHORT ANSWERS */
+  s8b:{
+    two:true,
+    items:[
+      {q:"Are there any apples? 🍎✅", o:["Yes, there are.","Yes, there is."], a:0, e:"<b>Are there…?</b> → Yes, there <b>are</b>."},
+      {q:"Is there any rice? 🍚❌", o:["No, there aren't.","No, there isn't."], a:1, e:"<b>Is there…?</b> → No, there <b>isn't</b>."},
+      {q:"Are there any lemons? 🍋❌", o:["No, there isn't.","No, there aren't."], a:1, e:"<b>Are there…?</b> → No, there <b>aren't</b>."},
+      {q:"Is there any honey? 🍯✅", o:["Yes, there is.","Yes, there are."], a:0, e:"<b>Is there…?</b> → Yes, there <b>is</b>."}
+    ]
+  },
+  /* PRICES */
+  s11:{
+    two:false,
+    items:[
+      {q:"How much is the lemonade?", o:["$1.50","$1.99","$2.25","$2.99"], a:1, e:"Lemonade = $1.99."},
+      {q:"How much is the ice cream?", o:["$3.75","$3.25","$3.50","$4.99"], a:2, e:"Ice cream = $3.50."},
+      {q:"How much are the chocolate cookies?", o:["$1.99","$3.50","$2.25","$1.75"], a:0, e:"Chocolate cookies = $1.99."},
+      {q:"Which drink is the most expensive? 💸", o:["orange juice","hot chocolate","smoothie","strawberry milkshake"], a:3, e:"Strawberry milkshake = $3.25, o mais caro das bebidas."},
+      {q:"You have $10. Can you buy a burger and fries AND an ice cream?", o:["Yes, you can.","No, you can't.","Only the ice cream is free.","Yes, and a pizza too."], a:1, e:"$7.50 + $3.50 = $11.00. É mais que $10!"},
+      {q:"How much is an egg sandwich and an orange juice?", o:["$5.49","$6.49","$6.99","$7.49"], a:1, e:"$4.99 + $1.50 = $6.49."},
+      {q:"How much are two apple juices?", o:["$3.50","$3.25","$2.75","$3.75"], a:0, e:"$1.75 + $1.75 = $3.50."},
+      {q:"Which food is the cheapest? 🪙", o:["ice cream","apple cake","chocolate cookies","egg sandwich"], a:2, e:"Chocolate cookies = $1.99, o mais barato."}
+    ]
+  },
+  /* READING 1 */
+  s12:{
+    two:false,
+    items:[
+      {q:"Where is the Green Truck?", o:["At the school.","At the market.","At the museum.","At the park."], a:1, e:"“It's a food truck <b>at the market</b>.”"},
+      {q:"What do Sofia and Hugo buy?", o:["Ugly fruit and vegetables.","Beautiful cakes.","Bread and milk.","Only tomatoes."], a:0, e:"“…they buy ugly fruit and vegetables.”"},
+      {q:"Is there any bread on the truck?", o:["Yes, there is.","Yes, there are two.","We don't know.","No, there isn't."], a:3, e:"“There isn't any bread.”"},
+      {q:"How much is the rainbow salad?", o:["$3.99","$4.50","$4.99","$5.99"], a:2, e:"“The rainbow salad is $4.99.”"},
+      {q:"“Ugly food” in the text is", o:["not beautiful, but tasty.","old and bad.","very expensive.","only for animals."], a:0, e:"“Ugly food is not beautiful, but it's tasty!”"}
+    ]
+  },
+  /* READING 2 */
+  s13:{
+    two:false,
+    items:[
+      {q:"How many people are there in Oliver's family?", o:["Three.","Four.","Five.","Eight."], a:1, e:"“There are four people in my family.”"},
+      {q:"How many potatoes are there on the list?", o:["Eight.","Ten.","Twelve.","Two."], a:2, e:"A lista diz <b>12 potatoes</b>."},
+      {q:"Are there any bottles of juice on the list?", o:["Yes, there are two.","No, there aren't.","Yes, there is one.","Yes, there are eight."], a:0, e:"<b>2 bottles of juice</b>."},
+      {q:"Why don't they buy any bread?", o:["Because they don't like bread.","Because it's expensive.","Because the shop is closed.","Because they have some at home."], a:3, e:"“We don't buy any bread because we have some at home.”"},
+      {q:"Who makes the fruit salad?", o:["His mum.","His dad.","Oliver.","The chef."], a:1, e:"“…my dad makes a fruit salad.”"}
+    ]
+  }
+};
+
+const ORDER = {
+  s8:{
+    tip:"Pergunta começa com <b>Is there</b> (sem plural) ou <b>Are there</b> (com plural), e depois vem <b>any</b>.",
+    items:[
+      {w:["Are","there","any","apples"],       a:"Are there any apples?", why:"apples é plural → Are there any."},
+      {w:["Is","there","any","rice"],          a:"Is there any rice?",    why:"rice não tem plural → Is there any."},
+      {w:["Is","there","any","juice"],         a:"Is there any juice?",   why:"juice → Is there any."},
+      {w:["Are","there","any","strawberries"], a:"Are there any strawberries?", why:"plural → Are there any."},
+      {w:["Is","there","any","honey"],         a:"Is there any honey?",   why:"honey → Is there any."},
+      {w:["Are","there","any","potatoes"],     a:"Are there any potatoes?", why:"plural → Are there any."}
+    ]
+  },
+  s9:{
+    tip:"Ordem da frase em inglês: <b>There</b> + <b>is / are</b> + quantidade + comida.",
+    items:[
+      {w:["There","are","a lot of","potatoes"],            a:"There are a lot of potatoes.", why:"plural → are."},
+      {w:["There","is","a bag of","rice"],                 a:"There is a bag of rice.",      why:"a bag → is."},
+      {w:["There","aren't","any","olives"],                a:"There aren't any olives.",     why:"negativa + plural."},
+      {w:["There","are","two","bottles","of","juice"],     a:"There are two bottles of juice.", why:"two bottles → are."},
+      {w:["There","isn't","any","bread"],                  a:"There isn't any bread.",       why:"negativa + bread."},
+      {w:["I","like","potatoes","but","I","don't","like","beans"], a:"I like potatoes but I don't like beans.", why:"<i>but</i> liga as duas ideias."},
+      {w:["How much","is","a","glass","of","juice"],        a:"How much is a glass of juice?", why:"preço → How much is."},
+      {w:["Let's","all","eat","together"],                 a:"Let's all eat together!",      why:"A música da unidade!"}
+    ]
+  }
+};
+
+const DRILL = [
+  {pic:"🍎🍎🍎", qty:"20 apples",        say:"There are a lot of apples."},
+  {pic:"🍯",     qty:"one jar",          say:"There's some honey."},
+  {pic:"🍞",     qty:"none ❌",          say:"There isn't any bread."},
+  {pic:"🍋",     qty:"none ❌",          say:"There aren't any lemons."},
+  {pic:"🍚",     qty:"one bag",          say:"There's a bag of rice."},
+  {pic:"🥤🥤",   qty:"two bottles",      say:"There are two bottles of juice."},
+  {pic:"🍇",     qty:"many",             say:"There are many grapes."},
+  {pic:"🥛",     qty:"one glass",        say:"There's a glass of milk."},
+  {pic:"🍓",     qty:"none ❌",          say:"There aren't any strawberries."},
+  {pic:"🥔🥔🥔", qty:"12 potatoes",      say:"There are a lot of potatoes."},
+  {pic:"☕",     qty:"one cup",          say:"There's a cup of hot chocolate."},
+  {pic:"🥕",     qty:"some",             say:"There are some carrots."}
+];
+
+const FINALE = [
+  {t:1,q:"______ a lot of honey. 🍯",o:["There are","There aren't","There isn't","There's"],a:3,e:"honey não tem plural → There's."},
+  {t:1,q:"“Batatas”, in English, is",o:["potatoes","tomatoes","carrots","beans"],a:0,e:"potatoes 🥔"},
+  {t:1,q:"There aren't ______ lemons.",o:["some","a","any","much"],a:2,e:"Negativa → any."},
+  {t:1,q:"a ______ of rice 🍚",o:["bottle","bag","glass","cup"],a:1,e:"a bag of rice."},
+  {t:1,q:"How ______ apples are there?",o:["much","old","long","many"],a:3,e:"apples é plural → how many."},
+  {t:1,q:"“Mel”, in English, is",o:["sugar","flour","honey","milk"],a:2,e:"honey 🍯"},
+  {t:1,q:"______ any bread? 🍞",o:["Are there","Is there","There is","There are"],a:1,e:"bread → Is there any bread?"},
+
+  {t:2,q:"a ______ of hot chocolate ☕",o:["slice","box","cup","bag"],a:2,e:"a cup of hot chocolate."},
+  {t:2,q:"Are there any strawberries? — No, ______",o:["there isn't.","there aren't.","there is.","there are."],a:1,e:"Are there…? → No, there aren't."},
+  {t:2,q:"There ______ some milk and there ______ some carrots.",o:["is / is","are / are","are / is","is / are"],a:3,e:"milk → is · carrots → are."},
+  {t:2,q:"Which word is in the FRUIT group?",o:["pineapples","carrots","flour","rice"],a:0,e:"pineapples 🍍 é fruta."},
+  {t:2,q:"How much ______ the lemonade?",o:["are","do","is","many"],a:2,e:"the lemonade é singular → is."},
+  {t:2,q:"There's ______ sugar in my cake.",o:["any","many","are","some"],a:3,e:"Afirmativa → some."},
+  {t:2,q:"a ______ of fruit and vegetables 📦",o:["box","glass","piece","can"],a:0,e:"a box of fruit and vegetables."},
+
+  {t:3,q:"Choose the CORRECT sentence.",o:["There are a lot of honey.","There is many grapes.","There are a lot of potatoes.","There is any bread."],a:2,e:"potatoes é plural e a lot of serve para plural."},
+  {t:3,q:"An orange juice is $1.50 and an ice cream is $3.50. Together they are",o:["$4.00","$4.50","$5.50","$5.00"],a:3,e:"1.50 + 3.50 = 5.00."},
+  {t:3,q:"“We don't waste any food” means",o:["we throw food away.","we don't throw food away.","we buy a lot of food.","we cook every day."],a:1,e:"<i>waste</i> = desperdiçar. Don't waste = não desperdiçar."},
+  {t:3,q:"Put in order: any / there / bananas / are",o:["Are there any bananas?","There are any bananas?","Any there are bananas?","There any are bananas?"],a:0,e:"Pergunta: Are there any + plural."},
+  {t:3,q:"There are ______ people in my family, so we need ______ food.",o:["much / many","any / some","a lot of / many","many / a lot of"],a:3,e:"people → many · food não tem plural → a lot of."},
+  {t:3,q:"Which question asks about PRICE? 💰",o:["How many apples are there?","Where is the market?","How much is the pizza?","Who is the chef?"],a:2,e:"How much is…? pergunta o preço."}
+];
+
+const STATIONS = {
+  intro:{n:"How to play",     d:"as regras do jogo",                    em:"🗺️", kind:"intro", stars:0},
+  s1: {n:"Market Stalls",     d:"18 palavras · vocabulary",             em:"🏪", kind:"vocab",  stars:5},
+  s2: {n:"Word Scramble",     d:"10 palavras embaralhadas",             em:"🔤", kind:"scram",  stars:5},
+  s3: {n:"Sort the Shopping", d:"fruit · vegetables · other",           em:"🧺", kind:"sort",   stars:5},
+  s4: {n:"Containers Match",  d:"a bag of · a bottle of · a cup of…",   em:"🔗", kind:"match",  stars:5},
+  s5: {n:"There is / There are", d:"10 frases para completar",          em:"✅", kind:"mcq", set:"s5", stars:6},
+  s6: {n:"Some or Any?",      d:"a regra de ouro · 8 frases",           em:"🎯", kind:"mcq", set:"s6", stars:5},
+  s7: {n:"How many / How much", d:"contável ou não · 8 frases",         em:"🔢", kind:"mcq", set:"s7", stars:5},
+  s8: {n:"Ask the Shopkeeper",d:"montar perguntas + short answers",     em:"🙋", kind:"ask",   stars:7},
+  s9: {n:"Sentence Builder",  d:"8 frases · word order",                em:"🧩", kind:"order", set:"s9", stars:7},
+  s10:{n:"WH Question Match", d:"pergunta e resposta",                  em:"❓", kind:"whmatch", stars:5},
+  s11:{n:"Food Court Prices", d:"menu + how much · 8 perguntas",        em:"💰", kind:"price", stars:7},
+  s12:{n:"The Green Truck",   d:"reading · 5 perguntas",                em:"🚚", kind:"read1", stars:7},
+  s13:{n:"Oliver's List",     d:"reading · 5 perguntas",                em:"📝", kind:"read2", stars:7},
+  s14:{n:"Drill Zone",        d:"12 cartas · fale a frase completa",    em:"🗣️", kind:"drill", stars:5},
+  s15:{n:"THE BIG QUIZ",      d:"20 questões · 3 níveis",               em:"🏆", kind:"quiz",  stars:12}
+};
+
+const MAP = [
+  {t:"🍎 VOCABULARY · as palavras", eps:["s1","s2","s3","s4"]},
+  {t:"✅ GRAMMAR · there is / there are", eps:["s5","s6","s7","s8","s9"]},
+  {t:"💬 QUESTIONS &amp; PRICES", eps:["s10","s11","s14"]},
+  {t:"📖 READING", eps:["s12","s13"]},
+  {t:"🏆 FINAL CHALLENGE", eps:["s15","intro"]}
+];
+
+const ORDERED = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s14","s12","s13","s15"];
+
+const LEVELS = [
+  {s:0,n:"Shopper 🛒"},{s:15,n:"Cook 🍳"},{s:35,n:"Chef 👩‍🍳"},
+  {s:60,n:"Super Chef ⭐"},{s:80,n:"FOOD LEGEND 👑"}
+];
+
+/* =======================================================================
+   MOTOR
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------- HOME ---------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>=0?`<span class="no">${i+1}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ $("play").classList.remove("on"); $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------- PLAYER ---------- */
+let ORD = null, PK = null, mSel = null, mDone = 0, mRight = [];
+
+function openEp(k){
+  cur=k; hits=0; total=0; ORD=null; PK=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = head + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    total=VOCAB.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">Dinâmica: você mostra a carta, a turma tenta o significado, depois vira. <b>Acertou = 10 pontos.</b></p>
+      <div class="vg">${VOCAB.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="scram"){
+    total=SCRAMBLE.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">Dica: leia a tradução e o desenho primeiro. <b>Depois procure a primeira letra.</b></p>
+      ${SCRAMBLE.map((s2,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${s2.e} &nbsp;<span class="hint">${s2.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="sort"){
+    total=SORT.items.length;
+    b.innerHTML = head + `<p class="how">Cada compra vai para o cesto certo.</p>
+      <p class="tip" style="border-left-color:var(--green)">🍎 <b>FRUIT</b> = frutas &nbsp;·&nbsp; 🥕 <b>VEGETABLES</b> = legumes e verduras &nbsp;·&nbsp; 🍚 <b>OTHER</b> = o resto (grãos, farinha, mel, leite…)</p>
+      ${SORT.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SORT.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="match"){ total=MATCH.length; b.innerHTML = head + matchHTML(MATCH,"CONTAINER","FOOD",
+      "Clique no recipiente, depois na comida certa.",
+      "Em inglês, para contar o que não tem plural usamos um recipiente: <b>a bag of rice</b>, <b>a glass of water</b>."); }
+
+  else if(s.kind==="whmatch"){ total=WHMATCH.length; b.innerHTML = head + matchHTML(WHMATCH,"QUESTION","ANSWER",
+      "Clique na pergunta, depois na resposta certa.",
+      "<b>How much</b> = quanto custa · <b>How many</b> = quantos · <b>What</b> = o quê · <b>Where</b> = onde · <b>Who</b> = quem."); }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    const tips = {
+      s5:"<b>There's</b> = 1 coisa ou palavra sem plural (rice, honey, milk). <b>There are</b> = várias coisas (apples, potatoes). Na negativa: <b>There isn't any</b> / <b>There aren't any</b>.",
+      s6:"<b>some</b> nas frases afirmativas &nbsp;·&nbsp; <b>any</b> nas negativas e nas perguntas.",
+      s7:"<b>How many</b> + palavras com plural (apples, eggs) &nbsp;·&nbsp; <b>How much</b> + palavras sem plural (rice, honey) <b>e sempre para preço</b>."
+    };
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. O feedback aparece na hora.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${tips[s.set]||""}</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="ask"){
+    ORD=ORDER.s8; PK="s8b"; total=ORDER.s8.items.length + QS.s8b.items.length;
+    b.innerHTML = head + `<p class="how">Primeiro monte as perguntas. Depois escolha a resposta curta certa.</p>
+      <p class="tip" style="border-left-color:var(--purple)">${ORDER.s8.tip}</p>`
+      + orderHTML("s8")
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">🙋 Short answers</h2>`
+      + mcqHTML("s8b");
+    initOrder();
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER.s9; total=ORDER.s9.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas palavras na ordem certa para montar a frase.</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORDER.s9.tip}</p>` + orderHTML("s9");
+    initOrder();
+  }
+
+  else if(s.kind==="price"){
+    PK="s11"; total=QS.s11.items.length;
+    b.innerHTML = head + `<p class="how">Leia o menu da praça de alimentação e responda.</p>
+      <p class="tip" style="border-left-color:var(--orange)">Para perguntar o preço: <b>How much is</b> the pizza? &nbsp;/&nbsp; <b>How much are</b> the cookies?</p>`
+      + menuHTML() + mcqHTML("s11");
+  }
+
+  else if(s.kind==="read1"){
+    PK="s12"; total=QS.s12.items.length;
+    b.innerHTML = head + `<div class="read">
+        <h3>🚚 The Green Truck</h3>
+        <p>Meet the Green Truck! It's a food truck <b>at the market</b>. The Green Truck doesn't waste any food.
+        Every morning, Sofia and Hugo buy <b>ugly</b> fruit and vegetables. Ugly food is not beautiful, but it's tasty!</p>
+        <p>Today <b>there are</b> a lot of tomatoes and <b>there are</b> many carrots. <b>There's</b> some rice and
+        <b>there's</b> a lot of honey. <b>There isn't</b> any bread and <b>there aren't</b> any lemons.</p>
+        <p>Ben, the chef, has an idea. “Let's make a rainbow salad!” he says. The rainbow salad is <b>$4.99</b>.
+        It's very tasty — and there is no waste!</p>
+        <div class="gl">🔑 <b>market</b> = mercado · <b>waste</b> = desperdiçar · <b>ugly</b> = feio · <b>tasty</b> = gostoso · <b>chef</b> = cozinheiro-chefe</div>
+      </div>` + mcqHTML("s12");
+  }
+
+  else if(s.kind==="read2"){
+    PK="s13"; total=QS.s13.items.length;
+    b.innerHTML = head + `<div class="read">
+        <h3>📝 Oliver's no-waste shopping list</h3>
+        <p>Hi! I'm Oliver. <b>There are four people</b> in my family. On Saturday, we go to the market with our
+        no-waste shopping list.</p>
+        <p>This is our list: <b>8 apples</b>, <b>8 carrots</b>, <b>12 potatoes</b>, <b>1 pineapple</b>,
+        <b>1 bag of grapes</b>, <b>8 eggs</b>, <b>2 bottles of juice</b> and <b>1 bag of rice</b>.</p>
+        <p>We don't buy any bread because we have some at home. We don't waste any food! My mum makes soup with
+        the vegetables and my dad makes a fruit salad with the pineapple and the grapes.</p>
+        <div class="gl">🔑 <b>shopping list</b> = lista de compras · <b>because</b> = porque · <b>at home</b> = em casa · <b>soup</b> = sopa</div>
+      </div>` + mcqHTML("s13");
+  }
+
+  else if(s.kind==="drill"){
+    total=DRILL.length;
+    b.innerHTML = head + `<p class="how">Olhe a carta, diga a frase completa em voz alta, depois toque para conferir.</p>
+      <p class="tip" style="border-left-color:var(--red)">Ótimo para repetição em grupo: a turma inteira fala junto, <b>depois</b> você toca na carta.</p>
+      <div class="dg">${DRILL.map(d=>`
+        <div class="dc" onclick="openDrill(this)">
+          <div class="pic">${d.pic}</div>
+          <div class="qty">${d.qty}</div>
+          <div class="tap">TOQUE PARA CONFERIR</div>
+          <div class="say">${d.say}</div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>1.</b> São 15 estações. Você pode fazer na ordem ou escolher no mapa 🗺️.</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Shopper → Cook → Chef → Super Chef → FOOD LEGEND.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>3.</b> Errou? Sem problema. O jogo explica o porquê e você segue.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>4.</b> Botão <b>🔍 Projeção</b>: letras gigantes e placar de 4 equipes, para jogar com a turma inteira no telão.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>5.</b> Botão <b>👀 Answers</b> mostra todas as respostas da estação — use só na correção!</p>`;
+}
+
+/* ---------- vocab ---------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------- scramble ---------- */
+function initScram(){
+  SCRAMBLE.forEach((s,i)=>{
+    const letters = s.w.split("").map((c,j)=>({c,j})).sort(()=>Math.random()-0.5);
+    $("bk-"+i).innerHTML = letters.map(o=>
+      `<button class="ch let" onclick="pickLet(${i},this)">${o.c}</button>`).join("");
+    $("sl-"+i).innerHTML = "";
+  });
+}
+function pickLet(i,btn){
+  const c=document.createElement("button");
+  c.className="ch let"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("sl-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).innerHTML="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckScram(i){
+  const sl=$("sl-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join("");
+  if(built===SCRAMBLE[i].w){
+    sl.className="slot ok";
+    $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SCRAMBLE[i].w}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("fb-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shScram(i){
+  const already = $("sl-"+i).classList.contains("ok");
+  rsScram(i);
+  $("sl-"+i).innerHTML = SCRAMBLE[i].w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  $("sl-"+i).className="slot ok";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SCRAMBLE[i].w}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- sort ---------- */
+function pickSort(i,j){
+  const row=document.querySelector(`#body .srow[data-i="${i}"]`);
+  if(row.dataset.done) return; row.dataset.done="1";
+  const c=SORT.items[i].c;
+  row.querySelectorAll(".sb").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===c) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $("sf-"+i).innerHTML = (j===c?`<span style="color:var(--ok)">✅ </span>`:`<span style="color:var(--bad)">❌ </span>`)
+    + `<span class="wy">${SORT.items[i].e}</span>`;
+  bump();
+}
+
+/* ---------- match ---------- */
+function matchHTML(pairs,l,r,how,tip){
+  mRight = pairs.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-0.5);
+  return `<p class="how">${how}</p><p class="tip" style="border-left-color:var(--purple)">${tip}</p>
+  <div class="mg">
+    <div><div class="mh">${l}</div>${pairs.map((p,i)=>
+      `<button class="mi" id="L-${i}" onclick="mPick('L',${i})">${p[0]}</button>`).join("")}</div>
+    <div><div class="mh">${r}</div>${mRight.map((o,k)=>
+      `<button class="mi" id="R-${k}" onclick="mPick('R',${k})">${o.t}</button>`).join("")}</div>
+  </div>
+  <div class="fb" id="mfb" style="margin-top:14px"></div>`;
+}
+function mPick(side,idx){
+  const el=$(side+"-"+idx);
+  if(el.classList.contains("got")) return;
+  if(side==="L"){
+    document.querySelectorAll("#body .mi.sel").forEach(x=>x.classList.remove("sel"));
+    mSel=idx; el.classList.add("sel"); return;
+  }
+  if(mSel===null){ $("mfb").innerHTML=`<span style="color:var(--bad)">👈 Escolha primeiro na coluna da esquerda.</span>`; return; }
+  if(mRight[idx].i===mSel){
+    const L=$("L-"+mSel); L.classList.remove("sel"); L.classList.add("got"); el.classList.add("got");
+    mDone++; mSel=null;
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+    bump();
+  } else {
+    el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320);
+    $("mfb").innerHTML=`<span style="color:var(--bad)">❌ Not this one. Try again!</span>`;
+  }
+}
+
+/* ---------- mcq ---------- */
+function mcqHTML(ns){
+  const d=QS[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-ns="${ns}" data-q="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+      <div class="opts ${d.two?"two":"four"}">${it.o.map((o,j)=>
+        `<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}</div>
+      <div class="fb" id="f-${ns}-${i}"></div>
+    </div>`).join("");
+}
+function ansMcq(ns,i,j){
+  const box=document.querySelector(`#body .ex[data-ns="${ns}"][data-q="${i}"]`);
+  if(!box || box.dataset.done) return; box.dataset.done="1";
+  const it=QS[ns].items[i];
+  box.querySelectorAll(".op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===it.a) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $(`f-${ns}-${i}`).innerHTML =
+    (j===it.a?`<span style="color:var(--ok)">✅ Correct!</span>`:`<span style="color:var(--bad)">❌ Not this one.</span>`)
+    + `<span class="wy">${it.e}</span>`;
+  bump();
+}
+
+/* ---------- word order ---------- */
+function orderHTML(ns){
+  return ORDER[ns].items.map((it,i)=>`
+    <div class="ex" data-o="${i}">
+      <div class="qn"><span class="n">${i+1}</span>Build the sentence</div>
+      <div class="slot" id="os-${i}"></div>
+      <div class="bank" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  if(!ORD) return;
+  ORD.items.forEach((it,i)=>{
+    const sh = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    const bk = $("ob-"+i); if(!bk) return;
+    bk.innerHTML = sh.map(o=>`<button class="ch" onclick="pickWord(${i},this)">${o.w}</button>`).join("");
+    $("os-"+i).innerHTML="";
+  });
+}
+function pickWord(i,btn){
+  const c=document.createElement("button");
+  c.className="ch"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("os-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsOrd(i){
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"; $("of-"+i).innerHTML="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckOrd(i){
+  const it=ORD.items[i], sl=$("os-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join(" ");
+  const target=it.a.replace(/[?.!]$/,"");
+  if(built===target){
+    sl.className="slot ok";
+    $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${it.a}</span><span class="wy">${it.why}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("of-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shOrd(i){
+  const it=ORD.items[i];
+  const already = $("os-"+i).classList.contains("ok");
+  rsOrd(i);
+  $("os-"+i).innerHTML = it.a.replace(/[?.!]$/,"").split(" ").map(w=>`<span class="ch">${w}</span>`).join("");
+  $("os-"+i).className="slot ok";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${it.a}</span><span class="wy">${it.why}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- drill ---------- */
+function openDrill(el){
+  if(!el.classList.contains("open")){ el.classList.add("open"); bump(); }
+}
+
+/* ---------- menu ---------- */
+function menuHTML(){
+  return `<div class="menu">
+    <h3>🍔 FOOD COURT · NO-WASTE MENU 🥗</h3>
+    <div class="ad">Green Truck · Burger Palace · Sub Station · Pizza Planet · Pasta House · Sweet Stop</div>
+    <div class="mgrp"><span class="t">🥤 DRINKS</span>
+      <div class="ln"><span>orange juice</span><b>$1.50</b></div>
+      <div class="ln"><span>apple juice</span><b>$1.75</b></div>
+      <div class="ln"><span>lemonade</span><b>$1.99</b></div>
+      <div class="ln"><span>hot chocolate</span><b>$2.25</b></div>
+      <div class="ln"><span>smoothie</span><b>$2.99</b></div>
+      <div class="ln"><span>strawberry milkshake</span><b>$3.25</b></div>
+    </div>
+    <div class="mgrp"><span class="t">🍽️ FOOD</span>
+      <div class="ln"><span>chocolate cookies</span><b>$1.99</b></div>
+      <div class="ln"><span>ice cream</span><b>$3.50</b></div>
+      <div class="ln"><span>apple cake</span><b>$3.75</b></div>
+      <div class="ln"><span>egg sandwich</span><b>$4.99</b></div>
+      <div class="ln"><span>fruit salad with pineapple and grapes</span><b>$4.99</b></div>
+      <div class="ln"><span>burger and fries</span><b>$7.50</b></div>
+      <div class="ln"><span>pizza with cheese and tomatoes</span><b>$8.00</b></div>
+      <div class="ln"><span>chicken pasta</span><b>$8.50</b></div>
+    </div>
+  </div>`;
+}
+
+/* ---------- quiz ---------- */
+let qT=1, qI=0, qHit=0; const qA={};
+function quizHTML(){
+  return `<p class="how">20 questões em 3 níveis. Comece pelo bronze!</p>
+  <div class="tiers">
+    <button class="tb on" id="t1" onclick="setT(1)">🥉 EASY · 10 pts</button>
+    <button class="tb" id="t2" onclick="setT(2)">🥈 MEDIUM · 20 pts</button>
+    <button class="tb" id="t3" onclick="setT(3)">🥇 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="ex" id="qbox"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" onclick="qGo(-1)">◀ prev</button>
+    <button class="btn b" onclick="qGo(1)">next ▶</button>
+    <span class="fb" id="qsc"></span>
+  </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(qI>=L.length) qI=L.length-1;
+  const c=L[qI];
+  $("qmeta").innerHTML = `QUESTION ${qI+1} / ${L.length} · <b>${qT*10} points</b>`;
+  $("qbox").innerHTML = `<div class="qn">${c.q.q}</div>
+    <div class="opts four">${c.q.o.map((o,j)=>
+      `<button class="op" onclick="qPick(${c.i},${j})">${o}</button>`).join("")}</div>
+    <div class="fb" id="qfb"></div>`;
+  if(qA[c.i]!==undefined) qShow(c.i,qA[c.i]);
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; if(j===FINALE[gi].a) qHit++;
+  qShow(gi,j); bump();
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qShow(gi,pick){
+  const q=FINALE[gi];
+  document.querySelectorAll("#qbox .op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===q.a) b.classList.add("right"); else if(k===pick) b.classList.add("wrong");
+  });
+  $("qfb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${qT*10}</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="wy">${q.e}</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+/* ---------- reveal ---------- */
+function revealAll(){
+  if(!cur) return;
+  const k=STATIONS[cur].kind;
+  if(k==="vocab") document.querySelectorAll("#body .vc").forEach(c=>flip(c));
+  else if(k==="scram") SCRAMBLE.forEach((_,i)=>shScram(i));
+  else if(k==="sort") SORT.items.forEach((it,i)=>pickSort(i,it.c));
+  else if(k==="match"||k==="whmatch"){
+    const pairs = (k==="match")?MATCH:WHMATCH;
+    pairs.forEach((p,i)=>{
+      const ri = mRight.findIndex(o=>o.i===i);
+      const L=$("L-"+i), R=$("R-"+ri);
+      if(L&&R&&!L.classList.contains("got")){ L.classList.add("got"); L.classList.remove("sel"); R.classList.add("got"); mDone++; bump(); }
+    });
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+  }
+  else if(k==="mcq") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="ask"){ ORD.items.forEach((_,i)=>shOrd(i)); QS.s8b.items.forEach((it,i)=>ansMcq("s8b",i,it.a)); }
+  else if(k==="order") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="price") QS.s11.items.forEach((it,i)=>ansMcq("s11",i,it.a));
+  else if(k==="read1") QS.s12.items.forEach((it,i)=>ansMcq("s12",i,it.a));
+  else if(k==="read2") QS.s13.items.forEach((it,i)=>ansMcq("s13",i,it.a));
+  else if(k==="drill"){ document.querySelectorAll("#body .dc").forEach(c=>openDrill(c)); }
+  else if(k==="quiz"){ const c=tList()[qI]; if(qA[c.i]===undefined) qPick(c.i,FINALE[c.i].a); }
+}
+
+/* ---------- projeção / equipes ---------- */
+function drawTeams(){
+  $("tin").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button></div>`).join("")
+    + `<div class="tm"><button onclick="rsTeams()" style="width:auto;padding:4px 10px">zerar</button></div>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Modo aluno" : "🔍 Projeção";
+}
+
+/* ---------- inicia ---------- */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") home();
+  else if(e.key==="ArrowRight" && cur) stepEp(1);
+  else if(e.key==="ArrowLeft" && cur) stepEp(-1);
+});
+
+drawTeams(); drawMap(); addStars(0);
+</script>
+</body>
+</html>
