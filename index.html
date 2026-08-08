@@ -49,13 +49,52 @@
   .chip{font-size:11px; font-weight:800; border:1px solid var(--line); color:var(--dim);
     padding:4px 10px; border-radius:99px;}
   .go{margin-top:14px; font-weight:900; font-size:14.5px; color:var(--pink);}
-  ul.dl{list-style:none; display:grid; gap:10px;}
-  ul.dl a{display:flex; align-items:center; gap:13px; text-decoration:none; color:inherit;
-    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:15px 17px; transition:.15s;}
-  ul.dl a:hover{border-color:var(--amber);}
-  ul.dl .ic{font-size:26px;}
-  ul.dl b{display:block; font-size:16px;}
-  ul.dl small{color:var(--dim); font-size:13px;}
+  /* ---------- folhas para imprimir ---------- */
+  .dlwrap{
+    background:linear-gradient(160deg,#fffdf6,#fdf3e0);
+    border:1px solid #e6d9bd; border-radius:22px; padding:26px 26px 22px; color:#241c14;
+    box-shadow:0 18px 50px rgba(0,0,0,.35);
+  }
+  .dlhead{display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:20px;}
+  .dlhead .big{font-size:38px; line-height:1;}
+  .dlhead h3{font-size:clamp(21px,2.6vw,27px); font-weight:900; letter-spacing:-.5px; color:#241c14;}
+  .dlhead p{font-size:15.5px; line-height:1.5; color:#5c4a33; margin-top:5px; max-width:56ch;}
+  .dlgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:14px;}
+  .dlcard{
+    background:#fff; border:1px solid #e6d9bd; border-radius:16px; padding:16px 17px 17px;
+    display:flex; flex-direction:column; box-shadow:0 3px 10px rgba(90,70,40,.08);
+  }
+  .dlcard .yr{
+    align-self:flex-start; font-size:10.5px; font-weight:900; letter-spacing:1.6px;
+    background:#241c14; color:#ffd98a; padding:4px 11px; border-radius:99px;
+  }
+  .dlcard h4{font-size:19px; font-weight:900; margin:11px 0 3px; line-height:1.15; color:#241c14;}
+  .dlcard .un{font-size:13.5px; color:#6b5a41; font-weight:700;}
+  .dlcard .meta{
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:12px 0 14px;
+    font-size:12px; font-weight:800; color:#7d6b50;
+  }
+  .dlcard .meta span{background:#f6efe0; border-radius:99px; padding:3px 10px;}
+  .dlcard a.dlbtn{
+    margin-top:auto; display:flex; align-items:center; justify-content:center; gap:8px;
+    text-decoration:none; background:#c0392b; color:#fff; font-weight:900; font-size:15px;
+    padding:12px 14px; border-radius:12px; transition:.15s;
+  }
+  .dlcard a.dlbtn:hover{background:#96281b; transform:translateY(-2px);}
+  .dlnote{
+    margin-top:20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px;
+    font-size:13.5px; color:#5c4a33; line-height:1.5;
+  }
+  .dlnote div{background:#fff8e8; border-left:4px solid #d9a544; border-radius:0 10px 10px 0; padding:10px 13px;}
+  .dlnote b{color:#241c14;}
+
+  /* atalho no topo */
+  .quick{
+    display:inline-flex; align-items:center; gap:9px; margin-top:20px; text-decoration:none;
+    background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.28); color:var(--ink);
+    border-radius:99px; padding:10px 20px; font-weight:800; font-size:15px; transition:.15s;
+  }
+  .quick:hover{background:var(--amber); color:#1a1206; border-color:var(--amber);}
   footer{max-width:1180px; margin:56px auto 0; padding:24px 6vw 0; border-top:1px solid var(--line);
     color:var(--dim); font-size:13.5px; line-height:1.7;}
 </style>
@@ -70,6 +109,7 @@
     Tudo funciona no celular, sem instalar nada e sem login.</p>
   <div class="note"><b>Dica:</b> abra pelo celular na horizontal ou pelo computador — fica muito melhor.
     Nada do que você responde é enviado para ninguém; é só para você treinar.</div>
+  <a class="quick" href="#folhas">📄 Procurando a folha da aula para imprimir?</a>
 </header>
 
 <main id="app"></main>
@@ -167,17 +207,22 @@ const ATIVIDADES = [
 
 ];
 
-/* --- Folhas para imprimir. Mesma ideia: copie uma linha e troque. --- */
+/* --- Folhas para imprimir. Copie um bloco { ... } e troque os campos. ---
+       turma    → como aparece na etiqueta escura do cartão
+       titulo   → nome da atividade
+       unidade  → a unidade ou os capítulos
+       paginas  → número de páginas (só o número)
+*/
 const PDFS = [
   { url:"pdf/folha-aluno-food-quest-5ano.pdf",
-    titulo:"Folha do aluno — Supermarket Quest",
-    sub:"5º ano · Unit 4 Food for everyone! · 7 páginas (PDF)" },
-  { url:"pdf/folha-aluno-english-rewind-1ano.pdf",
-    titulo:"Folha do aluno — English Rewind",
-    sub:"1º ano A · Chapters 1 a 5 · 5 páginas (PDF)" },
+    turma:"5º ANO", titulo:"Supermarket Quest",
+    unidade:"Unit 4 · Food for everyone!", paginas:7 },
   { url:"pdf/folha-aluno-chefs-table-8ano.pdf",
-    titulo:"Folha do aluno — Chef's Table",
-    sub:"8º ano · Food &amp; Cooking · 5 páginas (PDF)" }
+    turma:"8º ANO", titulo:"Chef's Table",
+    unidade:"Food &amp; Cooking", paginas:5 },
+  { url:"pdf/folha-aluno-english-rewind-1ano.pdf",
+    turma:"1º ANO A", titulo:"English Rewind",
+    unidade:"Chapters 1 a 5", paginas:5 }
 ];
 
 /* ==========================================================================
@@ -226,12 +271,37 @@ if (semTurma.length) {
 }
 
 if (PDFS.length) {
-  html += `<h2 class="sec">FOLHAS PARA IMPRIMIR</h2><ul class="dl">`;
+  html += `<h2 class="sec" id="folhas">FOLHAS PARA IMPRIMIR</h2>
+  <div class="dlwrap">
+    <div class="dlhead">
+      <span class="big">🖨️</span>
+      <div>
+        <h3>Perdeu a folha da aula? Baixe e imprima aqui.</h3>
+        <p>São as mesmas folhas usadas em sala. Clique no botão vermelho, o arquivo abre no
+        navegador e dali você pode imprimir ou salvar. Não precisa de senha nem de cadastro.</p>
+      </div>
+    </div>
+    <div class="dlgrid">`;
   PDFS.forEach(p => {
-    html += `<li><a href="${p.url}"><span class="ic">📄</span>
-      <span><b>${p.titulo}</b><small>${p.sub}</small></span></a></li>`;
+    html += `
+      <div class="dlcard">
+        <span class="yr">${p.turma}</span>
+        <h4>${p.titulo}</h4>
+        <div class="un">${p.unidade}</div>
+        <div class="meta"><span>📄 ${p.paginas} páginas</span><span>PDF</span><span>A4</span></div>
+        <a class="dlbtn" href="${p.url}" target="_blank" rel="noopener">⬇️ Baixar e imprimir</a>
+      </div>`;
   });
-  html += `</ul>`;
+  html += `</div>
+    <div class="dlnote">
+      <div><b>Como imprimir:</b> com o PDF aberto, aperte <b>Ctrl + P</b> no computador. No celular,
+      toque no ícone de compartilhar e escolha <b>Imprimir</b>.</div>
+      <div><b>Para economizar:</b> pode imprimir em <b>preto e branco</b> e em <b>frente e verso</b>.
+      Nenhum exercício depende de cor.</div>
+      <div><b>Sem impressora?</b> Sem problema — dá para responder no caderno, copiando só as respostas
+      pela numeração das questões.</div>
+    </div>
+  </div>`;
 }
 
 app.innerHTML = html;
