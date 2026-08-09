@@ -150,6 +150,7 @@
 const TURMAS = {
   "4ano":  "ENSINO FUNDAMENTAL · 4º ANO",
   "5ano":  "ENSINO FUNDAMENTAL · 5º ANO",
+  "6ano":  "ENSINO FUNDAMENTAL · 6º ANO",
   "8ano":  "ENSINO FUNDAMENTAL · 8º ANO",
   "9ano":  "ENSINO FUNDAMENTAL · 9º ANO",
   "1ano":  "ENSINO MÉDIO · 1º ANO A"
@@ -218,6 +219,18 @@ const ATIVIDADES = [
   },
 
   {
+    turma:  "6ano",
+    url:    "6ano/whats-cooking/",
+    titulo: "WHAT'S COOKING?",
+    tag:    "UNIT 5 · WHAT'S COOKING?",
+    nivel:  "20 estações · A1–A2",
+    emoji:  "🍳",
+    cores:  ["#25501a", "#4a9a2f"],
+    texto:  "Um circuito de cozinha em três atos. MASTER KITCHEN traz vocabulário, cestos de contáveis e incontáveis e dois Grammar Labs com explicação em inglês e português. WORLD FOOD TOUR tem três leituras longas com compreensão, incluindo o CLIL de Biologia. CAFÉ MANAGER fecha com pedidos no café, receitas em ordem e o Final Service de 25 questões.",
+    topicos:["count / noncount", "a few / a little", "much / many / a lot of", "some / any", "imperatives", "adverbs of manner", "ordering food", "reading"]
+  },
+
+  {
     turma:  "8ano",
     url:    "8ano/chefs-table/",
     titulo: "CHEF'S TABLE",
@@ -247,6 +260,9 @@ const PDFS = [
   { url:"pdf/folha-aluno-food-quest-5ano.pdf",
     turma:"5º ANO", titulo:"Supermarket Quest",
     unidade:"Unit 4 · Food for everyone!", paginas:7 },
+  { url:"pdf/folha-aluno-review-6ano.pdf",
+    turma:"6º ANO", titulo:"What's Cooking? · Review completo",
+    unidade:"Unit 5 · What's cooking?", paginas:9 },
   { url:"pdf/folha-aluno-chefs-table-8ano.pdf",
     turma:"8º ANO", titulo:"Chef's Table",
     unidade:"Food &amp; Cooking", paginas:5 },
@@ -315,7 +331,7 @@ if (PDFS.length) {
       </div>
     </div>
     <div class="dlgrid">`;
-  const ORDEM = ["4º ANO","5º ANO","8º ANO","9º ANO","1º ANO A"];
+  const ORDEM = ["4º ANO","5º ANO","6º ANO","8º ANO","9º ANO","1º ANO A"];
   const pos = t => { const i = ORDEM.indexOf(t); return i < 0 ? 99 : i; };
   [...PDFS].sort((a,b) => pos(a.turma) - pos(b.turma)).forEach(p => {
     html += `

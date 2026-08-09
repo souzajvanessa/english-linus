@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHAT'S COOKING? · Unit 5 · 6º ano</title>
+<style>
+  :root{
+    --bg:#fdf7ec; --card:#ffffff; --ink:#20301c; --dim:#63705c; --line:#dfe6cf;
+    --red:#c8402f; --orange:#e07b1e; --yellow:#e8b525; --green:#4a9a2f; --teal:#158a6d;
+    --blue:#2a7bb5; --purple:#7a4f9a; --pink:#d3487a;
+    --ok:#20bf7f; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(760px 440px at 88% -4%, rgba(232,181,37,.32), transparent 62%),
+      radial-gradient(700px 430px at 4% 100%, rgba(74,154,47,.22), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#bcd0a8; border-radius:99px;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue);} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{
+    padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;
+  }
+  #hero .truck{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--red);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{
+    background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;
+  }
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{
+    display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);
+  }
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{
+    position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;
+  }
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#f0e7db; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#eafaf1;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{
+    background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;
+  }
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:132px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--yellow);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#5a4a2a;}
+
+  /* generic exercise box */
+  .ex{
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;
+  }
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{
+    display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--purple); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;
+  }
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;
+  }
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#fffdf0;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* chips (word order + unscramble) */
+  .slot{
+    min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#fffdf6;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{
+    border:3px solid var(--ink); border-radius:12px; background:var(--blue); color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+  }
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort baskets */
+  .srow{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .srow .it{font-weight:900; font-size:20px; min-width:170px;}
+  .sb{
+    border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .sb:hover:not(:disabled){background:#fffdf0;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{
+    display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:17px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .mi:hover:not(:disabled){background:#fffdf0;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading + menu */
+  .read{
+    background:#fffdf3; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.65; font-weight:600;
+  }
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--red);}
+  .read p{margin-bottom:10px;}
+  .read .gl{
+    margin-top:14px; font-size:14px; font-weight:800; color:#6a5a3a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;
+  }
+  .menu{
+    background:#fff; border:4px solid var(--ink); border-radius:var(--r); box-shadow:0 6px 0 var(--ink);
+    padding:18px 20px; margin-bottom:16px;
+  }
+  .menu h3{text-align:center; font-size:22px; font-weight:900; letter-spacing:1px;}
+  .menu .ad{text-align:center; font-size:12.5px; color:var(--dim); font-weight:800; margin-bottom:12px;}
+  .mgrp{margin-bottom:12px;}
+  .mgrp .t{
+    font-size:13px; font-weight:900; letter-spacing:2px; background:var(--ink); color:#fff;
+    display:inline-block; padding:3px 11px; border-radius:99px; margin-bottom:7px;
+  }
+  .ln{display:flex; justify-content:space-between; gap:12px; font-size:17px; font-weight:800;
+    border-bottom:2px dotted var(--line); padding:5px 0;}
+  .ln b{color:var(--green);}
+
+  /* drill */
+  .dg{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;}
+  .dc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 12px; text-align:center; cursor:pointer; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .dc:hover{transform:translateY(-3px);}
+  .dc .pic{font-size:44px;}
+  .dc .qty{font-weight:900; font-size:16px; margin-top:5px; color:var(--purple);}
+  .dc .say{display:none; font-weight:900; font-size:17px; margin-top:9px; color:var(--green); line-height:1.3;}
+  .dc.open{background:#eafaf1;} .dc.open .say{display:block;}
+  .dc .tap{font-size:10.5px; letter-spacing:1.5px; color:var(--dim); font-weight:900; margin-top:7px;}
+  .dc.open .tap{display:none;}
+
+  /* painel de gramática bilíngue */
+  .lab{background:#fff; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:18px 20px; margin-bottom:18px;}
+  .lab h3{font-size:clamp(19px,2.2vw,25px); font-weight:900; letter-spacing:-.4px; margin-bottom:14px;}
+  .labrow{border-top:2px dashed var(--line); padding:13px 0;}
+  .labrow:first-of-type{border-top:0; padding-top:2px;}
+  .labrow .fm{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:7px;}
+  .labrow .fm b{font-size:17px; background:var(--ink); color:#fff; padding:3px 11px; border-radius:99px;}
+  .labrow .fm code{font-family:Consolas,monospace; font-size:15.5px; color:var(--teal); font-weight:700;}
+  .labrow .en, .labrow .ptx{font-size:16px; line-height:1.5; padding:7px 12px; border-radius:10px; margin-bottom:6px;}
+  .labrow .en{background:#eef6f6; border-left:5px solid var(--teal);}
+  .labrow .ptx{background:#fdf4e6; border-left:5px solid var(--orange);}
+  .labrow .en::before{content:"EN  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--teal);}
+  .labrow .ptx::before{content:"PT  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--orange);}
+  .labrow .exm{font-size:16.5px; font-weight:800; margin-top:6px; color:var(--green);}
+  .labrow .exm::before{content:"\25B8  ";}
+  .cerr{margin-top:16px; background:#fdecea; border:3px solid var(--red); border-radius:14px; padding:13px 16px;}
+  .cerr .t{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--red); margin-bottom:8px;}
+  .cerr .w{font-size:17px; font-weight:800; text-decoration:line-through; color:var(--red); margin-bottom:4px;}
+  .cerr .r{font-size:17px; font-weight:900; color:var(--green); margin-bottom:7px;}
+  .cerr .n{font-size:15px; line-height:1.5; color:#4a3a2a;}
+  body.proj .lab h3{font-size:30px;} body.proj .labrow .en, body.proj .labrow .ptx{font-size:19px;}
+  body.proj .labrow .exm{font-size:20px;} body.proj .cerr .w, body.proj .cerr .r{font-size:21px;}
+
+  /* quiz tiers */
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{
+    border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+
+  /* teams (projection) */
+  #teams{
+    display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px;
+    padding:0 5vw;
+  }
+  #teams.on{display:block;}
+  .tin{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{
+    width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;
+  }
+  .tm button:hover{background:var(--yellow);}
+
+  #foot{
+    position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96);
+    border-top:3px solid var(--line);
+  }
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJECTION MODE */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:21px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:24px;}
+  body.proj .ln{font-size:21px;}
+  body.proj .dc .pic{font-size:56px;} body.proj .dc .say{font-size:21px;}
+
+  /* ===== extras Unit 5 ===== */
+  .actbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;
+    padding:10px 14px;border:3px solid var(--ink);border-radius:16px;background:#fff;
+    box-shadow:0 4px 0 var(--ink);font-weight:900;font-size:13px;letter-spacing:.5px;}
+  .actbar .n{background:var(--ink);color:#fff;border-radius:99px;padding:3px 10px;font-size:11px;}
+  .vs{margin:16px 0 0;border:3px solid var(--purple);border-radius:16px;overflow:hidden;background:#fff;}
+  .vs .h{background:var(--purple);color:#fff;font-weight:900;font-size:13px;padding:7px 12px;letter-spacing:.6px;}
+  .vs table{width:100%;border-collapse:collapse;font-size:15px;}
+  .vs td{padding:7px 12px;border-top:2px solid #eee;}
+  .vs td:first-child{font-weight:800;color:var(--blue);width:44%;}
+  .vs td:last-child{font-weight:800;color:var(--red);}
+  body.proj .vs table{font-size:22px;}
+  .slot .ch, .bank .ch{max-width:100%;white-space:normal;text-align:left;}
+  .steps .ch{display:block;width:100%;margin:4px 0;}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🍳 WHAT'S COOKING?<span>UNIT 5 · FOOD, RECIPES &amp; HEALTHY CHOICES · 6º ANO</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #3B7A1E;border-radius:14px;background:#fff;color:#3B7A1E;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #3B7A1E;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill">🏅 <span id="lvl">Kitchen Helper 🧽</span></div>
+  <button class="btn y" id="projBtn" onclick="toggleProj()">🔍 Projeção</button>
+  <button class="btn b" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="tin"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="truck">🍳🌍☕</div>
+    <h1>What's <em>cooking?</em></h1>
+    <div class="sub">20 estações · Unit 5 · 3 atos · gramática explicada em inglês e português</div>
+    <div class="tags">
+      <span class="tag">🍅 food vocabulary</span>
+      <span class="tag">🔢 count / noncount</span>
+      <span class="tag">🥄 a few / a little / much / many</span>
+      <span class="tag">👉 imperatives</span>
+      <span class="tag">🏃 adverbs of manner</span>
+      <span class="tag">🌍 food around the world</span>
+      <span class="tag">☕ ordering food</span>
+      <span class="tag">🥦 CLIL Biology</span>
+    </div>
+    <div class="tags" style="margin-top:6px">
+      <span class="tag" style="background:#fff;border-color:var(--red)">👨‍🍳 ATO 1 · MASTER KITCHEN</span>
+      <span class="tag" style="background:#fff;border-color:var(--blue)">🌍 ATO 2 · WORLD FOOD TOUR</span>
+      <span class="tag" style="background:#fff;border-color:var(--green)">☕ ATO 3 · CAFÉ MANAGER</span>
+    </div>
+  </div>
+  <main id="mapArea"></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀</button>
+  <button class="btn" onclick="stepEp(1)">▶</button>
+  <button class="btn g" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Modo projeção liga fontes grandes e o placar de equipes</small>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =======================================================================
+   DADOS · Unit 5 "What's cooking?" · 6º ano · A1–A2
+   ======================================================================= */
+
+/* ---------- cartas de vocabulário ---------- */
+const VOCS = {
+  v1: { tip:"Mostre a palavra, a turma arrisca o significado, depois vire a carta. Uma <b>frase completa</b> em inglês vale bônus.",
+    items:[
+      {e:"🧀", w:"cheese",  pt:"queijo",     ex:"There is a little cheese in the fridge."},
+      {e:"🧅", w:"onion",   pt:"cebola",     ex:"Cut two onions for the sauce."},
+      {e:"🍝", w:"pasta",   pt:"macarrão",   ex:"I eat pasta on Sundays."},
+      {e:"🍗", w:"chicken", pt:"frango",     ex:"Roast the chicken for one hour."},
+      {e:"☕", w:"coffee",  pt:"café",       ex:"My father drinks a lot of coffee."},
+      {e:"🐟", w:"fish",    pt:"peixe",      ex:"Fish is very good for you."},
+      {e:"🧄", w:"garlic",  pt:"alho",       ex:"There isn't much garlic at home."},
+      {e:"🍞", w:"bread",   pt:"pão",        ex:"We make sandwiches with bread."},
+      {e:"🍅", w:"tomato",  pt:"tomate",     ex:"There are a few tomatoes on the table."},
+      {e:"🥚", w:"egg",     pt:"ovo",        ex:"How many eggs do we need?"},
+      {e:"🍵", w:"tea",     pt:"chá",        ex:"I'd like a cup of tea, please."},
+      {e:"🍚", w:"rice",    pt:"arroz",      ex:"Boil the rice for ten minutes."},
+      {e:"🥛", w:"milk",    pt:"leite",      ex:"There is a lot of milk in the bottle."},
+      {e:"🥩", w:"meat",    pt:"carne",      ex:"Grill the meat carefully."},
+      {e:"🍰", w:"cake",    pt:"bolo",       ex:"Bake the cake for thirty minutes."},
+      {e:"🧂", w:"salt",    pt:"sal",        ex:"Don't add too much salt!"},
+      {e:"🍬", w:"sugar",   pt:"açúcar",     ex:"Candy has a lot of sugar."},
+      {e:"💧", w:"water",   pt:"água",       ex:"Put the pasta in hot water."}
+    ]},
+  v2: { tip:"Estes são os <b>cooking verbs</b> da unidade. Todos aparecem depois nas receitas — vale decorar!",
+    items:[
+      {e:"➕", w:"add",   pt:"acrescentar",       ex:"Add some salt to the water."},
+      {e:"🧁", w:"bake",  pt:"assar (no forno)",  ex:"Bake the cookies for ten minutes."},
+      {e:"♨️", w:"boil",  pt:"cozinhar / ferver", ex:"Boil the water in a pot."},
+      {e:"🔪", w:"cut",   pt:"cortar",            ex:"Cut the garlic carefully."},
+      {e:"🍳", w:"fry",   pt:"fritar",            ex:"Fry the eggs in hot oil."},
+      {e:"🔥", w:"grill", pt:"grelhar",           ex:"Grill some burgers for dinner."},
+      {e:"🌀", w:"mix",   pt:"misturar",          ex:"Mix all the ingredients together."},
+      {e:"🍖", w:"roast", pt:"assar (carne)",     ex:"Roast the chicken in the oven."}
+    ]}
+};
+
+/* ---------- palavras embaralhadas ---------- */
+const SCRAM = {
+  sc1: { tip:"Leia o emoji e a tradução primeiro. <b>Depois procure a primeira letra.</b>",
+    items:[
+      {e:"🍅", w:"TOMATO",  pt:"tomate"},
+      {e:"🧄", w:"GARLIC",  pt:"alho"},
+      {e:"🍗", w:"CHICKEN", pt:"frango"},
+      {e:"🧀", w:"CHEESE",  pt:"queijo"},
+      {e:"🧅", w:"ONION",   pt:"cebola"},
+      {e:"🍝", w:"PASTA",   pt:"macarrão"},
+      {e:"☕", w:"COFFEE",  pt:"café"},
+      {e:"🍞", w:"BREAD",   pt:"pão"}
+    ]}
+};
+
+/* ---------- cestos ---------- */
+const SORTS = {
+  so1: { cats:["🔢 COUNT","🥛 NONCOUNT"],
+    how:"Contável ou incontável? Clique no cesto certo.",
+    tip:"🔢 <b>COUNT</b> = dá para contar um por um e tem plural (one egg, two eggs) &nbsp;·&nbsp; 🥛 <b>NONCOUNT</b> = não se conta um por um, não tem plural e o verbo fica no singular (rice, milk).",
+    items:[
+      {it:"🥚 eggs",       c:0, e:"one egg, two eggs → tem plural"},
+      {it:"🍞 bread",      c:1, e:"nunca dizemos “two breads”"},
+      {it:"🍅 tomatoes",   c:0, e:"one tomato, two tomatoes"},
+      {it:"🧀 cheese",     c:1, e:"a little cheese, não “two cheeses”"},
+      {it:"🧅 onions",     c:0, e:"one onion, two onions"},
+      {it:"☕ coffee",     c:1, e:"a lot of coffee (o líquido não se conta)"},
+      {it:"🥛 milk",       c:1, e:"There IS a lot of milk — verbo no singular"},
+      {it:"🍚 rice",       c:1, e:"grão pequeno demais para contar: much rice"},
+      {it:"🧄 garlic",     c:1, e:"not much garlic"},
+      {it:"🍝 pasta",      c:1, e:"a lot of pasta"},
+      {it:"🍎 apples",     c:0, e:"one apple, two apples"},
+      {it:"🥪 sandwiches", c:0, e:"one sandwich, two sandwiches"},
+      {it:"🍬 sugar",      c:1, e:"How much sugar?"},
+      {it:"🥔 potatoes",   c:0, e:"How many potatoes?"}
+    ]},
+  so2: { cats:["❄️ IN THE FRIDGE","🧺 OUT OF THE FRIDGE","🔄 IN OR OUT"],
+    how:"Onde você guarda cada alimento? Clique no cesto certo.",
+    tip:"Este é o exercício da geladeira do Workbook. <b>IN OR OUT</b> é para o que pode ficar nos dois lugares.",
+    items:[
+      {it:"🥛 milk",     c:0, e:"milk always goes in the fridge"},
+      {it:"🧈 butter",   c:0, e:"butter goes in the fridge"},
+      {it:"🐟 fish",     c:0, e:"fresh fish must stay cold"},
+      {it:"🍗 chicken",  c:0, e:"raw chicken must stay cold"},
+      {it:"🧀 cheese",   c:2, e:"some cheeses stay out, but most go in the fridge"},
+      {it:"🥚 eggs",     c:2, e:"in some countries in the fridge, in others out"},
+      {it:"🍅 tomatoes", c:2, e:"they last longer in the fridge, but many people keep them out"},
+      {it:"🍞 bread",    c:1, e:"bread stays out, in a bread box"},
+      {it:"🍚 rice",     c:1, e:"dry rice stays out"},
+      {it:"🍝 pasta",    c:1, e:"dry pasta stays out"},
+      {it:"🧄 garlic",   c:1, e:"garlic stays out, in a dry place"},
+      {it:"🍬 sugar",    c:1, e:"sugar stays out"}
+    ]}
+};
+
+/* ---------- pares ---------- */
+const MATCHES = {
+  m1: { l:"KITCHEN TOOL", r:"WHAT YOU DO WITH IT",
+    how:"Clique no objeto da cozinha e depois no que você faz com ele.",
+    tip:"Os seis objetos do Workbook: oven, mixer, frying pan, pot, knife, grill.",
+    pairs:[
+      ["🔥 an oven",       "You bake bread and cakes in it."],
+      ["🌀 a mixer",       "You use it to mix eggs, milk and flour."],
+      ["🍳 a frying pan",  "You use it to fry eggs."],
+      ["🍲 a pot",         "You boil water and pasta in it."],
+      ["🔪 a knife",       "You use it to cut vegetables."],
+      ["♨️ a grill",       "You use it to grill meat and burgers."]
+    ]},
+  m2: { l:"WORD", r:"DEFINITION",
+    how:"Clique na palavra e depois na definição certa.",
+    tip:"São as oito palavras destacadas no texto <i>Delicious food from around the world</i>.",
+    pairs:[
+      ["ostrich", "a type of large bird"],
+      ["oats",    "a type of cereal"],
+      ["ant",     "an insect"],
+      ["tuna",    "the name of a fish"],
+      ["jelly",   "a soft food"],
+      ["snack",   "a very small meal"],
+      ["flavor",  "the taste of a food or drink"],
+      ["swede",   "a vegetable"]
+    ]},
+  m3: { l:"USEFUL LANGUAGE", r:"O QUE SIGNIFICA",
+    how:"Clique na frase em inglês e depois no significado em português.",
+    tip:"São as frases do <b>Useful language</b> da página de Speaking — quem atende (🧑‍🍳) e quem pede (🙋).",
+    pairs:[
+      ["🧑‍🍳 What can I get you?",              "O que você vai querer?"],
+      ["🙋 I'd like a sandwich, please.",        "Eu gostaria de um sanduíche, por favor."],
+      ["🧑‍🍳 Anything to drink?",               "Algo para beber?"],
+      ["🙋 I think I'll have the pasta.",        "Acho que vou querer a massa."],
+      ["🧑‍🍳 Would you like some cheese with that?", "Você quer queijo com isso?"],
+      ["🙋 And I'll also have a juice.",         "E eu quero também um suco."],
+      ["🧑‍🍳 Anything else?",                   "Mais alguma coisa?"],
+      ["🧑‍🍳 That's 15.99.",                    "Dá 15 e 99."]
+    ]}
+};
+
+/* ---------- painéis de gramática bilíngues ---------- */
+const GRAM = {
+  g1: { title:"Count and noncount nouns with quantifiers",
+    rows:[
+      { form:"Count nouns", forms:"an egg → two eggs",
+        en:"You can count them one by one, and they have a plural form.",
+        pt:"Contáveis: você conta um por um e existe plural.",
+        ex:"There <b>are</b> three <b>eggs</b> in the fridge." },
+      { form:"Noncount nouns", forms:"milk · rice · bread",
+        en:"You cannot count them one by one. They have no plural and always take a singular verb.",
+        pt:"Incontáveis: não se contam um por um, não têm plural e o verbo fica no <b>singular</b>.",
+        ex:"There <b>is</b> a lot of <b>rice</b>. (não <i>are</i>)" },
+      { form:"a few / a little", forms:"a few + count · a little + noncount",
+        en:"Both mean “a small quantity”. Use a few with count nouns and a little with noncount nouns.",
+        pt:"Os dois querem dizer “um pouco / alguns”. <b>a few</b> vai com contável, <b>a little</b> com incontável.",
+        ex:"<b>a few</b> eggs &nbsp;·&nbsp; <b>a little</b> cheese" },
+      { form:"many / much", forms:"many + count · much + noncount",
+        en:"We use many and much mostly in questions and negative sentences.",
+        pt:"<b>many</b> e <b>much</b> aparecem principalmente em perguntas e frases negativas.",
+        ex:"How <b>many</b> onions? &nbsp;·&nbsp; There isn't <b>much</b> rice." },
+      { form:"a lot of / some / any", forms:"count + noncount",
+        en:"A lot of works with both. Use some in affirmative sentences and any in questions and negatives.",
+        pt:"<b>a lot of</b> serve para os dois. <b>some</b> em afirmativas; <b>any</b> em perguntas e negativas.",
+        ex:"There are <b>a lot of</b> tomatoes. &nbsp;·&nbsp; Are there <b>any</b> onions?" }
+    ],
+    error:{ wrong:"We have much milk.",
+      right:"We have a lot of milk. / We don't have much milk.",
+      note:"Em frase afirmativa usamos <b>a lot of</b>. <b>much</b> fica para perguntas e negativas." } },
+
+  g2: { title:"Imperatives and adverbs of manner",
+    rows:[
+      { form:"Imperative (+)", forms:"base form, no subject",
+        en:"We use the base form of the verb to give instructions, orders and advice. We do not write the subject.",
+        pt:"Imperativo afirmativo: verbo na forma base, <b>sem sujeito</b>.",
+        ex:"<b>Cut</b> the garlic. &nbsp;·&nbsp; <b>Mix</b> the eggs." },
+      { form:"Imperative (−)", forms:"Don't + base form",
+        en:"For negative instructions we use don't + verb.",
+        pt:"Imperativo negativo: <b>don't</b> + verbo. Nunca <i>no</i> + verbo.",
+        ex:"<b>Don't add</b> any sugar. &nbsp;·&nbsp; <b>Don't forget</b> the ice cream!" },
+      { form:"Adverbs of manner", forms:"adjective + -ly",
+        en:"Adverbs of manner say how we do something. We add -ly to the adjective.",
+        pt:"Advérbios de modo dizem <b>como</b> fazemos algo: adjetivo + <b>-ly</b>.",
+        ex:"slow → <b>slowly</b> &nbsp;·&nbsp; careful → <b>carefully</b> &nbsp;·&nbsp; quiet → <b>quietly</b>" },
+      { form:"Spelling", forms:"-y → -ily · -le → -ly",
+        en:"Adjectives ending in -y change to -ily. Adjectives ending in -le drop the -e.",
+        pt:"Adjetivos em <b>-y</b> mudam para <b>-ily</b>; em <b>-le</b>, cai o <b>-e</b>.",
+        ex:"easy → <b>easily</b> &nbsp;·&nbsp; happy → <b>happily</b> &nbsp;·&nbsp; gentle → <b>gently</b>" },
+      { form:"Irregular", forms:"good → well",
+        en:"Some adverbs are irregular. Good is an adjective; well is the adverb. Fast and hard do not change.",
+        pt:"Alguns são irregulares: <b>good → well</b>. <b>fast</b> e <b>hard</b> não mudam.",
+        ex:"She cooks <b>well</b>. &nbsp;·&nbsp; Run <b>fast</b>." },
+      { form:"Position", forms:"end of the phrase",
+        en:"The adverb of manner usually comes at the end of the phrase.",
+        pt:"O advérbio de modo normalmente vem <b>no fim</b> da frase.",
+        ex:"Cut the strawberries <b>carefully</b>." }
+    ],
+    error:{ wrong:"No forget to wash the strawberries.",
+      right:"Don't forget to wash the strawberries.",
+      note:"Para dar uma ordem negativa em inglês usamos <b>don't</b> + verbo — nunca <i>no</i> + verbo." } }
+};
+
+/* ---------- questões de múltipla escolha ---------- */
+const QS = {
+
+  s3: { items:[
+    {q:"Which word does not belong?", o:["pasta","rice","tea","bread"], a:2, e:"<b>Tea</b> is a drink; the others are food."},
+    {q:"Which word does not belong?", o:["chicken","onion","tomato","garlic"], a:0, e:"<b>Chicken</b> is meat; the others are vegetables."},
+    {q:"Which word does not belong?", o:["bread","fish","pasta","rice"], a:1, e:"<b>Fish</b> comes from an animal; the others come from grain or flour."},
+    {q:"Which word does not belong?", o:["coffee","tea","garlic","milk"], a:2, e:"<b>Garlic</b> is not a drink."},
+    {q:"Which word does not belong?", o:["egg","chicken","rice","fish"], a:2, e:"<b>Rice</b> does not come from an animal."},
+    {q:"Which word does not belong?", o:["onion","garlic","cheese","tomato"], a:2, e:"<b>Cheese</b> comes from milk; the others grow in the ground."},
+    {q:"Which word does not belong?", o:["bake","boil","fry","cheese"], a:3, e:"<b>Cheese</b> is not a cooking verb."},
+    {q:"Which word does not belong?", o:["cake","cookies","candy","spinach"], a:3, e:"<b>Spinach</b> is a vegetable — it is not sweet."}
+  ]},
+
+  s4: { two:true, items:[
+    {q:"There ___ a lot of garlic.", o:["is","are"], a:0, e:"<b>Garlic</b> is noncount → singular verb: <i>There is a lot of garlic.</i>"},
+    {q:"There is ___ cheese.", o:["a few","a little"], a:1, e:"<b>Cheese</b> is noncount → <i>a little cheese</i>."},
+    {q:"There aren't ___ eggs.", o:["much","many"], a:1, e:"<b>Eggs</b> is count → <i>many</i>."},
+    {q:"There isn't ___ rice.", o:["many","much"], a:1, e:"<b>Rice</b> is noncount → <i>much</i>."},
+    {q:"There are ___ of tomatoes.", o:["a lot","much"], a:0, e:"<b>A lot of</b> works with count and noncount nouns."},
+    {q:"There ___ a lot of coffee.", o:["is","are"], a:0, e:"<b>Coffee</b> is noncount → <i>is</i>."},
+    {q:"We need ___ onions for the sauce.", o:["a few","a little"], a:0, e:"<b>Onions</b> is count → <i>a few</i>."},
+    {q:"Do we have ___ bread?", o:["some","any"], a:1, e:"In questions we use <b>any</b>."},
+    {q:"Yes, there's ___ bread in the kitchen.", o:["some","any"], a:0, e:"In affirmative sentences we use <b>some</b>."},
+    {q:"How ___ sugar do you want?", o:["many","much"], a:1, e:"<b>Sugar</b> is noncount → <i>How much</i>."},
+    {q:"How ___ potatoes do we need?", o:["much","many"], a:1, e:"<b>Potatoes</b> is count → <i>How many</i>."},
+    {q:"I don't drink ___ tea.", o:["a lot","much"], a:1, e:"Em frase negativa, <b>much</b> é o natural: <i>I don't drink much tea.</i>"}
+  ]},
+
+  s9: { items:[
+    {q:"___ the garlic.",        o:["Cut","Bake","Boil","Grill"], a:0, e:"You <b>cut</b> garlic with a knife."},
+    {q:"___ cookies.",           o:["Boil","Bake","Fry","Roast"], a:1, e:"You <b>bake</b> cookies in the oven."},
+    {q:"___ some salt.",         o:["Grill","Roast","Add","Cut"],  a:2, e:"You <b>add</b> salt to the food."},
+    {q:"___ some burgers.",      o:["Grill","Boil","Mix","Add"],   a:0, e:"You <b>grill</b> burgers on the barbecue."},
+    {q:"___ water.",             o:["Bake","Cut","Boil","Roast"],  a:2, e:"You <b>boil</b> water in a pot."},
+    {q:"___ the chicken.",       o:["Mix","Roast","Cut","Boil"],   a:1, e:"You <b>roast</b> chicken in the oven."},
+    {q:"___ some eggs.",         o:["Fry","Grill","Bake","Add"],   a:0, e:"You <b>fry</b> eggs in a frying pan."},
+    {q:"___ the ingredients.",   o:["Boil","Roast","Cut","Mix"],   a:3, e:"You <b>mix</b> the ingredients together."}
+  ]},
+
+  s10: { items:[
+    {q:"___ the strawberries carefully.", o:["Cut","Cuts","Cutting","To cut"], a:0, e:"Imperativo = forma base, sem sujeito: <b>Cut</b>."},
+    {q:"___ any sugar!", o:["Not add","No add","Don't add","Doesn't add"], a:2, e:"Ordem negativa = <b>Don't</b> + verbo base."},
+    {q:"Please work ___ in the library.", o:["quiet","quietly","quieter","quietness"], a:1, e:"Como trabalhamos? → advérbio <b>quietly</b>."},
+    {q:"Don't ___ too loud in the classroom.", o:["talking","talk","talks","to talk"], a:1, e:"Depois de <i>don't</i> vem a forma base: <b>talk</b>."},
+    {q:"She cooks very ___.", o:["good","goodly","well","best"], a:2, e:"O advérbio de <i>good</i> é irregular: <b>well</b>."},
+    {q:"Read the instructions ___.", o:["quick","quickly","quicker","quickness"], a:1, e:"Adjetivo <i>quick</i> → advérbio <b>quickly</b>."},
+    {q:"Walk ___ in the hall.", o:["slow","slowlier","slowly","slower"], a:2, e:"<i>slow</i> + -ly = <b>slowly</b>."},
+    {q:"Always ___ your desk at the end of class.", o:["tidy","tidies","tidying","to tidy"], a:0, e:"Imperativo: <b>tidy</b> (forma base)."},
+    {q:"Check your homework ___.", o:["careful","carefuly","carefully","carefulness"], a:2, e:"Com dois L: care<b>fully</b>."},
+    {q:"You can do this ___.", o:["easy","easyly","easily","easely"], a:2, e:"Adjetivo em -y → <b>-ily</b>: easy → easily."},
+    {q:"___ your hands well before you cook.", o:["Washing","Wash","Washes","To wash"], a:1, e:"Imperativo: <b>Wash</b>."},
+    {q:"Don't ___ your bike here.", o:["rides","riding","ride","rode"], a:2, e:"<i>Don't</i> + forma base: <b>ride</b>."}
+  ]},
+
+  s11: { two:true, items:[
+    {q:"careful → ___", o:["carefuly","carefully"], a:1, e:"O adjetivo termina em -l, então fica com dois L: care<b>fully</b>."},
+    {q:"slow → ___",    o:["slowly","slowely"],     a:0, e:"Só acrescenta -ly: <b>slowly</b>."},
+    {q:"easy → ___",    o:["easyly","easily"],      a:1, e:"Termina em -y → troca por <b>-ily</b>."},
+    {q:"happy → ___",   o:["happily","happyly"],    a:0, e:"Termina em -y → <b>happily</b>."},
+    {q:"good → ___",    o:["goodly","well"],        a:1, e:"Irregular: <b>well</b>."},
+    {q:"quiet → ___",   o:["quietly","quietely"],   a:0, e:"Só acrescenta -ly: <b>quietly</b>."},
+    {q:"quick → ___",   o:["quickly","quicky"],     a:0, e:"Só acrescenta -ly: <b>quickly</b>."},
+    {q:"loud → ___",    o:["loudly","louder"],      a:0, e:"<i>louder</i> é comparativo, não advérbio de modo."},
+    {q:"fast → ___",    o:["fastly","fast"],        a:1, e:"<b>fast</b> não muda: <i>Run fast.</i>"},
+    {q:"gentle → ___",  o:["gentlely","gently"],    a:1, e:"Termina em -le → cai o -e: <b>gently</b>."}
+  ]},
+
+  s12: { items:[
+    {q:"Why does the water around jellied eels become jelly?", o:["Because cooks add sugar to it.","Because it gets cold after boiling.","Because eels live in the River Thames.","Because people eat it in East London."], a:1, e:"“When the water gets cold, it turns into jelly.”"},
+    {q:"What are oats?", o:["A type of cereal","A yellow vegetable","A small fish","A kind of salt"], a:0, e:"Oats = <b>a type of cereal</b>. The yellow vegetable is the swede."},
+    {q:"How big is one ostrich egg?", o:["The same as two chicken eggs","The same as twenty chicken eggs","Two meters wide","The size of a tennis ball"], a:1, e:"One ostrich egg = twenty chicken eggs. Two meters is the height of the bird."},
+    {q:"Why do a lot of people hate durian?", o:["It is very expensive.","It has a very strong smell.","It is difficult to find.","It is not good for you."], a:1, e:"“Hold your nose! Durian has a very strong smell.”"},
+    {q:"According to the text, tuna eyes are…", o:["expensive and rare","cheap and healthy","always fried with chili","the size of eels"], a:1, e:"“They are cheap and very good for you.”"},
+    {q:"Which dish can you order in expensive restaurants?", o:["Haggis","Jellied eels","Escamoles","Ostrich eggs"], a:2, e:"Escamoles (ant eggs) are served in expensive restaurants in Mexico."}
+  ]},
+
+  s14: { items:[
+    {q:"Where do bananas grow?", o:["On trees","On plants","Under the ground","Only in cold weather"], a:1, e:"“Some people think that bananas grow on trees, but that is not true — they grow on plants.”"},
+    {q:"What does “varieties” mean in the text?", o:["Colours","Kinds or types","Prices","Countries"], a:1, e:"varieties = <b>kinds or types</b>."},
+    {q:"What can you do with bananas that have turned brown?", o:["Put them in a fruit salad","Make banana bread","Fry them with rice and beans","Sell them in the supermarket"], a:1, e:"“What can you do with brown bananas? You can make banana bread!”"},
+    {q:"How long do you bake banana bread?", o:["Thirty minutes","One hour","Three minutes","Twenty minutes"], a:1, e:"One hour in the oven — then thirty minutes to cool."},
+    {q:"What are plantains?", o:["Small sweet bananas","Large green bananas that are not sweet","A type of hot sauce","A Caribbean drink"], a:1, e:"Plantains are the large, green baking bananas."},
+    {q:"What are tostones?", o:["Banana bread from the Caribbean","Flat pieces of plantain fried in hot oil","A fruit salad with rice and beans","A sweet drink with vanilla"], a:1, e:"“You can fry flat pieces of plantain in hot oil, and then you have tostones.”"}
+  ]},
+
+  s15: { two:true, items:[
+    {q:"Some fruits and vegetables are good for our skin.", o:["True","False"], a:0, e:"Vitamin C — in oranges, peppers and broccoli — keeps our skin healthy."},
+    {q:"Vitamin A helps keep our eyes healthy.", o:["True","False"], a:0, e:"Carrots and leafy green vegetables help us make vitamin A, good for the eyes."},
+    {q:"White bread is healthier than whole wheat bread.", o:["True","False"], a:1, e:"É o contrário: whole wheat bread has more vitamins and minerals."},
+    {q:"Hamburgers are good for your heart.", o:["True","False"], a:1, e:"Hamburgers and sausages have a lot of fat and salt — bad for the heart."},
+    {q:"Milk and cheese help our bones stay strong.", o:["True","False"], a:0, e:"They help teeth and bones, but they also have a lot of fat."},
+    {q:"Our bodies need a lot of fat, salt and sugar.", o:["True","False"], a:1, e:"We need only a little — too much causes problems."},
+    {q:"Beans and nuts help us grow tall and strong.", o:["True","False"], a:0, e:"Meat, fish, beans and nuts all help us grow."},
+    {q:"Bread, rice and pasta give us energy to move.", o:["True","False"], a:0, e:"É exatamente o que o texto diz sobre esse grupo."}
+  ]}
+};
+
+/* ---------- ordem das palavras ---------- */
+const ORDER = {
+  o1: { tip:"São falas de um pedido no café. Monte cada uma clicando nas palavras. <b>Quem atende</b> pergunta, <b>quem pede</b> responde.",
+    items:[
+      {w:["What","can","I","get","you"],                          a:"What can I get you?",                  why:"Fala de quem atende: pergunta com <b>can</b> antes do sujeito."},
+      {w:["I'd","like","a","cheese","sandwich","please"],          a:"I'd like a cheese sandwich, please.",   why:"<b>I'd like</b> = I would like, o jeito educado de pedir."},
+      {w:["Would","you","like","some","milk","with","that"],       a:"Would you like some milk with that?",   why:"<b>Would you like…?</b> para oferecer. Em oferta usa-se <b>some</b>."},
+      {w:["Can","I","have","a","bottle","of","water"],             a:"Can I have a bottle of water?",         why:"<b>a bottle of</b> — recipiente antes de um incontável."},
+      {w:["I","think","I'll","have","the","chicken","bowl"],       a:"I think I'll have the chicken bowl.",   why:"<b>I think I'll have…</b> para decidir na hora."},
+      {w:["Is","there","any","chili","in","the","soup"],           a:"Is there any chili in the soup?",       why:"Pergunta com incontável → <b>any</b>."},
+      {w:["How","much","is","a","cup","of","tea"],                 a:"How much is a cup of tea?",             why:"<b>How much is…?</b> para perguntar o preço."},
+      {w:["And","I'll","also","have","some","fries","please"],     a:"And I'll also have some fries, please.", why:"<b>also</b> vem depois de <i>I'll</i> e antes do verbo."}
+    ]},
+  o2: { steps:true,
+    tip:"Cada receita tem quatro passos. Clique nos passos <b>na ordem certa</b>. Use as palavras de sequência: <b>First → Then → Next → Finally</b>.",
+    items:[
+      {w:["First, cut the strawberries and the banana carefully.","Then, mash the fruit and don't add any sugar.","Next, slowly add the orange juice.","Finally, don't forget the ice cream!"],
+       a:"Strawberry smoothie", why:"As palavras de sequência dão a ordem: First → Then → Next → Finally."},
+      {w:["First, carefully cut the tomatoes, the onions and the garlic.","Then, boil the vegetables for twenty minutes to make a sauce.","Next, put the sauce and the pasta in an oven dish.","Finally, put some cheese on top and bake it for thirty minutes."],
+       a:"Vegetable lasagna", why:"Primeiro cortar, depois cozinhar, montar e por último assar."},
+      {w:["First, mix three bananas, one cup of sugar and one egg.","Then, add a little vanilla, a little salt and some flour.","Next, put the mix in a bread pan.","Finally, bake it in the oven for one hour."],
+       a:"Banana bread", why:"Misturar → acrescentar → colocar na forma → assar."},
+      {w:["First, choose your pineapple carefully.","Then, clean the pineapple with water.","Next, cut the pineapple into pieces, but don't cut them too small.","Finally, grill the pieces for three minutes on each side."],
+       a:"Grilled pineapple", why:"Escolher → lavar → cortar → grelhar."},
+      {w:["First, cut the bread with a knife.","Then, put some cheese and some tomato on the bread.","Next, grill the sandwich for two minutes.","Finally, eat it with a glass of juice."],
+       a:"Cheese sandwiches", why:"Cortar → montar → grelhar → comer."},
+      {w:["First, cut the plantains into flat pieces.","Then, fry the pieces in hot oil.","Next, put them on a plate.","Finally, eat your tostones with a hot sauce."],
+       a:"Tostones", why:"Cortar → fritar → servir → comer."}
+    ]}
+};
+
+/* ---------- cartas de fala rápida ---------- */
+const DRILL = [
+  {pic:"🥛", qty:"milk · a lot of",              say:"There is a lot of milk."},
+  {pic:"🍅", qty:"tomatoes · a few",             say:"There are a few tomatoes."},
+  {pic:"🧄", qty:"garlic · not much",            say:"There isn't much garlic."},
+  {pic:"🥚", qty:"eggs · How many…?",            say:"How many eggs are there?"},
+  {pic:"🍚", qty:"rice · How much…?",            say:"How much rice is there?"},
+  {pic:"🧅", qty:"onions · some",                say:"There are some onions."},
+  {pic:"🧀", qty:"cheese · a little",            say:"There is a little cheese."},
+  {pic:"🍞", qty:"bread · any…? (question)",     say:"Is there any bread?"},
+  {pic:"🔪", qty:"cut the onions · careful",     say:"Cut the onions carefully."},
+  {pic:"🍳", qty:"fry the eggs · negative order",say:"Don't fry the eggs in cold oil."},
+  {pic:"♨️", qty:"boil the pasta · slow",        say:"Boil the pasta slowly."},
+  {pic:"🍰", qty:"bake the cake · careful",      say:"Bake the cake carefully."}
+];
+
+/* ---------- leituras ---------- */
+const READS = {
+  s12: { em:"🌍", title:"Delicious food from around the world", set:"s12",
+    html:`
+      <p>Every country has a dish that surprises visitors. Here are six of them.</p>
+
+      <p><b>🇬🇧 Jellied eels · the UK.</b> Eels are long, thin fish that live in the River Thames, in London.
+      Cooks boil them with water and salt, and then they let them get cold. When the water gets cold it turns into
+      <b>jelly</b>, a soft food around the fish. Not many people eat jellied eels today, but you can still find
+      them in old shops in East London.</p>
+
+      <p><b>🏴 Haggis · Scotland.</b> Haggis is the most famous Scottish dish. Cooks make it with sheep meat,
+      onions, salt and <b>oats</b>, a type of cereal. People eat it with potatoes and <b>swede</b>, a yellow
+      vegetable. In Scotland, families eat haggis in January to celebrate the poet Robert Burns.</p>
+
+      <p><b>🇿🇦 Ostrich eggs · South Africa.</b> An <b>ostrich</b> is a very large bird — it can be more than
+      two meters tall. One ostrich egg is the same size as twenty chicken eggs, so one egg can feed a big family.
+      People eat ostrich eggs in many African countries.</p>
+
+      <p><b>🌴 Durian · Southeast Asia.</b> Hold your nose! Durian has a very strong smell, and a lot of people
+      hate it. But other people love its unusual <b>flavor</b>. In some countries, cooks make cookies and even ice
+      cream with durian.</p>
+
+      <p><b>🇯🇵 Tuna eyes · Japan.</b> <b>Tuna</b> is a very big fish, and its eyes are the size of tennis balls.
+      In Japan, tuna eyes are a popular <b>snack</b>. They are cheap and very good for you.</p>
+
+      <p><b>🇲🇽 Ant eggs · Mexico.</b> In expensive restaurants in Mexico you can order <i>escamoles</i> — the eggs
+      of a big <b>ant</b>. There are a lot of recipes for escamoles: some cooks fry them with onion and chili,
+      others put them in a salad or on bread.</p>
+
+      <div class="gl">🔑 <b>eel</b> = enguia · <b>jelly</b> = gelatina · <b>sheep</b> = ovelha ·
+      <b>oats</b> = aveia · <b>swede</b> = nabo amarelo · <b>ostrich</b> = avestruz ·
+      <b>to feed</b> = alimentar · <b>smell</b> = cheiro · <b>flavor</b> = sabor ·
+      <b>snack</b> = lanche pequeno · <b>ant</b> = formiga</div>` },
+
+  s14: { em:"🍌", title:"Bananas around the world", set:"s14",
+    html:`
+      <p>Bananas are a popular fruit in many countries around the world. They grow in places with warm or hot
+      weather all year, and they are one of the cheapest fruits you can buy. Some people think that bananas grow on
+      trees, but that is not true — they grow on plants. There are more than one thousand different
+      <b>varieties</b>, or types, of banana plant.</p>
+
+      <p><b>🍌 Sweet bananas.</b> Sweet bananas are delicious as a <b>snack</b>, in a fruit salad or in a drink.
+      But they usually <b>turn</b> from yellow to brown very quickly. What can you do with brown bananas? You can
+      make banana bread! You make it with three or four bananas, one cup of sugar, one egg, a little vanilla, a
+      little salt, and one and a half cups of flour. Just mix all the ingredients together, put the mix in a bread
+      pan, and bake it in the <b>oven</b> for one hour. Let it cool for about thirty minutes and then enjoy!</p>
+
+      <p><b>🌿 Baking bananas.</b> These bananas are large and green, and they are not <b>sweet</b>. In English we
+      call them <i>plantains</i>. What can you do with them? You can cut them into pieces, fry or bake them, and
+      then eat them with some rice and beans. You can also fry flat pieces of plantain in hot oil, and then you
+      have <i>tostones</i>, a favourite dish from the Caribbean. Eat your tostones with a hot sauce.</p>
+
+      <p>So next time you see a brown banana in your kitchen, don't throw it away — bake it!</p>
+
+      <div class="gl">🔑 <b>varieties</b> = variedades, tipos · <b>to turn</b> = mudar (de cor) ·
+      <b>snack</b> = lanche pequeno · <b>oven</b> = forno · <b>sweet</b> = doce ·
+      <b>flour</b> = farinha · <b>beans</b> = feijão · <b>flat</b> = achatado ·
+      <b>to throw away</b> = jogar no lixo</div>` },
+
+  s15: { em:"🥦", title:"Making healthy food choices", set:"s15",
+    html:`
+      <p>Different types of food help our bodies in different ways. Some can also be bad for us. So which foods
+      are important for a healthy body?</p>
+
+      <p><b>Eat a lot of…</b> We need to eat a lot of fruits and vegetables. They have lots of vitamins, which help
+      our bodies work. For example, vitamin C is in oranges, peppers and broccoli, and it keeps our skin healthy.
+      Carrots and leafy green vegetables like spinach help us make vitamin A, which is good for our eyes.</p>
+
+      <p>Foods like bread, rice and pasta give us energy to move, so we need plenty of these too. Whole wheat
+      bread, brown rice and whole wheat pasta are better than the white ones because they have more vitamins and
+      minerals.</p>
+
+      <p><b>Eat some…</b> Meat, fish, beans and nuts all help us grow tall and strong. They also have vitamins and
+      minerals that help keep our blood healthy. But some meats, like hamburgers and sausages, have a lot of fat
+      and salt, and this can be bad for our heart.</p>
+
+      <p>Foods like milk, butter, cheese and yogurt help our teeth and bones stay strong. But they also have a lot
+      of fat, so we shouldn't eat too much of these. Some yogurts and milk drinks can also have a lot of sugar.</p>
+
+      <p><b>Eat a little…</b> Many of the foods that we enjoy are not healthy. Chips and french fries have a lot of
+      fat and salt. Cake, cookies, soda and candy are full of sugar. These can give us problems with our heart,
+      our teeth and our blood.</p>
+
+      <p><i>Think about what you eat every day. Do you eat all of the food types that you need?</i></p>
+
+      <div class="gl">🔑 <b>whole wheat</b> = integral · <b>leafy green vegetables</b> = verduras de folha ·
+      <b>plenty of</b> = bastante · <b>beans</b> = feijão · <b>nuts</b> = castanhas ·
+      <b>fat</b> = gordura · <b>blood</b> = sangue · <b>heart</b> = coração · <b>bones</b> = ossos</div>
+
+      <div class="vs">
+        <div class="h">🇺🇸 AMERICAN ENGLISH &nbsp;·&nbsp; 🇬🇧 BRITISH ENGLISH</div>
+        <table>
+          <tr><td>candy</td><td>sweets</td></tr>
+          <tr><td>soda</td><td>fizzy drink</td></tr>
+          <tr><td>yogurt</td><td>yoghurt</td></tr>
+          <tr><td>chips</td><td>crisps</td></tr>
+          <tr><td>cookies</td><td>biscuits</td></tr>
+          <tr><td>fries</td><td>chips</td></tr>
+          <tr><td>whole wheat bread</td><td>brown bread</td></tr>
+        </table>
+      </div>` }
+};
+
+/* ---------- quiz final ---------- */
+const FINALE = [
+  /* 🥉 EASY */
+  {t:1, q:"There ___ a lot of rice.", o:["are", "be", "is", "am"], a:2, e:"<i>Rice</i> é incontável → verbo no singular."},
+  {t:1, q:"How ___ eggs do we need?", o:["much", "many", "a lot", "little"], a:1, e:"<i>Eggs</i> é contável → <b>How many</b>."},
+  {t:1, q:"___ the garlic carefully.", o:["Cutting", "Cuts", "To cut", "Cut"], a:3, e:"Imperativo = forma base."},
+  {t:1, q:"Which one is a drink?", o:["bread", "tea", "garlic", "cheese"], a:1, e:"<b>Tea</b> é bebida."},
+  {t:1, q:"___ forget to wash the tomatoes!", o:["No", "Don't", "Not", "Doesn't"], a:1, e:"Ordem negativa: <b>Don't</b> + verbo."},
+  {t:1, q:"You bake bread in a…", o:["oven", "pot", "knife", "frying pan"], a:0, e:"Assar é no <b>oven</b> (forno)."},
+  {t:1, q:"careful → ___", o:["carefuly", "carefulily", "carefuled", "carefully"], a:3, e:"care + fully, com dois L."},
+  {t:1, q:"There are ___ tomatoes in the fridge.", o:["a little", "much", "any", "a few"], a:3, e:"Contável no afirmativo → <b>a few</b>."},
+  {t:1, q:"Which food is noncount?", o:["eggs", "milk", "onions", "tomatoes"], a:1, e:"<b>Milk</b> não tem plural."},
+  {t:1, q:"You ___ water in a pot.", o:["bake", "grill", "cut", "boil"], a:3, e:"Água a gente <b>boil</b> (ferve)."},
+
+  /* 🥈 MEDIUM */
+  {t:2, q:"There isn't ___ cheese in the fridge.", o:["many", "a few", "much", "some"], a:2, e:"Incontável em frase negativa → <b>much</b>."},
+  {t:2, q:"Do we have ___ bread?", o:["any", "some", "much of", "a few"], a:0, e:"Em pergunta usamos <b>any</b>."},
+  {t:2, q:"She cooks very ___.", o:["good", "goodly", "well", "best"], a:2, e:"Advérbio irregular: <b>well</b>."},
+  {t:2, q:"___ the pineapple into pieces, but ___ cut them too small.", o:["Cutting / not", "Cuts / no", "Cut / don't", "To cut / doesn't"], a:2, e:"Imperativo afirmativo + negativo: <b>Cut … don't cut</b>."},
+  {t:2, q:"In a recipe, which word introduces the LAST step?", o:["Finally", "First", "Next", "Then"], a:0, e:"<b>Finally</b> abre o último passo."},
+  {t:2, q:"What are oats?", o:["an insect", "a type of cereal", "a soft food", "a large bird"], a:1, e:"Oats = cereal (aveia)."},
+  {t:2, q:"“What can I get you?” is said by…", o:["the customer", "the waiter", "the cook", "the manager"], a:1, e:"É a fala de quem atende."},
+  {t:2, q:"Which sentence is correct?", o:["We have much milk.", "We have many milk.", "We have a few milk.", "We have a lot of milk."], a:3, e:"Em afirmativa: <b>a lot of</b>."},
+
+  /* 🥇 HARD */
+  {t:3, q:"There ___ a lot of onions and there ___ a lot of rice.", o:["is / are", "are / are", "are / is", "is / is"], a:2, e:"<i>onions</i> plural → are; <i>rice</i> incontável → is."},
+  {t:3, q:"easy → ___", o:["easyly", "easely", "easyily", "easily"], a:3, e:"-y vira <b>-ily</b>."},
+  {t:3, q:"Which sentence puts the adverb in the best position?", o:["Carefully cut you the strawberries.", "Cut carefully the strawberries.", "Cut the strawberries carefully.", "You cut carefully strawberries."], a:2, e:"O advérbio de modo vem no fim da frase."},
+  {t:3, q:"“Hold your nose! Durian has a very strong smell.” Why do some people hate durian?", o:["because of its smell", "because of its price", "because of its colour", "because of its size"], a:0, e:"O texto fala do cheiro forte."},
+  {t:3, q:"Which one is NOT a way to make an adverb of manner?", o:["adjective + -er", "adjective + -ly", "-y → -ily", "-le → -ly"], a:0, e:"<b>-er</b> forma comparativo, não advérbio."},
+  {t:3, q:"“Plantains are not sweet.” This means they are…", o:["sweet bananas", "a hot sauce", "baking bananas", "a type of rice"], a:2, e:"Plantains são as bananas de cozinhar."},
+  {t:3, q:"Which sentence is a negative imperative?", o:["Don't eat too much sugar.", "You don't eat too much.", "She doesn't eat sugar.", "Not eating sugar."], a:0, e:"Imperativo negativo não tem sujeito: <b>Don't eat…</b>"}
+];
+
+/* ---------- estações ---------- */
+const STATIONS = {
+  intro:{ em:"📋", n:"Como funciona", d:"Leia antes de começar", kind:"intro", stars:0, act:0 },
+
+  s1: { em:"🍅", n:"Food Words",              d:"18 cartas de vocabulário",        kind:"vocab", set:"v1",  stars:6, act:1 },
+  s2: { em:"🔤", n:"Unscramble the Menu",     d:"8 palavras embaralhadas",         kind:"scram", set:"sc1", stars:5, act:1 },
+  s3: { em:"❌", n:"Odd One Out",             d:"8 itens · qual não pertence",     kind:"mcq",   set:"s3",  stars:5, act:1 },
+  s4: { em:"📐", n:"GRAMMAR LAB 1",           d:"count / noncount + 12 itens",     kind:"lab",   set:"s4",  panel:"g1", stars:8, act:1 },
+  s5: { em:"🔢", n:"Count or Noncount?",      d:"14 alimentos · 2 cestos",         kind:"sort",  set:"so1", stars:6, act:1 },
+  s6: { em:"❄️", n:"In the Fridge?",          d:"12 alimentos · 3 cestos",         kind:"sort",  set:"so2", stars:5, act:1 },
+  s7: { em:"🍳", n:"Cooking Verbs",           d:"8 verbos de cozinha",             kind:"vocab", set:"v2",  stars:4, act:1 },
+  s8: { em:"🔪", n:"Kitchen Tools",           d:"6 pares · objeto e ação",         kind:"match", set:"m1",  stars:4, act:1 },
+  s9: { em:"👉", n:"Complete the Instruction",d:"8 instruções de receita",         kind:"mcq",   set:"s9",  stars:5, act:1 },
+  s10:{ em:"📐", n:"GRAMMAR LAB 2",           d:"imperatives + adverbs · 12 itens",kind:"lab",   set:"s10", panel:"g2", stars:8, act:1 },
+  s11:{ em:"🏃", n:"Make the Adverb",         d:"10 itens de ortografia",          kind:"mcq",   set:"s11", stars:6, act:1 },
+
+  s12:{ em:"🌍", n:"Food Around the World",   d:"leitura longa + 6 perguntas",     kind:"read",  set:"s12", stars:8, act:2 },
+  s13:{ em:"🔍", n:"Word Detective",          d:"8 pares · palavra e definição",   kind:"match", set:"m2",  stars:5, act:2 },
+  s14:{ em:"🍌", n:"Bananas Around the World",d:"leitura longa + 6 perguntas",     kind:"read",  set:"s14", stars:8, act:2 },
+  s15:{ em:"🥦", n:"CLIL Biology",            d:"healthy food + 8 True/False",     kind:"read",  set:"s15", stars:8, act:2 },
+
+  s16:{ em:"💬", n:"Useful Language",         d:"8 pares · pedir no café",         kind:"match", set:"m3",  stars:5, act:3 },
+  s17:{ em:"☕", n:"At the Café",             d:"8 falas para montar",             kind:"order", set:"o1",  stars:7, act:3 },
+  s18:{ em:"📜", n:"Recipe Steps",            d:"6 receitas · First → Finally",    kind:"order", set:"o2",  stars:6, act:3 },
+  s19:{ em:"🗣️", n:"Say it like a Chef",     d:"12 cartas de fala rápida",        kind:"drill",             stars:6, act:3 },
+  s20:{ em:"🏆", n:"THE FINAL SERVICE",       d:"25 questões em 3 níveis",         kind:"quiz",              stars:15, act:3 }
+};
+
+const ACTS = {
+  1:{ n:"ATO 1 · MASTER KITCHEN", em:"👨‍🍳", c:"var(--red)",   d:"vocabulário, cestos e os dois Grammar Labs" },
+  2:{ n:"ATO 2 · WORLD FOOD TOUR", em:"🌍",   c:"var(--blue)",  d:"três leituras longas com compreensão" },
+  3:{ n:"ATO 3 · CAFÉ MANAGER",    em:"☕",   c:"var(--green)", d:"pedidos, receitas e o serviço final" }
+};
+
+const MAP = [
+  { t:"📋 COMEÇANDO", eps:["intro"] },
+  { t:"👨‍🍳 ATO 1 · MASTER KITCHEN — vocabulário e gramática", eps:["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11"] },
+  { t:"🌍 ATO 2 · WORLD FOOD TOUR — leitura e compreensão",     eps:["s12","s13","s14","s15"] },
+  { t:"☕ ATO 3 · CAFÉ MANAGER — pedidos, receitas e serviço",  eps:["s16","s17","s18","s19","s20"] }
+];
+
+const ORDERED = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20"];
+
+const LEVELS = [
+  {s:0,n:"Kitchen Helper 🧽"},{s:25,n:"Cook 🍳"},{s:55,n:"Sous-Chef 🔪"},
+  {s:90,n:"Head Chef 👨‍🍳"},{s:118,n:"MASTER CHEF 👑"}
+];
+/* =======================================================================
+   MOTOR
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------- HOME ---------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>=0?`<span class="no">${i+1}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ $("play").classList.remove("on"); $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------- PLAYER ---------- */
+let ORD=null, PK=null, SC=null, SO=null, MT=null, VC=null;
+let mSel=null, mDone=0, mRight=[];
+
+function actBar(s){
+  const a=ACTS[s.act]; if(!a) return "";
+  return `<div class="actbar" style="border-color:${a.c}">
+    <span class="n" style="background:${a.c}">${a.em} ${a.n}</span>
+    <span style="color:var(--dim);font-weight:800">${a.d}</span></div>`;
+}
+
+function openEp(k){
+  cur=k; hits=0; total=0;
+  ORD=null; PK=null; SC=null; SO=null; MT=null; VC=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = actBar(s) + `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = `<h2 class="sec"><span class="em">📋</span>Como funciona</h2>` + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    VC=VOCS[s.set]; total=VC.items.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">${VC.tip}</p>
+      <div class="vg">${VC.items.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="scram"){
+    SC=SCRAM[s.set]; total=SC.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">${SC.tip}</p>
+      ${SC.items.map((it,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${it.e} &nbsp;<span class="hint">${it.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="sort"){
+    SO=SORTS[s.set]; total=SO.items.length;
+    b.innerHTML = head + `<p class="how">${SO.how}</p>
+      <p class="tip" style="border-left-color:var(--green)">${SO.tip}</p>
+      ${SO.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SO.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="match"){
+    MT=MATCHES[s.set]; total=MT.pairs.length;
+    b.innerHTML = head + matchHTML(MT.pairs, MT.l, MT.r, MT.how, MT.tip);
+  }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    const tips = {
+      s3:"Leia as quatro palavras e pergunte: <b>qual delas é de outro grupo?</b> Pode ser bebida x comida, animal x vegetal, doce x salgado.",
+      s9:"Os oito verbos da unidade: <b>add</b> acrescentar · <b>bake</b> assar no forno · <b>boil</b> ferver · <b>cut</b> cortar · <b>fry</b> fritar · <b>grill</b> grelhar · <b>mix</b> misturar · <b>roast</b> assar carne.",
+      s11:"<b>EN</b> Most adverbs of manner = adjective + -ly. &nbsp;·&nbsp; <b>PT</b> Cuidado com três casos: <b>-y → -ily</b>, <b>-le → -ly</b> e os irregulares (<b>good → well</b>, <b>fast → fast</b>)."
+    };
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. O feedback aparece na hora.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${tips[s.set]||""}</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="lab"){
+    PK=s.set; total=QS[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Leia o painel com atenção — a explicação vem em inglês e em português. Depois faça os itens.</p>`
+      + labHTML(s.panel) + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="read"){
+    const R=READS[s.set]; PK=R.set; total=QS[R.set].items.length;
+    b.innerHTML = head + `<div class="read"><h3>${R.em} ${R.title}</h3>${R.html}</div>`
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">❓ Comprehension</h2>`
+      + mcqHTML(R.set);
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER[s.set]; total=ORD.items.length;
+    const how = ORD.steps
+      ? "Clique nos passos da receita na ordem certa. Clique no passo de cima para devolver."
+      : "Clique nas palavras na ordem certa para montar a frase.";
+    b.innerHTML = head + `<p class="how">${how}</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORD.tip}</p>` + orderHTML(s.set);
+    initOrder();
+  }
+
+  else if(s.kind==="drill"){
+    total=DRILL.length;
+    b.innerHTML = head + `<p class="how">Leia a pista, diga a frase completa em voz alta e só então toque para conferir.</p>
+      <p class="tip" style="border-left-color:var(--red)">A carta traz o alimento e a <b>pista de quantidade ou de ordem</b>. A turma fala a frase inteira antes de você revelar.</p>
+      <div class="dg">${DRILL.map(d=>`
+        <div class="dc" onclick="openDrill(this)">
+          <div class="pic">${d.pic}</div>
+          <div class="qty">${d.qty}</div>
+          <div class="tap">TOQUE PARA CONFERIR</div>
+          <div class="say">${d.say}</div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>1.</b> São <b>20 estações</b> divididas em três atos: 👨‍🍳 MASTER KITCHEN (vocabulário e gramática), 🌍 WORLD FOOD TOUR (leituras) e ☕ CAFÉ MANAGER (pedidos e receitas). Pode fazer na ordem ou escolher no mapa 🗺️.</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Kitchen Helper → Cook → Sous-Chef → Head Chef → <b>MASTER CHEF</b>.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>3.</b> As estações <b>📐 GRAMMAR LAB</b> têm um painel com a explicação em <b>inglês e em português</b>. Leia o painel antes de responder.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>4.</b> Errou? Sem problema. O jogo explica o porquê e você segue.</p>
+  <p class="tip" style="border-left-color:var(--teal)"><b>5.</b> Botão <b>🔍 Projeção</b>: letras gigantes e placar de 4 equipes, para jogar com a turma inteira no telão.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>6.</b> Botão <b>👀 Answers</b> mostra todas as respostas da estação — use só na correção!</p>`;
+}
+
+/* ---------- vocab ---------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------- scramble ---------- */
+function initScram(){
+  SC.items.forEach((it,i)=>{
+    const letters = it.w.split("").map((c,j)=>({c,j})).sort(()=>Math.random()-0.5);
+    $("bk-"+i).innerHTML = letters.map(o=>
+      `<button class="ch let" onclick="pickLet(${i},this)">${o.c}</button>`).join("");
+    $("sl-"+i).innerHTML = "";
+  });
+}
+function pickLet(i,btn){
+  const c=document.createElement("button");
+  c.className="ch let"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("sl-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).innerHTML="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckScram(i){
+  const sl=$("sl-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join("");
+  if(built===SC.items[i].w){
+    sl.className="slot ok";
+    $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("fb-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shScram(i){
+  const already = $("sl-"+i).classList.contains("ok");
+  rsScram(i);
+  $("sl-"+i).innerHTML = SC.items[i].w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  $("sl-"+i).className="slot ok";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- sort ---------- */
+function pickSort(i,j){
+  const row=document.querySelector(`#body .srow[data-i="${i}"]`);
+  if(!row || row.dataset.done) return; row.dataset.done="1";
+  const c=SO.items[i].c;
+  row.querySelectorAll(".sb").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===c) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $("sf-"+i).innerHTML = (j===c?`<span style="color:var(--ok)">✅ </span>`:`<span style="color:var(--bad)">❌ </span>`)
+    + `<span class="wy">${SO.items[i].e}</span>`;
+  bump();
+}
+
+/* ---------- match ---------- */
+function matchHTML(pairs,l,r,how,tip){
+  mRight = pairs.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-0.5);
+  return `<p class="how">${how}</p><p class="tip" style="border-left-color:var(--purple)">${tip}</p>
+  <div class="mg">
+    <div><div class="mh">${l}</div>${pairs.map((p,i)=>
+      `<button class="mi" id="L-${i}" onclick="mPick('L',${i})">${p[0]}</button>`).join("")}</div>
+    <div><div class="mh">${r}</div>${mRight.map((o,k)=>
+      `<button class="mi" id="R-${k}" onclick="mPick('R',${k})">${o.t}</button>`).join("")}</div>
+  </div>
+  <div class="fb" id="mfb" style="margin-top:14px"></div>`;
+}
+function mPick(side,idx){
+  const el=$(side+"-"+idx);
+  if(el.classList.contains("got")) return;
+  if(side==="L"){
+    document.querySelectorAll("#body .mi.sel").forEach(x=>x.classList.remove("sel"));
+    mSel=idx; el.classList.add("sel"); return;
+  }
+  if(mSel===null){ $("mfb").innerHTML=`<span style="color:var(--bad)">👈 Escolha primeiro na coluna da esquerda.</span>`; return; }
+  if(mRight[idx].i===mSel){
+    const L=$("L-"+mSel); L.classList.remove("sel"); L.classList.add("got"); el.classList.add("got");
+    mDone++; mSel=null;
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+    bump();
+  } else {
+    el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320);
+    $("mfb").innerHTML=`<span style="color:var(--bad)">❌ Not this one. Try again!</span>`;
+  }
+}
+
+/* ---------- mcq ---------- */
+function mcqHTML(ns){
+  const d=QS[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-ns="${ns}" data-q="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+      <div class="opts ${d.two?"two":"four"}">${it.o.map((o,j)=>
+        `<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}</div>
+      <div class="fb" id="f-${ns}-${i}"></div>
+    </div>`).join("");
+}
+function ansMcq(ns,i,j){
+  const box=document.querySelector(`#body .ex[data-ns="${ns}"][data-q="${i}"]`);
+  if(!box || box.dataset.done) return; box.dataset.done="1";
+  const it=QS[ns].items[i];
+  box.querySelectorAll(".op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===it.a) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $(`f-${ns}-${i}`).innerHTML =
+    (j===it.a?`<span style="color:var(--ok)">✅ Correct!</span>`:`<span style="color:var(--bad)">❌ Not this one.</span>`)
+    + `<span class="wy">${it.e}</span>`;
+  bump();
+}
+
+/* ---------- word order / recipe steps ---------- */
+function orderHTML(ns){
+  const d=ORDER[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-o="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${d.steps?("📜 "+it.a):"Build the sentence"}</div>
+      <div class="slot ${d.steps?"steps":""}" id="os-${i}"></div>
+      <div class="bank ${d.steps?"steps":""}" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  if(!ORD) return;
+  const st = ORD.steps ? " steps" : "";
+  ORD.items.forEach((it,i)=>{
+    const sh = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    const bk = $("ob-"+i); if(!bk) return;
+    bk.innerHTML = sh.map(o=>`<button class="ch" onclick="pickWord(${i},this)">${o.w}</button>`).join("");
+    $("os-"+i).innerHTML="";
+    $("os-"+i).className="slot"+st;
+  });
+}
+function pickWord(i,btn){
+  const c=document.createElement("button");
+  c.className="ch"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("os-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsOrd(i){
+  const st = ORD.steps ? " steps" : "";
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"+st; $("of-"+i).innerHTML="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckOrd(i){
+  const it=ORD.items[i], sl=$("os-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join(" ");
+  if(built===it.w.join(" ")){
+    sl.className="slot ok"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+    if(!already) bump();
+  } else {
+    sl.className="slot no"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`;
+  }
+}
+function shOrd(i){
+  const it=ORD.items[i];
+  const already = $("os-"+i).classList.contains("ok");
+  rsOrd(i);
+  $("os-"+i).innerHTML = it.w.map(w=>`<span class="ch">${w}</span>`).join("");
+  $("os-"+i).className="slot ok"+(ORD.steps?" steps":"");
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- drill ---------- */
+function openDrill(el){
+  if(!el.classList.contains("open")){ el.classList.add("open"); bump(); }
+}
+
+/* ---------- painel de gramática bilíngue ---------- */
+function labHTML(key){
+  const g=GRAM[key];
+  return `<div class="lab">
+    <h3>📐 ${g.title}</h3>
+    ${g.rows.map(r=>`
+      <div class="labrow">
+        <div class="fm"><b>${r.form}</b><code>${r.forms}</code></div>
+        ${r.en?`<div class="en">${r.en}</div>`:""}
+        ${r.pt?`<div class="ptx">${r.pt}</div>`:""}
+        <div class="exm">${r.ex}</div>
+      </div>`).join("")}
+    <div class="cerr">
+      <div class="t">⚠️ COMMON ERROR · ERRO CLÁSSICO</div>
+      <div class="w">${g.error.wrong}</div>
+      <div class="r">✅ ${g.error.right}</div>
+      <div class="n">${g.error.note}</div>
+    </div>
+  </div>`;
+}
+
+/* ---------- quiz ---------- */
+let qT=1, qI=0, qHit=0; const qA={};
+function quizHTML(){
+  return `<p class="how">25 questões em 3 níveis. Comece pelo bronze!</p>
+  <div class="tiers">
+    <button class="tb on" id="t1" onclick="setT(1)">🥉 EASY · 10 pts</button>
+    <button class="tb" id="t2" onclick="setT(2)">🥈 MEDIUM · 20 pts</button>
+    <button class="tb" id="t3" onclick="setT(3)">🥇 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="ex" id="qbox"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" onclick="qGo(-1)">◀ prev</button>
+    <button class="btn b" onclick="qGo(1)">next ▶</button>
+    <span class="fb" id="qsc"></span>
+  </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(qI>=L.length) qI=L.length-1;
+  const c=L[qI];
+  $("qmeta").innerHTML = `QUESTION ${qI+1} / ${L.length} · <b>${qT*10} points</b>`;
+  $("qbox").innerHTML = `<div class="qn">${c.q.q}</div>
+    <div class="opts four">${c.q.o.map((o,j)=>
+      `<button class="op" onclick="qPick(${c.i},${j})">${o}</button>`).join("")}</div>
+    <div class="fb" id="qfb"></div>`;
+  if(qA[c.i]!==undefined) qShow(c.i,qA[c.i]);
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; if(j===FINALE[gi].a) qHit++;
+  qShow(gi,j); bump();
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qShow(gi,pick){
+  const q=FINALE[gi];
+  document.querySelectorAll("#qbox .op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===q.a) b.classList.add("right"); else if(k===pick) b.classList.add("wrong");
+  });
+  $("qfb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${qT*10}</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="wy">${q.e}</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+/* ---------- reveal ---------- */
+function revealAll(){
+  if(!cur) return;
+  const k=STATIONS[cur].kind;
+  if(k==="vocab") document.querySelectorAll("#body .vc").forEach(c=>flip(c));
+  else if(k==="scram") SC.items.forEach((_,i)=>shScram(i));
+  else if(k==="sort") SO.items.forEach((it,i)=>pickSort(i,it.c));
+  else if(k==="match"){
+    MT.pairs.forEach((p,i)=>{
+      const ri = mRight.findIndex(o=>o.i===i);
+      const L=$("L-"+i), R=$("R-"+ri);
+      if(L&&R&&!L.classList.contains("got")){ L.classList.add("got"); L.classList.remove("sel"); R.classList.add("got"); mDone++; bump(); }
+    });
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+  }
+  else if(k==="mcq"||k==="lab"||k==="read") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="order") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="drill") document.querySelectorAll("#body .dc").forEach(c=>openDrill(c));
+  else if(k==="quiz"){ const c=tList()[qI]; if(qA[c.i]===undefined) qPick(c.i,FINALE[c.i].a); }
+}
+
+/* ---------- projeção / equipes ---------- */
+function drawTeams(){
+  $("tin").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button></div>`).join("")
+    + `<div class="tm"><button onclick="rsTeams()" style="width:auto;padding:4px 10px">zerar</button></div>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Modo aluno" : "🔍 Projeção";
+}
+
+/* ---------- inicia ---------- */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") home();
+  else if(e.key==="ArrowRight" && cur) stepEp(1);
+  else if(e.key==="ArrowLeft" && cur) stepEp(-1);
+});
+
+drawTeams(); drawMap(); addStars(0);
+
+</script>
+</body>
+</html>
