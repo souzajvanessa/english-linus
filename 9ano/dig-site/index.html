@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE DIG SITE · Unit 5 Exploring the Past · 9º ano</title>
+<style>
+  :root{
+    --bg:#f6f1e6; --card:#ffffff; --ink:#241f18; --dim:#6f6455; --line:#e0d5c2;
+    --red:#b23a2f; --orange:#c07a1e; --yellow:#e0b64a; --green:#2f7d5c; --teal:#1f6f72;
+    --blue:#2b6a8f; --purple:#6b4f8a; --pink:#a44a6a;
+    --ok:#20bf7f; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(760px 440px at 88% -4%, rgba(224,182,74,.30), transparent 62%),
+      radial-gradient(700px 430px at 4% 100%, rgba(31,111,114,.20), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#cfc0a6; border-radius:99px;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue);} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{
+    padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;
+  }
+  #hero .truck{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--red);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{
+    background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;
+  }
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{
+    display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);
+  }
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{
+    position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;
+  }
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#f0e7db; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#eafaf1;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{
+    background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;
+  }
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:132px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--yellow);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#5a4a2a;}
+
+  /* generic exercise box */
+  .ex{
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;
+  }
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{
+    display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--purple); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;
+  }
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;
+  }
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#fffdf0;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* chips (word order + unscramble) */
+  .slot{
+    min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#fffdf6;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{
+    border:3px solid var(--ink); border-radius:12px; background:var(--blue); color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+  }
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort baskets */
+  .srow{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .srow .it{font-weight:900; font-size:20px; min-width:170px;}
+  .sb{
+    border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .sb:hover:not(:disabled){background:#fffdf0;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{
+    display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:17px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .mi:hover:not(:disabled){background:#fffdf0;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading + menu */
+  .read{
+    background:#fffdf3; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.65; font-weight:600;
+  }
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--red);}
+  .read p{margin-bottom:10px;}
+  .read .gl{
+    margin-top:14px; font-size:14px; font-weight:800; color:#6a5a3a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;
+  }
+  .menu{
+    background:#fff; border:4px solid var(--ink); border-radius:var(--r); box-shadow:0 6px 0 var(--ink);
+    padding:18px 20px; margin-bottom:16px;
+  }
+  .menu h3{text-align:center; font-size:22px; font-weight:900; letter-spacing:1px;}
+  .menu .ad{text-align:center; font-size:12.5px; color:var(--dim); font-weight:800; margin-bottom:12px;}
+  .mgrp{margin-bottom:12px;}
+  .mgrp .t{
+    font-size:13px; font-weight:900; letter-spacing:2px; background:var(--ink); color:#fff;
+    display:inline-block; padding:3px 11px; border-radius:99px; margin-bottom:7px;
+  }
+  .ln{display:flex; justify-content:space-between; gap:12px; font-size:17px; font-weight:800;
+    border-bottom:2px dotted var(--line); padding:5px 0;}
+  .ln b{color:var(--green);}
+
+  /* drill */
+  .dg{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;}
+  .dc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 12px; text-align:center; cursor:pointer; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .dc:hover{transform:translateY(-3px);}
+  .dc .pic{font-size:44px;}
+  .dc .qty{font-weight:900; font-size:16px; margin-top:5px; color:var(--purple);}
+  .dc .say{display:none; font-weight:900; font-size:17px; margin-top:9px; color:var(--green); line-height:1.3;}
+  .dc.open{background:#eafaf1;} .dc.open .say{display:block;}
+  .dc .tap{font-size:10.5px; letter-spacing:1.5px; color:var(--dim); font-weight:900; margin-top:7px;}
+  .dc.open .tap{display:none;}
+
+  /* painel de gramática bilíngue */
+  .lab{background:#fff; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:18px 20px; margin-bottom:18px;}
+  .lab h3{font-size:clamp(19px,2.2vw,25px); font-weight:900; letter-spacing:-.4px; margin-bottom:14px;}
+  .labrow{border-top:2px dashed var(--line); padding:13px 0;}
+  .labrow:first-of-type{border-top:0; padding-top:2px;}
+  .labrow .fm{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:7px;}
+  .labrow .fm b{font-size:17px; background:var(--ink); color:#fff; padding:3px 11px; border-radius:99px;}
+  .labrow .fm code{font-family:Consolas,monospace; font-size:15.5px; color:var(--teal); font-weight:700;}
+  .labrow .en, .labrow .ptx{font-size:16px; line-height:1.5; padding:7px 12px; border-radius:10px; margin-bottom:6px;}
+  .labrow .en{background:#eef6f6; border-left:5px solid var(--teal);}
+  .labrow .ptx{background:#fdf4e6; border-left:5px solid var(--orange);}
+  .labrow .en::before{content:"EN  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--teal);}
+  .labrow .ptx::before{content:"PT  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--orange);}
+  .labrow .exm{font-size:16.5px; font-weight:800; margin-top:6px; color:var(--green);}
+  .labrow .exm::before{content:"\25B8  ";}
+  .cerr{margin-top:16px; background:#fdecea; border:3px solid var(--red); border-radius:14px; padding:13px 16px;}
+  .cerr .t{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--red); margin-bottom:8px;}
+  .cerr .w{font-size:17px; font-weight:800; text-decoration:line-through; color:var(--red); margin-bottom:4px;}
+  .cerr .r{font-size:17px; font-weight:900; color:var(--green); margin-bottom:7px;}
+  .cerr .n{font-size:15px; line-height:1.5; color:#4a3a2a;}
+  body.proj .lab h3{font-size:30px;} body.proj .labrow .en, body.proj .labrow .ptx{font-size:19px;}
+  body.proj .labrow .exm{font-size:20px;} body.proj .cerr .w, body.proj .cerr .r{font-size:21px;}
+
+  /* quiz tiers */
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{
+    border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+
+  /* teams (projection) */
+  #teams{
+    display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px;
+    padding:0 5vw;
+  }
+  #teams.on{display:block;}
+  .tin{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{
+    width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;
+  }
+  .tm button:hover{background:var(--yellow);}
+
+  #foot{
+    position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96);
+    border-top:3px solid var(--line);
+  }
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJECTION MODE */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:21px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:24px;}
+  body.proj .ln{font-size:21px;}
+  body.proj .dc .pic{font-size:56px;} body.proj .dc .say{font-size:21px;}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🏺 THE DIG SITE<span>UNIT 5 · EXPLORING THE PAST · 9º ANO · B1–B2</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #2F4858;border-radius:14px;background:#fff;color:#2F4858;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #2F4858;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill">🏅 <span id="lvl">Volunteer</span></div>
+  <button class="btn y" id="projBtn" onclick="toggleProj()">🔍 Projeção</button>
+  <button class="btn b" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="tin"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="truck">🏺⛏️🗿</div>
+    <h1>Exploring the <em>past</em></h1>
+    <div class="sub">16 stations · Unit 5 · B1–B2 · gramática explicada em inglês e português</div>
+    <div class="tags">
+      <span class="tag">🏺 vocabulary</span>
+      <span class="tag">⏳ narrative tenses</span>
+      <span class="tag">🔄 was / were going to</span>
+      <span class="tag">🧩 sentence building</span>
+      <span class="tag">➡️ word order</span>
+      <span class="tag">💬 useful language</span>
+      <span class="tag">📖 reading longo</span>
+      <span class="tag">🧠 critical thinking</span>
+    </div>
+  </div>
+  <main id="mapArea"></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀</button>
+  <button class="btn" onclick="stepEp(1)">▶</button>
+  <button class="btn g" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Modo projeção liga fontes grandes e o placar de equipes</small>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =======================================================================
+   DADOS · Unit 5 "Exploring the past" · 9º ano · B1–B2
+   ======================================================================= */
+
+const VOCAB = [
+  {e:"📜", w:"ancient",            pt:"antigo, da antiguidade", ex:"Persepolis is an ancient capital of Persia."},
+  {e:"🗺️", w:"archeological site", pt:"sítio arqueológico",     ex:"Archeologists came to search the site."},
+  {e:"🏛️", w:"ruins",              pt:"ruínas",                 ex:"We visited the ruins of the city of Persepolis."},
+  {e:"🏰", w:"palace",             pt:"palácio",                ex:"The palace of Xerxes is enormous."},
+  {e:"🗿", w:"sculptures",         pt:"esculturas",             ex:"There are sculptures on the palace walls."},
+  {e:"🗼", w:"monument",           pt:"monumento",              ex:"The Xerxes Gate is a large monument."},
+  {e:"🧍", w:"statues",            pt:"estátuas",               ex:"There are statues at the front."},
+  {e:"💰", w:"treasure",           pt:"tesouro",                ex:"The farmers found golden treasure."},
+  {e:"🪜", w:"a ladder",           pt:"uma escada (portátil)",  ex:"He used a ladder to examine the columns."},
+  {e:"🕳️", w:"a tunnel",           pt:"um túnel",               ex:"There is an underground tunnel for water."},
+  {e:"⚒️", w:"to dig",             pt:"cavar",                  ex:"They were digging a well when they found it."},
+  {e:"🔍", w:"to discover",        pt:"descobrir",              ex:"What did the scientist discover?"},
+  {e:"🧭", w:"to explore",         pt:"explorar",               ex:"We're going to explore this tunnel."},
+  {e:"🔎", w:"to search",          pt:"procurar, buscar",       ex:"Let's search for the ball here."},
+  {e:"✋", w:"to touch",           pt:"tocar",                  ex:"Don't touch that!"},
+  {e:"⬆️", w:"to lift up",         pt:"levantar, erguer",       ex:"Bend your knees when you lift up something heavy."},
+  {e:"💨", w:"to disappear",       pt:"desaparecer",            ex:"I read a story about a woman who could disappear."},
+  {e:"💭", w:"to wonder",          pt:"perguntar-se, indagar",  ex:"I wonder where they are."}
+];
+
+const MATCH = [
+  ["bury",      "to put a dead body in the ground"],
+  ["clay",      "thick, heavy soil that gets hard when dry"],
+  ["historian", "a person who studies the past"],
+  ["excavate",  "to find something by digging in the ground"],
+  ["warrior",   "a person who fights in a battle or war"],
+  ["chariot",   "a two-wheeled vehicle pulled by horses"],
+  ["sword",     "a weapon with a long metal blade"],
+  ["tomb",      "a large place where a body is put after death"],
+  ["unearth",   "to bring buried objects out of the ground"]
+];
+
+/* painéis de gramática · inglês + português */
+const GRAM = {
+  g1:{
+    title:"Narrative tenses · simple past, past continuous, past perfect",
+    rows:[
+      {form:"Simple past", forms:"went · played · found · was",
+       en:"For actions that were <b>completed</b> in the past.",
+       pt:"Para ações que <b>terminaram</b> no passado.",
+       ex:"They <b>found</b> the bones in 2012."},
+      {form:"Past continuous", forms:"was digging · were going",
+       en:"For an action <b>in progress</b> at a certain time in the past — often interrupted by another action.",
+       pt:"Para uma ação <b>em andamento</b> num momento do passado — normalmente interrompida por outra.",
+       ex:"The farmers <b>were digging</b> a well when they found it."},
+      {form:"Past perfect", forms:"had gone · had seen · had been buried",
+       en:"For an action that happened <b>before</b> another past action.",
+       pt:"Para uma ação que aconteceu <b>antes</b> de outra ação no passado — é o passado do passado.",
+       ex:"When we arrived, the film <b>had</b> already <b>started</b>."}
+    ],
+    error:{wrong:"They had came home late.", right:"They had come home late.",
+      note:"Depois de <b>had</b> vem o <b>particípio</b> (come, gone, seen, written), nunca o passado simples."}
+  },
+  g2:{
+    title:"was / were going to · planos do passado que mudaram",
+    rows:[
+      {form:"Affirmative", forms:"was / were + going to + verbo base",
+       en:"For a plan we had in the past that <b>changed</b> — the plan did not happen.",
+       pt:"Para um plano que tínhamos no passado e que <b>mudou</b> — o plano não se realizou.",
+       ex:"We <b>were going to travel</b>, but we stayed at home."},
+      {form:"Negative", forms:"wasn't / weren't + going to + verbo base",
+       en:"To say what we had <b>not</b> planned to do.",
+       pt:"Para dizer o que <b>não</b> planejávamos fazer.",
+       ex:"I <b>wasn't going to say</b> anything, but I felt disappointed."},
+      {form:"Question", forms:"Was / Were + sujeito + going to + verbo base",
+       en:"We <b>invert</b> BE and the subject to ask about past plans.",
+       pt:"<b>Invertemos</b> o verbo BE e o sujeito para perguntar sobre planos do passado.",
+       ex:"<b>Were they going to</b> explore the cave?"}
+    ],
+    error:{wrong:"They were going to explore the cave?", right:"Were they going to explore the cave?",
+      note:"Na pergunta o <b>were</b> vem <b>antes</b> do sujeito. Entonação de pergunta não basta na escrita."}
+  }
+};
+
+const QS = {
+  /* EXPLORING VERBS */
+  s3:{
+    two:false,
+    items:[
+      {q:"Don't ______ that! It's a valuable object.", o:["dig","touch","wonder","search"], a:1, e:"<b>touch</b> = tocar."},
+      {q:"We need to ______ a hole here.", o:["dig","lift up","disappear","explore"], a:0, e:"<b>dig</b> = cavar."},
+      {q:"What did the scientist ______?", o:["search","wonder","touch","discover"], a:3, e:"<b>discover</b> = descobrir."},
+      {q:"Let's ______ for the ball here.", o:["disappear","lift","search","wonder"], a:2, e:"<b>search for</b> = procurar por."},
+      {q:"We're going to ______ this tunnel.", o:["touch","disappear","bury","explore"], a:3, e:"<b>explore</b> = explorar."},
+      {q:"I read a story about a woman who could ______.", o:["disappear","dig","search","lift"], a:0, e:"<b>disappear</b> = desaparecer."},
+      {q:"I ______ where they are.", o:["search","touch","wonder","dig"], a:2, e:"<b>wonder</b> = perguntar-se, ficar na dúvida."},
+      {q:"Bend your knees when you ______ something heavy.", o:["dig","lift up","touch","search"], a:1, e:"<b>lift up</b> = levantar."}
+    ]
+  },
+  /* NARRATIVE TENSES */
+  s4:{
+    two:false,
+    items:[
+      {q:"Jack ______ the ruins the year before he went again with us.", o:["visited","had visited","was visiting","visits"], a:1, e:"A visita anterior é o <b>passado do passado</b> → past perfect."},
+      {q:"______ for treasure when you met him?", o:["Were you looking","Did you look","Had you looked","Do you look"], a:0, e:"Ação em andamento no momento do encontro → past continuous."},
+      {q:"Sophie ______ tickets before the show started.", o:["didn't buy","wasn't buying","hadn't bought","doesn't buy"], a:2, e:"Antes de outra ação passada → past perfect negativo."},
+      {q:"Sam ______ soccer when it started to rain.", o:["played","had played","plays","was playing"], a:3, e:"Ação em andamento interrompida pela chuva → past continuous."},
+      {q:"While I was drinking a coffee, I saw that I ______ an email the night before.", o:["received","was receiving","had received","receive"], a:2, e:"<b>the night before</b> = antes daquele momento → past perfect."},
+      {q:"I sent the pictures that Anna ______ the week before.", o:["had taken","took","was taking","takes"], a:0, e:"Anna tirou <b>antes</b> de eu enviar → past perfect."},
+      {q:"None of the other students knew the place, but I ______ there before with my parents.", o:["went","was going","have been","had been"], a:3, e:"Experiência anterior a um momento passado → had been."},
+      {q:"It ______ all school year, and it was still cloudy when we arrived.", o:["rained","had rained","was raining","rains"], a:1, e:"Chuva acumulada <b>antes</b> da chegada → past perfect."},
+      {q:"While we were on the beach, some people ______ for treasure in the sand.", o:["were searching","searched","had searched","search"], a:0, e:"Duas ações em andamento ao mesmo tempo → past continuous."},
+      {q:"They looked for hours, but they ______ anything when we left.", o:["didn't find","weren't finding","don't find","hadn't found"], a:3, e:"Até aquele momento passado, nada tinha sido encontrado → past perfect."}
+    ]
+  },
+  /* TIMELINE · o que veio primeiro */
+  s5:{
+    two:true,
+    items:[
+      {q:"“When we arrived, the film <b>had started</b>.”<br>What happened FIRST?", o:["We arrived.","The film started."], a:1, e:"O past perfect marca o que veio <b>antes</b> → o filme começou primeiro."},
+      {q:"“When we arrived, the film <b>started</b>.”<br>What happened FIRST?", o:["We arrived.","The film started."], a:0, e:"Sem past perfect, os dois simple pasts seguem a ordem da frase → chegamos e então começou."},
+      {q:"“She <b>had left</b> before I called.”<br>What happened FIRST?", o:["I called.","She left."], a:1, e:"had left = antes da ligação."},
+      {q:"“The farmers <b>were digging</b> a well when they discovered the head.”<br>What was already in progress?", o:["Digging the well.","Discovering the head."], a:0, e:"O past continuous marca a ação já em curso."},
+      {q:"“Richard III <b>had been buried</b> in a church before the site became a parking lot.”<br>What happened FIRST?", o:["The site became a parking lot.","Richard III was buried."], a:1, e:"O enterro veio antes."},
+      {q:"“Historians <b>had looked</b> for the body for years before Langley found it.”<br>What happened FIRST?", o:["Historians looked for the body.","Langley found it."], a:0, e:"A busca durou anos e veio antes da descoberta."},
+      {q:"“The workers <b>had made</b> each part separately and then put them together.”<br>What happened FIRST?", o:["They put the parts together.","They made each part separately."], a:1, e:"Fabricaram as partes antes de montar."},
+      {q:"“The emperor died in 210 BCE. Work on the army <b>had begun</b> years before.”<br>What happened FIRST?", o:["Work on the army began.","The emperor died."], a:0, e:"A obra começou antes da morte dele."}
+    ]
+  },
+  /* WAS / WERE GOING TO */
+  s6:{
+    two:false,
+    items:[
+      {q:"What ______ yesterday? You wanted to talk to me.", o:["were you going to say","you were going to say","did you going to say","are you going to say"], a:0, e:"Pergunta: <b>were</b> antes do sujeito."},
+      {q:"My dad called and said he ______ me up from school.", o:["were going to pick","was going to pick","going to pick","was going to picking"], a:1, e:"<b>he</b> → was · depois de <i>going to</i> vem o verbo base."},
+      {q:"______ to buy Nina a birthday present?", o:["Were you going","You were going","Did you going","Was you going"], a:0, e:"<b>you</b> → were, e vem antes do sujeito."},
+      {q:"I ______ to be here today, but my plans changed.", o:["weren't going","not going","wasn't going","didn't going"], a:2, e:"<b>I</b> → wasn't going to."},
+      {q:"Tom and Rosa ______ to go to the Dominican Republic.", o:["was going","were going","is going","going"], a:1, e:"Sujeito plural → were going to."},
+      {q:"I ______ anything, but I felt quite disappointed.", o:["weren't going to say","didn't going to say","am not going to say","wasn't going to say"], a:3, e:"<b>I</b> → wasn't going to say."},
+      {q:"We ______ a lot of money on vacation.", o:["wasn't going to spend","didn't going to spend","weren't going to spend","aren't going to spend"], a:2, e:"<b>We</b> → weren't going to spend."},
+      {q:"______ Max going to wear his boots to the party?", o:["Did","Is","Were","Was"], a:3, e:"<b>Max</b> é singular e a frase é sobre o passado → Was."}
+    ]
+  },
+  /* SHORT ANSWERS */
+  s7b:{
+    two:true,
+    items:[
+      {q:"Were you going to buy Nina a present? ✔", o:["Yes, I was.","Yes, I did."], a:0, e:"A pergunta usa <b>were</b> → responde com <b>was</b>."},
+      {q:"Was Max going to wear his boots? ✘", o:["No, he didn't.","No, he wasn't."], a:1, e:"A pergunta usa <b>was</b> → No, he <b>wasn't</b>."},
+      {q:"Were they going to travel? ✔", o:["Yes, they were.","Yes, they was."], a:0, e:"Sujeito plural → they <b>were</b>."},
+      {q:"Was she going to pay? ✘", o:["No, she weren't.","No, she wasn't."], a:1, e:"<b>she</b> → wasn't."}
+    ]
+  },
+  /* COMMON ERRORS */
+  s9:{
+    two:false,
+    items:[
+      {q:"Choose the CORRECT sentence.", o:["They had came home late.","They have came home late.","They had come home late.","They had comed home late."], a:2, e:"had + <b>particípio</b> → had come."},
+      {q:"Choose the CORRECT question.", o:["Were they going to explore the cave?","They were going to explore the cave?","Did they going to explore the cave?","Was they going to explore the cave?"], a:0, e:"Inversão: were + sujeito."},
+      {q:"Choose the CORRECT sentence.", o:["While I was drinking coffee, I saw the email.","While I was drink coffee, I saw the email.","While I drinking coffee, I saw the email.","While I drink coffee, I saw the email."], a:0, e:"was + verbo -ing."},
+      {q:"Choose the CORRECT sentence.", o:["She had wrote a letter.","She had written a letter.","She had write a letter.","She has wrote a letter."], a:1, e:"write → wrote → <b>written</b> (particípio)."},
+      {q:"Choose the CORRECT sentence.", o:["We wasn't going to pay.","We not going to pay.","We didn't going to pay.","We weren't going to pay."], a:3, e:"<b>We</b> → weren't."},
+      {q:"Choose the CORRECT sentence.", o:["When I arrived, the film has started.","When I arrived, the film had started.","When I arrived, the film had start.","When I arrived, the film was start."], a:1, e:"had + started (particípio)."},
+      {q:"Choose the CORRECT question.", o:["What was you going to say?","What you were going to say?","What were you going to say?","What did you going to say?"], a:2, e:"<b>you</b> → were, invertido depois do WH."},
+      {q:"Choose the CORRECT sentence.", o:["The farmers were digging a well.","The farmers was digging a well.","The farmers were dig a well.","The farmers did digging a well."], a:0, e:"Sujeito plural → were + digging."}
+    ]
+  },
+  /* USEFUL LANGUAGE */
+  s10:{
+    two:false,
+    items:[
+      {q:"I ______ this one time when we went to the beach…", o:["just","remember","realized","started"], a:1, e:"<b>I remember this one time…</b> abre a narrativa."},
+      {q:"One time, ______ I was about 13, I was playing video games.", o:["when","funny","just","started"], a:0, e:"<b>One time, when I was…</b> situa a idade."},
+      {q:"I ______ remember there was a hole in the floor.", o:["funny","started","just","realized"], a:2, e:"<b>I just remember…</b> = só me lembro de."},
+      {q:"…and then I ______ that Pete's dad was standing there.", o:["remember","when","just","realized"], a:3, e:"<b>and then I realized…</b> = e então percebi."},
+      {q:"But then I ______ to laugh.", o:["started","realized","remember","funny"], a:0, e:"<b>But then I started to…</b> marca a virada."},
+      {q:"The ______ thing was, he wasn't angry at all.", o:["just","when","funny","realized"], a:2, e:"<b>The funny thing was…</b> apresenta o detalhe inesperado."}
+    ]
+  },
+  /* FRONTED ADVERBIALS */
+  s11:{
+    two:false,
+    items:[
+      {q:"______, Alex thought it was just a rock. Later he saw it was a fossil.", o:["In the end","At first","Eventually","Afterward"], a:1, e:"<b>At first</b> = no começo, antes de mudar de ideia."},
+      {q:"______, the door opened and Pete's dad was standing there.", o:["All of a sudden","After a while","At first","In the end"], a:0, e:"<b>All of a sudden</b> = de repente."},
+      {q:"______, Grandpa turned off the documentary and Alex told him everything.", o:["At first","All of a sudden","In the end","Before long"], a:2, e:"<b>In the end</b> = no final de tudo."},
+      {q:"They waited for hours. ______, the rain stopped and they went out.", o:["At first","All of a sudden","In the end","Eventually"], a:3, e:"<b>Eventually</b> = por fim, depois de muito tempo."},
+      {q:"They dug for an hour. ______, they found the first coin.", o:["Some time later","At first","In the end","All of a sudden"], a:0, e:"<b>Some time later</b> = algum tempo depois."},
+      {q:"______, the museum had become famous around the world.", o:["At first","All of a sudden","Before long","Afterward"], a:2, e:"<b>Before long</b> = em pouco tempo."},
+      {q:"She played in the tide pools. ______, she stopped to look at the rocks.", o:["In the end","After a while","At first","Afterward"], a:1, e:"<b>After a while</b> = depois de um tempo."},
+      {q:"The documentary finished. ______, we talked about the fossil for hours.", o:["At first","All of a sudden","Before long","Afterward"], a:3, e:"<b>Afterward</b> = depois disso."}
+    ]
+  },
+  /* READING 1 */
+  s12:{
+    two:false,
+    items:[
+      {q:"What is the main purpose of the text?", o:["To encourage tourism in Leicester.","To compare English kings.","To describe one archeological discovery and its history.","To explain how archeologists work."], a:2, e:"O texto conta a descoberta do corpo de Richard III e a história em volta dela."},
+      {q:"Why didn't Edward V become king?", o:["He died in 1483.","He was too young and his uncle took the crown.","He refused the crown.","He was killed at Bosworth Field."], a:1, e:"“Edward V was only twelve years old… Richard… locked his nephew in the Tower and took the crown.”"},
+      {q:"Richard III didn't receive a funeral because", o:["he was never popular.","the church had been demolished.","his family had no money.","the site was already a parking lot."], a:0, e:"“Richard was never popular… he did not even receive a funeral.”"},
+      {q:"“By the twentieth century, the site <b>had become</b> a parking lot.” The past perfect shows that", o:["the site became a parking lot after 1900.","the site is a parking lot now.","the change will happen soon.","the change had already happened before 1900."], a:3, e:"O past perfect marca algo concluído <b>antes</b> daquele ponto do passado."},
+      {q:"How long did the archeologists dig before they found bones?", o:["Several years.","They found bones on the very first day.","About three months.","The text doesn't say."], a:1, e:"“On the very first day of digging, they found bones.”"},
+      {q:"What happened to Richard III's bones in the end?", o:["They were destroyed.","They were sent to the Tower of London.","They were buried in Leicester Cathedral.","They were put in a museum."], a:2, e:"“in 2015 the king was finally buried in Leicester Cathedral.”"}
+    ]
+  },
+  /* READING 2 */
+  s13:{
+    two:false,
+    items:[
+      {q:"What were the farmers doing when they found the first sculpture?", o:["Excavating a tomb.","Digging a well.","Building a museum.","Looking for treasure."], a:1, e:"“a group of farmers <b>were digging a well</b>… when they hit something hard.”"},
+      {q:"Why are the warriors called “terracotta”?", o:["Because of the city where they were found.","Because of the emperor's name.","Because of the clay they are made of.","Because of their original colours."], a:2, e:"“the sculptures were made out of a clay called terracotta.”"},
+      {q:"According to historians, why was the army built?", o:["To protect the emperor from his enemies after death.","To decorate the emperor's palace.","To celebrate the unification of China.","To train real soldiers."], a:0, e:"“historians think the army was built to protect him from those enemies in the afterlife.”"},
+      {q:"“Work <b>had begun</b> on the tomb several years before Qin Shi Huang died.” This means", o:["work began after his death.","work began in 1974.","work never finished.","work began while he was still alive."], a:3, e:"Começou <b>antes</b> da morte — portanto, enquanto ele vivia."},
+      {q:"What surprising detail does the text give about the warriors' faces?", o:["They are all identical.","Every single face is different.","They have no faces.","Their faces were never finished."], a:1, e:"“the face of every warrior is different.”"},
+      {q:"Which sentence is an OPINION rather than a fact?", o:["The Terracotta Army was found in 1974.","The warriors are made of clay.","It was the greatest archeological find of the twentieth century.","A museum was opened at the site."], a:2, e:"“The greatest” é um julgamento de valor, não um dado verificável."}
+    ]
+  },
+  /* CRITICAL THINKING */
+  s14:{
+    two:false,
+    items:[
+      {q:"“Archeologists discovered around 8,000 life-size warriors.”", o:["Certain fact — the text states it.","Probable — historians think so.","Opinion — someone's judgement.","Not in the text."], a:0, e:"É um dado apresentado como verificado."},
+      {q:"“Hundreds of thousands of workers were involved.”", o:["Certain fact — the text states it.","Probable — historians think so.","Opinion — someone's judgement.","Not in the text."], a:1, e:"O texto diz <b>historians think</b> — é estimativa, não certeza."},
+      {q:"“It was the greatest archeological find of the twentieth century.”", o:["Certain fact — the text states it.","Probable — historians think so.","Opinion — someone's judgement.","Not in the text."], a:2, e:"“The greatest” depende de critério — é opinião."},
+      {q:"“The army was built to protect the emperor in the afterlife.”", o:["Certain fact — the text states it.","Probable — historians think so.","Opinion — someone's judgement.","Not in the text."], a:1, e:"É uma interpretação dos historiadores sobre a intenção — provável, não comprovada."},
+      {q:"“The museum was opened a year after the excavation began.”", o:["Certain fact — the text states it.","Probable — historians think so.","Opinion — someone's judgement.","Not in the text."], a:0, e:"Data informada diretamente no texto."},
+      {q:"“One day you may be able to see the Terracotta Army in your own country.”", o:["Certain fact — the text states it.","Probable — historians think so.","Opinion — someone's judgement.","Not in the text."], a:2, e:"É uma previsão simpática do autor, não um fato."},
+      {q:"“The warriors were originally painted purple and gold.”", o:["Certain fact — the text states it.","Probable — historians think so.","Opinion — someone's judgement.","Not in the text."], a:3, e:"O texto fala de <b>pinks, reds, greens and blues</b> — roxo e dourado não aparecem."}
+    ]
+  }
+};
+
+const ORDER = {
+  s7:{
+    tip:"Pergunta com <b>was / were going to</b>: o verbo BE vem <b>antes</b> do sujeito. Com WH, a ordem é <b>WH + was/were + sujeito + going to + verbo base</b>.",
+    items:[
+      {w:["Were","you","going","to","leave"],                       a:"Were you going to leave?", why:"were + you + going to + verbo base."},
+      {w:["What","was","she","going","to","say"],                    a:"What was she going to say?", why:"WH + was + she + going to."},
+      {w:["Were","they","going","to","explore","the","cave"],        a:"Were they going to explore the cave?", why:"O erro comum é deixar <i>They were going to…?</i>"},
+      {w:["Who","was","going","to","pay"],                           a:"Who was going to pay?", why:"Com <i>Who</i> como sujeito, não há inversão extra."},
+      {w:["Why","were","you","going","to","call","me"],              a:"Why were you going to call me?", why:"WH + were + you + going to."},
+      {w:["Was","he","going","to","visit","the","museum"],           a:"Was he going to visit the museum?", why:"he → was."}
+    ]
+  },
+  s8:{
+    tip:"Nas narrativas, o <b>past perfect</b> (had + particípio) marca o que aconteceu antes, e o <b>past continuous</b> (was/were + -ing) marca o cenário em andamento.",
+    items:[
+      {w:["We","had","been","there","before"],                                  a:"We had been there before.", why:"had + been = experiência anterior."},
+      {w:["It","was","raining","when","we","arrived"],                           a:"It was raining when we arrived.", why:"Cenário em andamento + ação pontual."},
+      {w:["She","had","already","left","when","I","called"],                     a:"She had already left when I called.", why:"<i>already</i> entra entre had e o particípio."},
+      {w:["The","farmers","were","digging","a","well","when","they","found","it"], a:"The farmers were digging a well when they found it.", why:"A frase-chave do texto do Exército de Terracota."},
+      {w:["Historians","had","looked","for","the","body","for","years"],         a:"Historians had looked for the body for years.", why:"Busca anterior à descoberta."},
+      {w:["I","sent","the","pictures","that","Anna","had","taken"],              a:"I sent the pictures that Anna had taken.", why:"Anna tirou antes de eu enviar."},
+      {w:["All of a sudden","Alex","saw","his","mom","on","the","screen"],       a:"All of a sudden, Alex saw his mom on the screen.", why:"Fronted adverbial no início, com vírgula."},
+      {w:["Before long","the","museum","had","become","famous"],                 a:"Before long, the museum had become famous.", why:"Fronted adverbial + past perfect."}
+    ]
+  }
+};
+
+const DRILL = [
+  {pic:"🌧️ 🚪", qty:"past continuous + simple past", say:"It was raining when we arrived."},
+  {pic:"🎬 ⏮️",  qty:"past perfect",                  say:"When we arrived, the film had already started."},
+  {pic:"⚒️ 💧",  qty:"past continuous",               say:"The farmers were digging a well."},
+  {pic:"💰 ⏮️",  qty:"past perfect + never",          say:"They had never found anything like it before."},
+  {pic:"✈️ ❌",  qty:"was/were going to (plano mudou)", say:"We were going to travel, but we stayed at home."},
+  {pic:"🎁 ❓",  qty:"question",                      say:"Were you going to buy her a present?"},
+  {pic:"📧 ⏮️",  qty:"past perfect",                  say:"I sent the pictures that Anna had taken."},
+  {pic:"🏛️ ⏮️",  qty:"past perfect passive",          say:"It had been buried for more than two thousand years."},
+  {pic:"🚪 ⚡",  qty:"fronted adverbial",             say:"All of a sudden, the door opened."},
+  {pic:"🦴 1️⃣",  qty:"fronted adverbial",             say:"On the very first day, they found bones."},
+  {pic:"🗿 ⏮️",  qty:"past perfect",                  say:"Work had begun several years before he died."},
+  {pic:"🏆 ⏳",  qty:"fronted adverbial + past perfect", say:"Before long, the museum had become famous."}
+];
+
+const FINALE = [
+  {t:1,q:"“Ruínas”, in English, is",o:["remains","rubble","ruins","relics"],a:2,e:"ruins 🏛️"},
+  {t:1,q:"Which verb means “to find something by digging in the ground”?",o:["excavate","bury","disappear","wonder"],a:0,e:"excavate = escavar."},
+  {t:1,q:"It ______ when we arrived.",o:["rained","had rain","rains","was raining"],a:3,e:"Cenário em andamento → past continuous."},
+  {t:1,q:"A person who studies the past is a",o:["warrior","historian","chariot","tomb"],a:1,e:"historian = historiador."},
+  {t:1,q:"“Túnel”, in English, is",o:["tunnel","tomb","trench","terrace"],a:0,e:"tunnel 🕳️"},
+  {t:1,q:"She ______ there before.",o:["was","has been","had been","were"],a:2,e:"Experiência anterior a um momento passado → had been."},
+  {t:1,q:"Which word means “a two-wheeled vehicle pulled by horses”?",o:["sword","chariot","ladder","statue"],a:1,e:"chariot = carruagem/biga."},
+  {t:1,q:"We ______ to leave early, but we stayed.",o:["was going","going","did go","were going"],a:3,e:"<b>We</b> → were going to."},
+  {t:1,q:"“Esculturas”, in English, is",o:["sculptures","statues","structures","stones"],a:0,e:"sculptures 🗿"},
+
+  {t:2,q:"Sophie ______ the tickets before the show started.",o:["didn't buy","hadn't bought","wasn't buying","doesn't buy"],a:1,e:"Antes de outra ação passada → past perfect."},
+  {t:2,q:"______ you going to call me?",o:["Did","Was","Are","Were"],a:3,e:"<b>you</b> → Were."},
+  {t:2,q:"Choose the CORRECT sentence.",o:["They had come home late.","They had came home late.","They had comed home late.","They have came home late."],a:0,e:"had + particípio → had come."},
+  {t:2,q:"While I ______ coffee, I saw the email.",o:["drank","had drunk","was drinking","drink"],a:2,e:"was + verbo -ing."},
+  {t:2,q:"“Unearth” means",o:["to bury something.","to break something.","to clean something.","to dig up something buried."],a:3,e:"unearth = desenterrar."},
+  {t:2,q:"They waited for hours. ______, the rain stopped.",o:["At first","Eventually","All of a sudden","Before long"],a:1,e:"Eventually = por fim."},
+  {t:2,q:"I ______ remember there was a hole in the floor.",o:["just","when","funny","realized"],a:0,e:"I just remember… (useful language)."},
+  {t:2,q:"He ______ his nephew in the Tower and took the crown.",o:["had locked","was locking","locked","locks"],a:2,e:"Sequência de fatos concluídos → simple past."},
+  {t:2,q:"The Terracotta Army ______ for more than 2,000 years.",o:["buried","had been buried","was burying","buries"],a:1,e:"Passiva no past perfect: had been + particípio."},
+
+  {t:3,q:"“When we arrived, the film had started.” What happened FIRST?",o:["We arrived.","Both at the same time.","We can't know.","The film started."],a:3,e:"O past perfect marca o que veio antes."},
+  {t:3,q:"Which sentence uses was/were going to CORRECTLY for a plan that changed?",o:["They were going to leave, but they stayed.","I was going to studying.","We were going travel.","She going to call."],a:0,e:"was/were + going to + verbo base, e o plano não se realizou."},
+  {t:3,q:"Which of these is an OPINION?",o:["The army was found in 1974.","The warriors are made of clay.","It was the greatest find of the century.","A museum opened at the site."],a:2,e:"“The greatest” é julgamento de valor."},
+  {t:3,q:"I sent the pictures that Anna ______ the week before.",o:["took","had taken","was taking","takes"],a:1,e:"A ação dela veio antes → past perfect."},
+  {t:3,q:"“Work had begun years before he died” means work began",o:["after his death.","at the same time as his death.","while he was still alive.","in 1974."],a:2,e:"Antes da morte = enquanto ele vivia."},
+  {t:3,q:"Complete: “None of the students knew the place, but I ______ there before.”",o:["went","was going","have been","had been"],a:3,e:"Passado do passado → had been."},
+  {t:3,q:"Which question is grammatically CORRECT?",o:["What were you going to say?","What was you going to say?","What you were going to say?","What did you going to say?"],a:0,e:"WH + were + you + going to."}
+];
+
+const STATIONS = {
+  intro:{n:"Field briefing",      d:"como funciona a escavação",             em:"🗺️", kind:"intro", stars:0},
+  s1: {n:"Artifact Vocabulary",   d:"18 palavras · monuments & exploring",   em:"🏺", kind:"vocab",  stars:6},
+  s2: {n:"CLIL Glossary",         d:"9 termos de arqueologia · matching",    em:"📖", kind:"match",  stars:6},
+  s3: {n:"Exploring Verbs",       d:"8 frases para completar",               em:"🧭", kind:"mcq", set:"s3", stars:6},
+  s4: {n:"GRAMMAR LAB 1",         d:"narrative tenses · painel + 10 itens",  em:"⏳", kind:"lab", panel:"g1", set:"s4", stars:9},
+  s5: {n:"Tense Timeline",        d:"o que aconteceu primeiro? · 8 itens",   em:"🕰️", kind:"mcq", set:"s5", stars:6},
+  s6: {n:"GRAMMAR LAB 2",         d:"was / were going to · painel + 8 itens",em:"🔄", kind:"lab", panel:"g2", set:"s6", stars:8},
+  s7: {n:"Question Forms",        d:"montar perguntas + short answers",      em:"❓", kind:"ask",   stars:8},
+  s8: {n:"Sentence Builder",      d:"8 frases · word order",                 em:"🧩", kind:"order", set:"s8", stars:8},
+  s9: {n:"Common Errors",         d:"ache a frase correta · 8 itens",        em:"⚠️", kind:"mcq", set:"s9", stars:7},
+  s10:{n:"Useful Language",       d:"describing a past experience",          em:"💬", kind:"mcq", set:"s10", stars:6},
+  s11:{n:"Fronted Adverbials",    d:"At first · All of a sudden · In the end",em:"➡️", kind:"mcq", set:"s11", stars:7},
+  s12:{n:"The King in the Parking Lot", d:"reading longo · 6 perguntas",     em:"👑", kind:"read1", stars:9},
+  s13:{n:"The Terracotta Army",   d:"reading longo · 6 perguntas",           em:"🗿", kind:"read2", stars:9},
+  s14:{n:"Critical Thinking",     d:"fato, estimativa ou opinião?",          em:"🧠", kind:"mcq", set:"s14", stars:6},
+  s15:{n:"Narrative Drill",       d:"12 cartas · fale a frase completa",     em:"🗣️", kind:"drill", stars:5},
+  s16:{n:"THE FINAL DIG",         d:"25 questões · 3 níveis",                em:"🏆", kind:"quiz",  stars:15}
+};
+
+const MAP = [
+  {t:"🏺 VOCABULARY · monuments, history &amp; exploring", eps:["s1","s2","s3"]},
+  {t:"⏳ GRAMMAR LAB · narrative tenses", eps:["s4","s5","s8","s9"]},
+  {t:"🔄 GRAMMAR LAB · was / were going to", eps:["s6","s7"]},
+  {t:"💬 USEFUL LANGUAGE &amp; STORYTELLING", eps:["s10","s11","s15"]},
+  {t:"📖 READING &amp; CRITICAL THINKING", eps:["s12","s13","s14"]},
+  {t:"🏆 FINAL CHALLENGE", eps:["s16","intro"]}
+];
+
+const ORDERED = ["s1","s2","s3","s4","s5","s8","s9","s6","s7","s10","s11","s15","s12","s13","s14","s16"];
+
+const LEVELS = [
+  {s:0,n:"Volunteer 🧤"},{s:25,n:"Field Assistant 🔎"},{s:55,n:"Archeologist ⛏️"},
+  {s:85,n:"Lead Excavator 🏛️"},{s:110,n:"CURATOR 👑"}
+];
+
+/* =======================================================================
+   MOTOR
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------- HOME ---------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>=0?`<span class="no">${i+1}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ $("play").classList.remove("on"); $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------- PLAYER ---------- */
+let ORD = null, PK = null, mSel = null, mDone = 0, mRight = [];
+
+function openEp(k){
+  cur=k; hits=0; total=0; ORD=null; PK=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = head + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    total=VOCAB.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">Dinâmica: mostre a palavra, a turma arrisca o significado, depois vire. Peça também uma frase de exemplo — <b>frase completa vale bônus</b>.</p>
+      <div class="vg">${VOCAB.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="scram"){
+    total=SCRAMBLE.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">Dica: leia a tradução e o desenho primeiro. <b>Depois procure a primeira letra.</b></p>
+      ${SCRAMBLE.map((s2,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${s2.e} &nbsp;<span class="hint">${s2.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="sort"){
+    total=SORT.items.length;
+    b.innerHTML = head + `<p class="how">Cada compra vai para o cesto certo.</p>
+      <p class="tip" style="border-left-color:var(--green)">🍎 <b>FRUIT</b> = frutas &nbsp;·&nbsp; 🥕 <b>VEGETABLES</b> = legumes e verduras &nbsp;·&nbsp; 🍚 <b>OTHER</b> = o resto (grãos, farinha, mel, leite…)</p>
+      ${SORT.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SORT.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="match"){ total=MATCH.length; b.innerHTML = head + matchHTML(MATCH,"TERM","DEFINITION",
+      "Clique no termo, depois na definição certa.",
+      "Glossário do CLIL sobre o Exército de Terracota — os mesmos nove termos da Lesson 6 do livro."); }
+
+  else if(s.kind==="whmatch"){ total=WHMATCH.length; b.innerHTML = head + matchHTML(WHMATCH,"QUESTION","ANSWER",
+      "Clique na pergunta, depois na resposta certa.",
+      "<b>How much</b> = quanto custa · <b>How many</b> = quantos · <b>What</b> = o quê · <b>Where</b> = onde · <b>Who</b> = quem."); }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    const tips = {
+      s3:"<b>dig</b> cavar · <b>discover</b> descobrir · <b>explore</b> explorar · <b>search</b> procurar · <b>touch</b> tocar · <b>lift up</b> levantar · <b>disappear</b> desaparecer · <b>wonder</b> perguntar-se.",
+      s5:"<b>EN</b> The past perfect (had + participle) always marks the action that came first. &nbsp;·&nbsp; <b>PT</b> O past perfect marca sempre a ação <b>mais antiga</b> das duas.",
+      s9:"Os quatro erros mais comuns: <b>had + passado simples</b> no lugar do particípio · pergunta <b>sem inversão</b> · <b>was/were</b> trocado · <b>was + verbo base</b> no lugar de -ing.",
+      s10:"<b>Useful language</b> para narrar: I remember this one time… · One time, when I was… · I just remember… · and then I realized… · But then I started to… · The funny thing was…",
+      s11:"<b>Fronted adverbials</b> abrem a frase e pedem vírgula: At first, / All of a sudden, / After a while, / Some time later, / Before long, / Afterward, / Eventually, / In the end,",
+      s14:"<b>EN</b> Look for the signals: <i>historians think</i> = probable · <i>the greatest</i> = opinion. &nbsp;·&nbsp; <b>PT</b> Procure as pistas: <i>historians think</i> indica estimativa; superlativos como <i>the greatest</i> indicam opinião."
+    };
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. O feedback aparece na hora.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${tips[s.set]||""}</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="ask"){
+    ORD=ORDER.s7; PK="s7b"; total=ORDER.s7.items.length + QS.s7b.items.length;
+    b.innerHTML = head + `<p class="how">Primeiro monte as perguntas. Depois escolha a resposta curta certa.</p>
+      <p class="tip" style="border-left-color:var(--purple)">${ORDER.s7.tip}</p>`
+      + orderHTML("s7")
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">🙋 Short answers</h2>`
+      + mcqHTML("s7b");
+    initOrder();
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER.s8; total=ORDER.s8.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas palavras na ordem certa para montar a frase.</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORDER.s8.tip}</p>` + orderHTML("s8");
+    initOrder();
+  }
+
+  else if(s.kind==="lab"){
+    PK=s.set; total=QS[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Leia o painel com atenção — a explicação vem em inglês e em português. Depois faça os itens.</p>`
+      + labHTML(s.panel) + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="read1"){
+    PK="s12"; total=QS.s12.items.length;
+    b.innerHTML = head + `<div class="read">
+        <h3>👑 The king in the parking lot</h3>
+        <p>Leicester is famous for its Indian restaurants, but the city also has one of the oldest histories in
+        England. Its story goes back more than two thousand years, and in 2012 that story produced one of the
+        strangest archeological discoveries of the century: the body of King Richard III <b>was unearthed</b> under
+        a parking lot.</p>
+        <p>Richard was born in 1452 and died in 1485. He was a member of the Plantagenet royal family, which
+        <b>had ruled</b> England for more than three hundred years. However, the Plantagenets were often fighting
+        among themselves, and Richard's family was no exception. When his brother Edward IV died in 1483, the next
+        king should have been Edward V — but Edward V was only twelve years old. Richard, who was the boy's uncle,
+        wanted the crown himself, so he <b>locked</b> his nephew in the Tower of London and <b>took</b> it.</p>
+        <p>Richard was never popular. People said terrible things about him, and when he <b>was killed</b> at the
+        Battle of Bosworth Field in 1485, he did not even receive a funeral. He was buried in a church in Leicester,
+        but the church <b>was demolished</b> in 1538 and the ruins eventually disappeared under the growing city.
+        By the twentieth century, the site <b>had become</b> a parking lot and a children's playground.</p>
+        <p>People never stopped looking. Philippa Langley, a British writer, believed she knew where the king was,
+        and she persuaded archeologists from the University of Leicester to excavate. On the very first day of
+        digging, they found bones. After many tests, the bones <b>were confirmed</b> in 2013 as Richard's, and in
+        2015 the king <b>was finally buried</b> in Leicester Cathedral — a short distance from the statue of him
+        that <b>had been standing</b> in the gardens for years.</p>
+        <p>Today the parking lot where they found the king is a protected monument and one of the most important
+        historic sites in the U.K.</p>
+        <div class="gl">🔑 <b>to unearth</b> = desenterrar · <b>crown</b> = coroa · <b>nephew</b> = sobrinho ·
+        <b>to demolish</b> = demolir · <b>to persuade</b> = convencer · <b>bones</b> = ossos ·
+        <b>protected monument</b> = monumento protegido</div>
+      </div>` + mcqHTML("s12");
+  }
+
+  else if(s.kind==="read2"){
+    PK="s13"; total=QS.s13.items.length;
+    b.innerHTML = head + `<div class="read">
+        <h3>🗿 The Terracotta Army</h3>
+        <p>In March 1974, a group of farmers <b>were digging</b> a well near the city of Xi'an, in northwestern
+        China, when they hit something hard. Under the earth, they <b>had unearthed</b> the greatest archeological
+        find of the twentieth century — the Terracotta Army. It <b>had been buried</b> in the ground for more than
+        two thousand years, and nothing like it <b>had ever been found</b> before.</p>
+        <p><b>UNCOVERED.</b> After the discovery, archeologists came to search the site. Led by a man named Zhao
+        Kangmin, they worked incredibly hard for many years, slowly digging. They discovered around eight thousand
+        life-size warriors, hundreds of chariots and horses made of clay, and smaller objects such as spears and
+        swords. Because the sculptures were made out of a clay called terracotta, the warriors were called the
+        Terracotta Army.</p>
+        <p><b>PROTECTION IN THE AFTERLIFE.</b> In ancient times, emperor Qin Shi Huang brought the different parts
+        of China together to form one country. In 221 BCE he became the first emperor of China. When he died in
+        210 BCE, he was buried in a tomb close to where the Terracotta Army was discovered. The emperor <b>had
+        lived</b> in a time when many people believed in life after death. As a leader, he <b>had made</b> many
+        enemies, and historians think the army was built to protect him from those enemies in the afterlife.</p>
+        <p><b>YEARS OF WORK.</b> Work <b>had begun</b> on the tomb and the warriors several years before Qin Shi
+        Huang died. Historians think that hundreds of thousands of workers were involved. The workers made each
+        part of the warriors separately and then put them together later. Incredibly, the face of every warrior is
+        different, and from the clothes they are wearing we can even tell their position in the army. Archeologists
+        have also discovered that the warriors were originally painted in bright pinks, reds, greens and blues.</p>
+        <p><b>SOMETHING TO VISIT.</b> A year after archeologists began to excavate the site, a museum was opened.
+        Every year, millions of tourists visit it. Over the last few years, some of the warriors have been exhibited
+        in museums around the world — so one day you may be able to see the Terracotta Army in your own country.</p>
+        <div class="gl">🔑 <b>a well</b> = um poço · <b>to unearth</b> = desenterrar · <b>clay</b> = argila ·
+        <b>warrior</b> = guerreiro · <b>chariot</b> = carruagem · <b>spear</b> = lança · <b>sword</b> = espada ·
+        <b>tomb</b> = tumba · <b>afterlife</b> = vida após a morte · <b>to excavate</b> = escavar</div>
+      </div>` + mcqHTML("s13");
+  }
+
+  else if(s.kind==="drill"){
+    total=DRILL.length;
+    b.innerHTML = head + `<p class="how">Leia a pista, formule a frase completa em voz alta e só então toque para conferir.</p>
+      <p class="tip" style="border-left-color:var(--red)">A carta traz a <b>pista de tempo verbal</b>. A turma formula a frase completa em voz alta e só então você revela.</p>
+      <div class="dg">${DRILL.map(d=>`
+        <div class="dc" onclick="openDrill(this)">
+          <div class="pic">${d.pic}</div>
+          <div class="qty">${d.qty}</div>
+          <div class="tap">TOQUE PARA CONFERIR</div>
+          <div class="say">${d.say}</div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>1.</b> São 15 estações. Você pode fazer na ordem ou escolher no mapa 🗺️.</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Volunteer → Field Assistant → Archeologist → Lead Excavator → CURATOR.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>3.</b> Errou? Sem problema. O jogo explica o porquê e você segue.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>4.</b> Botão <b>🔍 Projeção</b>: letras gigantes e placar de 4 equipes, para jogar com a turma inteira no telão.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>5.</b> Botão <b>👀 Answers</b> mostra todas as respostas da estação — use só na correção!</p>`;
+}
+
+/* ---------- vocab ---------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------- scramble ---------- */
+function initScram(){
+  SCRAMBLE.forEach((s,i)=>{
+    const letters = s.w.split("").map((c,j)=>({c,j})).sort(()=>Math.random()-0.5);
+    $("bk-"+i).innerHTML = letters.map(o=>
+      `<button class="ch let" onclick="pickLet(${i},this)">${o.c}</button>`).join("");
+    $("sl-"+i).innerHTML = "";
+  });
+}
+function pickLet(i,btn){
+  const c=document.createElement("button");
+  c.className="ch let"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("sl-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).innerHTML="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckScram(i){
+  const sl=$("sl-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join("");
+  if(built===SCRAMBLE[i].w){
+    sl.className="slot ok";
+    $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SCRAMBLE[i].w}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("fb-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shScram(i){
+  const already = $("sl-"+i).classList.contains("ok");
+  rsScram(i);
+  $("sl-"+i).innerHTML = SCRAMBLE[i].w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  $("sl-"+i).className="slot ok";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SCRAMBLE[i].w}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- sort ---------- */
+function pickSort(i,j){
+  const row=document.querySelector(`#body .srow[data-i="${i}"]`);
+  if(row.dataset.done) return; row.dataset.done="1";
+  const c=SORT.items[i].c;
+  row.querySelectorAll(".sb").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===c) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $("sf-"+i).innerHTML = (j===c?`<span style="color:var(--ok)">✅ </span>`:`<span style="color:var(--bad)">❌ </span>`)
+    + `<span class="wy">${SORT.items[i].e}</span>`;
+  bump();
+}
+
+/* ---------- match ---------- */
+function matchHTML(pairs,l,r,how,tip){
+  mRight = pairs.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-0.5);
+  return `<p class="how">${how}</p><p class="tip" style="border-left-color:var(--purple)">${tip}</p>
+  <div class="mg">
+    <div><div class="mh">${l}</div>${pairs.map((p,i)=>
+      `<button class="mi" id="L-${i}" onclick="mPick('L',${i})">${p[0]}</button>`).join("")}</div>
+    <div><div class="mh">${r}</div>${mRight.map((o,k)=>
+      `<button class="mi" id="R-${k}" onclick="mPick('R',${k})">${o.t}</button>`).join("")}</div>
+  </div>
+  <div class="fb" id="mfb" style="margin-top:14px"></div>`;
+}
+function mPick(side,idx){
+  const el=$(side+"-"+idx);
+  if(el.classList.contains("got")) return;
+  if(side==="L"){
+    document.querySelectorAll("#body .mi.sel").forEach(x=>x.classList.remove("sel"));
+    mSel=idx; el.classList.add("sel"); return;
+  }
+  if(mSel===null){ $("mfb").innerHTML=`<span style="color:var(--bad)">👈 Escolha primeiro na coluna da esquerda.</span>`; return; }
+  if(mRight[idx].i===mSel){
+    const L=$("L-"+mSel); L.classList.remove("sel"); L.classList.add("got"); el.classList.add("got");
+    mDone++; mSel=null;
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+    bump();
+  } else {
+    el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320);
+    $("mfb").innerHTML=`<span style="color:var(--bad)">❌ Not this one. Try again!</span>`;
+  }
+}
+
+/* ---------- mcq ---------- */
+function mcqHTML(ns){
+  const d=QS[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-ns="${ns}" data-q="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+      <div class="opts ${d.two?"two":"four"}">${it.o.map((o,j)=>
+        `<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}</div>
+      <div class="fb" id="f-${ns}-${i}"></div>
+    </div>`).join("");
+}
+function ansMcq(ns,i,j){
+  const box=document.querySelector(`#body .ex[data-ns="${ns}"][data-q="${i}"]`);
+  if(!box || box.dataset.done) return; box.dataset.done="1";
+  const it=QS[ns].items[i];
+  box.querySelectorAll(".op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===it.a) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $(`f-${ns}-${i}`).innerHTML =
+    (j===it.a?`<span style="color:var(--ok)">✅ Correct!</span>`:`<span style="color:var(--bad)">❌ Not this one.</span>`)
+    + `<span class="wy">${it.e}</span>`;
+  bump();
+}
+
+/* ---------- word order ---------- */
+function orderHTML(ns){
+  return ORDER[ns].items.map((it,i)=>`
+    <div class="ex" data-o="${i}">
+      <div class="qn"><span class="n">${i+1}</span>Build the sentence</div>
+      <div class="slot" id="os-${i}"></div>
+      <div class="bank" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  if(!ORD) return;
+  ORD.items.forEach((it,i)=>{
+    const sh = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    const bk = $("ob-"+i); if(!bk) return;
+    bk.innerHTML = sh.map(o=>`<button class="ch" onclick="pickWord(${i},this)">${o.w}</button>`).join("");
+    $("os-"+i).innerHTML="";
+  });
+}
+function pickWord(i,btn){
+  const c=document.createElement("button");
+  c.className="ch"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("os-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsOrd(i){
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"; $("of-"+i).innerHTML="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckOrd(i){
+  const it=ORD.items[i], sl=$("os-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join(" ");
+  const target=it.a.replace(/[?.!]$/,"");
+  if(built===target){
+    sl.className="slot ok";
+    $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${it.a}</span><span class="wy">${it.why}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("of-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shOrd(i){
+  const it=ORD.items[i];
+  const already = $("os-"+i).classList.contains("ok");
+  rsOrd(i);
+  $("os-"+i).innerHTML = it.a.replace(/[?.!]$/,"").split(" ").map(w=>`<span class="ch">${w}</span>`).join("");
+  $("os-"+i).className="slot ok";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${it.a}</span><span class="wy">${it.why}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- drill ---------- */
+function openDrill(el){
+  if(!el.classList.contains("open")){ el.classList.add("open"); bump(); }
+}
+
+/* ---------- painel de gramática bilíngue ---------- */
+function labHTML(key){
+  const g=GRAM[key];
+  return `<div class="lab">
+    <h3>📐 ${g.title}</h3>
+    ${g.rows.map(r=>`
+      <div class="labrow">
+        <div class="fm"><b>${r.form}</b><code>${r.forms}</code></div>
+        ${r.en?`<div class="en">${r.en}</div>`:""}
+        ${r.pt?`<div class="ptx">${r.pt}</div>`:""}
+        <div class="exm">${r.ex}</div>
+      </div>`).join("")}
+    <div class="cerr">
+      <div class="t">⚠️ COMMON ERROR · ERRO CLÁSSICO</div>
+      <div class="w">${g.error.wrong}</div>
+      <div class="r">✅ ${g.error.right}</div>
+      <div class="n">${g.error.note}</div>
+    </div>
+  </div>`;
+}
+
+/* ---------- quiz ---------- */
+let qT=1, qI=0, qHit=0; const qA={};
+function quizHTML(){
+  return `<p class="how">20 questões em 3 níveis. Comece pelo bronze!</p>
+  <div class="tiers">
+    <button class="tb on" id="t1" onclick="setT(1)">🥉 EASY · 10 pts</button>
+    <button class="tb" id="t2" onclick="setT(2)">🥈 MEDIUM · 20 pts</button>
+    <button class="tb" id="t3" onclick="setT(3)">🥇 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="ex" id="qbox"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" onclick="qGo(-1)">◀ prev</button>
+    <button class="btn b" onclick="qGo(1)">next ▶</button>
+    <span class="fb" id="qsc"></span>
+  </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(qI>=L.length) qI=L.length-1;
+  const c=L[qI];
+  $("qmeta").innerHTML = `QUESTION ${qI+1} / ${L.length} · <b>${qT*10} points</b>`;
+  $("qbox").innerHTML = `<div class="qn">${c.q.q}</div>
+    <div class="opts four">${c.q.o.map((o,j)=>
+      `<button class="op" onclick="qPick(${c.i},${j})">${o}</button>`).join("")}</div>
+    <div class="fb" id="qfb"></div>`;
+  if(qA[c.i]!==undefined) qShow(c.i,qA[c.i]);
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; if(j===FINALE[gi].a) qHit++;
+  qShow(gi,j); bump();
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qShow(gi,pick){
+  const q=FINALE[gi];
+  document.querySelectorAll("#qbox .op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===q.a) b.classList.add("right"); else if(k===pick) b.classList.add("wrong");
+  });
+  $("qfb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${qT*10}</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="wy">${q.e}</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+/* ---------- reveal ---------- */
+function revealAll(){
+  if(!cur) return;
+  const k=STATIONS[cur].kind;
+  if(k==="vocab") document.querySelectorAll("#body .vc").forEach(c=>flip(c));
+  else if(k==="scram") SCRAMBLE.forEach((_,i)=>shScram(i));
+  else if(k==="sort") SORT.items.forEach((it,i)=>pickSort(i,it.c));
+  else if(k==="match"||k==="whmatch"){
+    const pairs = (k==="match")?MATCH:WHMATCH;
+    pairs.forEach((p,i)=>{
+      const ri = mRight.findIndex(o=>o.i===i);
+      const L=$("L-"+i), R=$("R-"+ri);
+      if(L&&R&&!L.classList.contains("got")){ L.classList.add("got"); L.classList.remove("sel"); R.classList.add("got"); mDone++; bump(); }
+    });
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+  }
+  else if(k==="mcq") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="ask"){ ORD.items.forEach((_,i)=>shOrd(i)); QS.s7b.items.forEach((it,i)=>ansMcq("s7b",i,it.a)); }
+  else if(k==="order") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="lab") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="read1") QS.s12.items.forEach((it,i)=>ansMcq("s12",i,it.a));
+  else if(k==="read2") QS.s13.items.forEach((it,i)=>ansMcq("s13",i,it.a));
+  else if(k==="drill"){ document.querySelectorAll("#body .dc").forEach(c=>openDrill(c)); }
+  else if(k==="quiz"){ const c=tList()[qI]; if(qA[c.i]===undefined) qPick(c.i,FINALE[c.i].a); }
+}
+
+/* ---------- projeção / equipes ---------- */
+function drawTeams(){
+  $("tin").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button></div>`).join("")
+    + `<div class="tm"><button onclick="rsTeams()" style="width:auto;padding:4px 10px">zerar</button></div>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Modo aluno" : "🔍 Projeção";
+}
+
+/* ---------- inicia ---------- */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") home();
+  else if(e.key==="ArrowRight" && cur) stepEp(1);
+  else if(e.key==="ArrowLeft" && cur) stepEp(-1);
+});
+
+drawTeams(); drawMap(); addStars(0);
+</script>
+</body>
+</html>
