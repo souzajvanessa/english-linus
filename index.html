@@ -236,11 +236,11 @@ const ATIVIDADES = [
        titulo   → nome da atividade
        unidade  → a unidade ou os capítulos
        paginas  → número de páginas (só o número)
+
+   A ordem na tela é automática: 4º, 5º, 8º, 9º e 1º ano A.
+   Você pode colar o bloco novo em qualquer lugar da lista.
 */
 const PDFS = [
-  { url:"pdf/folha-aluno-review-9ano.pdf",
-    turma:"9º ANO", titulo:"The Dig Site · Review completo",
-    unidade:"Unit 5 · Exploring the Past", paginas:9 },
   { url:"pdf/folha-aluno-hobby-party-4ano.pdf",
     turma:"4º ANO", titulo:"Hobby Party",
     unidade:"Unit 4 · Party at the library!", paginas:6 },
@@ -250,6 +250,9 @@ const PDFS = [
   { url:"pdf/folha-aluno-chefs-table-8ano.pdf",
     turma:"8º ANO", titulo:"Chef's Table",
     unidade:"Food &amp; Cooking", paginas:5 },
+  { url:"pdf/folha-aluno-review-9ano.pdf",
+    turma:"9º ANO", titulo:"The Dig Site · Review completo",
+    unidade:"Unit 5 · Exploring the Past", paginas:9 },
   { url:"pdf/folha-aluno-english-rewind-1ano.pdf",
     turma:"1º ANO A", titulo:"English Rewind",
     unidade:"Chapters 1 a 5", paginas:5 }
@@ -312,7 +315,9 @@ if (PDFS.length) {
       </div>
     </div>
     <div class="dlgrid">`;
-  PDFS.forEach(p => {
+  const ORDEM = ["4º ANO","5º ANO","8º ANO","9º ANO","1º ANO A"];
+  const pos = t => { const i = ORDEM.indexOf(t); return i < 0 ? 99 : i; };
+  [...PDFS].sort((a,b) => pos(a.turma) - pos(b.turma)).forEach(p => {
     html += `
       <div class="dlcard">
         <span class="yr">${p.turma}</span>
