@@ -151,6 +151,7 @@ const TURMAS = {
   "4ano":  "ENSINO FUNDAMENTAL · 4º ANO",
   "5ano":  "ENSINO FUNDAMENTAL · 5º ANO",
   "6ano":  "ENSINO FUNDAMENTAL · 6º ANO",
+  "7ano":  "ENSINO FUNDAMENTAL · 7º ANO",
   "8ano":  "ENSINO FUNDAMENTAL · 8º ANO",
   "9ano":  "ENSINO FUNDAMENTAL · 9º ANO",
   "1ano":  "ENSINO MÉDIO · 1º ANO A"
@@ -231,6 +232,18 @@ const ATIVIDADES = [
   },
 
   {
+    turma:  "7ano",
+    url:    "7ano/wild-planet/",
+    titulo: "WILD PLANET",
+    tag:    "UNIT 5 · AWESOME ANIMALS",
+    nivel:  "20 estações · A2–B1",
+    emoji:  "🦁",
+    cores:  ["#123d2b", "#1F7A4D"],
+    texto:  "Uma expedição de conservação em três atos. FIELD GUIDE traz vocabulário de animais, cestos de pernas e alimentação e o Grammar Lab da voz passiva no presente. TRACKING VERBS trabalha os phrasal verbs e a passiva no passado, com montagem de frases e transformação de ativa para passiva. CONSERVATION HQ fecha com três leituras longas — o pamphlet de animais ameaçados, duas notícias de resgate e o CLIL do Projeto Arara-Azul — mais a Final Expedition de 25 questões.",
+    topicos:["passive: simple present", "passive: simple past", "by + agent", "phrasal verbs", "word order", "endangered animals", "so / as / because", "reading"]
+  },
+
+  {
     turma:  "8ano",
     url:    "8ano/chefs-table/",
     titulo: "CHEF'S TABLE",
@@ -263,6 +276,9 @@ const PDFS = [
   { url:"pdf/folha-aluno-review-6ano.pdf",
     turma:"6º ANO", titulo:"What's Cooking? · Review completo",
     unidade:"Unit 5 · What's cooking?", paginas:9 },
+  { url:"pdf/folha-aluno-review-7ano.pdf",
+    turma:"7º ANO", titulo:"Wild Planet · Review completo",
+    unidade:"Unit 5 · Awesome animals", paginas:12 },
   { url:"pdf/folha-aluno-chefs-table-8ano.pdf",
     turma:"8º ANO", titulo:"Chef's Table",
     unidade:"Food &amp; Cooking", paginas:5 },
@@ -331,7 +347,7 @@ if (PDFS.length) {
       </div>
     </div>
     <div class="dlgrid">`;
-  const ORDEM = ["4º ANO","5º ANO","6º ANO","8º ANO","9º ANO","1º ANO A"];
+  const ORDEM = ["4º ANO","5º ANO","6º ANO","7º ANO","8º ANO","9º ANO","1º ANO A"];
   const pos = t => { const i = ORDEM.indexOf(t); return i < 0 ? 99 : i; };
   [...PDFS].sort((a,b) => pos(a.turma) - pos(b.turma)).forEach(p => {
     html += `
