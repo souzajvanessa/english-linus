@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOME &amp; AWAY · Unit 6 · 6º ano</title>
+<style>
+  :root{
+    --bg:#f4f7f6; --card:#ffffff; --ink:#17262b; --dim:#5d6d72; --line:#d6e2e0;
+    --red:#c05a34; --orange:#d98026; --yellow:#d9a92a; --green:#2c8a5e; --teal:#0e6b63;
+    --blue:#256b8c; --purple:#6d4f8f; --pink:#c04a72;
+    --ok:#20bf7f; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(780px 450px at 88% -4%, rgba(217,169,42,.28), transparent 62%),
+      radial-gradient(720px 440px at 4% 100%, rgba(14,107,99,.24), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#a8c4c0; border-radius:99px;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue);} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{
+    padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;
+  }
+  #hero .truck{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--red);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{
+    background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;
+  }
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{
+    display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);
+  }
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{
+    position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;
+  }
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#f0e7db; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#eafaf1;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{
+    background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;
+  }
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:132px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--yellow);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#5a4a2a;}
+
+  /* generic exercise box */
+  .ex{
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;
+  }
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{
+    display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--purple); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;
+  }
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;
+  }
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#fffdf0;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* chips (word order + unscramble) */
+  .slot{
+    min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#fffdf6;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{
+    border:3px solid var(--ink); border-radius:12px; background:var(--blue); color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+  }
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort baskets */
+  .srow{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .srow .it{font-weight:900; font-size:20px; min-width:170px;}
+  .sb{
+    border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .sb:hover:not(:disabled){background:#fffdf0;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{
+    display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:17px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .mi:hover:not(:disabled){background:#fffdf0;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading + menu */
+  .read{
+    background:#fffdf3; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.65; font-weight:600;
+  }
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--red);}
+  .read p{margin-bottom:10px;}
+  .read .gl{
+    margin-top:14px; font-size:14px; font-weight:800; color:#6a5a3a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;
+  }
+  .menu{
+    background:#fff; border:4px solid var(--ink); border-radius:var(--r); box-shadow:0 6px 0 var(--ink);
+    padding:18px 20px; margin-bottom:16px;
+  }
+  .menu h3{text-align:center; font-size:22px; font-weight:900; letter-spacing:1px;}
+  .menu .ad{text-align:center; font-size:12.5px; color:var(--dim); font-weight:800; margin-bottom:12px;}
+  .mgrp{margin-bottom:12px;}
+  .mgrp .t{
+    font-size:13px; font-weight:900; letter-spacing:2px; background:var(--ink); color:#fff;
+    display:inline-block; padding:3px 11px; border-radius:99px; margin-bottom:7px;
+  }
+  .ln{display:flex; justify-content:space-between; gap:12px; font-size:17px; font-weight:800;
+    border-bottom:2px dotted var(--line); padding:5px 0;}
+  .ln b{color:var(--green);}
+
+  /* drill */
+  .dg{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;}
+  .dc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 12px; text-align:center; cursor:pointer; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .dc:hover{transform:translateY(-3px);}
+  .dc .pic{font-size:44px;}
+  .dc .qty{font-weight:900; font-size:16px; margin-top:5px; color:var(--purple);}
+  .dc .say{display:none; font-weight:900; font-size:17px; margin-top:9px; color:var(--green); line-height:1.3;}
+  .dc.open{background:#eafaf1;} .dc.open .say{display:block;}
+  .dc .tap{font-size:10.5px; letter-spacing:1.5px; color:var(--dim); font-weight:900; margin-top:7px;}
+  .dc.open .tap{display:none;}
+
+  /* painel de gramática bilíngue */
+  .lab{background:#fff; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:18px 20px; margin-bottom:18px;}
+  .lab h3{font-size:clamp(19px,2.2vw,25px); font-weight:900; letter-spacing:-.4px; margin-bottom:14px;}
+  .labrow{border-top:2px dashed var(--line); padding:13px 0;}
+  .labrow:first-of-type{border-top:0; padding-top:2px;}
+  .labrow .fm{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:7px;}
+  .labrow .fm b{font-size:17px; background:var(--ink); color:#fff; padding:3px 11px; border-radius:99px;}
+  .labrow .fm code{font-family:Consolas,monospace; font-size:15.5px; color:var(--teal); font-weight:700;}
+  .labrow .en, .labrow .ptx{font-size:16px; line-height:1.5; padding:7px 12px; border-radius:10px; margin-bottom:6px;}
+  .labrow .en{background:#eef6f6; border-left:5px solid var(--teal);}
+  .labrow .ptx{background:#fdf4e6; border-left:5px solid var(--orange);}
+  .labrow .en::before{content:"EN  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--teal);}
+  .labrow .ptx::before{content:"PT  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--orange);}
+  .labrow .exm{font-size:16.5px; font-weight:800; margin-top:6px; color:var(--green);}
+  .labrow .exm::before{content:"\25B8  ";}
+  .cerr{margin-top:16px; background:#fdecea; border:3px solid var(--red); border-radius:14px; padding:13px 16px;}
+  .cerr .t{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--red); margin-bottom:8px;}
+  .cerr .w{font-size:17px; font-weight:800; text-decoration:line-through; color:var(--red); margin-bottom:4px;}
+  .cerr .r{font-size:17px; font-weight:900; color:var(--green); margin-bottom:7px;}
+  .cerr .n{font-size:15px; line-height:1.5; color:#4a3a2a;}
+  body.proj .lab h3{font-size:30px;} body.proj .labrow .en, body.proj .labrow .ptx{font-size:19px;}
+  body.proj .labrow .exm{font-size:20px;} body.proj .cerr .w, body.proj .cerr .r{font-size:21px;}
+
+  /* quiz tiers */
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{
+    border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+
+  /* teams (projection) */
+  #teams{
+    display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px;
+    padding:0 5vw;
+  }
+  #teams.on{display:block;}
+  .tin{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{
+    width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;
+  }
+  .tm button:hover{background:var(--yellow);}
+
+  #foot{
+    position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96);
+    border-top:3px solid var(--line);
+  }
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJECTION MODE */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:21px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:24px;}
+  body.proj .ln{font-size:21px;}
+  body.proj .dc .pic{font-size:56px;} body.proj .dc .say{font-size:21px;}
+
+  /* ===== extras Unit 5 ===== */
+  .actbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;
+    padding:10px 14px;border:3px solid var(--ink);border-radius:16px;background:#fff;
+    box-shadow:0 4px 0 var(--ink);font-weight:900;font-size:13px;letter-spacing:.5px;}
+  .actbar .n{background:var(--ink);color:#fff;border-radius:99px;padding:3px 10px;font-size:11px;}
+  .vs{margin:16px 0 0;border:3px solid var(--purple);border-radius:16px;overflow:hidden;background:#fff;}
+  .vs .h{background:var(--purple);color:#fff;font-weight:900;font-size:13px;padding:7px 12px;letter-spacing:.6px;}
+  .vs table{width:100%;border-collapse:collapse;font-size:15px;}
+  .vs td{padding:7px 12px;border-top:2px solid #eee;}
+  .vs td:first-child{font-weight:800;color:var(--blue);width:44%;}
+  .vs td:last-child{font-weight:800;color:var(--red);}
+  body.proj .vs table{font-size:22px;}
+  .slot .ch, .bank .ch{max-width:100%;white-space:normal;text-align:left;}
+  .steps .ch{display:block;width:100%;margin:4px 0;}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🏠 HOME &amp; AWAY<span>UNIT 6 · ROOMS, ADJECTIVES &amp; COMPARISONS · 6º ANO</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #0E6B63;border-radius:14px;background:#fff;color:#0E6B63;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #0E6B63;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill">🏅 <span id="lvl">Guest 🧳</span></div>
+  <button class="btn y" id="projBtn" onclick="toggleProj()">🔍 Projeção</button>
+  <button class="btn b" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="tin"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="truck">🏠⚖️🌏</div>
+    <h1>Home and <em>away</em></h1>
+    <div class="sub">20 estações · Unit 6 · 3 atos · gramática explicada em inglês e português</div>
+    <div class="tags">
+      <span class="tag">🛋️ rooms &amp; furniture</span>
+      <span class="tag">✨ describing adjectives</span>
+      <span class="tag">⚖️ comparative adjectives</span>
+      <span class="tag">🥇 superlative adjectives</span>
+      <span class="tag">🔊 intensifiers</span>
+      <span class="tag">💬 expressing preference</span>
+      <span class="tag">✈️ vacation homes</span>
+      <span class="tag">🌏 CULTURE · traditional homes</span>
+    </div>
+    <div class="tags" style="margin-top:6px">
+      <span class="tag" style="background:#fff;border-color:var(--teal)">🏠 ATO 1 · MY PLACE</span>
+      <span class="tag" style="background:#fff;border-color:var(--orange)">⚖️ ATO 2 · COMPARE &amp; CHOOSE</span>
+      <span class="tag" style="background:#fff;border-color:var(--blue)">🌏 ATO 3 · HOMES AWAY FROM HOME</span>
+    </div>
+  </div>
+  <main id="mapArea"></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀</button>
+  <button class="btn" onclick="stepEp(1)">▶</button>
+  <button class="btn g" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Modo projeção liga fontes grandes e o placar de equipes</small>
+</div>
+
+<div id="toast"></div>
+
+<script>/* =======================================================================
+   DADOS · Unit 6 "Home and away" · 6º ano · A1–A2
+   ======================================================================= */
+
+/* ---------- cartas de vocabulário ---------- */
+const VOCS = {
+  v1: { tip:"Mostre a carta, a turma diz a palavra em inglês, depois vire. Peça também <b>uma frase com there is / there are</b> — vale bônus.",
+    items:[
+      {e:"🛋️", w:"living room", pt:"sala de estar",        ex:"The living room is the biggest room in our house."},
+      {e:"🥂", w:"dining room", pt:"sala de jantar",       ex:"There is a big table in the dining room."},
+      {e:"🍳", w:"kitchen",     pt:"cozinha",               ex:"The kitchen is a room where people cook."},
+      {e:"🛏️", w:"bedroom",     pt:"quarto",                ex:"My bedroom is quite colorful."},
+      {e:"🚿", w:"bathroom",    pt:"banheiro",              ex:"There is a tiny bathroom in the tiny house."},
+      {e:"🛌", w:"bed",         pt:"cama",                  ex:"My bed has a pretty blanket."},
+      {e:"👕", w:"closet",      pt:"armário de roupas",     ex:"A closet is a place to put clothes and shoes."},
+      {e:"📚", w:"shelves",     pt:"prateleiras / estante", ex:"Shelves are a place to put books and photos."},
+      {e:"💺", w:"sofa",        pt:"sofá",                  ex:"A sofa is furniture where two or more people can sit."},
+      {e:"🪑", w:"chair",       pt:"cadeira",               ex:"A chair is furniture where one person can sit."},
+      {e:"📝", w:"desk",        pt:"escrivaninha",          ex:"A desk is a good place to study."},
+      {e:"🚰", w:"sink",        pt:"pia",                   ex:"A sink is a place to wash your hands."},
+      {e:"🍽️", w:"table",       pt:"mesa",                  ex:"A table is furniture with four legs where people eat."},
+      {e:"🪟", w:"window",      pt:"janela",                ex:"It has a really big window with a view of the park."},
+      {e:"💡", w:"lamp",        pt:"lâmpada / luminária",   ex:"There is a lamp next to my bed."},
+      {e:"🌳", w:"yard",        pt:"quintal",               ex:"The beach is more exciting than my yard."}
+    ]},
+  v2: { tip:"Estes são os <b>adjetivos</b> da unidade. Todos voltam depois nos comparativos e superlativos — vale decorar!",
+    items:[
+      {e:"💰", w:"cheap",    pt:"barato",              ex:"These headphones are really cheap. They only cost $9.99."},
+      {e:"💎", w:"valuable", pt:"valioso",             ex:"This painting is very valuable. It costs a lot of money!"},
+      {e:"🌀", w:"messy",    pt:"desarrumado",         ex:"I can't find anything in this closet. It's too messy!"},
+      {e:"🏢", w:"modern",   pt:"moderno",             ex:"She works in a modern office with a gym downstairs."},
+      {e:"🕰️", w:"old",      pt:"velho / antigo",      ex:"My grandpa's hat is old — he bought it in 1960."},
+      {e:"🌸", w:"pretty",   pt:"bonito",              ex:"Thank you for the flowers! They are very pretty."},
+      {e:"💝", w:"special",  pt:"especial",            ex:"That hat is very special to me."},
+      {e:"🛸", w:"unusual",  pt:"incomum / diferente", ex:"The new library is very unusual. It looks like a boat!"}
+    ]}
+};
+
+/* ---------- palavras embaralhadas ---------- */
+const SCRAM = {
+  sc1: { tip:"Leia o emoji e a tradução primeiro. <b>Depois procure a primeira letra.</b>",
+    items:[
+      {e:"🍳", w:"KITCHEN", pt:"cozinha"},
+      {e:"🛏️", w:"BEDROOM", pt:"quarto"},
+      {e:"📚", w:"SHELVES", pt:"prateleiras"},
+      {e:"👕", w:"CLOSET",  pt:"armário de roupas"},
+      {e:"🪟", w:"WINDOW",  pt:"janela"},
+      {e:"💺", w:"SOFA",    pt:"sofá"},
+      {e:"🍽️", w:"TABLE",   pt:"mesa"},
+      {e:"🚰", w:"SINK",    pt:"pia"}
+    ]}
+};
+
+/* ---------- cestos ---------- */
+const SORTS = {
+  so1: { cats:["🍳 KITCHEN","🛏️ BEDROOM","🛋️ LIVING / DINING ROOM"],
+    how:"Em que sala fica cada coisa? Clique no cesto certo.",
+    tip:"Pense na casa da Anna W, do texto de Writing: living room, bedroom e kitchen — cada uma com seus móveis.",
+    items:[
+      {it:"🚰 a sink",                       c:0, e:"a place to wash your hands"},
+      {it:"🍲 a new recipe for dinner",      c:0, e:"“every weekend we try a new recipe”"},
+      {it:"🥄 forks and spoons",             c:0, e:"ficam na cozinha"},
+      {it:"🛌 a bed with a pretty blanket",  c:1, e:"“My bed has a pretty blanket.”"},
+      {it:"👕 a closet",                     c:1, e:"a place to put clothes and shoes"},
+      {it:"📝 a desk to do homework",        c:1, e:"“I use my desk to do my homework.”"},
+      {it:"🧸 an unusual chair",             c:1, e:"“I love my unusual chair.”"},
+      {it:"🍽️ a big table with four chairs", c:2, e:"onde a família come e joga"},
+      {it:"💺 a big sofa",                   c:2, e:"furniture where two or more people can sit"},
+      {it:"📺 a huge TV",                    c:2, e:"“we watch movies on our huge TV”"},
+      {it:"📚 shelves with books and photos",c:2, e:"a place to put books and photos"},
+      {it:"🎲 board games on the table",     c:2, e:"“We play board games and tell stories here.”"}
+    ]},
+  so2: { cats:["⚖️ COMPARATIVE","🥇 SUPERLATIVE"],
+    how:"A frase compara DUAS coisas ou diz que uma é a MAIS de todas? Clique no cesto certo.",
+    tip:"Pista rápida: se aparece <b>than</b>, é comparativo. Se aparece <b>the</b> + -est ou <b>the most</b>, é superlativo.",
+    items:[
+      {it:"Brazil is bigger than Bolivia.",                    c:0, e:"tem <b>than</b> → comparativo"},
+      {it:"Russia is the largest country in the world.",        c:1, e:"the + largest → superlativo"},
+      {it:"Her kitchen is more modern than our kitchen.",       c:0, e:"more … than → comparativo"},
+      {it:"That was the worst day of my life.",                 c:1, e:"the worst → superlativo irregular"},
+      {it:"A lemon tastes worse than an orange.",               c:0, e:"worse … than → comparativo irregular"},
+      {it:"Vatican City is the smallest country in the world.", c:1, e:"the + smallest → superlativo"},
+      {it:"Beaches are prettier than cities.",                  c:0, e:"prettier … than → comparativo"},
+      {it:"This is the most beautiful place in town.",           c:1, e:"the most → superlativo"},
+      {it:"My room is smaller than yours.",                      c:0, e:"smaller … than → comparativo"},
+      {it:"He's the tallest person in the group.",                c:1, e:"the + tallest → superlativo"},
+      {it:"History is more interesting than biology.",            c:0, e:"more … than → comparativo"},
+      {it:"Antarctica is the coldest place on Earth.",             c:1, e:"the + coldest → superlativo"}
+    ]}
+};
+
+/* ---------- pares ---------- */
+const MATCHES = {
+  m1: { l:"ADJECTIVE", r:"MEANING",
+    how:"Clique no adjetivo e depois no significado certo.",
+    tip:"São os oito adjetivos da Lesson 3. Note os dois pares de opostos: <b>cheap</b> × <b>valuable</b> e <b>modern</b> × <b>old</b>.",
+    pairs:[
+      ["cheap",    "it doesn't cost a lot of money"],
+      ["valuable", "it costs a lot of money"],
+      ["messy",    "things are not in the right place"],
+      ["modern",   "new and from our time"],
+      ["old",      "from a long time ago"],
+      ["pretty",   "nice to look at"],
+      ["special",  "important to you"],
+      ["unusual",  "different from other things"]
+    ]},
+  m3: { l:"USEFUL LANGUAGE", r:"O QUE SIGNIFICA",
+    how:"Clique na frase em inglês e depois no significado em português.",
+    tip:"Frases para <b>dizer o que você prefere</b>. Repare: <b>prefer</b> + coisa, e <b>like … better</b> para comparar.",
+    pairs:[
+      ["That's my favorite place to be.",                          "É o meu lugar preferido."],
+      ["I like both.",                                             "Eu gosto dos dois."],
+      ["I prefer the hotel.",                                      "Eu prefiro o hotel."],
+      ["I like the house better.",                                 "Eu gosto mais da casa."],
+      ["I think this one is better because it's close to the beach.","Acho que esta é melhor porque é perto da praia."],
+      ["Which one do you prefer?",                                 "Qual dos dois você prefere?"]
+    ]}
+};
+
+/* ---------- painéis de gramática bilíngues ---------- */
+const GRAM = {
+  g1: { title:"Comparative adjectives",
+    rows:[
+      { form:"One-syllable adjectives", forms:"adjective + -er + than",
+        en:"With short adjectives we add -er to the adjective and use than after it.",
+        pt:"Adjetivos curtos: acrescente <b>-er</b> e use <b>than</b> depois.",
+        ex:"Brazil is <b>bigger than</b> Bolivia." },
+      { form:"Spelling changes", forms:"big → bigger · nice → nicer · pretty → prettier",
+        en:"Some short adjectives double the last consonant. Adjectives ending in -e just add -r. Two-syllable adjectives ending in -y change the -y to -ier.",
+        pt:"Alguns dobram a consoante final; terminados em <b>-e</b> só ganham <b>-r</b>; terminados em <b>-y</b> viram <b>-ier</b>.",
+        ex:"hot → <b>hotter</b> &nbsp;·&nbsp; nice → <b>nicer</b> &nbsp;·&nbsp; pretty → <b>prettier</b>" },
+      { form:"Longer adjectives", forms:"more + adjective + than",
+        en:"With longer adjectives we do not add -er. We use more before the adjective.",
+        pt:"Com adjetivos longos <b>não</b> se usa -er: use <b>more</b> antes do adjetivo.",
+        ex:"Her kitchen is <b>more modern than</b> our kitchen." },
+      { form:"Irregular", forms:"good → better · bad → worse",
+        en:"Good and bad are irregular. Never use more with them.",
+        pt:"<b>good</b> e <b>bad</b> são irregulares — nunca use <i>more</i> com eles.",
+        ex:"She's a <b>better</b> cook. &nbsp;·&nbsp; A lemon tastes <b>worse than</b> an orange." },
+      { form:"How to choose", forms:"count the syllables",
+        en:"One or two syllables: use -er. Three syllables or more: use more.",
+        pt:"Uma ou duas sílabas → <b>-er</b>. Três sílabas ou mais → <b>more</b>.",
+        ex:"small → smaller &nbsp;·&nbsp; interesting → <b>more</b> interesting" }
+    ],
+    error:{ wrong:"Brazil is more bigger than Bolivia.",
+      right:"Brazil is bigger than Bolivia.",
+      note:"Escolha um dos dois: <b>-er</b> OU <b>more</b> — nunca os dois juntos na mesma frase." } },
+
+  g2: { title:"Superlative adjectives",
+    rows:[
+      { form:"One-syllable adjectives", forms:"the + adjective + -est",
+        en:"To make the superlative with one-syllable adjectives we add -est to the end of the adjective and put the before it.",
+        pt:"Adjetivos curtos: <b>the</b> + adjetivo + <b>-est</b>.",
+        ex:"Russia is <b>the largest</b> country in the world." },
+      { form:"Longer adjectives", forms:"the most + adjective",
+        en:"For longer adjectives we add the most before the adjective.",
+        pt:"Adjetivos longos: <b>the most</b> + adjetivo.",
+        ex:"It's <b>the most beautiful</b> place in the city." },
+      { form:"Spelling changes", forms:"big → the biggest · pretty → the prettiest",
+        en:"Short adjectives may double the last consonant, and adjectives ending in -y change to -iest.",
+        pt:"Curtos podem dobrar a consoante; terminados em <b>-y</b> viram <b>-iest</b>.",
+        ex:"wet → <b>the wettest</b> &nbsp;·&nbsp; nice → <b>the nicest</b>" },
+      { form:"Irregular", forms:"good → the best · bad → the worst",
+        en:"The superlative of good is the best and the superlative of bad is the worst.",
+        pt:"<b>good → the best</b> &nbsp;·&nbsp; <b>bad → the worst</b>.",
+        ex:"That's <b>the best</b> movie of the year! &nbsp;·&nbsp; It was <b>the worst</b> day of my life." },
+      { form:"Don't forget THE", forms:"the + superlative",
+        en:"We almost always use the before a superlative adjective.",
+        pt:"Quase sempre usamos <b>the</b> antes do superlativo.",
+        ex:"Vatican City is <b>the</b> smallest country in the world." },
+      { form:"Comparative or superlative?", forms:"than = comparative · the = superlative",
+        en:"Use the comparative to compare two things, and the superlative to say one thing is number one in a group.",
+        pt:"Comparativo compara <b>duas</b> coisas; superlativo diz que algo é <b>o primeiro</b> de um grupo.",
+        ex:"bigger <b>than</b> Bolivia &nbsp;·&nbsp; <b>the</b> biggest country in the world" }
+    ],
+    error:{ wrong:"It's most big room in the house.",
+      right:"It's the biggest room in the house.",
+      note:"Duas coisas de uma vez: não esqueça o <b>the</b>, e adjetivo curto usa <b>-est</b>, não <i>most</i>." } }
+};
+
+/* ---------- questões de múltipla escolha ---------- */
+const QS = {
+
+  s2: { items:[
+    {q:"furniture where one person can sit", o:["a sofa", "a chair", "a bed", "a table"], a:1, e:"<b>a chair</b> — para uma pessoa. O sofá é para duas ou mais."},
+    {q:"a room where people cook", o:["the dining room", "the living room", "the kitchen", "the bedroom"], a:2, e:"<b>the kitchen</b>. Na dining room a gente come, não cozinha."},
+    {q:"a place to wash your hands", o:["a closet", "a desk", "a sink", "shelves"], a:2, e:"<b>a sink</b> = pia."},
+    {q:"furniture with four legs where people eat", o:["a table", "a chair", "a sofa", "a bed"], a:0, e:"<b>a table</b>."},
+    {q:"a good place to study", o:["a sofa", "a desk", "a bed", "a closet"], a:1, e:"<b>a desk</b> = escrivaninha."},
+    {q:"a place to put clothes and shoes", o:["shelves", "a sink", "a table", "a closet"], a:3, e:"<b>a closet</b>."},
+    {q:"a place to put books and photos", o:["a desk", "a sink", "a bed", "shelves"], a:3, e:"<b>shelves</b> — sempre no plural para mais de uma."},
+    {q:"furniture where two or more people can sit", o:["a sofa", "a chair", "a desk", "a table"], a:0, e:"<b>a sofa</b>."}
+  ]},
+
+  s6: { items:[
+    {q:"The new library is very ___. It looks like a boat!", o:["messy", "cheap", "valuable", "unusual"], a:3, e:"<b>unusual</b> = diferente do normal."},
+    {q:"I can't find anything in this closet. It's too ___!", o:["pretty", "messy", "modern", "special"], a:1, e:"<b>messy</b> = desarrumado."},
+    {q:"These headphones are really ___. They only cost $9.99.", o:["cheap", "valuable", "special", "old"], a:0, e:"<b>cheap</b> = barato."},
+    {q:"Thank you for the flowers! They are very ___.", o:["messy", "cheap", "old", "pretty"], a:3, e:"<b>pretty</b> = bonito."},
+    {q:"My favorite thing is my grandpa's ___ hat — he bought it in 1960.", o:["modern", "cheap", "old", "unusual"], a:2, e:"<b>old</b> = antigo."},
+    {q:"That hat is very ___ to me because it was my grandpa's.", o:["special", "messy", "cheap", "modern"], a:0, e:"<b>special</b> = importante para você."},
+    {q:"She works in a ___ office with a gym downstairs.", o:["old", "messy", "modern", "cheap"], a:2, e:"<b>modern</b> = novo, do nosso tempo."},
+    {q:"This painting is very ___. It costs a lot of money!", o:["cheap", "valuable", "messy", "pretty"], a:1, e:"<b>valuable</b> = valioso."}
+  ]},
+
+  s8: { items:[
+    {q:"Costa Rica is ___ than Mexico.", o:["more small", "smallest", "smaller", "more smaller"], a:2, e:"<i>small</i> é curto → <b>smaller</b>."},
+    {q:"This movie is ___ than the last one.", o:["boringer", "more boring", "most boring", "more boringer"], a:1, e:"<i>boring</i> é longo → <b>more boring</b>."},
+    {q:"This actor is ___ than that actor.", o:["more funny", "funnier", "funnyer", "most funny"], a:1, e:"Termina em -y → <b>funnier</b>."},
+    {q:"Beaches are ___ than cities.", o:["prettier", "prettyer", "more pretty", "most pretty"], a:0, e:"pretty → <b>prettier</b>."},
+    {q:"History is ___ than biology.", o:["interestinger", "most interesting", "more interesting", "interestier"], a:2, e:"Quatro sílabas → <b>more interesting</b>."},
+    {q:"“Treehouse” is a ___ word than “view”.", o:["more long", "longest", "more longer", "longer"], a:3, e:"<i>long</i> é curto → <b>longer</b>."},
+    {q:"Doing my homework is ___ than cleaning my room.", o:["difficulter", "most difficult", "difficultier", "more difficult"], a:3, e:"Três sílabas → <b>more difficult</b>."},
+    {q:"The beach is ___ than my yard.", o:["more exciting", "excitinger", "excitier", "most exciting"], a:0, e:"<b>more exciting</b>."},
+    {q:"The new playground is ___ than the old one.", o:["gooder", "better", "more good", "more better"], a:1, e:"Irregular: good → <b>better</b>."},
+    {q:"A lemon tastes ___ than an orange.", o:["badder", "more bad", "worse", "worst"], a:2, e:"Irregular: bad → <b>worse</b>."},
+    {q:"Her house is ___ than our house.", o:["more small", "smallest", "more smaller", "smaller"], a:3, e:"<b>smaller</b> — nunca <i>more smaller</i>."},
+    {q:"Math is ___ than geography.", o:["easier", "easyer", "more easy", "most easy"], a:0, e:"easy → <b>easier</b>."}
+  ]},
+
+  s9: { two:true, items:[
+    {q:"large → ___",       o:["larger","more large"],             a:0, e:"Curto → <b>larger</b>."},
+    {q:"beautiful → ___",   o:["beautifuler","more beautiful"],    a:1, e:"Longo → <b>more beautiful</b>."},
+    {q:"pretty → ___",      o:["prettier","more pretty"],          a:0, e:"-y vira <b>-ier</b>."},
+    {q:"modern → ___",      o:["moderner","more modern"],          a:1, e:"<b>more modern</b>."},
+    {q:"bad → ___",         o:["badder","worse"],                  a:1, e:"Irregular: <b>worse</b>."},
+    {q:"healthy → ___",     o:["healthier","more healthy"],        a:0, e:"-y vira <b>-ier</b>."},
+    {q:"good → ___",        o:["gooder","better"],                 a:1, e:"Irregular: <b>better</b>."},
+    {q:"big → ___",         o:["biger","bigger"],                  a:1, e:"Dobra o G: <b>bigger</b>."},
+    {q:"comfortable → ___", o:["comfortabler","more comfortable"], a:1, e:"<b>more comfortable</b>."},
+    {q:"nice → ___",        o:["nicer","more nice"],               a:0, e:"Termina em -e → só <b>-r</b>."}
+  ]},
+
+  s11: { items:[
+    {q:"Vatican City is ___ country in the world.", o:["the smallest", "the most small", "smallest", "more small"], a:0, e:"Curto → <b>the smallest</b>."},
+    {q:"Russia is ___ country in the world.", o:["largest", "the most large", "the largest", "more large"], a:2, e:"Não esqueça o <b>the</b>: the largest."},
+    {q:"Antarctica is ___ place on Earth.", o:["coldest", "the coldest", "the most cold", "colder"], a:1, e:"<b>the coldest</b>."},
+    {q:"It's ___ video game I know — I always fall asleep!", o:["the boringest", "most boring", "more boring", "the most boring"], a:3, e:"Longo → <b>the most boring</b>."},
+    {q:"That's ___ hotel in the city. It only costs $20 a night.", o:["the cheapest", "cheapest", "the most cheap", "cheaper"], a:0, e:"<b>the cheapest</b>."},
+    {q:"He's ___ person in the group — everyone else is taller.", o:["shortest", "the most short", "shorter", "the shortest"], a:3, e:"<b>the shortest</b>."},
+    {q:"My kitchen is ___ room in the house.", o:["the most small", "the smallest", "smallest", "smaller"], a:1, e:"<b>the smallest</b>."},
+    {q:"That's ___ movie of the year!", o:["the goodest", "the most good", "the best", "better"], a:2, e:"Irregular: <b>the best</b>."},
+    {q:"That was ___ day of my life.", o:["the baddest", "the worst", "the most bad", "worse"], a:1, e:"Irregular: <b>the worst</b>."},
+    {q:"Seattle is one of ___ cities in the U.S.", o:["the wettest", "the most wet", "wettest", "wetter"], a:0, e:"wet → <b>the wettest</b> (dobra o T)."},
+    {q:"Claudia is ___ person in the family.", o:["the most nice", "nicest", "nicer", "the nicest"], a:3, e:"nice → <b>the nicest</b>."},
+    {q:"Careful! Tim is ___ than I am.", o:["the most popular", "popularer", "more popular", "the popularest"], a:2, e:"Tem <b>than</b> → é comparativo: <b>more popular</b>."}
+  ]},
+
+
+  s14: { items:[
+    {q:"My bedroom is ___ colorful — a little bit, not a lot.", o:["too", "really", "quite", "so"], a:2, e:"<b>quite</b> = um pouco."},
+    {q:"The kitchen is a bit ___ small, but it's my favorite room.", o:["very", "too", "really", "so"], a:1, e:"<b>too</b> tem sentido negativo: pequena demais."},
+    {q:"It has a ___ big window with a view of the park.", o:["really", "too", "quite a", "worse"], a:0, e:"<b>really</b> = muito."},
+    {q:"Which word has a NEGATIVE meaning?", o:["really", "very", "too", "so"], a:2, e:"<b>too</b> quer dizer “demais”, e isso é um problema."},
+    {q:"Which word means “a little”?", o:["quite", "very", "so", "really"], a:0, e:"<b>quite</b>."},
+    {q:"The living room is ___ nice. It's the biggest room in our house.", o:["too", "quite not", "worst", "very"], a:3, e:"<b>very</b> = muito."},
+    {q:"This bag is ___ expensive! I can't buy it.", o:["quite", "too", "really", "very"], a:1, e:"<b>too expensive</b> = caro demais, não posso comprar."},
+    {q:"Which THREE words mean “a lot”?", o:["quite, too, very", "too, so, quite", "quite, really, too", "really, very, so"], a:3, e:"<b>really, very, so</b> = muito. <i>quite</i> = um pouco e <i>too</i> = demais."}
+  ]},
+
+  r1: { items:[
+    {q:"Which vacation home does Will like best?", o:["the House in the Trees", "the Outdoors House", "the Island House", "he likes all three the same"], a:0, e:"“This is my favorite place!” — a House in the Trees ganhou cinco estrelas."},
+    {q:"What is the Outdoors House like?", o:["large, quiet and modern", "in the middle of a forest", "comfortable and not very expensive", "on a very busy street"], a:2, e:"“It's comfortable and not very expensive.”"},
+    {q:"Why doesn't the family usually stay at the Island House?", o:["Because it is too small", "Because there is no bedroom", "Because it is not comfortable", "Because it is very expensive"], a:3, e:"“It's much more expensive than the Outdoors House, so we don't usually stay here.”"},
+    {q:"What furniture is there in the House in the Trees?", o:["only a bed and a table", "a lot of sofas and chairs", "a bed, a desk and shelves", "no furniture at all"], a:0, e:"“There isn't a lot of furniture, only a bed and a table.”"},
+    {q:"Why is it fun to stay in the House in the Trees?", o:["Because you can swim in the pool", "Because you eat with other families and make new friends", "Because it is the biggest house", "Because it has a huge TV"], a:1, e:"“We eat breakfast and dinner with other families… It's fun to make new friends.”"},
+    {q:"Which sentence is TRUE about the House in the Trees?", o:["It's bigger than the Island House.", "It's smaller than the Island House but more beautiful.", "It's the most expensive home.", "It has a view of a swimming pool."], a:1, e:"“The House in the Trees is smaller than the Island House, but it's even more beautiful.”"}
+  ]},
+
+  r2: { items:[
+    {q:"Where do people live in a yurt?", o:["Iceland", "South Korea", "Mongolia", "Italy"], a:2, e:"O <b>yurt</b> é da Mongólia. Houseboat: United Kingdom. Bedouin tent: Africa and the Middle East."},
+    {q:"What are the roofs of turf houses made of?", o:["grass", "stones", "clay", "glass"], a:0, e:"“They have grass roofs and walls made from wood and brick.”"},
+    {q:"Do many Icelanders live in turf houses today?", o:["Yes, almost everyone does.", "Yes, but only in the summer.", "No, but some are open for visitors.", "No, and none of them exist now."], a:2, e:"“Most Icelanders don't live in turf houses now, but there are still some for visitors to stay in.”"},
+    {q:"What colour are trulli houses?", o:["brown with grass roofs", "gray with white roofs", "green with long roofs", "white with gray roofs"], a:3, e:"“They are white with gray roofs.”"},
+    {q:"What is often painted on the roofs of trulli houses?", o:["names of families", "interesting signs", "numbers", "flowers"], a:1, e:"“There are usually interesting signs painted on the roofs.”"},
+    {q:"What are hanok houses made from?", o:["wood and brick", "stone, dirt and clay", "glass and metal", "grass and stones"], a:1, e:"“Hanok houses are made from stone, dirt and clay.”"},
+    {q:"Why are hanok floors special?", o:["They are made of glass.", "They are painted with signs.", "They are very old.", "They keep the house warm in winter and cool in summer."], a:3, e:"“These houses have special floors that keep the house warm in the winter and cool in the summer.”"},
+    {q:"Which house has a long roof with interesting curves?", o:["the hanok house", "the turf house", "the trulli house", "the houseboat"], a:0, e:"“Hanok houses are beautiful, with long roofs that have interesting curves.”"}
+  ]},
+
+  r3: { items:[
+    {q:"According to the article, why do big houses win?", o:["They are more comfortable than tiny houses.", "They are cheaper.", "They are more modern.", "They are easier to clean."], a:0, e:"“Big houses are more comfortable than tiny houses.”"},
+    {q:"Where do David and Sara live?", o:["in an apartment in the city", "in a tiny house on wheels", "in a house with a big yard", "on a houseboat"], a:1, e:"“David and Sara live in a tiny house on wheels.”"},
+    {q:"Where do they go in the winter? Why?", o:["to the mountains, because it is quiet", "to the city, because it is warmer there", "to the beach, because it is the best place", "to another country, for work"], a:1, e:"“In the winter, they live in the city because it's warmer there.”"},
+    {q:"Why can David and Sara work in many places?", o:["Because they work with an internet connection", "Because they have a car", "Because their house is very big", "Because they live near their family"], a:0, e:"“They can work in any place that has an Internet connection.”"},
+    {q:"Why do Grandma Lia and Grandpa Max live in a tiny house in the yard?", o:["Because they don't like Simone's house", "Because their house is more modern", "Because there is no room in the city", "Because they want to live independently but need help from their family"], a:3, e:"“Lia and Max want to live independently, but they are old, and they need help from their family.”"},
+    {q:"Which sentence is TRUE?", o:["Simone's house is newer than her grandparents' house.", "Simone lives alone with her grandma.", "The grandparents' tiny house is more modern than Simone's house.", "Nobody helps the grandparents."], a:2, e:"“The grandparents' tiny house is new, and it's more modern than Simone's house!”"}
+  ]}
+};
+
+/* ---------- ordem das palavras ---------- */
+const ORDER = {
+  o1: { tip:"Todas as frases são <b>comparações</b>. Comece pelo que está sendo comparado e não esqueça o <b>than</b>.",
+    items:[
+      {w:["Costa","Rica","is","smaller","than","Mexico"],                        a:"Costa Rica is smaller than Mexico.",                   why:"small é curto → smaller + than."},
+      {w:["This","movie","is","more","boring","than","the","last","one"],         a:"This movie is more boring than the last one.",         why:"boring é longo → more boring."},
+      {w:["Beaches","are","prettier","than","cities"],                            a:"Beaches are prettier than cities.",                    why:"pretty → prettier."},
+      {w:["History","is","more","interesting","than","biology"],                  a:"History is more interesting than biology.",            why:"interesting é longo → more interesting."},
+      {w:["Big","cities","are","noisier","than","small","towns"],                 a:"Big cities are noisier than small towns.",             why:"noisy → noisier."},
+      {w:["A","lemon","tastes","worse","than","an","orange"],                     a:"A lemon tastes worse than an orange.",                 why:"bad → worse (irregular)."},
+      {w:["The","new","playground","is","better","than","the","old","one"],       a:"The new playground is better than the old one.",       why:"good → better (irregular)."},
+      {w:["Her","kitchen","is","more","modern","than","our","kitchen"],           a:"Her kitchen is more modern than our kitchen.",         why:"modern é longo → more modern."}
+    ]},
+  o2: { prompt:true,
+    tip:"Leia a frase em verde e monte a versão no <b>superlativo</b>. Não esqueça o <b>the</b>!",
+    items:[
+      {q:"Russia · large country in the world",       w:["Russia","is","the","largest","country","in","the","world"],       a:"Russia is the largest country in the world.",       why:"large é curto → the largest."},
+      {q:"Vatican City · small country in the world", w:["Vatican","City","is","the","smallest","country","in","the","world"], a:"Vatican City is the smallest country in the world.", why:"small é curto → the smallest."},
+      {q:"Antarctica · cold place on Earth",          w:["Antarctica","is","the","coldest","place","on","Earth"],           a:"Antarctica is the coldest place on Earth.",         why:"cold é curto → the coldest."},
+      {q:"the living room · big room in the house",   w:["The","living","room","is","the","biggest","room","in","the","house"], a:"The living room is the biggest room in the house.", why:"big dobra o G → the biggest."},
+      {q:"this video game · boring of them all",      w:["This","video","game","is","the","most","boring","of","them","all"], a:"This video game is the most boring of them all.",   why:"boring é longo → the most boring."},
+      {q:"that · good movie of the year",             w:["That","is","the","best","movie","of","the","year"],               a:"That is the best movie of the year.",               why:"good → the best (irregular)."}
+    ]}
+};
+
+/* ---------- cartas de fala rápida ---------- */
+const DRILL = [
+  {pic:"🏝️", qty:"Island House / Outdoors House · expensive", say:"The Island House is more expensive than the Outdoors House."},
+  {pic:"🌳", qty:"House in the Trees / Island House · small",  say:"The House in the Trees is smaller than the Island House."},
+  {pic:"🌸", qty:"beaches / cities · pretty",                  say:"Beaches are prettier than cities."},
+  {pic:"📚", qty:"history / biology · interesting",            say:"History is more interesting than biology."},
+  {pic:"🍋", qty:"a lemon / an orange · bad",                  say:"A lemon tastes worse than an orange."},
+  {pic:"🛝", qty:"the new playground / the old one · good",     say:"The new playground is better than the old one."},
+  {pic:"🌍", qty:"Russia · large (superlative)",               say:"Russia is the largest country in the world."},
+  {pic:"⛪", qty:"Vatican City · small (superlative)",          say:"Vatican City is the smallest country in the world."},
+  {pic:"🧊", qty:"Antarctica · cold (superlative)",             say:"Antarctica is the coldest place on Earth."},
+  {pic:"🛋️", qty:"the living room · big (superlative)",         say:"The living room is the biggest room in the house."},
+  {pic:"🎮", qty:"this video game · boring (superlative)",      say:"It's the most boring video game."},
+  {pic:"🏨", qty:"this hotel · cheap (superlative)",            say:"It's the cheapest hotel in the city."}
+];
+
+/* ---------- leituras ---------- */
+const READS = {
+  r1: { em:"✈️", title:"Will Sees the World · three vacation homes", set:"r1",
+    html:`
+      <p><i>I'm Will Wander, and I travel a lot with my family! Here are three of our favorite vacation homes.</i></p>
+
+      <p><b>🏊 Outdoors House ★★★★☆</b> &nbsp; You can rent this vacation home for a week or a weekend. It's
+      comfortable and not very expensive. There is a dining area outside, and the bedroom has a balcony where you
+      can sit and enjoy the view of the beautiful swimming pool. When it's hot, jump in the pool and go for a swim.</p>
+
+      <p><b>🏝️ Island House ★★★★☆</b> &nbsp; This place is incredible! It's a large, modern house on a quiet
+      island. The bedroom has a big bed and an open view of the ocean. The living room is very comfortable, too:
+      it has lots of sofas and chairs. It is the perfect place to relax. However, this place is very expensive.
+      It's much <b>more expensive than</b> the Outdoors House, so we don't usually stay here.</p>
+
+      <p><b>🌳 House in the Trees ★★★★★</b> &nbsp; This is my favorite place! It's a treehouse in the middle of a
+      forest. There isn't a lot of furniture, only a bed and a table. We eat breakfast and dinner with other
+      families in another building. It's fun to make new friends. The House in the Trees is <b>smaller than</b>
+      the Island House, but it's even <b>more beautiful</b>. You can listen to the birds. Even in the rain,
+      it's fantastic!</p>
+
+      <div class="gl">🔑 <b>to rent</b> = alugar · <b>comfortable</b> = confortável · <b>dining area</b> = área de
+      refeições · <b>balcony</b> = sacada · <b>view</b> = vista · <b>quiet</b> = silencioso ·
+      <b>to relax</b> = relaxar · <b>however</b> = porém · <b>furniture</b> = móveis ·
+      <b>treehouse</b> = casa na árvore</div>
+
+      <div class="vs">
+        <div class="h">🇺🇸 AMERICAN ENGLISH &nbsp;·&nbsp; 🇬🇧 BRITISH ENGLISH</div>
+        <table>
+          <tr><td>vacation</td><td>holiday</td></tr>
+          <tr><td>movie</td><td>film</td></tr>
+        </table>
+      </div>` },
+
+  r2: { em:"🌏", title:"CULTURE · Homes away from home", set:"r2",
+    html:`
+      <p>All over the world, people live in <b>traditional</b> homes. In the United Kingdom, some families live on
+      a houseboat. In Mongolia, people live in a yurt. In parts of Africa and the Middle East, people live in a
+      Bedouin tent. Here are three more homes you can visit.</p>
+
+      <p><b>🇮🇸 Turf houses · Iceland.</b> Turf houses in Iceland look like they are from a <b>storybook</b>!
+      They have grass roofs and walls made from wood and brick. Most Icelanders don't live in turf houses now, but
+      there are still some for visitors to stay in. These houses are an interesting part of the history of the
+      country. If you enjoy <b>adventures</b> and you like history, a turf house is the perfect place for you.</p>
+
+      <p><b>🇮🇹 Trulli houses · Italy.</b> Stay in a trullo in Italy! Like hanok houses, trulli houses stay cool
+      in the summer and warm in the winter. They are white with gray roofs. The roof is a circle made from stones.
+      There are usually interesting <b>signs</b> painted on the roofs. Although these houses are centuries old,
+      many visitors find them very <b>comfortable</b>.</p>
+
+      <p><b>🇰🇷 Hanok houses · South Korea.</b> Visit South Korea and stay in a traditional hanok house. Hanok
+      houses are made from stone, dirt and clay. They are still very popular — many South Koreans still live in
+      them. These houses have special floors that keep the house warm in the winter and cool in the summer, so you
+      can visit any time of year. Hanok houses are beautiful, with long roofs that have interesting curves.</p>
+
+      <p>It's time to go on a new adventure! Choose a home for your next vacation. You can stay in these unusual
+      houses and learn about different cultures around the world.</p>
+
+      <div class="gl">🔑 <b>traditional</b> = tradicional · <b>turf</b> = turfa (terra com grama) ·
+      <b>roof</b> = telhado · <b>brick</b> = tijolo · <b>storybook</b> = livro de histórias ·
+      <b>adventure</b> = aventura · <b>sign</b> = símbolo, desenho com significado ·
+      <b>although</b> = embora · <b>centuries old</b> = com séculos de idade · <b>dirt</b> = terra ·
+      <b>clay</b> = barro · <b>curve</b> = curva</div>` },
+
+  r3: { em:"🏠", title:"Tiny Houses: Happy families", set:"r3",
+    html:`
+      <p>Tiny houses are popular. But why? Big houses are <b>more comfortable than</b> tiny houses. You can't live
+      in a tiny house with a family of four. So why do people like tiny houses? Let's visit two families.</p>
+
+      <p><b>🚚 David and Sara.</b> David and Sara live in a tiny house on wheels. In the summer, they live in the
+      mountains. In the winter, they live in the city because it's warmer there. Next summer, they want to live in
+      the best place: the beach!</p>
+
+      <p>Their house is <b>smaller than</b> an apartment, but it's comfortable. They have a kitchen and a tiny
+      bathroom. And they can work in any place that has an Internet connection. If David and Sara have children
+      one day, they can buy a <b>bigger</b> house, but for now they like their tiny-house life.</p>
+
+      <p><b>👵 Simone, Grandma Lia and Grandpa Max.</b> Look at Simone and her grandma, Lia. Simone lives with her
+      parents and her two brothers in a house with a big yard. Grandma Lia and Grandpa Max live in a tiny house in
+      the yard. Why? Because Lia and Max want to live independently, but they are old, and they need help from
+      their family.</p>
+
+      <p>Simone loves her grandparents, and she helps her grandma cook dinner. Simone's father helps with the
+      shopping, and Simone's mom helps with the cleaning. With a tiny house in the yard, the two families are
+      closer than in different houses in the city. And the grandparents' tiny house is new, so it's
+      <b>more modern than</b> Simone's house!</p>
+
+      <div class="gl">🔑 <b>tiny</b> = minúsculo · <b>on wheels</b> = sobre rodas · <b>yard</b> = quintal ·
+      <b>independently</b> = de forma independente · <b>to need help</b> = precisar de ajuda ·
+      <b>shopping</b> = compras · <b>cleaning</b> = limpeza · <b>closer</b> = mais perto</div>` }
+};
+
+/* ---------- quiz final ---------- */
+const FINALE = [
+  /* 🥉 EASY */
+  {t:1, q:"A place to wash your hands is a…", o:["sink", "desk", "closet", "shelf"], a:0, e:"<b>sink</b> = pia."},
+  {t:1, q:"Furniture where two or more people can sit is a…", o:["sofa", "chair", "table", "bed"], a:0, e:"<b>sofa</b>."},
+  {t:1, q:"Costa Rica is ___ than Mexico.", o:["more small", "smaller", "smallest", "more smaller"], a:1, e:"Curto → <b>smaller</b>."},
+  {t:1, q:"Russia is ___ country in the world.", o:["largest", "the largest", "more large", "the most large"], a:1, e:"<b>the largest</b>."},
+  {t:1, q:"These headphones only cost $9.99. They are very…", o:["cheap", "valuable", "messy", "unusual"], a:0, e:"<b>cheap</b> = barato."},
+  {t:1, q:"good → ___ (comparative)", o:["gooder", "more good", "better", "the best"], a:2, e:"Irregular: <b>better</b>."},
+  {t:1, q:"A room where people cook is the…", o:["living room", "kitchen", "dining room", "bedroom"], a:1, e:"<b>kitchen</b>."},
+  {t:1, q:"Which word means “a little”?", o:["too", "really", "so", "quite"], a:3, e:"<b>quite</b>."},
+  {t:1, q:"pretty → ___ (comparative)", o:["prettier", "more pretty", "prettyer", "the prettiest"], a:0, e:"-y vira <b>-ier</b>."},
+  {t:1, q:"I can't find anything in this closet. It's too…", o:["pretty", "special", "messy", "modern"], a:2, e:"<b>messy</b> = desarrumado."},
+
+  /* 🥈 MEDIUM */
+  {t:2, q:"Which sentence is CORRECT?", o:["Brazil is bigger than Bolivia.", "Brazil is more bigger than Bolivia.", "Brazil is more big than Bolivia.", "Brazil is the bigger than Bolivia."], a:0, e:"Use <b>-er</b> OU <b>more</b>, nunca os dois."},
+  {t:2, q:"History is ___ than biology.", o:["more interesting", "interestinger", "the most interesting", "interestier"], a:0, e:"Longo → <b>more interesting</b>."},
+  {t:2, q:"It's ___ video game I know — I always fall asleep!", o:["the boringest", "more boring", "the most boring", "most boring"], a:2, e:"<b>the most boring</b>."},
+  {t:2, q:"Which word has a NEGATIVE meaning?", o:["really", "very", "so", "too"], a:3, e:"<b>too</b> = demais."},
+  {t:2, q:"Comparative or superlative? “He's the tallest person in the group.”", o:["comparative", "neither", "superlative", "both"], a:2, e:"Tem <b>the</b> + -est → superlativo."},
+  {t:2, q:"In “Will Sees the World”, which home is Will's favorite?", o:["the Outdoors House", "the House in the Trees", "the Island House", "the houseboat"], a:1, e:"Ganhou cinco estrelas: “This is my favorite place!”"},
+  {t:2, q:"What are the roofs of Icelandic turf houses made of?", o:["stones", "clay", "glass", "grass"], a:3, e:"“They have grass roofs…”"},
+  {t:2, q:"“I like the house ___.” (dizendo que prefere a casa)", o:["best", "better", "more good", "the better"], a:1, e:"<b>I like the house better.</b>"},
+
+  /* 🥇 HARD */
+  {t:3, q:"Complete: “Seattle is one of ___ cities in the U.S.”", o:["the most wet", "wettest", "the wettest", "wetter"], a:2, e:"wet dobra o T → <b>the wettest</b>."},
+  {t:3, q:"Which sentence is WRONG?", o:["It's the biggest room in the house.", "It's the most beautiful room in the house.", "It's the nicest room in the house.", "It's most big room in the house."], a:3, e:"Falta o <b>the</b> e adjetivo curto pede <b>-est</b>."},
+  {t:3, q:"“The House in the Trees is smaller than the Island House, but it's even more beautiful.” This means…", o:["the Island House is more beautiful", "the House in the Trees is bigger", "both houses are the same size", "the House in the Trees is prettier but smaller"], a:3, e:"Menor <b>e</b> mais bonita."},
+  {t:3, q:"Why do Grandma Lia and Grandpa Max live in a tiny house in the yard?", o:["Because they want to live independently but need help from the family", "Because the tiny house is cheaper", "Because Simone's house is too modern", "Because they don't like the city"], a:0, e:"“…they want to live independently, but they are old, and they need help.”"},
+  {t:3, q:"Which hanok feature is mentioned in the text?", o:["grass on the walls", "signs painted on the roof", "a house on wheels", "special floors that keep the house warm and cool"], a:3, e:"Os pisos especiais são a marca da casa hanok."},
+  {t:3, q:"Choose the correct pair: “My room is ___ than yours, but the living room is ___ room in the house.”", o:["the smallest / bigger", "smaller / the biggest", "more small / the most big", "smaller / the most big"], a:1, e:"<b>than</b> pede comparativo; <b>in the house</b> pede superlativo."},
+  {t:3, q:"“Although these houses are centuries old, many visitors find them very comfortable.” The word ALTHOUGH shows…", o:["a reason", "a result", "a contrast", "a place"], a:2, e:"<b>Although</b> marca contraste: velhas, mas confortáveis."}
+];
+
+/* ---------- estações ---------- */
+const STATIONS = {
+  intro:{ em:"📋", n:"Como funciona", d:"Leia antes de começar", kind:"intro", stars:0, act:0 },
+
+  s1: { em:"🏠", n:"Rooms & Furniture",     d:"16 cartas de vocabulário",        kind:"vocab", set:"v1",  stars:6, act:1 },
+  s2: { em:"🔍", n:"What's the Word?",      d:"8 definições do livro",           kind:"mcq",   set:"s2",  stars:5, act:1 },
+  s3: { em:"🔤", n:"Unscramble the Room",   d:"8 palavras embaralhadas",         kind:"scram", set:"sc1", stars:5, act:1 },
+  s4: { em:"🚪", n:"Which Room?",           d:"12 objetos · 3 cestos",           kind:"sort",  set:"so1", stars:5, act:1 },
+  s5: { em:"✨", n:"Describing Adjectives", d:"8 adjetivos da unidade",          kind:"vocab", set:"v2",  stars:4, act:1 },
+  s6: { em:"✍️", n:"Adjective in Context",  d:"8 frases para completar",         kind:"mcq",   set:"s6",  stars:5, act:1 },
+  s7: { em:"🧠", n:"Adjective Meanings",    d:"8 pares · adjetivo e sentido",    kind:"match", set:"m1",  stars:5, act:1 },
+
+  s8: { em:"📐", n:"GRAMMAR LAB 1",         d:"comparatives + 12 itens",         kind:"lab",   set:"s8",  panel:"g1", stars:8, act:2 },
+  s9: { em:"⚖️", n:"Comparative Forms",     d:"10 itens de ortografia",          kind:"mcq",   set:"s9",  stars:6, act:2 },
+  s10:{ em:"➡️", n:"Build the Comparison",  d:"8 frases para montar",            kind:"order", set:"o1",  stars:7, act:2 },
+  s11:{ em:"📐", n:"GRAMMAR LAB 2",         d:"superlatives + 12 itens",         kind:"lab",   set:"s11", panel:"g2", stars:8, act:2 },
+  s12:{ em:"🥇", n:"Build the Superlative", d:"6 frases · o mais de todos",      kind:"order", set:"o2",  stars:7, act:2 },
+  s13:{ em:"🔀", n:"Comparative or Super?", d:"12 frases · 2 cestos",            kind:"sort",  set:"so2", stars:5, act:2 },
+  s14:{ em:"🔊", n:"Intensifiers",          d:"quite · really · very · so · too",kind:"mcq",   set:"s14", stars:5, act:2 },
+  s15:{ em:"🗣️", n:"Say the Comparison",    d:"12 cartas de fala rápida",        kind:"drill",             stars:6, act:2 },
+
+  s16:{ em:"✈️", n:"Three Vacation Homes",  d:"leitura + 6 perguntas",           kind:"read",  set:"r1",  stars:8, act:3 },
+  s17:{ em:"🌏", n:"CULTURE · Homes",       d:"leitura + 8 perguntas",           kind:"read",  set:"r2",  stars:8, act:3 },
+  s18:{ em:"🏠", n:"Tiny Houses",           d:"leitura + 6 perguntas",           kind:"read",  set:"r3",  stars:7, act:3 },
+  s19:{ em:"💬", n:"Expressing Preference", d:"6 pares · useful language",       kind:"match", set:"m3",  stars:5, act:3 },
+  s20:{ em:"🏆", n:"THE FINAL STAY",        d:"25 questões em 3 níveis",         kind:"quiz",              stars:15, act:3 }
+};
+
+const ACTS = {
+  1:{ n:"ATO 1 · MY PLACE",           em:"🏠", c:"var(--teal)",   d:"quartos, móveis e adjetivos" },
+  2:{ n:"ATO 2 · COMPARE & CHOOSE",   em:"⚖️", c:"var(--orange)", d:"comparativos, superlativos e intensifiers" },
+  3:{ n:"ATO 3 · HOMES AWAY FROM HOME", em:"🌏", c:"var(--blue)", d:"três leituras longas e a estadia final" }
+};
+
+const MAP = [
+  { t:"📋 COMEÇANDO", eps:["intro"] },
+  { t:"🏠 ATO 1 · MY PLACE — quartos, móveis e adjetivos",          eps:["s1","s2","s3","s4","s5","s6","s7"] },
+  { t:"⚖️ ATO 2 · COMPARE & CHOOSE — comparativos e superlativos",  eps:["s8","s9","s10","s11","s12","s13","s14","s15"] },
+  { t:"🌏 ATO 3 · HOMES AWAY FROM HOME — leituras e estadia final", eps:["s16","s17","s18","s19","s20"] }
+];
+
+const ORDERED = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20"];
+
+const LEVELS = [
+  {s:0,n:"Guest 🧳"},{s:25,n:"Neighbour 🚪"},{s:55,n:"Host 🏡"},
+  {s:90,n:"Interior Designer 🎨"},{s:118,n:"DREAM HOME OWNER 👑"}
+];
+/* =======================================================================
+   MOTOR
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------- HOME ---------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>=0?`<span class="no">${i+1}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ $("play").classList.remove("on"); $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------- PLAYER ---------- */
+let ORD=null, PK=null, SC=null, SO=null, MT=null, VC=null;
+let mSel=null, mDone=0, mRight=[];
+
+function actBar(s){
+  const a=ACTS[s.act]; if(!a) return "";
+  return `<div class="actbar" style="border-color:${a.c}">
+    <span class="n" style="background:${a.c}">${a.em} ${a.n}</span>
+    <span style="color:var(--dim);font-weight:800">${a.d}</span></div>`;
+}
+
+function openEp(k){
+  cur=k; hits=0; total=0;
+  ORD=null; PK=null; SC=null; SO=null; MT=null; VC=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = actBar(s) + `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = `<h2 class="sec"><span class="em">📋</span>Como funciona</h2>` + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    VC=VOCS[s.set]; total=VC.items.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">${VC.tip}</p>
+      <div class="vg">${VC.items.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="scram"){
+    SC=SCRAM[s.set]; total=SC.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">${SC.tip}</p>
+      ${SC.items.map((it,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${it.e} &nbsp;<span class="hint">${it.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="sort"){
+    SO=SORTS[s.set]; total=SO.items.length;
+    b.innerHTML = head + `<p class="how">${SO.how}</p>
+      <p class="tip" style="border-left-color:var(--green)">${SO.tip}</p>
+      ${SO.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SO.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="match"){
+    MT=MATCHES[s.set]; total=MT.pairs.length;
+    b.innerHTML = head + matchHTML(MT.pairs, MT.l, MT.r, MT.how, MT.tip);
+  }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    const tips = {
+      s2:"São as oito definições do Exercise 3 do livro. Pense primeiro: é um <b>room</b> (sala) ou um <b>piece of furniture</b> (móvel)?",
+      s6:"Os oito adjetivos: <b>cheap</b> barato · <b>valuable</b> valioso · <b>messy</b> desarrumado · <b>modern</b> moderno · <b>old</b> antigo · <b>pretty</b> bonito · <b>special</b> especial · <b>unusual</b> incomum.",
+      s9:"<b>EN</b> One or two syllables → -er. Three or more → more. &nbsp;·&nbsp; <b>PT</b> Uma ou duas sílabas → <b>-er</b>; três ou mais → <b>more</b>. Cuidado com <b>-y → -ier</b>, <b>-e → -r</b> e os irregulares <b>good → better</b>, <b>bad → worse</b>.",
+      s14:"<b>quite</b> = um pouco &nbsp;·&nbsp; <b>really / very / so</b> = muito &nbsp;·&nbsp; <b>too</b> = demais (sentido negativo)."
+    };
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. O feedback aparece na hora.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${tips[s.set]||""}</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="lab"){
+    PK=s.set; total=QS[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Leia o painel com atenção — a explicação vem em inglês e em português. Depois faça os itens.</p>`
+      + labHTML(s.panel) + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="read"){
+    const R=READS[s.set]; PK=R.set; total=QS[R.set].items.length;
+    b.innerHTML = head + `<div class="read"><h3>${R.em} ${R.title}</h3>${R.html}</div>`
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">❓ Comprehension</h2>`
+      + mcqHTML(R.set);
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER[s.set]; total=ORD.items.length;
+    const how = ORD.prompt
+      ? "Leia a pista em verde e monte a frase no SUPERLATIVO clicando nas palavras."
+      : (ORD.steps
+        ? "Clique nos passos na ordem certa. Clique no passo de cima para devolver."
+        : "Clique nas palavras na ordem certa para montar a frase.");
+    b.innerHTML = head + `<p class="how">${how}</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORD.tip}</p>` + orderHTML(s.set);
+    initOrder();
+  }
+
+  else if(s.kind==="drill"){
+    total=DRILL.length;
+    b.innerHTML = head + `<p class="how">Leia a pista, diga a frase completa em voz alta e só então toque para conferir.</p>
+      <p class="tip" style="border-left-color:var(--red)">A carta traz o alimento e a <b>pista de quantidade ou de ordem</b>. A turma fala a frase inteira antes de você revelar.</p>
+      <div class="dg">${DRILL.map(d=>`
+        <div class="dc" onclick="openDrill(this)">
+          <div class="pic">${d.pic}</div>
+          <div class="qty">${d.qty}</div>
+          <div class="tap">TOQUE PARA CONFERIR</div>
+          <div class="say">${d.say}</div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>1.</b> São <b>20 estações</b> em três atos: 🏠 MY PLACE (quartos, móveis e adjetivos), ⚖️ COMPARE &amp; CHOOSE (comparativos e superlativos) e 🌏 HOMES AWAY FROM HOME (três leituras). Pode fazer na ordem ou escolher no mapa 🗺️.</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Guest → Neighbour → Host → Interior Designer → <b>DREAM HOME OWNER</b>.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>3.</b> As estações <b>📐 GRAMMAR LAB</b> explicam o comparativo e o superlativo em <b>inglês e em português</b>. Leia o painel antes de responder.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>4.</b> Errou? Sem problema. O jogo explica o porquê e você segue.</p>
+  <p class="tip" style="border-left-color:var(--teal)"><b>5.</b> Botão <b>🔍 Projeção</b>: letras gigantes e placar de 4 equipes, para jogar com a turma inteira no telão.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>6.</b> Botão <b>👀 Answers</b> mostra todas as respostas da estação — use só na correção!</p>`;
+}
+
+/* ---------- vocab ---------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------- scramble ---------- */
+function initScram(){
+  SC.items.forEach((it,i)=>{
+    const letters = it.w.split("").map((c,j)=>({c,j})).sort(()=>Math.random()-0.5);
+    $("bk-"+i).innerHTML = letters.map(o=>
+      `<button class="ch let" onclick="pickLet(${i},this)">${o.c}</button>`).join("");
+    $("sl-"+i).innerHTML = "";
+  });
+}
+function pickLet(i,btn){
+  const c=document.createElement("button");
+  c.className="ch let"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("sl-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).innerHTML="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckScram(i){
+  const sl=$("sl-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join("");
+  if(built===SC.items[i].w){
+    sl.className="slot ok";
+    $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("fb-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shScram(i){
+  const already = $("sl-"+i).classList.contains("ok");
+  rsScram(i);
+  $("sl-"+i).innerHTML = SC.items[i].w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  $("sl-"+i).className="slot ok";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- sort ---------- */
+function pickSort(i,j){
+  const row=document.querySelector(`#body .srow[data-i="${i}"]`);
+  if(!row || row.dataset.done) return; row.dataset.done="1";
+  const c=SO.items[i].c;
+  row.querySelectorAll(".sb").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===c) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $("sf-"+i).innerHTML = (j===c?`<span style="color:var(--ok)">✅ </span>`:`<span style="color:var(--bad)">❌ </span>`)
+    + `<span class="wy">${SO.items[i].e}</span>`;
+  bump();
+}
+
+/* ---------- match ---------- */
+function matchHTML(pairs,l,r,how,tip){
+  mRight = pairs.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-0.5);
+  return `<p class="how">${how}</p><p class="tip" style="border-left-color:var(--purple)">${tip}</p>
+  <div class="mg">
+    <div><div class="mh">${l}</div>${pairs.map((p,i)=>
+      `<button class="mi" id="L-${i}" onclick="mPick('L',${i})">${p[0]}</button>`).join("")}</div>
+    <div><div class="mh">${r}</div>${mRight.map((o,k)=>
+      `<button class="mi" id="R-${k}" onclick="mPick('R',${k})">${o.t}</button>`).join("")}</div>
+  </div>
+  <div class="fb" id="mfb" style="margin-top:14px"></div>`;
+}
+function mPick(side,idx){
+  const el=$(side+"-"+idx);
+  if(el.classList.contains("got")) return;
+  if(side==="L"){
+    document.querySelectorAll("#body .mi.sel").forEach(x=>x.classList.remove("sel"));
+    mSel=idx; el.classList.add("sel"); return;
+  }
+  if(mSel===null){ $("mfb").innerHTML=`<span style="color:var(--bad)">👈 Escolha primeiro na coluna da esquerda.</span>`; return; }
+  if(mRight[idx].i===mSel){
+    const L=$("L-"+mSel); L.classList.remove("sel"); L.classList.add("got"); el.classList.add("got");
+    mDone++; mSel=null;
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+    bump();
+  } else {
+    el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320);
+    $("mfb").innerHTML=`<span style="color:var(--bad)">❌ Not this one. Try again!</span>`;
+  }
+}
+
+/* ---------- mcq ---------- */
+function mcqHTML(ns){
+  const d=QS[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-ns="${ns}" data-q="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+      <div class="opts ${d.two?"two":"four"}">${it.o.map((o,j)=>
+        `<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}</div>
+      <div class="fb" id="f-${ns}-${i}"></div>
+    </div>`).join("");
+}
+function ansMcq(ns,i,j){
+  const box=document.querySelector(`#body .ex[data-ns="${ns}"][data-q="${i}"]`);
+  if(!box || box.dataset.done) return; box.dataset.done="1";
+  const it=QS[ns].items[i];
+  box.querySelectorAll(".op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===it.a) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $(`f-${ns}-${i}`).innerHTML =
+    (j===it.a?`<span style="color:var(--ok)">✅ Correct!</span>`:`<span style="color:var(--bad)">❌ Not this one.</span>`)
+    + `<span class="wy">${it.e}</span>`;
+  bump();
+}
+
+/* ---------- word order / recipe steps ---------- */
+function orderHTML(ns){
+  const d=ORDER[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-o="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${d.prompt?("🟢 "+it.q):(d.steps?("📜 "+it.a):"Build the sentence")}</div>
+      <div class="slot ${d.steps?"steps":""}" id="os-${i}"></div>
+      <div class="bank ${d.steps?"steps":""}" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  if(!ORD) return;
+  const st = ORD.steps ? " steps" : "";
+  ORD.items.forEach((it,i)=>{
+    const sh = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    const bk = $("ob-"+i); if(!bk) return;
+    bk.innerHTML = sh.map(o=>`<button class="ch" onclick="pickWord(${i},this)">${o.w}</button>`).join("");
+    $("os-"+i).innerHTML="";
+    $("os-"+i).className="slot"+st;
+  });
+}
+function pickWord(i,btn){
+  const c=document.createElement("button");
+  c.className="ch"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("os-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsOrd(i){
+  const st = ORD.steps ? " steps" : "";
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"+st; $("of-"+i).innerHTML="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckOrd(i){
+  const it=ORD.items[i], sl=$("os-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join(" ");
+  if(built===it.w.join(" ")){
+    sl.className="slot ok"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+    if(!already) bump();
+  } else {
+    sl.className="slot no"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`;
+  }
+}
+function shOrd(i){
+  const it=ORD.items[i];
+  const already = $("os-"+i).classList.contains("ok");
+  rsOrd(i);
+  $("os-"+i).innerHTML = it.w.map(w=>`<span class="ch">${w}</span>`).join("");
+  $("os-"+i).className="slot ok"+(ORD.steps?" steps":"");
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- drill ---------- */
+function openDrill(el){
+  if(!el.classList.contains("open")){ el.classList.add("open"); bump(); }
+}
+
+/* ---------- painel de gramática bilíngue ---------- */
+function labHTML(key){
+  const g=GRAM[key];
+  return `<div class="lab">
+    <h3>📐 ${g.title}</h3>
+    ${g.rows.map(r=>`
+      <div class="labrow">
+        <div class="fm"><b>${r.form}</b><code>${r.forms}</code></div>
+        ${r.en?`<div class="en">${r.en}</div>`:""}
+        ${r.pt?`<div class="ptx">${r.pt}</div>`:""}
+        <div class="exm">${r.ex}</div>
+      </div>`).join("")}
+    <div class="cerr">
+      <div class="t">⚠️ COMMON ERROR · ERRO CLÁSSICO</div>
+      <div class="w">${g.error.wrong}</div>
+      <div class="r">✅ ${g.error.right}</div>
+      <div class="n">${g.error.note}</div>
+    </div>
+  </div>`;
+}
+
+/* ---------- quiz ---------- */
+let qT=1, qI=0, qHit=0; const qA={};
+function quizHTML(){
+  return `<p class="how">25 questões em 3 níveis. Comece pelo bronze!</p>
+  <div class="tiers">
+    <button class="tb on" id="t1" onclick="setT(1)">🥉 EASY · 10 pts</button>
+    <button class="tb" id="t2" onclick="setT(2)">🥈 MEDIUM · 20 pts</button>
+    <button class="tb" id="t3" onclick="setT(3)">🥇 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="ex" id="qbox"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" onclick="qGo(-1)">◀ prev</button>
+    <button class="btn b" onclick="qGo(1)">next ▶</button>
+    <span class="fb" id="qsc"></span>
+  </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(qI>=L.length) qI=L.length-1;
+  const c=L[qI];
+  $("qmeta").innerHTML = `QUESTION ${qI+1} / ${L.length} · <b>${qT*10} points</b>`;
+  $("qbox").innerHTML = `<div class="qn">${c.q.q}</div>
+    <div class="opts four">${c.q.o.map((o,j)=>
+      `<button class="op" onclick="qPick(${c.i},${j})">${o}</button>`).join("")}</div>
+    <div class="fb" id="qfb"></div>`;
+  if(qA[c.i]!==undefined) qShow(c.i,qA[c.i]);
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; if(j===FINALE[gi].a) qHit++;
+  qShow(gi,j); bump();
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qShow(gi,pick){
+  const q=FINALE[gi];
+  document.querySelectorAll("#qbox .op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===q.a) b.classList.add("right"); else if(k===pick) b.classList.add("wrong");
+  });
+  $("qfb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${qT*10}</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="wy">${q.e}</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+/* ---------- reveal ---------- */
+function revealAll(){
+  if(!cur) return;
+  const k=STATIONS[cur].kind;
+  if(k==="vocab") document.querySelectorAll("#body .vc").forEach(c=>flip(c));
+  else if(k==="scram") SC.items.forEach((_,i)=>shScram(i));
+  else if(k==="sort") SO.items.forEach((it,i)=>pickSort(i,it.c));
+  else if(k==="match"){
+    MT.pairs.forEach((p,i)=>{
+      const ri = mRight.findIndex(o=>o.i===i);
+      const L=$("L-"+i), R=$("R-"+ri);
+      if(L&&R&&!L.classList.contains("got")){ L.classList.add("got"); L.classList.remove("sel"); R.classList.add("got"); mDone++; bump(); }
+    });
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+  }
+  else if(k==="mcq"||k==="lab"||k==="read") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="order") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="drill") document.querySelectorAll("#body .dc").forEach(c=>openDrill(c));
+  else if(k==="quiz"){ const c=tList()[qI]; if(qA[c.i]===undefined) qPick(c.i,FINALE[c.i].a); }
+}
+
+/* ---------- projeção / equipes ---------- */
+function drawTeams(){
+  $("tin").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button></div>`).join("")
+    + `<div class="tm"><button onclick="rsTeams()" style="width:auto;padding:4px 10px">zerar</button></div>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Modo aluno" : "🔍 Projeção";
+}
+
+/* ---------- inicia ---------- */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") home();
+  else if(e.key==="ArrowRight" && cur) stepEp(1);
+  else if(e.key==="ArrowLeft" && cur) stepEp(-1);
+});
+
+drawTeams(); drawMap(); addStars(0);
+
+</script>
+</body>
+</html>
