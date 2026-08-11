@@ -1588,6 +1588,17 @@ function fala(txt, devagar, botao){
   try { window.speechSynthesis.speak(u); } catch(e){}
 }
 
+function textoProprio(el){
+  var t = "";
+  for (var i = 0; i < el.childNodes.length; i++) {
+    var n = el.childNodes[i];
+    if (n.nodeType === 3) t += n.nodeValue;                       /* nó de texto */
+    else if (n.nodeType === 1 && !/^(SPAN|DIV|P)$/.test(n.tagName)) t += n.textContent;
+    else if (n.nodeType === 1 && n.className &&
+             /\b(b|i|em|strong)\b/i.test(n.tagName)) t += n.textContent;
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
 function botaoAudio(txt, titulo, devagar){
   var b = document.createElement("button");
   b.type = "button";
@@ -1630,11 +1641,37 @@ function poeAudio(){
       s.appendChild(botaoAudio(s.textContent.trim(), "Ouvir a frase"));
   });
 
+  /* deck de projeção (English Rewind): só nos trechos que são inglês */
+  if (!DIA && document.querySelectorAll("section.slide").length > 5) {
+    /* frases completas em inglês */
+    raiz.querySelectorAll("span.ans, div.q").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.length > 3) el.appendChild(botaoAudio(t, "Ouvir em inglês"));
+    });
+    /* .scr tem dois tipos: frase com lacuna (serve) e palavras embaralhadas (não serve) */
+    raiz.querySelectorAll("span.scr").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.indexOf("/") >= 0) return;                 /* embaralhado: não faz sentido ouvir */
+      if (t.length > 3) el.appendChild(botaoAudio(t.replace(/_+/g, " blank "), "Ouvir em inglês"));
+    });
+    /* alternativas do quiz: o botão do jogo já é <button>, então o som vai ao lado, fora dele */
+    raiz.querySelectorAll("button.opt").forEach(function(b){
+      if (b.dataset.mlAudio) return; b.dataset.mlAudio = "1";
+      var t = b.textContent.trim().replace(/^[a-d]\)\s*/i, "");
+      if (t.length < 4) return;
+      var s2 = botaoAudio(t, "Ouvir a alternativa");
+      s2.style.marginLeft = "4px";
+      if (b.parentNode) b.parentNode.insertBefore(s2, b.nextSibling);
+    });
+  }
+
   /* textos de leitura: barra no topo + alto-falante por parágrafo */
-  raiz.querySelectorAll(".read, .rd, .reading").forEach(function(r){
+  raiz.querySelectorAll(".read, .rd, .reading, .txtbox").forEach(function(r){
     if (r.dataset.mlAudio) return; r.dataset.mlAudio = "1";
     var paras = [].slice.call(r.querySelectorAll("p"))
-      .filter(function(p){ return p.textContent.trim().length > 40; });
+      .filter(function(p){ return p.textContent.trim().length > 25; });
     if (!paras.length) return;
     var barra = document.createElement("div");
     barra.className = "mlRead";

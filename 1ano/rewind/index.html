@@ -1017,6 +1017,491 @@ document.addEventListener('keydown', function(e){
   else if(e.key==='r'||e.key==='R'){ revealSlide(); }
 });
 render();
+
+
+/* =========================================================================
+   MELHORIAS · progresso salvo · pronúncia · rever meus erros
+   Cole este bloco no FIM do <script> de cada jogo. Ele detecta sozinho qual
+   motor o jogo usa e desliga o que não se aplica. Não altera nada do resto.
+   ========================================================================= */
+(function(){
+if (window.__melhorias) return;   /* já aplicado */
+
+/* ---------- 1. qual motor é este? ---------- */
+var DIA = null;
+try { if (typeof STATIONS !== "undefined" && typeof prog !== "undefined" && typeof stars !== "undefined") DIA = "A"; } catch(e){}
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof xp !== "undefined") DIA = "B"; } catch(e){} }
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof pts !== "undefined") DIA = "C"; } catch(e){} }
+
+var CFG = {
+  A: { foot:"foot",  body:"body",  home:"homeView", wSel:".fr .w, .front .w", exSel:".bk .ex, .back .ex" },
+  B: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" },
+  C: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" }
+}[DIA] || { foot:null, body:null, home:null, wSel:".front .w, .fr .w", exSel:".back .ex, .bk .ex" };
+
+var $$ = function(id){ return document.getElementById(id); };
+var bodyEl = function(){ return CFG.body ? $$(CFG.body) : null; };
+var scope  = function(){ return bodyEl() || document; };
+
+/* ---------- 2. estado, de forma independente do motor ---------- */
+function ler(){
+  try {
+    if (DIA === "A") return { s: stars, d: done,    p: prog     };
+    if (DIA === "B") return { s: xp,    d: doneEp,  p: progress };
+    if (DIA === "C") return { s: pts,   d: doneEp,  p: progress };
+  } catch(e){}
+  return null;
+}
+function atual(){
+  try {
+    if (DIA === "A") return cur;
+    if (DIA === "B" || DIA === "C") return curEp;
+  } catch(e){}
+  return null;
+}
+function aplicar(o){
+  var t = ler(); if (!t) return;
+  Object.keys(o.d || {}).forEach(function(k){ t.d[k] = o.d[k]; });
+  Object.keys(o.p || {}).forEach(function(k){ t.p[k] = o.p[k]; });
+  try {
+    if (DIA === "A") { stars = 0; addStars(o.s || 0); drawMap(); }
+    if (DIA === "B") { xp    = 0; addXp(o.s || 0);    drawRows(); }
+    if (DIA === "C") { pts   = 0; addPts(o.s || 0);   drawRows(); }
+  } catch(e){}
+}
+
+/* ---------- 3. gravação no aparelho do aluno ---------- */
+var CHAVE = "english-linus:" + (location.pathname || "jogo").replace(/[^a-z0-9]/gi, "_") + ":v1";
+var podeGravar = (function(){
+  try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; }
+  catch(e){ return false; }
+})();
+
+function gravar(){
+  if (!podeGravar || !DIA) return;
+  var t = ler(); if (!t) return;
+  try {
+    localStorage.setItem(CHAVE, JSON.stringify({
+      s: t.s, d: t.d, p: t.p, erros: serializaErros(),
+      quando: Date.now(), estacao: atual()
+    }));
+    piscaSalvo();
+  } catch(e){}
+}
+function lido(){
+  if (!podeGravar) return null;
+  try { return JSON.parse(localStorage.getItem(CHAVE) || "null"); } catch(e){ return null; }
+}
+function apagar(){ try { localStorage.removeItem(CHAVE); } catch(e){} }
+
+/* ---------- 4. registro dos erros ---------- */
+var ERROS = {};                                  /* { estacao: { chave: true } } */
+function marcaErro(est, chave){
+  if (!est) return;
+  (ERROS[est] = ERROS[est] || {})[chave] = true;
+  atualizaBotaoErros();
+}
+function limpaErro(est, chave){
+  if (est && ERROS[est]) { delete ERROS[est][chave]; atualizaBotaoErros(); }
+}
+function serializaErros(){ return ERROS; }
+function contaErros(est){ return est && ERROS[est] ? Object.keys(ERROS[est]).length : 0; }
+
+/* ---------- 5. embrulha as funções do motor ---------- */
+function embrulha(nome, antes, depois){
+  try {
+    var f = eval(nome);
+    if (typeof f !== "function") return false;
+    window["__orig_" + nome] = f;
+    var novo = function(){
+      var args = arguments;
+      if (antes) { try { antes.apply(null, args); } catch(e){} }
+      var r = window["__orig_" + nome].apply(this, args);
+      if (depois) { try { depois.apply(null, args); } catch(e){} }
+      return r;
+    };
+    window.__novo = novo;
+    eval(nome + " = window.__novo");
+    delete window.__novo;
+    return true;
+  } catch(e){ return false; }
+}
+
+/* grava sempre que a pontuação ou o progresso mudam — os motores usam nomes
+   diferentes, então embrulhamos todos os candidatos que existirem */
+["bump", "addStars", "addXp", "addPts", "setProgress"].forEach(function(n){
+  embrulha(n, null, function(){ gravar(); });
+});
+
+/* múltipla escolha: ansMcq(ns,i,j) · ans(ns,i,j) · pickAns(i,j,a) */
+function itemQS(ns, i){
+  var it = null;
+  try { it = QS[ns].items[i]; } catch(e){}
+  if (!it) { try { it = QS[ns][i]; } catch(e){} }
+  return it || null;
+}
+function registra(ns, i, j){
+  var it = itemQS(ns, i);
+  if (!it) return;
+  var k = ns + "#" + i;
+  if (j === it.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+}
+embrulha("ansMcq", null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("ans",    null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("pickAns", null, function(i, j, a){
+  var k = "q#" + i;
+  if (j === a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* cestos: pickSort(i,j) · sortPick(i,j) */
+embrulha("pickSort", null, function(i, j){
+  var c = null;
+  try { c = (typeof SO !== "undefined" && SO) ? SO.items[i].c : SORT.items[i].c; } catch(e){}
+  if (c === null || c === undefined) { try { c = SORT[i].c; } catch(e){} }
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+embrulha("sortPick", null, function(i, j){
+  var c = null;
+  try { c = SORT[i].c; } catch(e){}
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* quiz final: qPick(gi,j) */
+embrulha("qPick", null, function(gi, j){
+  var q = null; try { q = FINALE[gi]; } catch(e){}
+  if (!q) return;
+  var k = "quiz#" + gi;
+  if (j === q.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* toda vez que abre uma estação: põe os alto-falantes e ajusta o botão */
+embrulha("openEp", null, function(){
+  pararFala();
+  poeAudio();
+  atualizaBotaoErros();
+});
+
+/* ---------- 6. pronúncia com a voz do navegador ---------- */
+var TEM_FALA = (typeof window.speechSynthesis !== "undefined" &&
+                typeof window.SpeechSynthesisUtterance !== "undefined");
+var vozEN = null;
+function achaVoz(){
+  if (!TEM_FALA) return null;
+  if (vozEN) return vozEN;
+  var vs = [];
+  try { vs = window.speechSynthesis.getVoices() || []; } catch(e){}
+  var pref = ["en-US", "en_US", "en-GB", "en_GB", "en"];
+  for (var p = 0; p < pref.length; p++)
+    for (var i = 0; i < vs.length; i++)
+      if (vs[i].lang && vs[i].lang.indexOf(pref[p]) === 0) { vozEN = vs[i]; return vozEN; }
+  return null;
+}
+if (TEM_FALA) { try { window.speechSynthesis.onvoiceschanged = achaVoz; achaVoz(); } catch(e){} }
+
+function pararFala(){ if (TEM_FALA) { try { window.speechSynthesis.cancel(); } catch(e){} } }
+
+function fala(txt, devagar, botao){
+  if (!TEM_FALA || !txt) return;
+  pararFala();
+  var u = new window.SpeechSynthesisUtterance(String(txt).replace(/[“”"]/g, ""));
+  var v = achaVoz(); if (v) u.voice = v;
+  u.lang = (v && v.lang) || "en-US";
+  u.rate = devagar ? 0.7 : 0.92;
+  if (botao) {
+    botao.classList.add("mlFalando");
+    u.onend = u.onerror = function(){ botao.classList.remove("mlFalando"); };
+  }
+  try { window.speechSynthesis.speak(u); } catch(e){}
+}
+
+function textoProprio(el){
+  var t = "";
+  for (var i = 0; i < el.childNodes.length; i++) {
+    var n = el.childNodes[i];
+    if (n.nodeType === 3) t += n.nodeValue;                       /* nó de texto */
+    else if (n.nodeType === 1 && !/^(SPAN|DIV|P)$/.test(n.tagName)) t += n.textContent;
+    else if (n.nodeType === 1 && n.className &&
+             /\b(b|i|em|strong)\b/i.test(n.tagName)) t += n.textContent;
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+function botaoAudio(txt, titulo, devagar){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.className = "mlSpk";
+  b.innerHTML = devagar ? "🐢" : "🔊";
+  b.title = titulo || "Ouvir em inglês";
+  b.setAttribute("aria-label", b.title);
+  b.addEventListener("click", function(ev){
+    ev.stopPropagation(); ev.preventDefault();
+    fala(txt, devagar, b);
+  });
+  return b;
+}
+
+function poeAudio(){
+  if (!TEM_FALA) return;
+  var raiz = scope();
+
+  /* cartas de vocabulário: palavra (normal + devagar) e frase de exemplo */
+  raiz.querySelectorAll(".vc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var w = c.querySelector(CFG.wSel);
+    if (w && w.textContent.trim()) {
+      var cx = document.createElement("span");
+      cx.className = "mlSpkBox";
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir a palavra"));
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir bem devagar", true));
+      w.appendChild(cx);
+    }
+    var ex = c.querySelector(CFG.exSel);
+    if (ex && ex.textContent.trim())
+      ex.appendChild(botaoAudio(ex.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* cartas de fala rápida */
+  raiz.querySelectorAll(".dc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var s = c.querySelector(".say");
+    if (s && s.textContent.trim())
+      s.appendChild(botaoAudio(s.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* deck de projeção (English Rewind): só nos trechos que são inglês */
+  if (!DIA && document.querySelectorAll("section.slide").length > 5) {
+    /* frases completas em inglês */
+    raiz.querySelectorAll("span.ans, div.q").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.length > 3) el.appendChild(botaoAudio(t, "Ouvir em inglês"));
+    });
+    /* .scr tem dois tipos: frase com lacuna (serve) e palavras embaralhadas (não serve) */
+    raiz.querySelectorAll("span.scr").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.indexOf("/") >= 0) return;                 /* embaralhado: não faz sentido ouvir */
+      if (t.length > 3) el.appendChild(botaoAudio(t.replace(/_+/g, " blank "), "Ouvir em inglês"));
+    });
+    /* alternativas do quiz: o botão do jogo já é <button>, então o som vai ao lado, fora dele */
+    raiz.querySelectorAll("button.opt").forEach(function(b){
+      if (b.dataset.mlAudio) return; b.dataset.mlAudio = "1";
+      var t = b.textContent.trim().replace(/^[a-d]\)\s*/i, "");
+      if (t.length < 4) return;
+      var s2 = botaoAudio(t, "Ouvir a alternativa");
+      s2.style.marginLeft = "4px";
+      if (b.parentNode) b.parentNode.insertBefore(s2, b.nextSibling);
+    });
+  }
+
+  /* textos de leitura: barra no topo + alto-falante por parágrafo */
+  raiz.querySelectorAll(".read, .rd, .reading, .txtbox").forEach(function(r){
+    if (r.dataset.mlAudio) return; r.dataset.mlAudio = "1";
+    var paras = [].slice.call(r.querySelectorAll("p"))
+      .filter(function(p){ return p.textContent.trim().length > 25; });
+    if (!paras.length) return;
+    var barra = document.createElement("div");
+    barra.className = "mlRead";
+    var tudo = paras.map(function(p){ return p.textContent.trim(); }).join(" ");
+    var ouvir = botaoAudio(tudo, "Ouvir o texto inteiro");
+    ouvir.innerHTML = "🔊 Ouvir o texto";
+    ouvir.className = "mlSpk mlWide";
+    var parar = document.createElement("button");
+    parar.type = "button"; parar.className = "mlSpk mlWide"; parar.innerHTML = "⏹️ Parar";
+    parar.addEventListener("click", function(ev){ ev.stopPropagation(); pararFala(); });
+    barra.appendChild(ouvir); barra.appendChild(parar);
+    var dica = document.createElement("span");
+    dica.className = "mlHint";
+    dica.textContent = "ou clique no 🔊 de cada parágrafo";
+    barra.appendChild(dica);
+    r.insertBefore(barra, r.firstChild);
+    paras.forEach(function(p){ p.appendChild(botaoAudio(p.textContent.trim(), "Ouvir este parágrafo")); });
+  });
+}
+
+/* ---------- 7. rever só os itens errados ---------- */
+function chaveDoBloco(el){
+  if (el.hasAttribute("data-q")) {
+    var ns = el.getAttribute("data-ns");
+    return (ns ? ns : "q") + "#" + el.getAttribute("data-q");
+  }
+  if (el.classList.contains("srow")) return "sort#" + el.getAttribute("data-i");
+  return null;
+}
+function reverErros(){
+  var est = atual();
+  if (!est || !contaErros(est)) return;
+  var alvos = ERROS[est];
+
+  /* quiz final: libera as questões erradas para responder de novo */
+  var soQuiz = Object.keys(alvos).every(function(k){ return k.indexOf("quiz#") === 0; });
+  if (soQuiz) {
+    var n = 0;
+    Object.keys(alvos).forEach(function(k){
+      var gi = parseInt(k.split("#")[1], 10);
+      try { if (qA[gi] !== undefined) { delete qA[gi]; n++; } } catch(e){}
+    });
+    try { qRender(); } catch(e){}
+    aviso("🔁 " + n + " questão(ões) liberada(s) para refazer. Navegue com ◀ ▶.");
+    return;
+  }
+
+  /* demais estações: reabre e esconde o que já estava certo */
+  try { openEp(est); } catch(e){ return; }
+  (function(){
+    var raiz = scope(), achou = 0;
+    var blocos = [].slice.call(raiz.querySelectorAll("[data-q], .srow"));
+    blocos.forEach(function(b){
+      var k = chaveDoBloco(b);
+      if (k && alvos[k]) { b.classList.add("mlAlvo"); achou++; }
+      else if (k) b.classList.add("mlOculto");
+    });
+    if (!achou) { blocos.forEach(function(b){ b.classList.remove("mlOculto"); }); return; }
+    var faixa = document.createElement("div");
+    faixa.className = "mlFaixa";
+    faixa.innerHTML = "🔁 <b>Refazendo " + achou + " item(ns) que você errou.</b> " +
+      "<button type='button' class='mlSpk mlWide' id='mlTudo'>Mostrar tudo de novo</button>";
+    raiz.insertBefore(faixa, raiz.firstChild);
+    var bt = document.getElementById("mlTudo");
+    if (bt) bt.addEventListener("click", function(){
+      raiz.querySelectorAll(".mlOculto").forEach(function(x){ x.classList.remove("mlOculto"); });
+      faixa.remove();
+    });
+    poeAudio();
+    try { window.scrollTo(0, 0); } catch(e){}
+  })();
+}
+
+function atualizaBotaoErros(){
+  var b = document.getElementById("mlErros");
+  if (!b) return;
+  var n = contaErros(atual());
+  b.textContent = n ? "🔁 Rever meus erros (" + n + ")" : "🔁 Rever meus erros";
+  b.disabled = !n;
+}
+
+/* ---------- 8. avisos ---------- */
+function aviso(msg){
+  try { if (typeof toast === "function") { toast(msg); return; } } catch(e){}
+  var d = document.createElement("div");
+  d.className = "mlAviso"; d.textContent = msg;
+  document.body.appendChild(d);
+  setTimeout(function(){ d.remove(); }, 2600);
+}
+var tSalvo = null;
+function piscaSalvo(){
+  var p = document.getElementById("mlSalvo");
+  if (!p) return;
+  p.classList.add("on");
+  clearTimeout(tSalvo);
+  tSalvo = setTimeout(function(){ p.classList.remove("on"); }, 1200);
+}
+
+/* ---------- 9. interface ---------- */
+var CSS = ""
++ ".mlSpk{border:2px solid currentColor;border-radius:9px;background:rgba(255,255,255,.85);"
++ "color:inherit;font:inherit;font-size:12px;line-height:1;padding:3px 6px;margin-left:6px;"
++ "cursor:pointer;vertical-align:middle;opacity:.75;transition:.12s;}"
++ ".mlSpk:hover{opacity:1;transform:translateY(-1px);}"
++ ".mlSpk:disabled{opacity:.35;cursor:default;transform:none;}"
++ ".mlSpk.mlWide{font-size:13px;font-weight:800;padding:6px 11px;}"
++ ".mlSpk.mlFalando{animation:mlPulse .8s infinite;}"
++ "@keyframes mlPulse{0%,100%{opacity:.6}50%{opacity:1}}"
++ ".mlSpkBox{display:inline-flex;gap:3px;margin-left:6px;}"
++ ".mlRead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding-bottom:10px;"
++ "border-bottom:2px dashed rgba(0,0,0,.15);}"
++ ".mlHint{font-size:12px;opacity:.7;}"
++ ".mlOculto{display:none !important;}"
++ ".mlAlvo{outline:3px dashed rgba(255,150,0,.75);outline-offset:4px;border-radius:12px;}"
++ ".mlFaixa{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:10px 14px;"
++ "border:3px solid #e08a1e;border-radius:14px;background:#fff6e5;font-size:14px;}"
++ ".mlBar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 auto 18px;"
++ "max-width:1100px;padding:10px 14px;border:2px solid rgba(0,0,0,.15);border-radius:14px;"
++ "background:rgba(255,255,255,.75);font-size:13px;}"
++ ".mlBar b{font-size:14px;}"
++ "#mlSalvo{opacity:0;transition:.2s;font-weight:800;}"
++ "#mlSalvo.on{opacity:1;}"
++ ".mlAviso{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9999;"
++ "background:#111;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;"
++ "font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.3);}"
++ "#mlErros:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}"
++ ".mlBtn{white-space:nowrap;}"
++ "@media print{.mlSpk,.mlRead,.mlBar,.mlFaixa{display:none !important;}}";
+
+(function(){
+  var st = document.createElement("style");
+  st.textContent = CSS;
+  document.head.appendChild(st);
+})();
+
+/* botão no rodapé do player */
+(function(){
+  var f = CFG.foot ? $$(CFG.foot) : null;
+  if (!f) return;
+  var b = document.createElement("button");
+  b.type = "button"; b.id = "mlErros";
+  var modelo = f.querySelector("button");
+  if (modelo && modelo.className) { b.className = modelo.className; b.classList.add("mlBtn"); }
+  else { b.className = "mlSpk mlWide"; }
+  b.textContent = "🔁 Rever meus erros";
+  b.disabled = true;
+  b.addEventListener("click", reverErros);
+  var alvo = f.querySelector(".grow");
+  if (alvo) f.insertBefore(b, alvo); else f.appendChild(b);
+})();
+
+/* faixa na tela inicial: progresso salvo, continuar e zerar */
+(function(){
+  if (!DIA) return;
+  var h = CFG.home ? $$(CFG.home) : null;
+  if (!h) return;
+  var bar = document.createElement("div");
+  bar.className = "mlBar";
+  var salvo = lido();
+  var txt = !podeGravar
+    ? "⚠️ Este navegador não deixa salvar o progresso. O jogo funciona, mas não guarda onde você parou."
+    : (salvo ? "💾 <b>Você já jogou aqui.</b> Progresso guardado: <b>⭐ " + (salvo.s || 0) + "</b>."
+             : "💾 O seu progresso fica salvo <b>neste aparelho</b>, sem login. Pode fechar e voltar depois.");
+  bar.innerHTML = "<span>" + txt + "</span><span id='mlSalvo'>💾 salvo</span><span class='grow' style='flex:1'></span>";
+  if (podeGravar && salvo) {
+    var c = document.createElement("button");
+    c.type = "button"; c.className = "mlSpk mlWide"; c.textContent = "▶️ Continuar de onde parei";
+    c.addEventListener("click", function(){
+      aplicar(salvo);
+      ERROS = salvo.erros || {};
+      atualizaBotaoErros();
+      aviso("▶️ Progresso restaurado: ⭐ " + (salvo.s || 0));
+      c.remove();
+    });
+    bar.appendChild(c);
+  }
+  if (podeGravar) {
+    var z = document.createElement("button");
+    z.type = "button"; z.className = "mlSpk mlWide"; z.textContent = "🗑️ Zerar meu progresso";
+    z.addEventListener("click", function(){
+      apagar(); ERROS = {}; atualizaBotaoErros();
+      aviso("🗑️ Progresso apagado deste aparelho. Recarregue a página para começar limpo.");
+    });
+    bar.appendChild(z);
+  }
+  h.insertBefore(bar, h.firstChild);
+})();
+
+/* põe os alto-falantes no que já estiver na tela */
+poeAudio();
+
+/* atalho: S para ouvir de novo a última coisa clicada não é necessário —
+   ESC também para a fala, além do que o jogo já faz */
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape") pararFala();
+});
+
+window.__melhorias = { versao: 1, motor: DIA, fala: TEM_FALA, grava: podeGravar };
+})();
+
 </script>
 </body>
 </html>
