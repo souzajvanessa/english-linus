@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LET'S CELEBRATE · Unit 4 · 9º ano</title>
+<style>
+  :root{
+    --bg:#f7f4fb; --card:#ffffff; --ink:#241a33; --dim:#6a5f7d; --line:#e0d8ec;
+    --red:#c0392b; --orange:#d98324; --yellow:#c9a227; --green:#2c7a5a; --teal:#146a7a;
+    --blue:#3a56a8; --purple:#7b3fa0; --pink:#c2318a;
+    --ok:#20bf7f; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(800px 460px at 88% -4%, rgba(194,49,138,.22), transparent 62%),
+      radial-gradient(740px 450px at 4% 100%, rgba(123,63,160,.24), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#c4b4d6; border-radius:99px;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue);} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{
+    padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;
+  }
+  #hero .truck{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--red);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{
+    background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;
+  }
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{
+    display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);
+  }
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{
+    position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;
+  }
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#f0e7db; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#eafaf1;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{
+    background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;
+  }
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:132px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--yellow);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#5a4a2a;}
+
+  /* generic exercise box */
+  .ex{
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;
+  }
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{
+    display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--purple); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;
+  }
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;
+  }
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#fffdf0;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* chips (word order + unscramble) */
+  .slot{
+    min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#fffdf6;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{
+    border:3px solid var(--ink); border-radius:12px; background:var(--blue); color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+  }
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort baskets */
+  .srow{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .srow .it{font-weight:900; font-size:20px; min-width:170px;}
+  .sb{
+    border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .sb:hover:not(:disabled){background:#fffdf0;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{
+    display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:17px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .mi:hover:not(:disabled){background:#fffdf0;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading + menu */
+  .read{
+    background:#fffdf3; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.65; font-weight:600;
+  }
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--red);}
+  .read p{margin-bottom:10px;}
+  .read .gl{
+    margin-top:14px; font-size:14px; font-weight:800; color:#6a5a3a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;
+  }
+  .menu{
+    background:#fff; border:4px solid var(--ink); border-radius:var(--r); box-shadow:0 6px 0 var(--ink);
+    padding:18px 20px; margin-bottom:16px;
+  }
+  .menu h3{text-align:center; font-size:22px; font-weight:900; letter-spacing:1px;}
+  .menu .ad{text-align:center; font-size:12.5px; color:var(--dim); font-weight:800; margin-bottom:12px;}
+  .mgrp{margin-bottom:12px;}
+  .mgrp .t{
+    font-size:13px; font-weight:900; letter-spacing:2px; background:var(--ink); color:#fff;
+    display:inline-block; padding:3px 11px; border-radius:99px; margin-bottom:7px;
+  }
+  .ln{display:flex; justify-content:space-between; gap:12px; font-size:17px; font-weight:800;
+    border-bottom:2px dotted var(--line); padding:5px 0;}
+  .ln b{color:var(--green);}
+
+  /* drill */
+  .dg{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;}
+  .dc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 12px; text-align:center; cursor:pointer; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .dc:hover{transform:translateY(-3px);}
+  .dc .pic{font-size:44px;}
+  .dc .qty{font-weight:900; font-size:16px; margin-top:5px; color:var(--purple);}
+  .dc .say{display:none; font-weight:900; font-size:17px; margin-top:9px; color:var(--green); line-height:1.3;}
+  .dc.open{background:#eafaf1;} .dc.open .say{display:block;}
+  .dc .tap{font-size:10.5px; letter-spacing:1.5px; color:var(--dim); font-weight:900; margin-top:7px;}
+  .dc.open .tap{display:none;}
+
+  /* painel de gramática bilíngue */
+  .lab{background:#fff; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:18px 20px; margin-bottom:18px;}
+  .lab h3{font-size:clamp(19px,2.2vw,25px); font-weight:900; letter-spacing:-.4px; margin-bottom:14px;}
+  .labrow{border-top:2px dashed var(--line); padding:13px 0;}
+  .labrow:first-of-type{border-top:0; padding-top:2px;}
+  .labrow .fm{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:7px;}
+  .labrow .fm b{font-size:17px; background:var(--ink); color:#fff; padding:3px 11px; border-radius:99px;}
+  .labrow .fm code{font-family:Consolas,monospace; font-size:15.5px; color:var(--teal); font-weight:700;}
+  .labrow .en, .labrow .ptx{font-size:16px; line-height:1.5; padding:7px 12px; border-radius:10px; margin-bottom:6px;}
+  .labrow .en{background:#eef6f6; border-left:5px solid var(--teal);}
+  .labrow .ptx{background:#fdf4e6; border-left:5px solid var(--orange);}
+  .labrow .en::before{content:"EN  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--teal);}
+  .labrow .ptx::before{content:"PT  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--orange);}
+  .labrow .exm{font-size:16.5px; font-weight:800; margin-top:6px; color:var(--green);}
+  .labrow .exm::before{content:"\25B8  ";}
+  .cerr{margin-top:16px; background:#fdecea; border:3px solid var(--red); border-radius:14px; padding:13px 16px;}
+  .cerr .t{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--red); margin-bottom:8px;}
+  .cerr .w{font-size:17px; font-weight:800; text-decoration:line-through; color:var(--red); margin-bottom:4px;}
+  .cerr .r{font-size:17px; font-weight:900; color:var(--green); margin-bottom:7px;}
+  .cerr .n{font-size:15px; line-height:1.5; color:#4a3a2a;}
+  body.proj .lab h3{font-size:30px;} body.proj .labrow .en, body.proj .labrow .ptx{font-size:19px;}
+  body.proj .labrow .exm{font-size:20px;} body.proj .cerr .w, body.proj .cerr .r{font-size:21px;}
+
+  /* quiz tiers */
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{
+    border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+
+  /* teams (projection) */
+  #teams{
+    display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px;
+    padding:0 5vw;
+  }
+  #teams.on{display:block;}
+  .tin{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{
+    width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;
+  }
+  .tm button:hover{background:var(--yellow);}
+
+  #foot{
+    position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96);
+    border-top:3px solid var(--line);
+  }
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJECTION MODE */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:21px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:24px;}
+  body.proj .ln{font-size:21px;}
+  body.proj .dc .pic{font-size:56px;} body.proj .dc .say{font-size:21px;}
+
+  /* ===== extras Unit 5 ===== */
+  .actbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;
+    padding:10px 14px;border:3px solid var(--ink);border-radius:16px;background:#fff;
+    box-shadow:0 4px 0 var(--ink);font-weight:900;font-size:13px;letter-spacing:.5px;}
+  .actbar .n{background:var(--ink);color:#fff;border-radius:99px;padding:3px 10px;font-size:11px;}
+  .vs{margin:16px 0 0;border:3px solid var(--purple);border-radius:16px;overflow:hidden;background:#fff;}
+  .vs .h{background:var(--purple);color:#fff;font-weight:900;font-size:13px;padding:7px 12px;letter-spacing:.6px;}
+  .vs table{width:100%;border-collapse:collapse;font-size:15px;}
+  .vs td{padding:7px 12px;border-top:2px solid #eee;}
+  .vs td:first-child{font-weight:800;color:var(--blue);width:44%;}
+  .vs td:last-child{font-weight:800;color:var(--red);}
+  body.proj .vs table{font-size:22px;}
+  .slot .ch, .bank .ch{max-width:100%;white-space:normal;text-align:left;}
+  .steps .ch{display:block;width:100%;margin:4px 0;}
+
+  /* ===== quadro de explicação quando erra ===== */
+  .oops{margin-top:12px;border:3px solid var(--red);border-radius:14px;background:#fff5f3;overflow:hidden;}
+  .oops .t{background:var(--red);color:#fff;font-weight:900;font-size:11.5px;letter-spacing:1.6px;padding:6px 12px;}
+  .oops .cmp{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  @media(max-width:640px){.oops .cmp{grid-template-columns:1fr;}}
+  .oops .x,.oops .v{padding:9px 12px;font-size:14.5px;}
+  .oops .x{background:#ffe9e4;color:#8e2b1c;}
+  .oops .v{background:#e6f6ec;color:#14603c;}
+  .oops .pq{padding:10px 12px;font-size:14.5px;line-height:1.55;border-top:2px solid #f2ddd7;}
+  .oops .rg{padding:9px 12px;font-size:13.5px;background:#fffaf0;border-top:2px solid #f2ddd7;color:#6b4a10;}
+  body.proj .oops .x,body.proj .oops .v,body.proj .oops .pq{font-size:20px;}
+  body.proj .oops .rg{font-size:18px;}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🎊 LET'S CELEBRATE<span>UNIT 4 · CELEBRATIONS &amp; RELATIVE CLAUSES · 9º ANO · B1–B2</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #7B3FA0;border-radius:14px;background:#fff;color:#7B3FA0;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #7B3FA0;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill">🏅 <span id="lvl">Guest 🎟️</span></div>
+  <button class="btn y" id="projBtn" onclick="toggleProj()">🔍 Projeção</button>
+  <button class="btn b" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="tin"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="truck">🎊🔗🌍</div>
+    <h1>Let's <em>celebrate</em></h1>
+    <div class="sub">20 estações · Unit 4 · 3 atos · B1–B2 · explicação completa sempre que você errar</div>
+    <div class="tags">
+      <span class="tag">🎭 celebrations &amp; customs</span>
+      <span class="tag">💍 weddings</span>
+      <span class="tag">🎯 defining relative clauses</span>
+      <span class="tag">➕ non-defining relative clauses</span>
+      <span class="tag">✂️ omitir o pronome</span>
+      <span class="tag">🌸 Chiang Mai Flower Festival</span>
+      <span class="tag">🎆 New Year's around the world</span>
+      <span class="tag">✉️ an unusual experience</span>
+    </div>
+    <div class="tags" style="margin-top:6px">
+      <span class="tag" style="background:#fff;border-color:var(--purple)">🎊 ATO 1 · THE FESTIVAL</span>
+      <span class="tag" style="background:#fff;border-color:var(--orange)">🔗 ATO 2 · RELATIVE CLAUSES</span>
+      <span class="tag" style="background:#fff;border-color:var(--teal)">🌍 ATO 3 · AROUND THE WORLD</span>
+    </div>
+  </div>
+  <main id="mapArea"></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀</button>
+  <button class="btn" onclick="stepEp(1)">▶</button>
+  <button class="btn g" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Modo projeção liga fontes grandes e o placar de equipes</small>
+</div>
+
+<div id="toast"></div>
+
+<script>/* =======================================================================
+   DADOS · Unit 4 "Let's celebrate" · 9º ano · B1–B2
+   Cada questão de gramática traz:
+     e     = comentário curto (aparece sempre)
+     w     = por que a sua escolha não serve (só no erro)
+     regra = a regra em uma linha (só no erro)
+   ======================================================================= */
+
+/* ---------- cartas de vocabulário ---------- */
+const VOCS = {
+  v1: { tip:"Mostre a carta, a turma arrisca o significado, depois vire. Peça também <b>uma frase com relative clause</b> — vale bônus.",
+    items:[
+      {e:"📅", w:"annual",         pt:"anual",                    ex:"It's an annual celebration in the Cayman Islands."},
+      {e:"🎉", w:"celebration",    pt:"celebração, festa",        ex:"It's a famous celebration that brings people from all over the world."},
+      {e:"🎭", w:"costumes",       pt:"fantasias",                ex:"People dress in traditional costumes for the parade."},
+      {e:"🎈", w:"to decorate",    pt:"decorar",                  ex:"Store owners decorate their windows with balloons."},
+      {e:"🎆", w:"fireworks",      pt:"fogos de artifício",       ex:"On the first night, people watch fireworks light up the sky."},
+      {e:"🥁", w:"parade",         pt:"desfile",                  ex:"Many people wait on the streets for the parade to start."},
+      {e:"🪅", w:"custom",         pt:"costume, tradição",        ex:"The strangest custom happens on the first day."},
+      {e:"✨", w:"occasion",       pt:"ocasião",                  ex:"I don't normally wear costumes, but this is a special occasion."},
+      {e:"🌟", w:"atmosphere",     pt:"clima, atmosfera",         ex:"The atmosphere is very exciting."},
+      {e:"🕯️", w:"ceremony",       pt:"cerimônia",                ex:"Don't forget the ceremony in the park on Saturday evening."},
+      {e:"🚚", w:"float",          pt:"carro alegórico",          ex:"They sing and dance on floats decorated with flowers."},
+      {e:"🔥", w:"bonfire",        pt:"fogueira",                 ex:"The bonfire always creates a great atmosphere."},
+      {e:"🔔", w:"chime",          pt:"badalada (do relógio)",    ex:"We eat one grape for every chime of the clock."},
+      {e:"🎯", w:"resolution",     pt:"resolução, promessa",      ex:"At New Year's, many people make resolutions."},
+      {e:"💠", w:"symbol",         pt:"símbolo",                  ex:"Long noodles are a symbol of a long life."},
+      {e:"🦄", w:"unique",         pt:"único, diferente",         ex:"Some parts of the world have unique ways of starting a new year."}
+    ]},
+  v2: { tip:"Estas são as palavras de <b>casamento</b> da unidade. Cuidado com o par <b>marriage</b> (o casamento como união) × <b>wedding</b> (a festa, o evento).",
+    items:[
+      {e:"💍", w:"wedding",   pt:"casamento (a festa)",       ex:"The wedding was held at the Rose Court Garden."},
+      {e:"👰", w:"bride",     pt:"noiva",                     ex:"The bride wore a short white dress."},
+      {e:"🤵", w:"groom",     pt:"noivo",                     ex:"The groom wore summer pants and a shirt."},
+      {e:"🕊️", w:"ceremony",  pt:"cerimônia",                 ex:"She organized the ceremony to take place at sunrise."},
+      {e:"🧑‍🤝‍🧑", w:"guests", pt:"convidados",              ex:"Over 200 guests enjoyed delicious seafood."},
+      {e:"🥂", w:"reception", pt:"recepção, festa",           ex:"They had a really simple reception — a picnic on the beach!"},
+      {e:"❤️", w:"marriage",  pt:"casamento (a união)",       ex:"He gave a speech about the importance of marriage."},
+      {e:"✈️", w:"honeymoon", pt:"lua de mel",                ex:"The couple leaves this Friday for their honeymoon in Kenya."},
+      {e:"💌", w:"invitation",pt:"convite",                   ex:"We're still waiting for the wedding invitation."},
+      {e:"🗣️", w:"speech",    pt:"discurso",                  ex:"My grandfather gave a great speech."}
+    ]}
+};
+
+/* ---------- palavras embaralhadas ---------- */
+const SCRAM = {
+  sc1: { tip:"Leia o emoji e a tradução primeiro. <b>Depois procure a primeira letra.</b>",
+    items:[
+      {e:"🥁", w:"PARADE",     pt:"desfile"},
+      {e:"🎭", w:"COSTUME",    pt:"fantasia"},
+      {e:"🌟", w:"ATMOSPHERE", pt:"clima"},
+      {e:"🪅", w:"CUSTOM",     pt:"tradição"},
+      {e:"🔥", w:"BONFIRE",    pt:"fogueira"},
+      {e:"👰", w:"BRIDE",      pt:"noiva"},
+      {e:"✈️", w:"HONEYMOON",  pt:"lua de mel"},
+      {e:"🕯️", w:"CEREMONY",   pt:"cerimônia"}
+    ]}
+};
+
+/* ---------- cestos ---------- */
+const SORTS = {
+  so1: { cats:["✂️ DÁ PARA TIRAR o pronome","🔒 NÃO DÁ para tirar"],
+    how:"Nesta frase, dá para apagar o pronome relativo sem estragar a frase? Clique no cesto certo.",
+    tip:"Regra de ouro: dá para tirar quando <b>vem um sujeito novo</b> depois do pronome (<i>the test that I aced</i>). Não dá quando o pronome <b>é o próprio sujeito</b> do verbo seguinte (<i>classmates who explain</i>). E <b>whose</b> nunca sai.",
+    items:[
+      {it:"I enjoyed the group projects <b>that</b> our history teacher gave us.", c:0, e:"vem “our history teacher” depois → dá para tirar"},
+      {it:"I like studying with classmates <b>who</b> explain things clearly.",    c:1, e:"who é o sujeito de “explain” → não sai"},
+      {it:"I prefer teachers <b>who</b> I can laugh with.",                        c:0, e:"vem “I” depois → dá para tirar"},
+      {it:"I didn't do well on the test <b>that</b> asked about specific dates.",  c:1, e:"that é o sujeito de “asked” → não sai"},
+      {it:"I'll never forget the history test <b>that</b> I aced.",                c:0, e:"vem “I” depois → dá para tirar"},
+      {it:"Do you remember the teacher <b>whose</b> son was a famous singer?",     c:1, e:"<b>whose</b> nunca pode ser removido"},
+      {it:"The masks <b>that</b> people wear are really cool!",                    c:0, e:"vem “people” depois → dá para tirar"},
+      {it:"She's the girl <b>who</b> sat in the front row.",                       c:1, e:"who é o sujeito de “sat” → não sai"},
+      {it:"This is the festival <b>which</b> my cousin told me about.",            c:0, e:"vem “my cousin” depois → dá para tirar"},
+      {it:"I met a blogger <b>whose</b> posts are read all over Asia.",            c:1, e:"<b>whose</b> nunca sai"}
+    ]},
+  so2: { cats:["🎯 DEFINING (sem vírgula)","➕ NON-DEFINING (com vírgula)"],
+    how:"A informação é essencial para saber de quem ou do que se fala, ou é só um extra? Clique no cesto certo.",
+    tip:"Pista visual: se tem <b>vírgula</b> em volta, é non-defining. Se dá para apagar a oração e a frase continua fazendo sentido, também é non-defining. E <b>that</b> só existe em defining.",
+    items:[
+      {it:"The Rio Carnival, <b>which is the biggest carnival in the world</b>, happens in February.", c:1, e:"extra: já sabemos qual carnaval é"},
+      {it:"The masks <b>that people wear</b> are really cool.",                                        c:0, e:"essencial: define quais máscaras"},
+      {it:"My hotel was near the Sambódromo, <b>which is a huge stadium</b>.",                          c:1, e:"extra sobre o Sambódromo"},
+      {it:"She was the only student <b>whose family lived in Portugal</b>.",                            c:0, e:"essencial: define qual estudante"},
+      {it:"I got a ticket, <b>which can cost hundreds of reais</b>.",                                    c:1, e:"informação extra sobre o ingresso"},
+      {it:"A nice Brazilian couple <b>whose seats were next to me</b> explained everything.",            c:0, e:"essencial: define qual casal"},
+      {it:"It was an experience <b>that I will never forget</b>.",                                       c:0, e:"essencial, e usa <b>that</b>"},
+      {it:"We went to Iguazu Falls, <b>which is on the border of Argentina and Brazil</b>.",              c:1, e:"extra: Iguazu já é único"},
+      {it:"My husband, <b>who is scared of heights</b>, loved Devil's Throat.",                          c:1, e:"extra sobre o marido"},
+      {it:"I was given a book <b>that had the words to all the songs</b>.",                              c:0, e:"essencial: define qual livro"},
+      {it:"Soba noodles, <b>which are long and thick</b>, are eaten at New Year's in Japan.",            c:1, e:"extra sobre os noodles"},
+      {it:"Hillbrow is the neighborhood <b>where I live</b>.",                                            c:0, e:"essencial: define qual bairro"}
+    ]}
+};
+
+/* ---------- pares ---------- */
+const MATCHES = {
+  m1: { l:"DESERT DREAMS RANCH", r:"A ORAÇÃO QUE COMPLETA",
+    how:"Clique na parte do anúncio e depois na oração relativa que combina com ela.",
+    tip:"Todas são <b>non-defining</b>: informação extra, entre vírgulas, e nenhuma usa <i>that</i>.",
+    pairs:[
+      ["Desert Dreams Ranch, …, is the perfect choice!", "which is a great place to see nature"],
+      ["Our ranch has 20 bedrooms, …",                   "which can sleep up to 80 people"],
+      ["Our chef Francisco, …, has created menus.",       "whose restaurant in Rio is world-famous"],
+      ["We want our guests, …, to feel at home.",         "who come from all over the world"],
+      ["Tours are offered to Yellowstone Park, …!",       "which has just reopened"]
+    ]},
+  m2: { l:"QUEM DIZ ISSO?", r:"O COSTUME DE ANO NOVO",
+    how:"Clique na pessoa e depois no costume que ela descreve.",
+    tip:"São os cinco jovens do CULTURE: Pedro (Espanha), Benedita (Brasil), Palesa (África do Sul), Keiko (Japão) e Arjun (Índia).",
+    pairs:[
+      ["🇪🇸 Pedro · Spain",        "eat one grape for every chime of the clock at midnight"],
+      ["🇧🇷 Benedita · Brazil",    "wear white and jump over seven waves on the beach"],
+      ["🇿🇦 Palesa · South Africa","throw old furniture out of the window"],
+      ["🇯🇵 Keiko · Japan",        "clean the house, visit temples and eat soba noodles"],
+      ["🇮🇳 Arjun · India",        "burn an “old man” made of straw at midnight"],
+      ["🎯 Todos eles",            "celebrate the start of a new year on December 31"],
+      ["🇧🇷 Benedita",             "says New Year's is her favourite time of the year"],
+      ["🇿🇦 Palesa",               "says the custom happens less often now because it was dangerous"]
+    ]},
+  m3: { l:"EXPLAINING WHAT SOMETHING IS", r:"PARA QUE SERVE",
+    how:"Clique na frase em inglês e depois no que ela serve para explicar.",
+    tip:"Quando falta a palavra exata em inglês, estas frases salvam a conversa. Repare que quase todas terminam com uma <b>relative clause</b>.",
+    pairs:[
+      ["It's a kind of…",           "descreve uma COISA"],
+      ["It's a place where…",       "descreve um LUGAR"],
+      ["People do this when…",      "descreve uma AÇÃO"],
+      ["You use it to…",            "descreve para que serve"],
+      ["It's like…",                "compara com algo conhecido"],
+      ["This is something that…",   "serve para qualquer assunto"],
+      ["It's a custom that…",       "descreve uma TRADIÇÃO"],
+      ["It's the person who…",      "descreve uma PESSOA"]
+    ]}
+};
+
+/* ---------- painéis de gramática bilíngues ---------- */
+const GRAM = {
+  g1: { title:"Defining relative clauses",
+    rows:[
+      { form:"Para que servem", forms:"informação ESSENCIAL",
+        en:"The information in a defining relative clause is necessary to define which person or thing we are talking about. Without it, the sentence does not make sense.",
+        pt:"A oração <b>defining</b> traz informação <b>essencial</b>: sem ela não se sabe de quem ou do que se fala.",
+        ex:"She's the girl <b>who sat in the front row</b>." },
+      { form:"Qual pronome?", forms:"who · that · which · whose · where",
+        en:"Use who or that for a person, which or that for a thing, whose for possession, and where for a place.",
+        pt:"<b>who/that</b> pessoa · <b>which/that</b> coisa · <b>whose</b> posse · <b>where</b> lugar.",
+        ex:"the festival <b>which</b> celebrates masks &nbsp;·&nbsp; the city <b>where</b> it takes place" },
+      { form:"Sem vírgula", forms:"defining = nenhuma vírgula",
+        en:"We do not use commas in defining relative clauses.",
+        pt:"Defining <b>não leva vírgula</b> nenhuma.",
+        ex:"The masks <b>that people wear</b> are really cool." },
+      { form:"Quando dá para tirar o pronome", forms:"quando vem um SUJEITO depois",
+        en:"We can remove who, that or which when a subject comes after the pronoun. We cannot remove whose.",
+        pt:"Dá para apagar <b>who/that/which</b> quando vem um <b>sujeito novo</b> depois. <b>whose</b> nunca sai.",
+        ex:"the test <b>(that)</b> I aced ✔ &nbsp;·&nbsp; classmates <b>who</b> explain ✘ (who é o sujeito)" },
+      { form:"whose", forms:"posse: de quem é",
+        en:"Whose shows possession and works for people and things.",
+        pt:"<b>whose</b> indica posse e serve para pessoas e coisas.",
+        ex:"the only student <b>whose family</b> lived in Portugal" }
+    ],
+    error:{ wrong:"She's the girl which sat in the front row.",
+      right:"She's the girl who / that sat in the front row.",
+      note:"<b>which</b> é para coisas. Para pessoa use <b>who</b> ou <b>that</b>." } },
+
+  g2: { title:"Non-defining relative clauses",
+    rows:[
+      { form:"Para que servem", forms:"informação EXTRA",
+        en:"Non-defining relative clauses give extra information about people, places and things. The sentence still makes sense without them.",
+        pt:"A oração <b>non-defining</b> traz informação <b>extra</b>. Se você apagar, a frase continua de pé.",
+        ex:"The Rio Carnival, <b>which is the biggest in the world</b>, happens in February." },
+      { form:"Vírgulas", forms:"sempre entre vírgulas",
+        en:"We always use commas around a non-defining relative clause.",
+        pt:"Non-defining vem <b>sempre entre vírgulas</b> (ou depois de uma vírgula, no fim da frase).",
+        ex:"My husband<b>,</b> who is scared of heights<b>,</b> loved it." },
+      { form:"Nunca THAT", forms:"which · who · whose",
+        en:"We don't use that in non-defining relative clauses. Use which for things and who or whose for people.",
+        pt:"<b>that</b> não existe em non-defining. Use <b>which</b> para coisas e <b>who/whose</b> para pessoas.",
+        ex:"…at Desert Dreams Ranch, <b>which</b> is beautiful. (nunca <i>that</i>)" },
+      { form:"O pronome nunca sai", forms:"não dá para omitir",
+        en:"In non-defining clauses the pronoun can never be removed.",
+        pt:"Em non-defining <b>não dá para apagar</b> o pronome.",
+        ex:"Iguazu Falls, <b>which</b> has 275 waterfalls, is the largest system." },
+      { form:"which para a frase inteira", forms:"comentário sobre o que foi dito",
+        en:"Which can also refer back to the whole idea of the sentence, not just one noun.",
+        pt:"<b>which</b> também pode retomar a <b>ideia toda</b> da frase, não só um substantivo.",
+        ex:"They break easily, <b>which</b> represents a clean break with the old year." },
+      { form:"Como juntar duas frases", forms:"substitua o pronome repetido",
+        en:"To join two sentences, replace the repeated noun or pronoun with who, which or whose and add commas.",
+        pt:"Para juntar duas frases, troque o nome repetido por <b>who/which/whose</b> e ponha as vírgulas.",
+        ex:"We hired a guide. <i>His</i> company is “Iguazu and You.” → We hired a guide, <b>whose</b> company is “Iguazu and You.”" }
+    ],
+    error:{ wrong:"We celebrated at Desert Dreams Ranch, that is beautiful.",
+      right:"We celebrated at Desert Dreams Ranch, which is beautiful.",
+      note:"Depois da vírgula (non-defining) nunca entra <b>that</b> — só <b>which</b>, <b>who</b> ou <b>whose</b>." } }
+};
+
+/* ---------- questões de múltipla escolha ---------- */
+const QS = {
+
+  s3: { items:[
+    {q:"colorful explosions in the air to celebrate special occasions", o:["fireworks", "a parade", "a bonfire", "costumes"], a:0, e:"<b>fireworks</b> = fogos de artifício."},
+    {q:"a large number of people walking or riding in vehicles to celebrate an event", o:["a ceremony", "a reception", "a parade", "an occasion"], a:2, e:"<b>parade</b> = desfile."},
+    {q:"clothes worn to parties that make you look like someone or something else", o:["guests", "symbols", "floats", "costumes"], a:3, e:"<b>costumes</b> = fantasias."},
+    {q:"to make a place look nice by putting up balloons and special lights", o:["to celebrate", "to decorate", "to chime", "to get rid of"], a:1, e:"<b>to decorate</b> = decorar."},
+    {q:"a special event, such as a party, where you have fun", o:["a custom", "a celebration", "an atmosphere", "a resolution"], a:1, e:"<b>celebration</b> = celebração."},
+    {q:"something that happens or is done once every year", o:["annual", "unique", "traditional", "festive"], a:0, e:"<b>annual</b> = anual."},
+    {q:"a way of doing something that a group of people has followed for a long time", o:["a custom", "a symbol", "a chime", "a float"], a:0, e:"<b>custom</b> = costume, tradição."},
+    {q:"the feeling or mood that a place gives you", o:["the occasion", "the ceremony", "the invitation", "the atmosphere"], a:3, e:"<b>atmosphere</b> = clima."},
+    {q:"a sign or object that represents something else", o:["a resolution", "a symbol", "a chime", "a bonfire"], a:1, e:"<b>symbol</b> = símbolo."},
+    {q:"a promise you make to yourself for the new year", o:["a reception", "a custom", "a resolution", "a speech"], a:2, e:"<b>resolution</b> = resolução de Ano Novo."}
+  ]},
+
+  s4: { items:[
+    {q:"Pirates Week is an ___ celebration in the Cayman Islands.", o:["occasion", "annual", "atmosphere", "unique"], a:1, e:"Acontece todo ano → <b>annual</b>."},
+    {q:"The ___ during Pirates Week is very exciting.", o:["custom", "atmosphere", "costume", "parade"], a:1, e:"<b>atmosphere</b> = o clima da festa."},
+    {q:"The strangest ___ happens on the first day: pirates capture the governor!", o:["costume", "occasion", "custom", "symbol"], a:2, e:"<b>custom</b> = tradição."},
+    {q:"“I don't normally like wearing ___, but this week is special.”", o:["fireworks", "decorations", "floats", "costumes"], a:3, e:"<b>costumes</b> = fantasias."},
+    {q:"Store owners ___ their windows with pirate-themed objects and balloons.", o:["decorate", "celebrate", "capture", "get rid of"], a:0, e:"<b>decorate</b> = decorar."},
+    {q:"On the first day, people wait on the streets for the Welcome ___ to start.", o:["Ceremony", "Reception", "Parade", "Bonfire"], a:2, e:"<b>parade</b> = desfile."},
+    {q:"On the first night, people enjoy watching ___ light up the night sky.", o:["fireworks", "floats", "costumes", "chimes"], a:0, e:"<b>fireworks</b>."},
+    {q:"Over the last 40 years, Pirates Week has become the community's largest ___.", o:["invitation", "resolution", "reception", "celebration"], a:3, e:"<b>celebration</b>."}
+  ]},
+
+  s7: { items:[
+    {q:"She's the girl ___ sat in the front row in history class.", o:["who", "which", "whose", "where"], a:0,
+     e:"Pessoa e sujeito do verbo → <b>who</b>.",
+     w:"<i>which</i> serve para coisas; <i>whose</i> indicaria posse; <i>where</i> é lugar.",
+     regra:"who ou that para pessoa."},
+    {q:"She was the only student ___ family lived in Portugal.", o:["who", "which", "that", "whose"], a:3,
+     e:"Posse (a família dela) → <b>whose</b>.",
+     w:"who/that seriam o sujeito do verbo; aqui o que vem depois é um substantivo possuído (<i>family</i>).",
+     regra:"whose indica posse: whose + substantivo."},
+    {q:"She went to a Portuguese festival ___ celebrates masks.", o:["which", "who", "whose", "where"], a:0,
+     e:"Coisa → <b>which</b> (ou that).",
+     w:"<i>who</i> é só para pessoa. <i>where</i> só se a ideia fosse “no lugar em que”.",
+     regra:"which ou that para coisa."},
+    {q:"Lisbon is the city ___ the festival takes place.", o:["where", "which", "that", "whose"], a:0,
+     e:"Lugar → <b>where</b>.",
+     w:"which/that daria “a cidade que acontece”, o que não faz sentido: a cidade não acontece.",
+     regra:"where para lugar."},
+    {q:"The masks ___ people wear are really cool!", o:["who", "whose", "that", "where"], a:2,
+     e:"Coisa → <b>that</b> (ou which).",
+     w:"Repare que vem “people” depois: este that até poderia ser apagado.",
+     regra:"which ou that para coisa."},
+    {q:"I prefer teachers ___ I can laugh with.", o:["which", "who", "whose", "where"], a:1,
+     e:"Pessoa → <b>who</b>.",
+     w:"É pessoa, então which está fora; e não há posse, então whose também.",
+     regra:"who para pessoa."},
+    {q:"In which sentence can we REMOVE the pronoun?", o:["I'll never forget the test that I aced.", "I like classmates who explain things clearly.", "Do you remember the teacher whose son sings?", "She's the girl who sat in the front row."], a:0,
+     e:"Vem “I” depois de <i>that</i> → dá para apagar.",
+     w:"Nas outras, o pronome é o próprio sujeito do verbo (ou é whose, que nunca sai).",
+     regra:"dá para apagar quando vem um sujeito novo depois do pronome."},
+    {q:"Complete: “I enjoyed the group projects ___ our history teacher gave us.”", o:["who", "that", "whose", "where"], a:1,
+     e:"Coisa → <b>that</b>.",
+     w:"<i>whose</i> pediria um substantivo possuído; <i>who</i> é pessoa.",
+     regra:"that para coisa em oração defining."},
+    {q:"Defining relative clauses use…", o:["commas around the clause", "a semicolon", "no commas at all", "brackets"], a:2,
+     e:"Defining → <b>sem vírgula</b>.",
+     w:"Vírgula é a marca da oração non-defining, que traz informação extra.",
+     regra:"defining não leva vírgula."},
+    {q:"Which pronoun can NEVER be removed?", o:["who", "whose", "that", "which"], a:1,
+     e:"<b>whose</b> nunca sai.",
+     w:"who, that e which podem sair quando vem um sujeito novo depois; whose não.",
+     regra:"whose é obrigatório sempre."},
+    {q:"I met a blogger ___ posts are read all over Asia.", o:["who", "which", "whose", "that"], a:2,
+     e:"Posse (os posts dele) → <b>whose</b>.",
+     w:"Depois do pronome vem o substantivo <i>posts</i>, que pertence ao blogueiro.",
+     regra:"whose + substantivo."},
+    {q:"The Hangang River Festival is the next event ___ I will write about.", o:["who", "whose", "where", "that"], a:3,
+     e:"Coisa → <b>that</b>.",
+     w:"<i>where</i> serviria se fosse “o lugar em que”; aqui é o evento sobre o qual vai escrever.",
+     regra:"that para coisa."},
+    {q:"It's great information for tourists ___ want to visit the city.", o:["which", "whose", "where", "who"], a:3,
+     e:"Pessoas → <b>who</b>.",
+     w:"<i>which</i> é para coisas, e turistas são pessoas.",
+     regra:"who para pessoa."},
+    {q:"Which sentence is CORRECT?", o:["She's the girl which sat in the front row.", "She's the girl who sat in the front row.", "She's the girl, who sat in the front row.", "She's the girl whose sat in the front row."], a:1,
+     e:"Pessoa, sem vírgula, com <b>who</b>.",
+     w:"which é para coisas; a vírgula transformaria em non-defining; whose pede substantivo depois.",
+     regra:"who + sem vírgula = defining sobre pessoa."}
+  ]},
+
+  s8: { items:[
+    {q:"Tourists ___ travel to Chiang Mai in February will smell the flowers first.", o:["which", "who", "whose", "where"], a:1, e:"Pessoas → <b>who</b>."},
+    {q:"Chiang Mai is the city ___ is known as the “Rose of the North”.", o:["who", "whose", "which", "where"], a:2, e:"Coisa/lugar como sujeito → <b>which</b>."},
+    {q:"The people ___ live in this city take their customs seriously.", o:["which", "who", "whose", "where"], a:1, e:"Pessoas → <b>who</b>."},
+    {q:"Visitors love the city walls, ___ are over 700 years old.", o:["which", "that", "who", "where"], a:0, e:"Non-defining → <b>which</b>, nunca that."},
+    {q:"Suan Buak Had is the park ___ you find flower displays and contests.", o:["where", "which", "that", "whose"], a:0, e:"Lugar → <b>where</b>."},
+    {q:"The floats ___ were decorated with flowers were my favorite part.", o:["who", "whose", "where", "that"], a:3, e:"Coisas → <b>that</b> (ou which)."},
+    {q:"I met a business owner ___ orchid farm is famous in the north.", o:["who", "which", "where", "whose"], a:3, e:"Posse → <b>whose</b>."},
+    {q:"It's a celebration ___ brings people from all over the world.", o:["who", "whose", "that", "where"], a:2, e:"Coisa → <b>that</b>."},
+    {q:"Hillbrow, ___ is a neighborhood in Johannesburg, has an unusual custom.", o:["which", "that", "who", "where"], a:0, e:"Non-defining → <b>which</b>."},
+    {q:"Soba noodles are the food ___ Japanese families eat at New Year's.", o:["who", "that", "whose", "where"], a:1, e:"Coisa, com sujeito depois → <b>that</b> (e até poderia ser apagado)."}
+  ]},
+
+  s10: { items:[
+    {q:"We celebrated at Desert Dreams Ranch, ___ is beautiful.", o:["that", "who", "which", "whose"], a:2,
+     e:"Non-defining → <b>which</b>.",
+     w:"É o COMMON ERROR da unidade: depois da vírgula nunca entra <i>that</i>.",
+     regra:"non-defining nunca usa that."},
+    {q:"Our chef Francisco, ___ restaurant in Rio is world-famous, created the menu.", o:["whose", "who", "which", "that"], a:0,
+     e:"Posse → <b>whose</b>.",
+     w:"Depois do pronome vem <i>restaurant</i>, que pertence ao chef.",
+     regra:"whose + substantivo, também em non-defining."},
+    {q:"We want our guests, ___ come from all over the world, to feel at home.", o:["which", "who", "whose", "that"], a:1,
+     e:"Pessoas → <b>who</b>.",
+     w:"which é para coisas, e that não entra em non-defining.",
+     regra:"who para pessoa em non-defining."},
+    {q:"Non-defining relative clauses always need…", o:["the word that", "no pronoun", "a question mark", "commas"], a:3,
+     e:"<b>Vírgulas</b>.",
+     w:"<i>that</i> é justamente o que não pode aparecer, e o pronome é obrigatório.",
+     regra:"non-defining vem entre vírgulas."},
+    {q:"Join: “We went to Iguazu Falls. It's on the border of Argentina and Brazil.”", o:["We went to Iguazu Falls that is on the border of Argentina and Brazil.", "We went to Iguazu Falls, that is on the border of Argentina and Brazil.", "We went to Iguazu Falls, which is on the border of Argentina and Brazil.", "We went to Iguazu Falls where is on the border of Argentina and Brazil."], a:2,
+     e:"Vírgula + <b>which</b>.",
+     w:"Iguazu Falls já é único, então a informação é extra: precisa de vírgula, e com which.",
+     regra:"nome próprio + informação extra = vírgula + which."},
+    {q:"Join: “We hired a tour guide. His company is called Iguazu and You.”", o:["We hired a tour guide, whose company is called Iguazu and You.", "We hired a tour guide, who company is called Iguazu and You.", "We hired a tour guide that his company is called Iguazu and You.", "We hired a tour guide, which company is called Iguazu and You."], a:0,
+     e:"<i>His</i> vira <b>whose</b>.",
+     w:"O pronome possessivo da segunda frase (his) é o sinal de que o certo é whose.",
+     regra:"his/her/their → whose."},
+    {q:"Join: “My husband loved Devil's Throat. He is scared of heights.”", o:["My husband that is scared of heights loved Devil's Throat.", "My husband, who is scared of heights, loved Devil's Throat.", "My husband, which is scared of heights, loved Devil's Throat.", "My husband who is scared of heights, loved Devil's Throat."], a:1,
+     e:"Duas vírgulas + <b>who</b>.",
+     w:"Quando a oração fica no meio da frase, precisa de vírgula <b>dos dois lados</b>.",
+     regra:"oração no meio da frase = vírgula antes e depois."},
+    {q:"“They break easily, ___ represents a clean break with the old year.”", o:["which", "that", "who", "whose"], a:0,
+     e:"<b>which</b> retoma a ideia toda.",
+     w:"Aqui o pronome não substitui um substantivo, e sim o fato de quebrarem fácil — só which faz isso.",
+     regra:"which pode retomar a ideia inteira da frase."},
+    {q:"Which sentence is a NON-DEFINING clause?", o:["The masks that people wear are cool.", "Soba noodles, which are long, are eaten at New Year's.", "She's the girl who sat in front.", "Hillbrow is the neighborhood where I live."], a:1,
+     e:"Vírgulas + which → <b>non-defining</b>.",
+     w:"As outras três são essenciais para definir de quem ou do que se fala.",
+     regra:"vírgula é a marca do non-defining."},
+    {q:"Which sentence is WRONG?", o:["Iguazu Falls, which has 275 waterfalls, is huge.", "My hotel was near the Sambódromo, which is a stadium.", "A couple whose seats were next to me explained everything.", "The Rio Carnival, that is the biggest in the world, is in February."], a:3,
+     e:"<b>that</b> depois de vírgula não existe.",
+     w:"Deveria ser “The Rio Carnival, which is the biggest in the world…”.",
+     regra:"non-defining nunca usa that."},
+    {q:"In non-defining clauses, can we remove the pronoun?", o:["Yes, always", "Yes, when a subject follows", "Only with whose", "No, never"], a:3,
+     e:"<b>Nunca</b>.",
+     w:"A regra de omitir o pronome vale só para orações <i>defining</i>.",
+     regra:"em non-defining o pronome é obrigatório."},
+    {q:"“Vivid Sydney, ___ is a festival of light and art, happens every year.”", o:["which", "that", "where", "whose"], a:0,
+     e:"Non-defining → <b>which</b>.",
+     w:"<i>where</i> só se a oração falasse do lugar em que algo acontece; aqui explica o que o festival é.",
+     regra:"which para coisa em non-defining."},
+    {q:"“The Aztecs, ___ lived hundreds of years ago, believed the souls could return.”", o:["which", "who", "that", "whose"], a:1,
+     e:"Pessoas → <b>who</b>.",
+     w:"that está proibido em non-defining, e which é para coisas.",
+     regra:"who para pessoa em non-defining."},
+    {q:"“Día de Muertos, ___ is celebrated in Mexico, is held on November 2.”", o:["that", "who", "which", "where"], a:2,
+     e:"Non-defining → <b>which</b>.",
+     w:"O nome da festa já é único, então a informação é extra: vírgula + which.",
+     regra:"nome próprio + extra = vírgula + which."}
+  ]},
+
+  s14: { items:[
+    {q:"Errado: “She's the girl which sat in the front row.” Qual é o certo?", o:["She's the girl who sat in the front row.", "She's the girl whose sat in the front row.", "She's the girl, which sat in the front row.", "She's the girl where sat in the front row."], a:0,
+     e:"Pessoa → <b>who</b>.",
+     w:"which é só para coisas.",
+     regra:"who ou that para pessoa."},
+    {q:"Errado: “We celebrated at the ranch, that is beautiful.” Qual é o certo?", o:["We celebrated at the ranch that is beautiful, .", "We celebrated at the ranch, who is beautiful.", "We celebrated at the ranch whose is beautiful.", "We celebrated at the ranch, which is beautiful."], a:3,
+     e:"Depois da vírgula → <b>which</b>.",
+     w:"<i>that</i> nunca aparece em oração non-defining.",
+     regra:"non-defining nunca usa that."},
+    {q:"Errado: “I met a blogger who blog is famous.” Qual é o certo?", o:["I met a blogger which blog is famous.", "I met a blogger that blog is famous.", "I met a blogger whose blog is famous.", "I met a blogger where blog is famous."], a:2,
+     e:"Posse → <b>whose</b>.",
+     w:"Depois do pronome vem <i>blog</i>, que pertence ao blogueiro.",
+     regra:"whose + substantivo."},
+    {q:"Errado: “Lisbon is the city which the festival takes place.” Qual é o certo?", o:["Lisbon is the city that the festival takes place.", "Lisbon is the city whose the festival takes place.", "Lisbon is the city who the festival takes place.", "Lisbon is the city where the festival takes place."], a:3,
+     e:"Lugar → <b>where</b>.",
+     w:"Com <i>which</i> faltaria a preposição: “which the festival takes place <b>in</b>”.",
+     regra:"where para lugar."},
+    {q:"Errado: “The Rio Carnival which is the biggest in the world is in February.” O que falta?", o:["Trocar which por that", "Tirar o pronome", "Pôr vírgulas antes e depois da oração", "Trocar which por where"], a:2,
+     e:"Faltam as <b>vírgulas</b>.",
+     w:"A informação é extra (o Rio Carnival já é único), então precisa de vírgula dos dois lados.",
+     regra:"informação extra pede vírgula."},
+    {q:"Errado: “The masks who people wear are cool.” Qual é o certo?", o:["The masks that people wear are cool.", "The masks whose people wear are cool.", "The masks, that people wear, are cool.", "The masks where people wear are cool."], a:0,
+     e:"Coisa → <b>that</b> (ou which).",
+     w:"who é só para pessoa, e máscaras são coisas.",
+     regra:"which ou that para coisa."},
+    {q:"Errado: “My husband who is scared of heights loved it.” O que falta?", o:["Trocar who por that", "Pôr vírgulas em volta de “who is scared of heights”", "Tirar o who", "Trocar who por whose"], a:1,
+     e:"Faltam as <b>vírgulas</b>.",
+     w:"Ele só tem um marido, então a informação é extra e a oração fica entre vírgulas.",
+     regra:"informação extra sobre pessoa única = vírgulas."},
+    {q:"Errado: “Iguazu Falls, has 275 waterfalls, is the largest system.” O que falta?", o:["Trocar a primeira vírgula por ponto", "O pronome which antes de has", "Tirar as duas vírgulas", "O pronome that antes de has"], a:1,
+     e:"Falta o pronome <b>which</b>.",
+     w:"Em non-defining o pronome é obrigatório — nunca dá para apagar.",
+     regra:"em non-defining o pronome nunca sai."}
+  ]},
+
+  r1q: { items:[
+    {q:"How many times has the author been to the Chiang Mai Flower Festival?", o:["once", "several times", "he has never gone", "every year since the 1970s"], a:0, e:"“This was my first visit, but it definitely won't be my last!”"},
+    {q:"How many days did the author spend at the festival?", o:["two", "four", "one week", "three"], a:3, e:"“…enjoyed all three days of this exciting floral atmosphere.”"},
+    {q:"How can tourists see the city's history?", o:["at the parade", "at the flower contests", "by visiting the city walls", "at the orchid farms"], a:2, e:"As muralhas têm mais de 700 anos, construídas para proteger a cidade."},
+    {q:"What was the author's favorite part of the festival?", o:["the parade floats", "the singing and dancing", "the orchids", "the mango sticky rice"], a:0, e:"“The floats were my favorite part of the festival.”"},
+    {q:"Where can you see flower displays?", o:["only at the public park", "only at the parade", "only at the orchid farms", "everywhere in the city"], a:3, e:"“People create incredible flower displays everywhere in the city.”"},
+    {q:"When did the flower festival become an annual custom?", o:["in 1296", "in the 1970s", "700 years ago", "in early February"], a:1, e:"“The flower festival has been an annual custom since the 1970s.”"},
+    {q:"Why is the festival held in early February?", o:["It celebrates the Lanna Kingdom", "It is the only free weekend of the year", "It celebrates the end of the cool season, when new flowers appear", "It celebrates the city walls"], a:2, e:"“It celebrates the end of the cool season, when all the new flowers appear.”"},
+    {q:"How can visitors help a local business owner?", o:["by joining the parade", "by buying an orchid on a farm tour", "by decorating the streets", "by entering the flower contest"], a:1, e:"“…where you can buy an orchid and help a local business owner.”"}
+  ]},
+
+  r2q: { items:[
+    {q:"In Spain, what do people do at midnight on New Year's Eve?", o:["eat one grape for every chime of the clock", "jump over seven waves", "throw furniture out of the window", "burn an “old man” of straw"], a:0, e:"Doze uvas, uma por badalada — e dá sorte terminar antes da última."},
+    {q:"Why do people in Rio wear white?", o:["because it is a symbol of a long life", "because they believe it brings peace in the new year", "because it is easier to see at night", "because it is a Japanese custom"], a:1, e:"“Everyone wears white because we believe it will bring us peace.”"},
+    {q:"What does Benedita do after midnight?", o:["visits a temple", "eats soba noodles", "jumps over seven waves and makes a wish", "makes resolutions at home"], a:2, e:"Sete ondas, um pedido em cada pulo."},
+    {q:"What is the custom in Hillbrow, Johannesburg?", o:["throwing old furniture out of the window", "setting off fireworks on the beach", "cleaning and decorating the house", "eating grapes at midnight"], a:0, e:"Começou nos anos 1990, como forma de <i>get rid of</i> as coisas velhas."},
+    {q:"Why do people in Hillbrow do it LESS often now?", o:["because it is expensive", "because it is illegal", "because the furniture is too heavy", "because people got hurt"], a:3, e:"“Sometimes people got hurt, so now people do it less.”"},
+    {q:"Why are soba noodles a symbol of a long life?", o:["because they are eaten slowly", "because they are cheap", "because they are long", "because they are made at temples"], a:2, e:"São longas e grossas — e quebram fácil, o que representa o corte com o ano velho."},
+    {q:"What do people in Japan normally do at New Year's?", o:["stay with family, clean and decorate the house, and visit temples", "go to the beach", "have a big street party", "throw old things away"], a:0, e:"“New Year's in Japan is normally spent with family.”"},
+    {q:"In Goa, what is the “old man” made of?", o:["wood and stone", "straw, old clothes and paper", "flowers and plants", "noodles and rice"], a:1, e:"E é queimado à meia-noite."},
+    {q:"What does burning the “old man” represent?", o:["a wish for money", "the bad or sad things of the past year", "respect for the ancestors", "the start of the cool season"], a:1, e:"“…so we can start the new year with only positive thoughts.”"},
+    {q:"Who says New Year's is their favorite time of the year?", o:["Pedro", "Palesa", "Arjun", "Benedita"], a:3, e:"“New Year's is the time of year that I enjoy the most!”"}
+  ]},
+
+  r3q: { items:[
+    {q:"What is Vivid Sydney?", o:["a festival of lights, art and new ideas", "a food festival", "a wedding ceremony", "a New Year's parade"], a:0, e:"“Vivid Sydney is a festival that has lights, art, and new ideas.”"},
+    {q:"How many times did Davi go to the festival?", o:["once", "twice", "he didn't go", "every night"], a:3, e:"“Believe it or not, we went to the festival every night.”"},
+    {q:"What was the most unusual part of the walking tour?", o:["the Opera House", "the old train station with eight underground rooms", "the Harbour Bridge", "the food markets"], a:1, e:"Cada sala tinha luzes e sons diferentes."},
+    {q:"What was “The Last Ocean” about?", o:["Antarctica, with a huge piece of ice made of plastic from the ocean", "the history of Sydney", "electronic dance music", "Australian food"], a:0, e:"E havia outro evento com ideias para ajudar plantas e animais marinhos."},
+    {q:"What surprised Davi most about the events?", o:["that they finished early", "that they were only for adults", "that they were all free", "that they were online"], a:2, e:"“I was surprised that all the events were free.”"},
+    {q:"Which phrase does Davi use to introduce something surprising?", o:["See you soon", "Believe it or not", "How was your trip?", "I'm at Sydney Airport"], a:1, e:"<b>Believe it or not</b> = acredite se quiser."}
+  ]}
+};
+
+/* ---------- ordem das palavras ---------- */
+const ORDER = {
+  o1: { prompt:true,
+    tip:"Leia as duas frases em verde e monte <b>uma só</b>, com a oração relativa. Preste atenção nas vírgulas: elas já vêm nas peças quando a informação é extra.",
+    items:[
+      {q:"We went to Iguazu Falls. It's on the border of Argentina and Brazil.",
+       w:["We","went","to","Iguazu","Falls,","which","is","on","the","border","of","Argentina","and","Brazil"],
+       a:"We went to Iguazu Falls, which is on the border of Argentina and Brazil.",
+       why:"nome próprio + informação extra → vírgula + <b>which</b>."},
+      {q:"We hired a tour guide. His company is called “Iguazu and You”.",
+       w:["We","hired","a","tour","guide,","whose","company","is","called","Iguazu","and","You"],
+       a:"We hired a tour guide, whose company is called “Iguazu and You”.",
+       why:"<i>his</i> vira <b>whose</b>."},
+      {q:"My husband loved Devil's Throat. He is scared of heights.",
+       w:["My","husband,","who","is","scared","of","heights,","loved","Devil's","Throat"],
+       a:"My husband, who is scared of heights, loved Devil's Throat.",
+       why:"oração no meio da frase → vírgula dos <b>dois</b> lados."},
+      {q:"She's the girl. She sat in the front row. (informação essencial)",
+       w:["She's","the","girl","who","sat","in","the","front","row"],
+       a:"She's the girl who sat in the front row.",
+       why:"defining: <b>sem vírgula</b>."},
+      {q:"Lisbon is the city. The festival takes place there. (essencial)",
+       w:["Lisbon","is","the","city","where","the","festival","takes","place"],
+       a:"Lisbon is the city where the festival takes place.",
+       why:"lugar → <b>where</b>."},
+      {q:"The Rio Carnival happens in February. It's the biggest carnival in the world.",
+       w:["The","Rio","Carnival,","which","is","the","biggest","carnival","in","the","world,","happens","in","February"],
+       a:"The Rio Carnival, which is the biggest carnival in the world, happens in February.",
+       why:"extra sobre um nome próprio → vírgulas + <b>which</b>."},
+      {q:"Soba noodles are eaten at New Year's. They are long and thick.",
+       w:["Soba","noodles,","which","are","long","and","thick,","are","eaten","at","New","Year's"],
+       a:"Soba noodles, which are long and thick, are eaten at New Year's.",
+       why:"extra → vírgulas + <b>which</b>."},
+      {q:"I met a blogger. His blog about Seoul is very popular. (essencial)",
+       w:["I","met","a","blogger","whose","blog","about","Seoul","is","very","popular"],
+       a:"I met a blogger whose blog about Seoul is very popular.",
+       why:"posse → <b>whose</b>, e sem vírgula porque define qual blogueiro."}
+    ]}
+};
+
+/* ---------- cartas de fala rápida ---------- */
+const DRILL = [
+  {pic:"👧", qty:"a garota · sentou na primeira fila (defining)",       say:"She's the girl who sat in the front row."},
+  {pic:"🎭", qty:"as máscaras · as pessoas usam (defining)",            say:"The masks that people wear are really cool."},
+  {pic:"🏙️", qty:"Lisboa · o festival acontece lá (defining)",          say:"Lisbon is the city where the festival takes place."},
+  {pic:"👨‍🍳", qty:"o chef Francisco · restaurante famoso (whose)",      say:"Our chef Francisco, whose restaurant is world-famous, created the menu."},
+  {pic:"🌊", qty:"Iguazu Falls · na fronteira (extra)",                 say:"We went to Iguazu Falls, which is on the border of Argentina and Brazil."},
+  {pic:"🎊", qty:"o Rio Carnival · o maior do mundo (extra)",           say:"The Rio Carnival, which is the biggest in the world, is in February."},
+  {pic:"🍜", qty:"soba noodles · longas e grossas (extra)",             say:"Soba noodles, which are long and thick, are eaten at New Year's."},
+  {pic:"🍇", qty:"a Espanha · come uvas à meia-noite (defining)",       say:"Spain is the country where people eat grapes at midnight."},
+  {pic:"🔥", qty:"o boneco · é feito de palha (defining)",              say:"It's an old man that is made of straw."},
+  {pic:"💍", qty:"a lua de mel · as férias depois do casamento",        say:"A honeymoon is the vacation that a couple take after their wedding."},
+  {pic:"🎆", qty:"explicar “fireworks” sem dizer a palavra",            say:"It's a kind of light that explodes in the sky."},
+  {pic:"🏛️", qty:"explicar “temple” sem dizer a palavra",              say:"It's a place where people go to pray."}
+];
+
+/* ---------- leituras ---------- */
+const READS = {
+  r1: { em:"🌸", title:"The Chiang Mai Flower Festival", set:"r1q",
+    html:`
+      <p><i>by Max Pereira</i></p>
+
+      <p>Tourists <b>who travel</b> to Chiang Mai in Thailand in early February will smell the flowers before
+      they see them. For one fantastic weekend, an unbelievable number of flowers decorate the city
+      <b>that is known</b> as the “Rose of the North.” The people <b>who live</b> in this city take their customs
+      very seriously. Every year, Chiang Mai has several festivals. Some of them have been part of the local
+      culture for centuries.</p>
+
+      <p>The flower festival has been an annual custom since the 1970s. It is a famous celebration
+      <b>that brings</b> people from all over the world. It celebrates the end of the cool season, when all the
+      new flowers appear. I visited on the first weekend of February and enjoyed all three days of this exciting
+      floral atmosphere.</p>
+
+      <p>People create incredible flower displays everywhere in the city. These displays show respect for the
+      ancient floral art of the people of the Lanna Kingdom, <b>who built</b> Chiang Mai in 1296. Visitors will
+      love seeing the ruins of the city walls, <b>which are over 700 years old</b>. These walls were built to
+      protect the city.</p>
+
+      <p>Flowers are one of the most important businesses in the north of Thailand. People from Chiang Mai take
+      the phrase “flower power” to another level. I especially love the incredible orchids <b>that you can see</b>
+      in local orchid farms. You can book tours to the farms, <b>where you can buy an orchid</b> and help a local
+      business owner. You can get some great pictures on a tour, too!</p>
+
+      <p>On the first day, I recommend going to Suan Buak Had Public Park, <b>where you will find</b> flower
+      displays, flower contests and cultural performances. But that's just the beginning! All over the city,
+      people decorate their streets, homes and stores with beautiful flowers and plants.</p>
+
+      <p>You must not miss the parade on Saturday, when people dress in traditional costumes. They sing and dance
+      on floats <b>decorated with flowers</b> and plants. The floats were my favorite part of the festival. I
+      can't imagine how much time people spent on them!</p>
+
+      <p>Don't forget the ceremony in the park on Saturday evening. Find out which float wins the contest and who
+      is named “Queen of the Festival.” A lot of delicious local food is also available. You must try the mango
+      sticky rice!</p>
+
+      <p>The Chiang Mai Flower Festival offers history, culture, great food and incredible colors and smells.
+      This was my first visit, but it definitely won't be my last!</p>
+
+      <div class="gl">🔑 <b>unbelievable</b> = inacreditável · <b>custom</b> = costume ·
+      <b>for centuries</b> = há séculos · <b>cool season</b> = estação fria · <b>display</b> = exposição ·
+      <b>respect</b> = respeito · <b>ruins</b> = ruínas · <b>to protect</b> = proteger ·
+      <b>orchid</b> = orquídea · <b>to book</b> = reservar · <b>float</b> = carro alegórico ·
+      <b>sticky rice</b> = arroz doce pegajoso</div>` },
+
+  r2: { em:"🎆", title:"CULTURE · New Year's around the world", set:"r2q",
+    html:`
+      <p>At midnight on December 31, people around the world celebrate the start of a new year with parties and
+      fireworks. However, some parts of the world have unique ways of starting a new year.</p>
+
+      <p><b>🇪🇸 Pedro · Spain.</b> In Spain, before New Year's Eve, all the supermarkets sell lots of grapes,
+      <b>which are sometimes put in plastic glasses</b>. At midnight on New Year's Eve, we try to eat one grape
+      for every chime of the clock. It is good luck to finish all 12 grapes before the clock finishes the 12
+      chimes, but it can be hard to eat them so quickly.</p>
+
+      <p><b>🇧🇷 Benedita · Brazil.</b> Where I live, in Rio de Janeiro, we like to go to the beach for a big New
+      Year's Eve celebration with fireworks, music and dancing! Everyone wears white because we believe it will
+      bring us peace in the new year. There is one custom <b>that I love</b> — after midnight, we jump over seven
+      waves and make a wish every time we jump. New Year's is the time of year <b>that I enjoy the most</b>!</p>
+
+      <p><b>🇿🇦 Palesa · South Africa.</b> Hillbrow, the neighborhood <b>where I live</b>, is famous for a
+      special custom <b>that local people do</b> for New Year's. This tradition, <b>which started in the
+      1990s</b>, is to throw old furniture out of the window! People used to throw all sorts of things out of
+      their windows, like tables, microwaves or chairs, as a way to get rid of their old things so they could get
+      new things for a new year. I think it's fun but a bit dangerous. Sometimes people got hurt, so now people do
+      it less and throw out less dangerous stuff!</p>
+
+      <p><b>🇯🇵 Keiko · Japan.</b> New Year's in Japan is normally spent with family. We clean and decorate our
+      homes, and lots of people also visit temples. Soba noodles, <b>which are long, thick noodles</b>, are the
+      traditional food to eat at this time of year. They are thought to be a symbol of a long life because they
+      are long. But they also break easily, <b>which represents a clean break with the old year</b>.</p>
+
+      <p><b>🇮🇳 Arjun · India.</b> In the days leading up to New Year's in Goa, all the young people help make an
+      “old man” out of straw, old clothes and paper. We then sit the “old man” in a chair in the middle of our
+      parties. When it's midnight, we set it on fire! It represents all the bad or sad things
+      <b>that happened in the past year</b>, so we can start the new year with only positive thoughts. The
+      bonfire always creates a great atmosphere, too!</p>
+
+      <div class="gl">🔑 <b>unique</b> = único, diferente · <b>chime</b> = badalada ·
+      <b>good luck</b> = boa sorte · <b>to make a wish</b> = fazer um pedido · <b>wave</b> = onda ·
+      <b>neighborhood</b> = bairro · <b>furniture</b> = móveis · <b>to get rid of</b> = se livrar de ·
+      <b>to get hurt</b> = se machucar · <b>temple</b> = templo · <b>symbol</b> = símbolo ·
+      <b>straw</b> = palha · <b>to set on fire</b> = pôr fogo em · <b>bonfire</b> = fogueira</div>` },
+
+  r3: { em:"✉️", title:"An email about an unusual experience", set:"r3q",
+    html:`
+      <p><b>From:</b> Davi &nbsp;·&nbsp; <b>To:</b> Aline</p>
+
+      <p>Hi Aline,</p>
+
+      <p>I'm at Sydney Airport! We're waiting to go home. We were here at the same time as Vivid Sydney. It was
+      awesome but totally unexpected. Vivid Sydney is a festival <b>that has lights, art and new ideas</b>. There
+      were amazing light displays on major buildings like the Opera House and on Sydney Harbour Bridge. It was
+      spectacular! <b>Believe it or not</b>, we went to the festival every night. My parents, <b>who enjoy trying
+      new foods</b>, loved all the food markets.</p>
+
+      <p>The festival had so many great events. I found the walking tour really interesting. The most unusual part
+      was the old train station. We climbed down stairs and walked through eight underground rooms, each with
+      different lights and sounds. <b>It may sound strange, but</b> each room made me feel different. You would
+      have loved the one with pink lights and electronic dance music!</p>
+
+      <p>Some events were about the ocean. I liked one called “The Last Ocean,” <b>which was about
+      Antarctica</b>. There was art made of plastic from the ocean. It looked like a huge piece of ice! There was
+      also an event <b>that presented new ideas</b> to help ocean plants and animals.</p>
+
+      <p>I liked Australia, and I really liked Sydney. It's a very pretty city, and the people are friendly, too.
+      But I loved Vivid! I ate delicious food and learned a lot. And <b>I was surprised that</b> all the events
+      were free.</p>
+
+      <p>How was your trip? Send some pictures! I'm sending you two pics — Sydney Harbour and the University of
+      Sydney all lit up.</p>
+
+      <p>See you soon,<br>Davi</p>
+
+      <div class="gl">🔑 <b>unexpected</b> = inesperado · <b>light display</b> = show de luzes ·
+      <b>spectacular</b> = espetacular · <b>Believe it or not</b> = acredite se quiser ·
+      <b>underground</b> = subterrâneo · <b>It may sound strange, but…</b> = pode parecer estranho, mas… ·
+      <b>I was surprised that…</b> = fiquei surpreso que… · <b>lit up</b> = iluminado</div>` }
+};
+
+/* ---------- quiz final ---------- */
+const FINALE = [
+  /* 🥉 EASY */
+  {t:1, q:"Something that happens once every year is…", o:["unique", "annual", "festive", "traditional"], a:1, e:"<b>annual</b>."},
+  {t:1, q:"Clothes that make you look like someone else are…", o:["costumes", "symbols", "floats", "chimes"], a:0, e:"<b>costumes</b>."},
+  {t:1, q:"She's the girl ___ sat in the front row.", o:["who", "which", "whose", "where"], a:0, e:"Pessoa → <b>who</b>.",
+   w:"which é só para coisas.", regra:"who ou that para pessoa."},
+  {t:1, q:"Lisbon is the city ___ the festival takes place.", o:["which", "where", "that", "whose"], a:1, e:"Lugar → <b>where</b>.",
+   w:"Com which faltaria a preposição no fim.", regra:"where para lugar."},
+  {t:1, q:"A large number of people walking to celebrate an event is a…", o:["reception", "parade", "ceremony", "bonfire"], a:1, e:"<b>parade</b>."},
+  {t:1, q:"The woman who gets married is the…", o:["groom", "guest", "reception", "bride"], a:3, e:"<b>bride</b> = noiva."},
+  {t:1, q:"The vacation a couple take after their wedding is the…", o:["honeymoon", "ceremony", "reception", "invitation"], a:0, e:"<b>honeymoon</b>."},
+  {t:1, q:"I met a blogger ___ posts are famous in Asia.", o:["who", "which", "where", "whose"], a:3, e:"Posse → <b>whose</b>.",
+   w:"Depois do pronome vem um substantivo possuído (posts).", regra:"whose + substantivo."},
+  {t:1, q:"In which country do people eat 12 grapes at midnight?", o:["Spain", "Brazil", "Japan", "India"], a:0, e:"Espanha — uma uva por badalada."},
+  {t:1, q:"Defining relative clauses use…", o:["commas", "brackets", "a dash", "no commas"], a:3, e:"Defining não leva vírgula.",
+   w:"Vírgula é a marca do non-defining.", regra:"defining sem vírgula."},
+
+  /* 🥈 MEDIUM */
+  {t:2, q:"Which sentence is WRONG?", o:["The Rio Carnival, which is the biggest, is in February.", "Soba noodles, which are long, are eaten in Japan.", "Iguazu Falls, that has 275 waterfalls, is huge.", "A couple whose seats were next to me helped us."], a:2,
+   e:"<b>that</b> depois de vírgula não existe.", w:"Deveria ser “Iguazu Falls, which has 275 waterfalls…”.", regra:"non-defining nunca usa that."},
+  {t:2, q:"In which sentence can we REMOVE the pronoun?", o:["Classmates who explain things clearly are the best.", "The teacher whose son sings is nice.", "The girl who sat in front is Kara.", "The test that I aced was easy."], a:3,
+   e:"Vem “I” depois → dá para apagar.", w:"Nas outras o pronome é o sujeito do verbo, ou é whose.", regra:"dá para apagar quando vem um sujeito novo depois."},
+  {t:2, q:"Join: “We hired a guide. His company is called Iguazu and You.”", o:["…a guide, who company is…", "…a guide that his company is…", "…a guide, whose company is…", "…a guide, which company is…"], a:2,
+   e:"<i>his</i> vira <b>whose</b>.", w:"O possessivo da segunda frase é o sinal de whose.", regra:"his/her/their → whose."},
+  {t:2, q:"How many days did Max Pereira spend at the Chiang Mai festival?", o:["three", "one", "two", "a week"], a:0, e:"“…enjoyed all three days.”"},
+  {t:2, q:"What was Max Pereira's favorite part of the festival?", o:["the orchids", "the city walls", "the parade floats", "the mango sticky rice"], a:2, e:"“The floats were my favorite part.”"},
+  {t:2, q:"Why do people in Rio wear white at New Year's?", o:["to look like the waves", "to bring peace in the new year", "because it's a Japanese custom", "to get rid of old things"], a:1, e:"Branco para trazer paz."},
+  {t:2, q:"Which phrase explains a PLACE?", o:["It's a kind of…", "You use it to…", "It's a place where…", "People do this when…"], a:2, e:"<b>It's a place where…</b>"},
+  {t:2, q:"“Vivid Sydney, ___ is a festival of light, happens every year.”", o:["that", "which", "where", "whose"], a:1,
+   e:"Non-defining → <b>which</b>.", w:"that está proibido depois de vírgula.", regra:"non-defining usa which, who ou whose."},
+
+  /* 🥇 HARD */
+  {t:3, q:"Which pair of commas is CORRECT?",
+   o:["My husband who is scared of heights, loved it.","My husband, who is scared of heights loved it.","My husband, who is scared of heights, loved it.","My husband who is scared of heights loved it."], a:2,
+   e:"Vírgula <b>antes e depois</b>.", w:"Quando a oração fica no meio da frase, as duas vírgulas são obrigatórias.", regra:"oração no meio = vírgula dos dois lados."},
+  {t:3, q:"“They break easily, ___ represents a clean break with the old year.”",
+   o:["that","who","which","where"], a:2,
+   e:"<b>which</b> retoma a ideia toda.", w:"O pronome não substitui um substantivo, e sim o fato inteiro — só which faz isso.", regra:"which pode retomar a frase inteira."},
+  {t:3, q:"Which sentence is a DEFINING relative clause?",
+   o:["Soba noodles, which are long, are eaten in Japan.","Hillbrow is the neighborhood where I live.","My husband, who is scared of heights, loved it.","Iguazu Falls, which has 275 waterfalls, is huge."], a:1,
+   e:"Sem vírgula e essencial → <b>defining</b>.", w:"As outras três têm vírgula, o que já indica informação extra.", regra:"defining: sem vírgula e essencial."},
+  {t:3, q:"In non-defining clauses, can the pronoun be removed?",
+   o:["Yes, always","Yes, when a subject follows","No, never","Only when it is which"], a:2,
+   e:"<b>Nunca</b>.", w:"A regra de omitir vale só para defining.", regra:"em non-defining o pronome é obrigatório."},
+  {t:3, q:"Why does Palesa say the Hillbrow custom happens less often now?",
+   o:["It became illegal","People got hurt","The furniture is too expensive","People moved away"], a:1, e:"“Sometimes people got hurt, so now people do it less.”"},
+  {t:3, q:"What was the most unusual part of Davi's walking tour?",
+   o:["the Opera House lights","the food markets","the old train station with eight underground rooms","the plastic art about Antarctica"], a:2, e:"Oito salas subterrâneas, cada uma com luz e som diferentes."},
+  {t:3, q:"Complete: “The city ___ walls are over 700 years old is Chiang Mai.”",
+   o:["which","that","where","whose"], a:3,
+   e:"As muralhas pertencem à cidade → <b>whose</b>.", w:"whose também serve para coisas, não só para pessoas.", regra:"whose indica posse de pessoas E de coisas."}
+];
+
+/* ---------- estações ---------- */
+const STATIONS = {
+  intro:{ em:"📋", n:"Como funciona", d:"Leia antes de começar", kind:"intro", stars:0, act:0 },
+
+  s1: { em:"🎊", n:"Celebration Words",     d:"16 cartas de vocabulário",         kind:"vocab", set:"v1",  stars:6, act:1 },
+  s2: { em:"🔤", n:"Unscramble the Festival",d:"8 palavras embaralhadas",          kind:"scram", set:"sc1", stars:5, act:1 },
+  s3: { em:"🔍", n:"What's the Word?",      d:"10 definições",                    kind:"mcq",   set:"s3",  stars:6, act:1 },
+  s4: { em:"🏴‍☠️", n:"Pirates Week",         d:"8 frases do texto",                kind:"mcq",   set:"s4",  stars:5, act:1 },
+  s5: { em:"🌸", n:"Chiang Mai Festival",   d:"leitura longa + 8 perguntas",      kind:"read",  set:"r1",  stars:8, act:1 },
+  s6: { em:"💍", n:"Wedding Words",         d:"10 cartas de vocabulário",         kind:"vocab", set:"v2",  stars:5, act:1 },
+
+  s7: { em:"📐", n:"GRAMMAR LAB 1",         d:"defining clauses + 14 itens",      kind:"lab",   set:"s7",  panel:"g1", stars:8, act:2 },
+  s8: { em:"🔗", n:"Which Pronoun?",        d:"10 itens · who/which/whose/where", kind:"mcq",   set:"s8",  stars:6, act:2 },
+  s9: { em:"✂️", n:"Remove the Pronoun?",   d:"10 frases · 2 cestos",             kind:"sort",  set:"so1", stars:5, act:2 },
+  s10:{ em:"📐", n:"GRAMMAR LAB 2",         d:"non-defining + 14 itens",          kind:"lab",   set:"s10", panel:"g2", stars:8, act:2 },
+  s11:{ em:"🔀", n:"Defining or Not?",      d:"12 frases · 2 cestos",             kind:"sort",  set:"so2", stars:6, act:2 },
+  s12:{ em:"➡️", n:"Join the Sentences",    d:"8 frases para montar",             kind:"order", set:"o1",  stars:7, act:2 },
+  s13:{ em:"🏜️", n:"Desert Dreams Ranch",   d:"5 pares · o anúncio",              kind:"match", set:"m1",  stars:4, act:2 },
+  s14:{ em:"🩹", n:"Fix the Clause",        d:"8 frases para corrigir",           kind:"mcq",   set:"s14", stars:6, act:2 },
+
+  s15:{ em:"🎆", n:"CULTURE · New Year's",  d:"5 países + 10 perguntas",          kind:"read",  set:"r2",  stars:9, act:3 },
+  s16:{ em:"🌍", n:"Who Says That?",        d:"8 pares · pessoa e costume",       kind:"match", set:"m2",  stars:5, act:3 },
+  s17:{ em:"✉️", n:"An Unusual Experience", d:"e-mail + 6 perguntas",             kind:"read",  set:"r3",  stars:7, act:3 },
+  s18:{ em:"💬", n:"Explaining Things",     d:"8 pares · useful language",        kind:"match", set:"m3",  stars:5, act:3 },
+  s19:{ em:"🗣️", n:"Say it with a Clause",  d:"12 cartas de fala rápida",         kind:"drill",             stars:6, act:3 },
+  s20:{ em:"🏆", n:"THE GRAND FINALE",      d:"25 questões em 3 níveis",          kind:"quiz",              stars:15, act:3 }
+};
+
+const ACTS = {
+  1:{ n:"ATO 1 · THE FESTIVAL",     em:"🎊", c:"var(--purple)", d:"vocabulário de festas e casamentos" },
+  2:{ n:"ATO 2 · RELATIVE CLAUSES", em:"🔗", c:"var(--orange)", d:"defining e non-defining, do zero ao B2" },
+  3:{ n:"ATO 3 · AROUND THE WORLD", em:"🌍", c:"var(--teal)",   d:"Ano Novo em cinco países e o e-mail" }
+};
+
+const MAP = [
+  { t:"📋 COMEÇANDO", eps:["intro"] },
+  { t:"🎊 ATO 1 · THE FESTIVAL — vocabulário e a primeira leitura",        eps:["s1","s2","s3","s4","s5","s6"] },
+  { t:"🔗 ATO 2 · RELATIVE CLAUSES — defining e non-defining",             eps:["s7","s8","s9","s10","s11","s12","s13","s14"] },
+  { t:"🌍 ATO 3 · AROUND THE WORLD — culturas, e-mail e final",            eps:["s15","s16","s17","s18","s19","s20"] }
+];
+
+const ORDERED = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20"];
+
+const LEVELS = [
+  {s:0,n:"Guest 🎟️"},{s:25,n:"Reveler 🎉"},{s:60,n:"Festival Fan 🎭"},
+  {s:95,n:"Culture Guide 🌍"},{s:120,n:"GRAND MARSHAL 👑"}
+];
+/* =======================================================================
+   MOTOR
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------- HOME ---------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>=0?`<span class="no">${i+1}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ $("play").classList.remove("on"); $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------- PLAYER ---------- */
+let ORD=null, PK=null, SC=null, SO=null, MT=null, VC=null;
+let mSel=null, mDone=0, mRight=[];
+
+function actBar(s){
+  const a=ACTS[s.act]; if(!a) return "";
+  return `<div class="actbar" style="border-color:${a.c}">
+    <span class="n" style="background:${a.c}">${a.em} ${a.n}</span>
+    <span style="color:var(--dim);font-weight:800">${a.d}</span></div>`;
+}
+
+function openEp(k){
+  cur=k; hits=0; total=0;
+  ORD=null; PK=null; SC=null; SO=null; MT=null; VC=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = actBar(s) + `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = `<h2 class="sec"><span class="em">📋</span>Como funciona</h2>` + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    VC=VOCS[s.set]; total=VC.items.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">${VC.tip}</p>
+      <div class="vg">${VC.items.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="scram"){
+    SC=SCRAM[s.set]; total=SC.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">${SC.tip}</p>
+      ${SC.items.map((it,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${it.e} &nbsp;<span class="hint">${it.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="sort"){
+    SO=SORTS[s.set]; total=SO.items.length;
+    b.innerHTML = head + `<p class="how">${SO.how}</p>
+      <p class="tip" style="border-left-color:var(--green)">${SO.tip}</p>
+      ${SO.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SO.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="match"){
+    MT=MATCHES[s.set]; total=MT.pairs.length;
+    b.innerHTML = head + matchHTML(MT.pairs, MT.l, MT.r, MT.how, MT.tip);
+  }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    const tips = {
+      s3:"Leia a definição inteira antes de escolher. Várias palavras da unidade são parecidas: <b>custom</b> (tradição) × <b>celebration</b> (a festa) × <b>occasion</b> (a ocasião).",
+      s4:"É o texto do Pirates Week, nas Ilhas Cayman. As respostas estão todas no vocabulário da Lesson 1.",
+      s8:"<b>who/that</b> pessoa · <b>which/that</b> coisa · <b>whose</b> posse · <b>where</b> lugar. Se tiver vírgula antes, <b>that está proibido</b>.",
+      s14:"Cada frase tem <b>um</b> erro: pronome trocado, <i>that</i> depois de vírgula, ou vírgula faltando. Leia a frase inteira antes de escolher."
+    };
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. O feedback aparece na hora.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${tips[s.set]||""}</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="lab"){
+    PK=s.set; total=QS[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Leia o painel com atenção — a explicação vem em inglês e em português. Depois faça os itens.</p>`
+      + labHTML(s.panel) + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="read"){
+    const R=READS[s.set]; PK=R.set; total=QS[R.set].items.length;
+    b.innerHTML = head + `<div class="read"><h3>${R.em} ${R.title}</h3>${R.html}</div>`
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">❓ Comprehension</h2>`
+      + mcqHTML(R.set);
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER[s.set]; total=ORD.items.length;
+    const how = ORD.prompt
+      ? "Leia as DUAS frases em verde e monte UMA só, com a oração relativa, clicando nas palavras."
+      : (ORD.steps
+        ? "Clique nos passos na ordem certa. Clique no passo de cima para devolver."
+        : "Clique nas palavras na ordem certa para montar a frase.");
+    b.innerHTML = head + `<p class="how">${how}</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORD.tip}</p>` + orderHTML(s.set);
+    initOrder();
+  }
+
+  else if(s.kind==="drill"){
+    total=DRILL.length;
+    b.innerHTML = head + `<p class="how">Leia a pista, diga a frase completa em voz alta e só então toque para conferir.</p>
+      <p class="tip" style="border-left-color:var(--red)">A carta traz o alimento e a <b>pista de quantidade ou de ordem</b>. A turma fala a frase inteira antes de você revelar.</p>
+      <div class="dg">${DRILL.map(d=>`
+        <div class="dc" onclick="openDrill(this)">
+          <div class="pic">${d.pic}</div>
+          <div class="qty">${d.qty}</div>
+          <div class="tap">TOQUE PARA CONFERIR</div>
+          <div class="say">${d.say}</div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>1.</b> São <b>20 estações</b> em três atos: 🎊 THE FESTIVAL (vocabulário e a leitura de Chiang Mai), 🔗 RELATIVE CLAUSES (defining e non-defining, oito estações) e 🌍 AROUND THE WORLD (Ano Novo em cinco países e o e-mail). Pode fazer na ordem ou escolher no mapa 🗺️.</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Guest → Reveler → Festival Fan → Culture Guide → <b>GRAND MARSHAL</b>.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>3.</b> <b>Errou? Melhor ainda.</b> Nas questões de gramática abre um quadro <b>💡 ENTENDA O ERRO</b> com o que você marcou, o certo, o motivo e a regra.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>4.</b> As duas estações <b>📐 GRAMMAR LAB</b> explicam as relative clauses em <b>inglês e em português</b>. Leia o painel antes de responder.</p>
+  <p class="tip" style="border-left-color:var(--teal)"><b>5.</b> Toque no <b>🔊</b> para ouvir a palavra ou a frase em inglês. O <b>🐢</b> fala bem devagar, e os textos longos têm “Ouvir o texto”.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>6.</b> Botão <b>🔍 Projeção</b> para o telão · <b>👀 Answers</b> mostra tudo (use só na correção) · <b>🔁 Rever meus erros</b> traz de volta só o que você errou.</p>`;
+}
+
+/* ---------- vocab ---------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------- scramble ---------- */
+function initScram(){
+  SC.items.forEach((it,i)=>{
+    const letters = it.w.split("").map((c,j)=>({c,j})).sort(()=>Math.random()-0.5);
+    $("bk-"+i).innerHTML = letters.map(o=>
+      `<button class="ch let" onclick="pickLet(${i},this)">${o.c}</button>`).join("");
+    $("sl-"+i).innerHTML = "";
+  });
+}
+function pickLet(i,btn){
+  const c=document.createElement("button");
+  c.className="ch let"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("sl-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).innerHTML="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckScram(i){
+  const sl=$("sl-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join("");
+  if(built===SC.items[i].w){
+    sl.className="slot ok";
+    $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("fb-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shScram(i){
+  const already = $("sl-"+i).classList.contains("ok");
+  rsScram(i);
+  $("sl-"+i).innerHTML = SC.items[i].w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  $("sl-"+i).className="slot ok";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- sort ---------- */
+function pickSort(i,j){
+  const row=document.querySelector(`#body .srow[data-i="${i}"]`);
+  if(!row || row.dataset.done) return; row.dataset.done="1";
+  const c=SO.items[i].c;
+  row.querySelectorAll(".sb").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===c) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $("sf-"+i).innerHTML = (j===c?`<span style="color:var(--ok)">✅ </span>`:`<span style="color:var(--bad)">❌ </span>`)
+    + `<span class="wy">${SO.items[i].e}</span>`;
+  bump();
+}
+
+/* ---------- match ---------- */
+function matchHTML(pairs,l,r,how,tip){
+  mRight = pairs.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-0.5);
+  return `<p class="how">${how}</p><p class="tip" style="border-left-color:var(--purple)">${tip}</p>
+  <div class="mg">
+    <div><div class="mh">${l}</div>${pairs.map((p,i)=>
+      `<button class="mi" id="L-${i}" onclick="mPick('L',${i})">${p[0]}</button>`).join("")}</div>
+    <div><div class="mh">${r}</div>${mRight.map((o,k)=>
+      `<button class="mi" id="R-${k}" onclick="mPick('R',${k})">${o.t}</button>`).join("")}</div>
+  </div>
+  <div class="fb" id="mfb" style="margin-top:14px"></div>`;
+}
+function mPick(side,idx){
+  const el=$(side+"-"+idx);
+  if(el.classList.contains("got")) return;
+  if(side==="L"){
+    document.querySelectorAll("#body .mi.sel").forEach(x=>x.classList.remove("sel"));
+    mSel=idx; el.classList.add("sel"); return;
+  }
+  if(mSel===null){ $("mfb").innerHTML=`<span style="color:var(--bad)">👈 Escolha primeiro na coluna da esquerda.</span>`; return; }
+  if(mRight[idx].i===mSel){
+    const L=$("L-"+mSel); L.classList.remove("sel"); L.classList.add("got"); el.classList.add("got");
+    mDone++; mSel=null;
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+    bump();
+  } else {
+    el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320);
+    $("mfb").innerHTML=`<span style="color:var(--bad)">❌ Not this one. Try again!</span>`;
+  }
+}
+
+/* ---------- mcq ---------- */
+function mcqHTML(ns){
+  const d=QS[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-ns="${ns}" data-q="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+      <div class="opts ${d.two?"two":"four"}">${it.o.map((o,j)=>
+        `<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}</div>
+      <div class="fb" id="f-${ns}-${i}"></div>
+    </div>`).join("");
+}
+function ansMcq(ns,i,j){
+  const box=document.querySelector(`#body .ex[data-ns="${ns}"][data-q="${i}"]`);
+  if(!box || box.dataset.done) return; box.dataset.done="1";
+  const it=QS[ns].items[i];
+  box.querySelectorAll(".op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===it.a) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  const acertou = (j===it.a);
+  const escolhida = it.o[j], certa = it.o[it.a];
+  $(`f-${ns}-${i}`).innerHTML =
+    (acertou ? `<span style="color:var(--ok)">✅ Correct!</span>`
+             : `<span style="color:var(--bad)">❌ Not this one.</span>`)
+    + `<span class="wy">${it.e}</span>`
+    + (acertou ? "" : erroHTML(it, escolhida, certa));
+  bump();
+}
+
+/* ---------- quadro de explicação quando erra ---------- */
+function erroHTML(it, escolhida, certa){
+  if(!it.w && !it.regra) return "";
+  return `<div class="oops">
+    <div class="t">💡 ENTENDA O ERRO</div>
+    <div class="cmp">
+      <div class="x"><b>Você marcou:</b> ${escolhida}</div>
+      <div class="v"><b>O certo é:</b> ${certa}</div>
+    </div>
+    ${it.w ? `<div class="pq">${it.w}</div>` : ""}
+    ${it.regra ? `<div class="rg">📐 <b>Regra:</b> ${it.regra}</div>` : ""}
+  </div>`;
+}
+
+/* ---------- word order / recipe steps ---------- */
+function orderHTML(ns){
+  const d=ORDER[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-o="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${d.prompt?("🟢 "+it.q):(d.steps?("📜 "+it.a):"Build the sentence")}</div>
+      <div class="slot ${d.steps?"steps":""}" id="os-${i}"></div>
+      <div class="bank ${d.steps?"steps":""}" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  if(!ORD) return;
+  const st = ORD.steps ? " steps" : "";
+  ORD.items.forEach((it,i)=>{
+    const sh = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    const bk = $("ob-"+i); if(!bk) return;
+    bk.innerHTML = sh.map(o=>`<button class="ch" onclick="pickWord(${i},this)">${o.w}</button>`).join("");
+    $("os-"+i).innerHTML="";
+    $("os-"+i).className="slot"+st;
+  });
+}
+function pickWord(i,btn){
+  const c=document.createElement("button");
+  c.className="ch"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("os-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsOrd(i){
+  const st = ORD.steps ? " steps" : "";
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"+st; $("of-"+i).innerHTML="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckOrd(i){
+  const it=ORD.items[i], sl=$("os-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join(" ");
+  if(built===it.w.join(" ")){
+    sl.className="slot ok"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+    if(!already) bump();
+  } else {
+    sl.className="slot no"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`;
+  }
+}
+function shOrd(i){
+  const it=ORD.items[i];
+  const already = $("os-"+i).classList.contains("ok");
+  rsOrd(i);
+  $("os-"+i).innerHTML = it.w.map(w=>`<span class="ch">${w}</span>`).join("");
+  $("os-"+i).className="slot ok"+(ORD.steps?" steps":"");
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- drill ---------- */
+function openDrill(el){
+  if(!el.classList.contains("open")){ el.classList.add("open"); bump(); }
+}
+
+/* ---------- painel de gramática bilíngue ---------- */
+function labHTML(key){
+  const g=GRAM[key];
+  return `<div class="lab">
+    <h3>📐 ${g.title}</h3>
+    ${g.rows.map(r=>`
+      <div class="labrow">
+        <div class="fm"><b>${r.form}</b><code>${r.forms}</code></div>
+        ${r.en?`<div class="en">${r.en}</div>`:""}
+        ${r.pt?`<div class="ptx">${r.pt}</div>`:""}
+        <div class="exm">${r.ex}</div>
+      </div>`).join("")}
+    <div class="cerr">
+      <div class="t">⚠️ COMMON ERROR · ERRO CLÁSSICO</div>
+      <div class="w">${g.error.wrong}</div>
+      <div class="r">✅ ${g.error.right}</div>
+      <div class="n">${g.error.note}</div>
+    </div>
+  </div>`;
+}
+
+/* ---------- quiz ---------- */
+let qT=1, qI=0, qHit=0; const qA={};
+function quizHTML(){
+  return `<p class="how">25 questões em 3 níveis. Comece pelo bronze!</p>
+  <div class="tiers">
+    <button class="tb on" id="t1" onclick="setT(1)">🥉 EASY · 10 pts</button>
+    <button class="tb" id="t2" onclick="setT(2)">🥈 MEDIUM · 20 pts</button>
+    <button class="tb" id="t3" onclick="setT(3)">🥇 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="ex" id="qbox"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" onclick="qGo(-1)">◀ prev</button>
+    <button class="btn b" onclick="qGo(1)">next ▶</button>
+    <span class="fb" id="qsc"></span>
+  </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(qI>=L.length) qI=L.length-1;
+  const c=L[qI];
+  $("qmeta").innerHTML = `QUESTION ${qI+1} / ${L.length} · <b>${qT*10} points</b>`;
+  $("qbox").innerHTML = `<div class="qn">${c.q.q}</div>
+    <div class="opts four">${c.q.o.map((o,j)=>
+      `<button class="op" onclick="qPick(${c.i},${j})">${o}</button>`).join("")}</div>
+    <div class="fb" id="qfb"></div>`;
+  if(qA[c.i]!==undefined) qShow(c.i,qA[c.i]);
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; if(j===FINALE[gi].a) qHit++;
+  qShow(gi,j); bump();
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qShow(gi,pick){
+  const q=FINALE[gi];
+  document.querySelectorAll("#qbox .op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===q.a) b.classList.add("right"); else if(k===pick) b.classList.add("wrong");
+  });
+  $("qfb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${qT*10}</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="wy">${q.e}</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+/* ---------- reveal ---------- */
+function revealAll(){
+  if(!cur) return;
+  const k=STATIONS[cur].kind;
+  if(k==="vocab") document.querySelectorAll("#body .vc").forEach(c=>flip(c));
+  else if(k==="scram") SC.items.forEach((_,i)=>shScram(i));
+  else if(k==="sort") SO.items.forEach((it,i)=>pickSort(i,it.c));
+  else if(k==="match"){
+    MT.pairs.forEach((p,i)=>{
+      const ri = mRight.findIndex(o=>o.i===i);
+      const L=$("L-"+i), R=$("R-"+ri);
+      if(L&&R&&!L.classList.contains("got")){ L.classList.add("got"); L.classList.remove("sel"); R.classList.add("got"); mDone++; bump(); }
+    });
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+  }
+  else if(k==="mcq"||k==="lab"||k==="read") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="order") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="drill") document.querySelectorAll("#body .dc").forEach(c=>openDrill(c));
+  else if(k==="quiz"){ const c=tList()[qI]; if(qA[c.i]===undefined) qPick(c.i,FINALE[c.i].a); }
+}
+
+/* ---------- projeção / equipes ---------- */
+function drawTeams(){
+  $("tin").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button></div>`).join("")
+    + `<div class="tm"><button onclick="rsTeams()" style="width:auto;padding:4px 10px">zerar</button></div>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Modo aluno" : "🔍 Projeção";
+}
+
+/* ---------- inicia ---------- */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") home();
+  else if(e.key==="ArrowRight" && cur) stepEp(1);
+  else if(e.key==="ArrowLeft" && cur) stepEp(-1);
+});
+
+drawTeams(); drawMap(); addStars(0);
+
+
+
+/* =========================================================================
+   MELHORIAS · progresso salvo · pronúncia · rever meus erros
+   Cole este bloco no FIM do <script> de cada jogo. Ele detecta sozinho qual
+   motor o jogo usa e desliga o que não se aplica. Não altera nada do resto.
+   ========================================================================= */
+(function(){
+if (window.__melhorias) return;   /* já aplicado */
+
+/* ---------- 1. qual motor é este? ---------- */
+var DIA = null;
+try { if (typeof STATIONS !== "undefined" && typeof prog !== "undefined" && typeof stars !== "undefined") DIA = "A"; } catch(e){}
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof xp !== "undefined") DIA = "B"; } catch(e){} }
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof pts !== "undefined") DIA = "C"; } catch(e){} }
+
+var CFG = {
+  A: { foot:"foot",  body:"body",  home:"homeView", wSel:".fr .w, .front .w", exSel:".bk .ex, .back .ex" },
+  B: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" },
+  C: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" }
+}[DIA] || { foot:null, body:null, home:null, wSel:".front .w, .fr .w", exSel:".back .ex, .bk .ex" };
+
+var $$ = function(id){ return document.getElementById(id); };
+var bodyEl = function(){ return CFG.body ? $$(CFG.body) : null; };
+var scope  = function(){ return bodyEl() || document; };
+
+/* ---------- 2. estado, de forma independente do motor ---------- */
+function ler(){
+  try {
+    if (DIA === "A") return { s: stars, d: done,    p: prog     };
+    if (DIA === "B") return { s: xp,    d: doneEp,  p: progress };
+    if (DIA === "C") return { s: pts,   d: doneEp,  p: progress };
+  } catch(e){}
+  return null;
+}
+function atual(){
+  try {
+    if (DIA === "A") return cur;
+    if (DIA === "B" || DIA === "C") return curEp;
+  } catch(e){}
+  return null;
+}
+function aplicar(o){
+  var t = ler(); if (!t) return;
+  Object.keys(o.d || {}).forEach(function(k){ t.d[k] = o.d[k]; });
+  Object.keys(o.p || {}).forEach(function(k){ t.p[k] = o.p[k]; });
+  try {
+    if (DIA === "A") { stars = 0; addStars(o.s || 0); drawMap(); }
+    if (DIA === "B") { xp    = 0; addXp(o.s || 0);    drawRows(); }
+    if (DIA === "C") { pts   = 0; addPts(o.s || 0);   drawRows(); }
+  } catch(e){}
+}
+
+/* ---------- 3. gravação no aparelho do aluno ---------- */
+var CHAVE = "english-linus:" + (location.pathname || "jogo").replace(/[^a-z0-9]/gi, "_") + ":v1";
+var podeGravar = (function(){
+  try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; }
+  catch(e){ return false; }
+})();
+
+function gravar(){
+  if (!podeGravar || !DIA) return;
+  var t = ler(); if (!t) return;
+  try {
+    localStorage.setItem(CHAVE, JSON.stringify({
+      s: t.s, d: t.d, p: t.p, erros: serializaErros(),
+      quando: Date.now(), estacao: atual()
+    }));
+    piscaSalvo();
+  } catch(e){}
+}
+function lido(){
+  if (!podeGravar) return null;
+  try { return JSON.parse(localStorage.getItem(CHAVE) || "null"); } catch(e){ return null; }
+}
+function apagar(){ try { localStorage.removeItem(CHAVE); } catch(e){} }
+
+/* ---------- 4. registro dos erros ---------- */
+var ERROS = {};                                  /* { estacao: { chave: true } } */
+function marcaErro(est, chave){
+  if (!est) return;
+  (ERROS[est] = ERROS[est] || {})[chave] = true;
+  atualizaBotaoErros();
+}
+function limpaErro(est, chave){
+  if (est && ERROS[est]) { delete ERROS[est][chave]; atualizaBotaoErros(); }
+}
+function serializaErros(){ return ERROS; }
+function contaErros(est){ return est && ERROS[est] ? Object.keys(ERROS[est]).length : 0; }
+
+/* ---------- 5. embrulha as funções do motor ---------- */
+function embrulha(nome, antes, depois){
+  try {
+    var f = eval(nome);
+    if (typeof f !== "function") return false;
+    window["__orig_" + nome] = f;
+    var novo = function(){
+      var args = arguments;
+      if (antes) { try { antes.apply(null, args); } catch(e){} }
+      var r = window["__orig_" + nome].apply(this, args);
+      if (depois) { try { depois.apply(null, args); } catch(e){} }
+      return r;
+    };
+    window.__novo = novo;
+    eval(nome + " = window.__novo");
+    delete window.__novo;
+    return true;
+  } catch(e){ return false; }
+}
+
+/* grava sempre que a pontuação ou o progresso mudam — os motores usam nomes
+   diferentes, então embrulhamos todos os candidatos que existirem */
+["bump", "addStars", "addXp", "addPts", "setProgress"].forEach(function(n){
+  embrulha(n, null, function(){ gravar(); });
+});
+
+/* múltipla escolha: ansMcq(ns,i,j) · ans(ns,i,j) · pickAns(i,j,a) */
+function itemQS(ns, i){
+  var it = null;
+  try { it = QS[ns].items[i]; } catch(e){}
+  if (!it) { try { it = QS[ns][i]; } catch(e){} }
+  return it || null;
+}
+function registra(ns, i, j){
+  var it = itemQS(ns, i);
+  if (!it) return;
+  var k = ns + "#" + i;
+  if (j === it.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+}
+embrulha("ansMcq", null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("ans",    null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("pickAns", null, function(i, j, a){
+  var k = "q#" + i;
+  if (j === a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* cestos: pickSort(i,j) · sortPick(i,j) */
+embrulha("pickSort", null, function(i, j){
+  var c = null;
+  try { c = (typeof SO !== "undefined" && SO) ? SO.items[i].c : SORT.items[i].c; } catch(e){}
+  if (c === null || c === undefined) { try { c = SORT[i].c; } catch(e){} }
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+embrulha("sortPick", null, function(i, j){
+  var c = null;
+  try { c = SORT[i].c; } catch(e){}
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* quiz final: qPick(gi,j) */
+embrulha("qPick", null, function(gi, j){
+  var q = null; try { q = FINALE[gi]; } catch(e){}
+  if (!q) return;
+  var k = "quiz#" + gi;
+  if (j === q.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* toda vez que abre uma estação: põe os alto-falantes e ajusta o botão */
+embrulha("openEp", null, function(){
+  pararFala();
+  poeAudio();
+  atualizaBotaoErros();
+});
+
+/* ---------- 6. pronúncia com a voz do navegador ---------- */
+var TEM_FALA = (typeof window.speechSynthesis !== "undefined" &&
+                typeof window.SpeechSynthesisUtterance !== "undefined");
+var vozEN = null;
+function achaVoz(){
+  if (!TEM_FALA) return null;
+  if (vozEN) return vozEN;
+  var vs = [];
+  try { vs = window.speechSynthesis.getVoices() || []; } catch(e){}
+  var pref = ["en-US", "en_US", "en-GB", "en_GB", "en"];
+  for (var p = 0; p < pref.length; p++)
+    for (var i = 0; i < vs.length; i++)
+      if (vs[i].lang && vs[i].lang.indexOf(pref[p]) === 0) { vozEN = vs[i]; return vozEN; }
+  return null;
+}
+if (TEM_FALA) { try { window.speechSynthesis.onvoiceschanged = achaVoz; achaVoz(); } catch(e){} }
+
+function pararFala(){ if (TEM_FALA) { try { window.speechSynthesis.cancel(); } catch(e){} } }
+
+function fala(txt, devagar, botao){
+  if (!TEM_FALA || !txt) return;
+  pararFala();
+  var u = new window.SpeechSynthesisUtterance(String(txt).replace(/[“”"]/g, ""));
+  var v = achaVoz(); if (v) u.voice = v;
+  u.lang = (v && v.lang) || "en-US";
+  u.rate = devagar ? 0.7 : 0.92;
+  if (botao) {
+    botao.classList.add("mlFalando");
+    u.onend = u.onerror = function(){ botao.classList.remove("mlFalando"); };
+  }
+  try { window.speechSynthesis.speak(u); } catch(e){}
+}
+
+function textoProprio(el){
+  var t = "";
+  for (var i = 0; i < el.childNodes.length; i++) {
+    var n = el.childNodes[i];
+    if (n.nodeType === 3) t += n.nodeValue;                       /* nó de texto */
+    else if (n.nodeType === 1 && !/^(SPAN|DIV|P)$/.test(n.tagName)) t += n.textContent;
+    else if (n.nodeType === 1 && n.className &&
+             /\b(b|i|em|strong)\b/i.test(n.tagName)) t += n.textContent;
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+function botaoAudio(txt, titulo, devagar){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.className = "mlSpk";
+  b.innerHTML = devagar ? "🐢" : "🔊";
+  b.title = titulo || "Ouvir em inglês";
+  b.setAttribute("aria-label", b.title);
+  b.addEventListener("click", function(ev){
+    ev.stopPropagation(); ev.preventDefault();
+    fala(txt, devagar, b);
+  });
+  return b;
+}
+
+function poeAudio(){
+  if (!TEM_FALA) return;
+  var raiz = scope();
+
+  /* cartas de vocabulário: palavra (normal + devagar) e frase de exemplo */
+  raiz.querySelectorAll(".vc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var w = c.querySelector(CFG.wSel);
+    if (w && w.textContent.trim()) {
+      var cx = document.createElement("span");
+      cx.className = "mlSpkBox";
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir a palavra"));
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir bem devagar", true));
+      w.appendChild(cx);
+    }
+    var ex = c.querySelector(CFG.exSel);
+    if (ex && ex.textContent.trim())
+      ex.appendChild(botaoAudio(ex.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* cartas de fala rápida */
+  raiz.querySelectorAll(".dc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var s = c.querySelector(".say");
+    if (s && s.textContent.trim())
+      s.appendChild(botaoAudio(s.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* deck de projeção (English Rewind): só nos trechos que são inglês */
+  if (!DIA && document.querySelectorAll("section.slide").length > 5) {
+    /* frases completas em inglês */
+    raiz.querySelectorAll("span.ans, div.q").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.length > 3) el.appendChild(botaoAudio(t, "Ouvir em inglês"));
+    });
+    /* .scr tem dois tipos: frase com lacuna (serve) e palavras embaralhadas (não serve) */
+    raiz.querySelectorAll("span.scr").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.indexOf("/") >= 0) return;                 /* embaralhado: não faz sentido ouvir */
+      if (t.length > 3) el.appendChild(botaoAudio(t.replace(/_+/g, " blank "), "Ouvir em inglês"));
+    });
+    /* alternativas do quiz: o botão do jogo já é <button>, então o som vai ao lado, fora dele */
+    raiz.querySelectorAll("button.opt").forEach(function(b){
+      if (b.dataset.mlAudio) return; b.dataset.mlAudio = "1";
+      var t = b.textContent.trim().replace(/^[a-d]\)\s*/i, "");
+      if (t.length < 4) return;
+      var s2 = botaoAudio(t, "Ouvir a alternativa");
+      s2.style.marginLeft = "4px";
+      if (b.parentNode) b.parentNode.insertBefore(s2, b.nextSibling);
+    });
+  }
+
+  /* textos de leitura: barra no topo + alto-falante por parágrafo */
+  raiz.querySelectorAll(".read, .rd, .reading, .txtbox").forEach(function(r){
+    if (r.dataset.mlAudio) return; r.dataset.mlAudio = "1";
+    var paras = [].slice.call(r.querySelectorAll("p"))
+      .filter(function(p){ return p.textContent.trim().length > 25; });
+    if (!paras.length) return;
+    var barra = document.createElement("div");
+    barra.className = "mlRead";
+    var tudo = paras.map(function(p){ return p.textContent.trim(); }).join(" ");
+    var ouvir = botaoAudio(tudo, "Ouvir o texto inteiro");
+    ouvir.innerHTML = "🔊 Ouvir o texto";
+    ouvir.className = "mlSpk mlWide";
+    var parar = document.createElement("button");
+    parar.type = "button"; parar.className = "mlSpk mlWide"; parar.innerHTML = "⏹️ Parar";
+    parar.addEventListener("click", function(ev){ ev.stopPropagation(); pararFala(); });
+    barra.appendChild(ouvir); barra.appendChild(parar);
+    var dica = document.createElement("span");
+    dica.className = "mlHint";
+    dica.textContent = "ou clique no 🔊 de cada parágrafo";
+    barra.appendChild(dica);
+    r.insertBefore(barra, r.firstChild);
+    paras.forEach(function(p){ p.appendChild(botaoAudio(p.textContent.trim(), "Ouvir este parágrafo")); });
+  });
+}
+
+/* ---------- 7. rever só os itens errados ---------- */
+function chaveDoBloco(el){
+  if (el.hasAttribute("data-q")) {
+    var ns = el.getAttribute("data-ns");
+    return (ns ? ns : "q") + "#" + el.getAttribute("data-q");
+  }
+  if (el.classList.contains("srow")) return "sort#" + el.getAttribute("data-i");
+  return null;
+}
+function reverErros(){
+  var est = atual();
+  if (!est || !contaErros(est)) return;
+  var alvos = ERROS[est];
+
+  /* quiz final: libera as questões erradas para responder de novo */
+  var soQuiz = Object.keys(alvos).every(function(k){ return k.indexOf("quiz#") === 0; });
+  if (soQuiz) {
+    var n = 0;
+    Object.keys(alvos).forEach(function(k){
+      var gi = parseInt(k.split("#")[1], 10);
+      try { if (qA[gi] !== undefined) { delete qA[gi]; n++; } } catch(e){}
+    });
+    try { qRender(); } catch(e){}
+    aviso("🔁 " + n + " questão(ões) liberada(s) para refazer. Navegue com ◀ ▶.");
+    return;
+  }
+
+  /* demais estações: reabre e esconde o que já estava certo */
+  try { openEp(est); } catch(e){ return; }
+  (function(){
+    var raiz = scope(), achou = 0;
+    var blocos = [].slice.call(raiz.querySelectorAll("[data-q], .srow"));
+    blocos.forEach(function(b){
+      var k = chaveDoBloco(b);
+      if (k && alvos[k]) { b.classList.add("mlAlvo"); achou++; }
+      else if (k) b.classList.add("mlOculto");
+    });
+    if (!achou) { blocos.forEach(function(b){ b.classList.remove("mlOculto"); }); return; }
+    var faixa = document.createElement("div");
+    faixa.className = "mlFaixa";
+    faixa.innerHTML = "🔁 <b>Refazendo " + achou + " item(ns) que você errou.</b> " +
+      "<button type='button' class='mlSpk mlWide' id='mlTudo'>Mostrar tudo de novo</button>";
+    raiz.insertBefore(faixa, raiz.firstChild);
+    var bt = document.getElementById("mlTudo");
+    if (bt) bt.addEventListener("click", function(){
+      raiz.querySelectorAll(".mlOculto").forEach(function(x){ x.classList.remove("mlOculto"); });
+      faixa.remove();
+    });
+    poeAudio();
+    try { window.scrollTo(0, 0); } catch(e){}
+  })();
+}
+
+function atualizaBotaoErros(){
+  var b = document.getElementById("mlErros");
+  if (!b) return;
+  var n = contaErros(atual());
+  b.textContent = n ? "🔁 Rever meus erros (" + n + ")" : "🔁 Rever meus erros";
+  b.disabled = !n;
+}
+
+/* ---------- 8. avisos ---------- */
+function aviso(msg){
+  try { if (typeof toast === "function") { toast(msg); return; } } catch(e){}
+  var d = document.createElement("div");
+  d.className = "mlAviso"; d.textContent = msg;
+  document.body.appendChild(d);
+  setTimeout(function(){ d.remove(); }, 2600);
+}
+var tSalvo = null;
+function piscaSalvo(){
+  var p = document.getElementById("mlSalvo");
+  if (!p) return;
+  p.classList.add("on");
+  clearTimeout(tSalvo);
+  tSalvo = setTimeout(function(){ p.classList.remove("on"); }, 1200);
+}
+
+/* ---------- 9. interface ---------- */
+var CSS = ""
++ ".mlSpk{border:2px solid currentColor;border-radius:9px;background:rgba(255,255,255,.85);"
++ "color:inherit;font:inherit;font-size:12px;line-height:1;padding:3px 6px;margin-left:6px;"
++ "cursor:pointer;vertical-align:middle;opacity:.75;transition:.12s;}"
++ ".mlSpk:hover{opacity:1;transform:translateY(-1px);}"
++ ".mlSpk:disabled{opacity:.35;cursor:default;transform:none;}"
++ ".mlSpk.mlWide{font-size:13px;font-weight:800;padding:6px 11px;}"
++ ".mlSpk.mlFalando{animation:mlPulse .8s infinite;}"
++ "@keyframes mlPulse{0%,100%{opacity:.6}50%{opacity:1}}"
++ ".mlSpkBox{display:inline-flex;gap:3px;margin-left:6px;}"
++ ".mlRead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding-bottom:10px;"
++ "border-bottom:2px dashed rgba(0,0,0,.15);}"
++ ".mlHint{font-size:12px;opacity:.7;}"
++ ".mlOculto{display:none !important;}"
++ ".mlAlvo{outline:3px dashed rgba(255,150,0,.75);outline-offset:4px;border-radius:12px;}"
++ ".mlFaixa{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:10px 14px;"
++ "border:3px solid #e08a1e;border-radius:14px;background:#fff6e5;font-size:14px;}"
++ ".mlBar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 auto 18px;"
++ "max-width:1100px;padding:10px 14px;border:2px solid rgba(0,0,0,.15);border-radius:14px;"
++ "background:rgba(255,255,255,.75);font-size:13px;}"
++ ".mlBar b{font-size:14px;}"
++ "#mlSalvo{opacity:0;transition:.2s;font-weight:800;}"
++ "#mlSalvo.on{opacity:1;}"
++ ".mlAviso{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9999;"
++ "background:#111;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;"
++ "font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.3);}"
++ "#mlErros:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}"
++ ".mlBtn{white-space:nowrap;}"
++ "@media print{.mlSpk,.mlRead,.mlBar,.mlFaixa{display:none !important;}}";
+
+(function(){
+  var st = document.createElement("style");
+  st.textContent = CSS;
+  document.head.appendChild(st);
+})();
+
+/* botão no rodapé do player */
+(function(){
+  var f = CFG.foot ? $$(CFG.foot) : null;
+  if (!f) return;
+  var b = document.createElement("button");
+  b.type = "button"; b.id = "mlErros";
+  var modelo = f.querySelector("button");
+  if (modelo && modelo.className) { b.className = modelo.className; b.classList.add("mlBtn"); }
+  else { b.className = "mlSpk mlWide"; }
+  b.textContent = "🔁 Rever meus erros";
+  b.disabled = true;
+  b.addEventListener("click", reverErros);
+  var alvo = f.querySelector(".grow");
+  if (alvo) f.insertBefore(b, alvo); else f.appendChild(b);
+})();
+
+/* faixa na tela inicial: progresso salvo, continuar e zerar */
+(function(){
+  if (!DIA) return;
+  var h = CFG.home ? $$(CFG.home) : null;
+  if (!h) return;
+  var bar = document.createElement("div");
+  bar.className = "mlBar";
+  var salvo = lido();
+  var txt = !podeGravar
+    ? "⚠️ Este navegador não deixa salvar o progresso. O jogo funciona, mas não guarda onde você parou."
+    : (salvo ? "💾 <b>Você já jogou aqui.</b> Progresso guardado: <b>⭐ " + (salvo.s || 0) + "</b>."
+             : "💾 O seu progresso fica salvo <b>neste aparelho</b>, sem login. Pode fechar e voltar depois.");
+  bar.innerHTML = "<span>" + txt + "</span><span id='mlSalvo'>💾 salvo</span><span class='grow' style='flex:1'></span>";
+  if (podeGravar && salvo) {
+    var c = document.createElement("button");
+    c.type = "button"; c.className = "mlSpk mlWide"; c.textContent = "▶️ Continuar de onde parei";
+    c.addEventListener("click", function(){
+      aplicar(salvo);
+      ERROS = salvo.erros || {};
+      atualizaBotaoErros();
+      aviso("▶️ Progresso restaurado: ⭐ " + (salvo.s || 0));
+      c.remove();
+    });
+    bar.appendChild(c);
+  }
+  if (podeGravar) {
+    var z = document.createElement("button");
+    z.type = "button"; z.className = "mlSpk mlWide"; z.textContent = "🗑️ Zerar meu progresso";
+    z.addEventListener("click", function(){
+      apagar(); ERROS = {}; atualizaBotaoErros();
+      aviso("🗑️ Progresso apagado deste aparelho. Recarregue a página para começar limpo.");
+    });
+    bar.appendChild(z);
+  }
+  h.insertBefore(bar, h.firstChild);
+})();
+
+/* põe os alto-falantes no que já estiver na tela */
+poeAudio();
+
+/* atalho: S para ouvir de novo a última coisa clicada não é necessário —
+   ESC também para a fala, além do que o jogo já faz */
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape") pararFala();
+});
+
+window.__melhorias = { versao: 1, motor: DIA, fala: TEM_FALA, grava: podeGravar };
+})();
+
+</script>
+</body>
+</html>
