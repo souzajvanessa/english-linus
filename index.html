@@ -343,8 +343,16 @@ const PDFS = [
 const app = document.getElementById("app");
 let html = "";
 
+/* dentro de cada turma, ordena pelo número da unidade (UNIT 4 antes de UNIT 5).
+   Quem não tem número de unidade fica no fim, na ordem em que foi escrito. */
+const numUnidade = a => {
+  const m = String(a.tag || "").match(/UNIT\s*(\d+)/i);
+  return m ? parseInt(m[1], 10) : 999;
+};
+
 Object.keys(TURMAS).forEach(chave => {
-  const lista = ATIVIDADES.filter(a => a.turma === chave);
+  const lista = ATIVIDADES.filter(a => a.turma === chave)
+                          .sort((x, y) => numUnidade(x) - numUnidade(y));
   if (!lista.length) return;
   html += `<h2 class="sec">${TURMAS[chave]}</h2><div class="grid">`;
   lista.forEach(a => {
