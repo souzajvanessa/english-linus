@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALL AROUND TOWN · Unit 6 · 7º ano</title>
+<style>
+  :root{
+    --bg:#f3f5f9; --card:#ffffff; --ink:#182031; --dim:#5f6a80; --line:#d8dee9;
+    --red:#c0392b; --orange:#e08a1e; --yellow:#d9a92a; --green:#2c7a5a; --teal:#17708a;
+    --blue:#2a5f9e; --purple:#6a4b8c; --pink:#c2456f;
+    --ok:#20bf7f; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(780px 450px at 88% -4%, rgba(224,138,30,.26), transparent 62%),
+      radial-gradient(720px 440px at 4% 100%, rgba(42,95,158,.24), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#aab8cc; border-radius:99px;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue);} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{
+    padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;
+  }
+  #hero .truck{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--red);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{
+    background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;
+  }
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{
+    display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);
+  }
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{
+    position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;
+  }
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#f0e7db; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#eafaf1;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{
+    background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;
+  }
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:132px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--yellow);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#5a4a2a;}
+
+  /* generic exercise box */
+  .ex{
+    background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;
+  }
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{
+    display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--purple); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;
+  }
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;
+  }
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#fffdf0;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* chips (word order + unscramble) */
+  .slot{
+    min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#fffdf6;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;
+  }
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{
+    border:3px solid var(--ink); border-radius:12px; background:var(--blue); color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);
+  }
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort baskets */
+  .srow{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .srow .it{font-weight:900; font-size:20px; min-width:170px;}
+  .sb{
+    border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .sb:hover:not(:disabled){background:#fffdf0;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{
+    display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:17px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .mi:hover:not(:disabled){background:#fffdf0;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading + menu */
+  .read{
+    background:#fffdf3; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.65; font-weight:600;
+  }
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--red);}
+  .read p{margin-bottom:10px;}
+  .read .gl{
+    margin-top:14px; font-size:14px; font-weight:800; color:#6a5a3a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;
+  }
+  .menu{
+    background:#fff; border:4px solid var(--ink); border-radius:var(--r); box-shadow:0 6px 0 var(--ink);
+    padding:18px 20px; margin-bottom:16px;
+  }
+  .menu h3{text-align:center; font-size:22px; font-weight:900; letter-spacing:1px;}
+  .menu .ad{text-align:center; font-size:12.5px; color:var(--dim); font-weight:800; margin-bottom:12px;}
+  .mgrp{margin-bottom:12px;}
+  .mgrp .t{
+    font-size:13px; font-weight:900; letter-spacing:2px; background:var(--ink); color:#fff;
+    display:inline-block; padding:3px 11px; border-radius:99px; margin-bottom:7px;
+  }
+  .ln{display:flex; justify-content:space-between; gap:12px; font-size:17px; font-weight:800;
+    border-bottom:2px dotted var(--line); padding:5px 0;}
+  .ln b{color:var(--green);}
+
+  /* drill */
+  .dg{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px;}
+  .dc{
+    background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 12px; text-align:center; cursor:pointer; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s;
+  }
+  .dc:hover{transform:translateY(-3px);}
+  .dc .pic{font-size:44px;}
+  .dc .qty{font-weight:900; font-size:16px; margin-top:5px; color:var(--purple);}
+  .dc .say{display:none; font-weight:900; font-size:17px; margin-top:9px; color:var(--green); line-height:1.3;}
+  .dc.open{background:#eafaf1;} .dc.open .say{display:block;}
+  .dc .tap{font-size:10.5px; letter-spacing:1.5px; color:var(--dim); font-weight:900; margin-top:7px;}
+  .dc.open .tap{display:none;}
+
+  /* painel de gramática bilíngue */
+  .lab{background:#fff; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:18px 20px; margin-bottom:18px;}
+  .lab h3{font-size:clamp(19px,2.2vw,25px); font-weight:900; letter-spacing:-.4px; margin-bottom:14px;}
+  .labrow{border-top:2px dashed var(--line); padding:13px 0;}
+  .labrow:first-of-type{border-top:0; padding-top:2px;}
+  .labrow .fm{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:7px;}
+  .labrow .fm b{font-size:17px; background:var(--ink); color:#fff; padding:3px 11px; border-radius:99px;}
+  .labrow .fm code{font-family:Consolas,monospace; font-size:15.5px; color:var(--teal); font-weight:700;}
+  .labrow .en, .labrow .ptx{font-size:16px; line-height:1.5; padding:7px 12px; border-radius:10px; margin-bottom:6px;}
+  .labrow .en{background:#eef6f6; border-left:5px solid var(--teal);}
+  .labrow .ptx{background:#fdf4e6; border-left:5px solid var(--orange);}
+  .labrow .en::before{content:"EN  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--teal);}
+  .labrow .ptx::before{content:"PT  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--orange);}
+  .labrow .exm{font-size:16.5px; font-weight:800; margin-top:6px; color:var(--green);}
+  .labrow .exm::before{content:"\25B8  ";}
+  .cerr{margin-top:16px; background:#fdecea; border:3px solid var(--red); border-radius:14px; padding:13px 16px;}
+  .cerr .t{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--red); margin-bottom:8px;}
+  .cerr .w{font-size:17px; font-weight:800; text-decoration:line-through; color:var(--red); margin-bottom:4px;}
+  .cerr .r{font-size:17px; font-weight:900; color:var(--green); margin-bottom:7px;}
+  .cerr .n{font-size:15px; line-height:1.5; color:#4a3a2a;}
+  body.proj .lab h3{font-size:30px;} body.proj .labrow .en, body.proj .labrow .ptx{font-size:19px;}
+  body.proj .labrow .exm{font-size:20px;} body.proj .cerr .w, body.proj .cerr .r{font-size:21px;}
+
+  /* quiz tiers */
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{
+    border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);
+  }
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+
+  /* teams (projection) */
+  #teams{
+    display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px;
+    padding:0 5vw;
+  }
+  #teams.on{display:block;}
+  .tin{
+    background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{
+    width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;
+  }
+  .tm button:hover{background:var(--yellow);}
+
+  #foot{
+    position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96);
+    border-top:3px solid var(--line);
+  }
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+
+  #toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;
+  }
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJECTION MODE */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:21px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:24px;}
+  body.proj .ln{font-size:21px;}
+  body.proj .dc .pic{font-size:56px;} body.proj .dc .say{font-size:21px;}
+
+  /* ===== extras Unit 5 ===== */
+  .actbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;
+    padding:10px 14px;border:3px solid var(--ink);border-radius:16px;background:#fff;
+    box-shadow:0 4px 0 var(--ink);font-weight:900;font-size:13px;letter-spacing:.5px;}
+  .actbar .n{background:var(--ink);color:#fff;border-radius:99px;padding:3px 10px;font-size:11px;}
+  .vs{margin:16px 0 0;border:3px solid var(--purple);border-radius:16px;overflow:hidden;background:#fff;}
+  .vs .h{background:var(--purple);color:#fff;font-weight:900;font-size:13px;padding:7px 12px;letter-spacing:.6px;}
+  .vs table{width:100%;border-collapse:collapse;font-size:15px;}
+  .vs td{padding:7px 12px;border-top:2px solid #eee;}
+  .vs td:first-child{font-weight:800;color:var(--blue);width:44%;}
+  .vs td:last-child{font-weight:800;color:var(--red);}
+  body.proj .vs table{font-size:22px;}
+  .slot .ch, .bank .ch{max-width:100%;white-space:normal;text-align:left;}
+  .steps .ch{display:block;width:100%;margin:4px 0;}
+
+  /* ===== quadro de explicação quando erra ===== */
+  .oops{margin-top:12px;border:3px solid var(--red);border-radius:14px;background:#fff5f3;overflow:hidden;}
+  .oops .t{background:var(--red);color:#fff;font-weight:900;font-size:11.5px;letter-spacing:1.6px;padding:6px 12px;}
+  .oops .cmp{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  @media(max-width:640px){.oops .cmp{grid-template-columns:1fr;}}
+  .oops .x,.oops .v{padding:9px 12px;font-size:14.5px;}
+  .oops .x{background:#ffe9e4;color:#8e2b1c;}
+  .oops .v{background:#e6f6ec;color:#14603c;}
+  .oops .pq{padding:10px 12px;font-size:14.5px;line-height:1.55;border-top:2px solid #f2ddd7;}
+  .oops .rg{padding:9px 12px;font-size:13.5px;background:#fffaf0;border-top:2px solid #f2ddd7;color:#6b4a10;}
+  body.proj .oops .x,body.proj .oops .v,body.proj .oops .pq{font-size:20px;}
+  body.proj .oops .rg{font-size:18px;}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🏙️ ALL AROUND TOWN<span>UNIT 6 · PLACES, ARTICLES &amp; DIRECTIONS · 7º ANO</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #2A5F9E;border-radius:14px;background:#fff;color:#2A5F9E;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #2A5F9E;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill">🏅 <span id="lvl">Tourist 🎒</span></div>
+  <button class="btn y" id="projBtn" onclick="toggleProj()">🔍 Projeção</button>
+  <button class="btn b" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="tin"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="truck">🏙️🚦🗺️</div>
+    <h1>All around <em>town</em></h1>
+    <div class="sub">20 estações · Unit 6 · 3 atos · A2–B1 · explicação completa sempre que você errar</div>
+    <div class="tags">
+      <span class="tag">🏬 places in town</span>
+      <span class="tag">📐 articles: a / an / the / —</span>
+      <span class="tag">🚦 roads &amp; signs</span>
+      <span class="tag">📍 prepositions of place</span>
+      <span class="tag">🏃 prepositions of movement</span>
+      <span class="tag">🙋 asking &amp; giving directions</span>
+      <span class="tag">📌 notices &amp; messages</span>
+      <span class="tag">🚲 CULTURE · Dublin</span>
+    </div>
+    <div class="tags" style="margin-top:6px">
+      <span class="tag" style="background:#fff;border-color:var(--blue)">🏙️ ATO 1 · DOWNTOWN</span>
+      <span class="tag" style="background:#fff;border-color:var(--orange)">🚦 ATO 2 · STREET SMART</span>
+      <span class="tag" style="background:#fff;border-color:var(--green)">🗺️ ATO 3 · CITY GUIDE</span>
+    </div>
+  </div>
+  <main id="mapArea"></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀</button>
+  <button class="btn" onclick="stepEp(1)">▶</button>
+  <button class="btn g" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Modo projeção liga fontes grandes e o placar de equipes</small>
+</div>
+
+<div id="toast"></div>
+
+<script>/* =======================================================================
+   DADOS · Unit 6 "All around town" · 7º ano · A2–B1
+   Cada questão de gramática traz:
+     e     = comentário curto (aparece sempre)
+     w     = por que a sua escolha não serve (aparece só no erro)
+     regra = a regra em uma linha (aparece só no erro)
+   ======================================================================= */
+
+/* ---------- cartas de vocabulário ---------- */
+const VOCS = {
+  v1: { tip:"Mostre a carta, a turma diz o lugar em inglês, depois vire. Peça também <b>uma frase com there is / there are</b> — vale bônus.",
+    items:[
+      {e:"🏋️", w:"gym",              pt:"academia",              ex:"There's a really modern gym in my town."},
+      {e:"⛽", w:"gas station",      pt:"posto de combustível",  ex:"My grandpa lost his backpack at the gas station."},
+      {e:"🏦", w:"bank",             pt:"banco",                 ex:"A bank is a place where people keep their money."},
+      {e:"💎", w:"jewelry store",    pt:"joalheria",             ex:"This jewelry store sells the earrings my mom wants."},
+      {e:"📚", w:"bookstore",        pt:"livraria",              ex:"Joanne Mills is going to be at Isaac's Bookstore on Friday."},
+      {e:"💊", w:"drugstore",        pt:"farmácia",              ex:"The doctor sent me to the drugstore to get some medicine."},
+      {e:"🚓", w:"police station",   pt:"delegacia",             ex:"I took the phone to the police station."},
+      {e:"📮", w:"post office",      pt:"correio",               ex:"You can send letters and packages at the post office."},
+      {e:"🛒", w:"grocery store",    pt:"mercado",               ex:"There's a grocery store near our house."},
+      {e:"🏬", w:"department store", pt:"loja de departamentos", ex:"I went to the department store to buy a new coat."},
+      {e:"🚌", w:"bus station",      pt:"rodoviária",            ex:"A new grocery store is opening at the bus station."},
+      {e:"🏛️", w:"museum",           pt:"museu",                 ex:"The museum is in front of you."},
+      {e:"🌳", w:"park",             pt:"parque",                ex:"Go through the park and past the big tree."},
+      {e:"📖", w:"library",          pt:"biblioteca",            ex:"Turn left and walk past the library."},
+      {e:"🏥", w:"hospital",         pt:"hospital",              ex:"The hospital is at the end of Hospital Road."},
+      {e:"⛲", w:"town square",      pt:"praça central",         ex:"Meet me in the town square at 3 p.m."}
+    ]},
+  v2: { tip:"Estas são as palavras de <b>ruas e sinais</b>. Todas voltam depois nas direções — vale decorar!",
+    items:[
+      {e:"🚦", w:"traffic light", pt:"semáforo",         ex:"You can go when the traffic light is green."},
+      {e:"🚸", w:"crossing",      pt:"faixa de pedestre", ex:"Cars must stop when someone is on the crossing."},
+      {e:"📐", w:"corner",        pt:"esquina",           ex:"Let's meet at the corner of the two roads."},
+      {e:"⬆️", w:"straight",      pt:"em frente",         ex:"Don't go left or right. Go straight."},
+      {e:"🌉", w:"bridge",        pt:"ponte",             ex:"The river goes under the bridge."},
+      {e:"🛣️", w:"road",          pt:"rua, estrada",      ex:"She's driving on a quiet road in Scotland."},
+      {e:"⬅️", w:"left",          pt:"esquerda",          ex:"You must turn left here to go to Misty Road."},
+      {e:"➡️", w:"right",         pt:"direita",           ex:"You must go right here."}
+    ]}
+};
+
+/* ---------- palavras embaralhadas ---------- */
+const SCRAM = {
+  sc1: { tip:"Leia o emoji e a tradução primeiro. <b>Depois procure a primeira letra.</b>",
+    items:[
+      {e:"📚", w:"BOOKSTORE", pt:"livraria"},
+      {e:"💊", w:"DRUGSTORE", pt:"farmácia"},
+      {e:"🏛️", w:"MUSEUM",    pt:"museu"},
+      {e:"📖", w:"LIBRARY",   pt:"biblioteca"},
+      {e:"🌉", w:"BRIDGE",    pt:"ponte"},
+      {e:"🚸", w:"CROSSING",  pt:"faixa de pedestre"},
+      {e:"📐", w:"CORNER",    pt:"esquina"},
+      {e:"🏦", w:"BANK",      pt:"banco"}
+    ]}
+};
+
+/* ---------- cestos ---------- */
+const SORTS = {
+  so1: { cats:["📍 PLACE (onde algo está)","🏃 MOVEMENT (como você vai)"],
+    how:"A preposição diz ONDE algo está ou COMO você vai de um lugar a outro? Clique no cesto certo.",
+    tip:"<b>Place</b> responde “onde?” — behind, in front of, at the end of, next to. <b>Movement</b> responde “por onde?” — across, along, up, down, over, through, past.",
+    items:[
+      {it:"The bank is <b>behind</b> the museum.",              c:0, e:"behind diz onde o banco está"},
+      {it:"Walk <b>across</b> the crossing.",                   c:1, e:"across = atravessando"},
+      {it:"My house is <b>at the end of</b> the street.",       c:0, e:"at the end of diz onde a casa está"},
+      {it:"Go <b>along</b> the river.",                          c:1, e:"along = ao longo de, seguindo"},
+      {it:"The museum is <b>in front of</b> you.",               c:0, e:"in front of diz onde o museu está"},
+      {it:"Climb <b>up</b> the hill.",                           c:1, e:"up = subindo"},
+      {it:"The drugstore is <b>next to</b> the gym.",            c:0, e:"next to diz onde a farmácia está"},
+      {it:"Ride <b>down</b> the hill.",                          c:1, e:"down = descendo"},
+      {it:"There's a lake <b>between</b> the park and the zoo.", c:0, e:"between diz onde o lago está"},
+      {it:"Fly <b>over</b> the city.",                           c:1, e:"over = por cima de"},
+      {it:"Run <b>through</b> the park.",                        c:1, e:"through = por dentro de, atravessando"},
+      {it:"Walk <b>past</b> the clothes store.",                 c:1, e:"past = passando por"}
+    ]}
+};
+
+/* ---------- pares ---------- */
+const MATCHES = {
+  m1: { l:"🇺🇸 AMERICAN ENGLISH", r:"🇬🇧 BRITISH ENGLISH",
+    how:"Clique na palavra americana e depois na britânica que quer dizer o mesmo.",
+    tip:"São os seis pares que o livro traz nesta unidade. O mesmo lugar, dois nomes.",
+    pairs:[
+      ["bookstore",     "bookshop"],
+      ["drugstore",     "chemist's"],
+      ["gas station",   "petrol station"],
+      ["grocery store", "supermarket"],
+      ["jewelry store", "jeweller's"],
+      ["crosswalk",     "crossing"]
+    ]},
+  m2: { l:"USEFUL LANGUAGE", r:"O QUE SIGNIFICA",
+    how:"Clique na frase em inglês e depois no significado em português.",
+    tip:"Frases para <b>pedir e dar direções</b>. Repare que quase todas usam <b>at</b> para o ponto de referência: <i>at the corner</i>, <i>at the traffic light</i>.",
+    pairs:[
+      ["Excuse me. Can you help me, please?",     "Com licença. Você pode me ajudar, por favor?"],
+      ["Can you tell me the way to the museum?",  "Você pode me dizer o caminho para o museu?"],
+      ["How do I get to the bus station?",        "Como eu chego na rodoviária?"],
+      ["Turn right at the traffic light.",        "Vire à direita no semáforo."],
+      ["Keep going until you see the park.",      "Continue até ver o parque."],
+      ["Go straight for two blocks.",             "Siga em frente por duas quadras."],
+      ["Is it far?",                              "É longe?"],
+      ["No, it isn't. It's a short walk.",        "Não. É uma caminhada curta."]
+    ]},
+  m3: { l:"QUEM DISSE ISSO?", r:"DE QUAL AVISO?",
+    how:"Clique na fala e depois no aviso ou recado de onde ela vem.",
+    tip:"São as cinco frases do Exercise 3. Pense: quem falaria isso depois de ler cada texto?",
+    pairs:[
+      ["“I bought two: one for me and one for my friend.”",             "3 · Meet the writer (bookstore)"],
+      ["“Thank you! I was so worried when I found out I didn't have it.”","2 · Found! (the cell phone)"],
+      ["“I'm really upset, but it was my mistake.”",                     "5 · Lost! (grandpa's backpack)"],
+      ["“I can buy sandwiches from there.”",                            "4 · New grocery store at bus station"],
+      ["“The students were really helpful.”",                           "1 · Can you help? (the sports poster)"]
+    ]},
+  m4: { l:"ARRANGING TO DO SOMETHING", r:"O QUE SIGNIFICA",
+    how:"Clique na frase em inglês e depois no significado em português.",
+    tip:"São as frases das <b>mensagens de celular</b>, para combinar um programa com alguém.",
+    pairs:[
+      ["Would you like to go to the zoo with me?", "Você quer ir ao zoológico comigo?"],
+      ["Let's go to a park instead.",              "Vamos a um parque em vez disso."],
+      ["Meet me at the bus station at 10 a.m.",    "Me encontre na rodoviária às 10h."],
+      ["Don't forget your sunglasses!",            "Não esqueça os seus óculos de sol!"],
+      ["I don't know if that's a good idea because…","Não sei se é uma boa ideia porque…"],
+      ["How far is it?",                           "Fica a que distância?"],
+      ["Sounds fantastic!",                        "Parece ótimo!"]
+    ]}
+};
+
+/* ---------- painéis de gramática bilíngues ---------- */
+const GRAM = {
+  g1: { title:"Articles: a / an / the / — (nenhum artigo)",
+    rows:[
+      { form:"a / an", forms:"primeira vez que você fala da coisa",
+        en:"We use a or an to talk about something for the first time. We use the when we talk about it again.",
+        pt:"Use <b>a/an</b> na <b>primeira</b> vez que fala de algo; depois disso use <b>the</b>.",
+        ex:"My grandpa had <b>a</b> bike. <b>The</b> bike was red." },
+      { form:"a ou an?", forms:"an antes de som de vogal",
+        en:"Use an before a vowel sound: an apple, an hour, an exciting city.",
+        pt:"<b>an</b> vem antes de <b>som</b> de vogal: an apple, an hour, an exciting city.",
+        ex:"London is <b>an</b> exciting city. &nbsp;·&nbsp; It's <b>a</b> university. (som de “yu”)" },
+      { form:"the", forms:"quando dá para saber qual é",
+        en:"We use the when it is easy to understand which one we are talking about, and when there is only one of something.",
+        pt:"Use <b>the</b> quando fica claro <b>qual</b> é, e quando existe <b>só um</b>.",
+        ex:"Are we going to meet at <b>the</b> park again? &nbsp;·&nbsp; the world · the sun" },
+      { form:"the + superlativo", forms:"the biggest · the most fantastic",
+        en:"We always use the before superlatives.",
+        pt:"Antes de <b>superlativo</b> vai sempre <b>the</b>.",
+        ex:"It is <b>the</b> most fantastic movie! &nbsp;·&nbsp; <b>the</b> biggest department store" },
+      { form:"— (sem artigo)", forms:"nomes, cidades, países, idiomas, refeições, ruas",
+        en:"We don't use the before people's names, cities, countries, languages, meals or streets.",
+        pt:"<b>Sem artigo</b> antes de nomes de pessoa, cidades, países, idiomas, refeições e ruas.",
+        ex:"She lives in <b>—</b> Park and speaks <b>—</b> French. &nbsp;·&nbsp; on <b>—</b> Central Avenue" },
+      { form:"Exceções de país", forms:"the U.K. · the U.S. · the Netherlands",
+        en:"Some countries do take the: the U.K., the U.S., the Netherlands, the Philippines.",
+        pt:"Alguns países levam <b>the</b>: the U.K., the U.S., the Netherlands, the Philippines.",
+        ex:"This station is in London, in <b>the</b> U.K." }
+    ],
+    error:{ wrong:"The book was written by the William Shakespeare.",
+      right:"The book was written by William Shakespeare.",
+      note:"Nome de pessoa <b>nunca</b> leva artigo em inglês — nem <i>the</i>, nem <i>a</i>." } },
+
+  g2: { title:"Prepositions of place and movement",
+    rows:[
+      { form:"Para que servem", forms:"prepositions → directions",
+        en:"We use prepositions to give directions.",
+        pt:"Usamos preposições para <b>dar direções</b>.",
+        ex:"Turn right <b>at</b> the traffic light and go <b>past</b> the zoo." },
+      { form:"Prepositions of PLACE", forms:"behind · in front of · at the end of · next to · between",
+        en:"Prepositions of place show where things are.",
+        pt:"Preposições de <b>lugar</b> mostram <b>onde</b> as coisas estão.",
+        ex:"The museum is <b>in front of</b> you. &nbsp;·&nbsp; My house is <b>at the end of</b> the street." },
+      { form:"Prepositions of MOVEMENT", forms:"across · along · up · down · over · through · past",
+        en:"Prepositions of movement show how you go from one place to another place.",
+        pt:"Preposições de <b>movimento</b> mostram <b>como</b> você vai de um lugar a outro.",
+        ex:"Walk <b>across</b> the crossing. &nbsp;·&nbsp; Ride <b>down</b> the hill." },
+      { form:"O que vem depois", forms:"preposição + noun phrase",
+        en:"We usually use a noun phrase like the road, the bridge or the park after the preposition.",
+        pt:"Depois da preposição vem quase sempre um <b>substantivo com the</b>: the road, the bridge, the park.",
+        ex:"go <b>over the bridge</b> &nbsp;·&nbsp; walk <b>through the park</b>" },
+      { form:"O que vem antes", forms:"go · take · turn + preposição",
+        en:"We usually use verbs like go, take or turn before a preposition of movement.",
+        pt:"Antes da preposição de movimento vem um verbo como <b>go</b>, <b>take</b> ou <b>turn</b>.",
+        ex:"<b>Go</b> along the river. &nbsp;·&nbsp; <b>Turn</b> left at the corner." },
+      { form:"Cuidado com AT", forms:"at the corner · at the traffic light",
+        en:"For the point where you turn, we use at — not for or in.",
+        pt:"No <b>ponto</b> onde você vira, use <b>at</b> — não <i>for</i> nem <i>in</i>.",
+        ex:"Turn left <b>at</b> the corner. &nbsp;·&nbsp; Turn right <b>at</b> the traffic light." }
+    ],
+    error:{ wrong:"Turn left for the corner.",
+      right:"Turn left at the corner.",
+      note:"O ponto de referência de uma virada pede <b>at</b>. <i>for</i> aqui não existe em inglês." } }
+};
+
+/* ---------- questões de múltipla escolha ---------- */
+const QS = {
+
+  s3: { items:[
+    {q:"a store that sells food and things for the home", o:["a department store", "a grocery store", "a drugstore", "a bookstore"], a:1, e:"<b>grocery store</b> = mercado."},
+    {q:"a large store that sells many different things", o:["a grocery store", "a jewelry store", "a bookstore", "a department store"], a:3, e:"<b>department store</b> tem vários andares e vende de tudo."},
+    {q:"a place where people can keep their money", o:["a bank", "a post office", "a police station", "a gas station"], a:0, e:"<b>bank</b> = banco."},
+    {q:"a store that sells medicine", o:["a grocery store", "a bookstore", "a drugstore", "a jewelry store"], a:2, e:"<b>drugstore</b> = farmácia (em inglês britânico, chemist's)."},
+    {q:"a place where you can use a running machine", o:["a gym", "a park", "a museum", "a library"], a:0, e:"<b>gym</b> = academia."},
+    {q:"a place where you can put gas in your car", o:["a bus station", "a police station", "a department store", "a gas station"], a:3, e:"<b>gas station</b> = posto (em inglês britânico, petrol station)."},
+    {q:"a store that sells rings, necklaces and watches", o:["a jewelry store", "a department store", "a bookstore", "a drugstore"], a:0, e:"<b>jewelry store</b> = joalheria."},
+    {q:"a place where you can send letters and packages", o:["a bank", "a post office", "a police station", "a bus station"], a:1, e:"<b>post office</b> = correio."},
+    {q:"a place where you go if someone steals your bike", o:["the post office", "the bus station", "the police station", "the drugstore"], a:2, e:"<b>police station</b> = delegacia."},
+    {q:"a place where you can borrow books for free", o:["a bookstore", "a library", "a department store", "a museum"], a:1, e:"Cuidado: <b>library</b> = biblioteca (empresta). <b>Bookstore</b> = livraria (vende)."}
+  ]},
+
+  s5: { items:[
+    {q:"In my town, there's a really modern ___. My mom goes there after work to exercise.", o:["gym", "bank", "museum", "post office"], a:0, e:"“to exercise” → <b>gym</b>."},
+    {q:"There's also a big ___. I went there last Saturday to buy a new coat.", o:["drugstore", "department store", "gas station", "library"], a:1, e:"Roupa em loja grande → <b>department store</b>."},
+    {q:"My mom works at the ___. She sees a lot of sick people.", o:["drugstore", "bookstore", "grocery store", "police station"], a:0, e:"“sick people” + remédio → <b>drugstore</b>."},
+    {q:"There's also a ___ in town. I'm very lucky because I love reading.", o:["jewelry store", "gym", "bookstore", "bus station"], a:2, e:"“I love reading” → <b>bookstore</b>."},
+    {q:"And there's a ___ near our house where I can buy drinks and snacks for school.", o:["post office", "bank", "museum", "grocery store"], a:3, e:"Bebida e lanche → <b>grocery store</b>."},
+    {q:"My grandpa lost his backpack at the ___ this morning. He put it on the car roof.", o:["library", "gas station", "town square", "bookstore"], a:1, e:"Carro → <b>gas station</b>."},
+    {q:"I picked up the phone and then I took it to the ___.", o:["bus station", "post office", "police station", "drugstore"], a:2, e:"Achado e perdido → <b>police station</b>."},
+    {q:"Joanne Mills is going to be at Isaac's ___ from 2 p.m. to 5 p.m. with her latest book.", o:["Library", "Museum", "Department Store", "Bookstore"], a:3, e:"“her latest book” à venda → <b>bookstore</b>."}
+  ]},
+
+  s6: { items:[
+    {q:"When he was young, my grandpa had ___ bike.", o:["the", "an", "a", "—"], a:2,
+     e:"Primeira vez que a bicicleta aparece → <b>a</b>.",
+     w:"Aqui a bicicleta está sendo apresentada. Só na segunda menção é que ela vira <i>the bike</i>.",
+     regra:"a/an na primeira vez · the a partir da segunda."},
+    {q:"…my grandpa had a bike. ___ bike was red.", o:["A", "An", "The", "—"], a:2,
+     e:"Segunda menção → <b>The</b>.",
+     w:"A bicicleta já foi apresentada na frase anterior, então agora quem ouve sabe qual é.",
+     regra:"the quando já se sabe de qual coisa estamos falando."},
+    {q:"Are we going to meet at ___ park again?", o:["a", "an", "—", "the"], a:3,
+     e:"“again” mostra que os dois sabem qual parque → <b>the</b>.",
+     w:"Com <i>a park</i> a frase viraria “um parque qualquer”, e o <i>again</i> deixa claro que é aquele de sempre.",
+     regra:"the quando dá para saber qual é."},
+    {q:"There are a lot of beautiful places in ___ world.", o:["—", "the", "a", "an"], a:1,
+     e:"Só existe um mundo → <b>the world</b>.",
+     w:"Coisas únicas levam the: the world, the sun, the moon.",
+     regra:"the quando existe só um."},
+    {q:"This is my friend Lucie. She lives in ___ Park.", o:["—", "the", "a", "an"], a:0,
+     e:"<b>Park</b> aqui é nome de rua/bairro → sem artigo.",
+     w:"Nome próprio de rua não leva artigo. Diferente de <i>the park</i>, que é o parque de verdade.",
+     regra:"sem artigo antes de nomes de rua."},
+    {q:"…and she speaks ___ French.", o:["the", "a", "an", "—"], a:3,
+     e:"Idioma → <b>sem artigo</b>.",
+     w:"Em inglês não existe “the French” para o idioma. Só <i>French</i>.",
+     regra:"sem artigo antes de idiomas."},
+    {q:"We watched Encanto again. It is ___ most fantastic movie!", o:["the", "a", "an", "—"], a:0,
+     e:"Superlativo → sempre <b>the</b>.",
+     w:"<i>most fantastic</i> é superlativo, e superlativo nunca fica sem the.",
+     regra:"the antes de superlativo."},
+    {q:"This is ___ busy subway station in London.", o:["a", "the", "an", "—"], a:0,
+     e:"Primeira menção, som de consoante em “busy” → <b>a</b>.",
+     w:"<i>an</i> só vem antes de som de vogal. “busy” começa com som de B.",
+     regra:"a antes de som de consoante · an antes de som de vogal."},
+    {q:"This station is in London, in ___ U.K.", o:["—", "the", "a", "an"], a:1,
+     e:"O Reino Unido é exceção → <b>the U.K.</b>",
+     w:"A regra geral é país sem artigo (in Brazil, in Japan), mas the U.K. e the U.S. são exceções.",
+     regra:"países sem artigo, exceto the U.K., the U.S., the Netherlands…"},
+    {q:"London is also ___ exciting city to visit.", o:["a", "an", "the", "—"], a:1,
+     e:"“exciting” começa com som de vogal → <b>an</b>.",
+     w:"Antes de som de vogal usa-se an, mesmo que a palavra seja um adjetivo e não o substantivo.",
+     regra:"an antes de som de vogal."},
+    {q:"The drugstore is on ___ Central Avenue.", o:["—", "the", "a", "an"], a:0,
+     e:"Nome de rua → <b>sem artigo</b>.",
+     w:"Endereços não levam artigo: on Central Avenue, on North Street.",
+     regra:"sem artigo antes de nomes de rua."},
+    {q:"This is ___ biggest department store in town. It has four floors.", o:["a", "the", "an", "—"], a:1,
+     e:"Superlativo → <b>the</b>.",
+     w:"<i>biggest</i> é superlativo. Sem o the a frase fica errada em inglês.",
+     regra:"the antes de superlativo."},
+    {q:"I'm looking for ___ bank, but I can't see any on this street.", o:["the", "an", "a", "—"], a:2,
+     e:"Qualquer banco serve → <b>a</b>.",
+     w:"Com <i>the bank</i> pareceria um banco específico que os dois conhecem. Aqui serve qualquer um.",
+     regra:"a/an quando qualquer um do tipo serve."},
+    {q:"Come to ___ Paris! Visit ___ Eiffel Tower.", o:["the / the", "— / —", "the / a", "— / the"], a:3,
+     e:"Cidade sem artigo, monumento com <b>the</b>.",
+     w:"Nome de cidade não leva artigo, mas monumentos famosos levam: the Eiffel Tower, the Statue of Liberty.",
+     regra:"cidades sem artigo · monumentos com the."}
+  ]},
+
+  s8: { items:[
+    {q:"Go ___ along this road. Don't turn left or right.", o:["corner", "crossing", "bridge", "straight"], a:3, e:"<b>straight</b> = em frente."},
+    {q:"Did you kick the ball with your ___ or left foot?", o:["road", "straight", "right", "corner"], a:2, e:"<b>right</b> = direita."},
+    {q:"You can go when the ___ is green.", o:["crossing", "bridge", "traffic light", "corner"], a:2, e:"<b>traffic light</b> = semáforo."},
+    {q:"Cars must stop when someone is on the ___.", o:["bridge", "crossing", "corner", "road"], a:1, e:"<b>crossing</b> = faixa de pedestre."},
+    {q:"The river goes under the ___.", o:["crossing", "corner", "traffic light", "bridge"], a:3, e:"<b>bridge</b> = ponte."},
+    {q:"The car is waiting at the ___ of North Street and Park Avenue.", o:["bridge", "corner", "crossing", "road"], a:1, e:"<b>corner</b> = esquina, onde duas ruas se encontram."},
+    {q:"Some people use their right hand, and others use their ___ hand.", o:["left", "straight", "road", "corner"], a:0, e:"<b>left</b> = esquerda."},
+    {q:"Is your house on a noisy ___?", o:["road", "corner", "crossing", "bridge"], a:0, e:"<b>road</b> = rua, estrada."}
+  ]},
+
+  s9: { items:[
+    {q:"Errado: “Come to the Paris!” Qual é o certo?", o:["Come to a Paris!", "Come to an Paris!", "Come to Paris!", "Come to the Parises!"], a:2,
+     e:"Cidade não leva artigo.",
+     w:"O erro foi pôr the antes do nome da cidade.",
+     regra:"sem artigo antes de cidades e países (menos the U.K., the U.S.)."},
+    {q:"Errado: “Visit an Eiffel Tower.” Qual é o certo?", o:["Visit a Eiffel Tower.", "Visit Eiffel Tower.", "Visit an Eiffel Towers.", "Visit the Eiffel Tower."], a:3,
+     e:"Monumento único → <b>the</b>.",
+     w:"<i>an</i> serviria para um entre vários. Existe só uma Torre Eiffel.",
+     regra:"the quando existe só um."},
+    {q:"Errado: “It is one of most visited cities in world.” Qual é o certo?", o:["It is one of most visited cities in the world.", "It is one of the most visited cities in world.", "It is one of the most visited cities in the world.", "It is one of a most visited cities in a world."], a:2,
+     e:"Faltavam <b>dois</b> the: no superlativo e em <i>the world</i>.",
+     w:"Tem dois erros na mesma frase — é fácil arrumar só um e achar que acabou.",
+     regra:"the antes de superlativo e the world."},
+    {q:"Errado: “Go shopping on an Avenue Victor Hugo!” Qual é o certo?", o:["Go shopping on Avenue Victor Hugo!", "Go shopping on the Avenue Victor Hugo!", "Go shopping on a Avenue Victor Hugo!", "Go shopping in an Avenue Victor Hugo!"], a:0,
+     e:"Nome de rua → sem artigo.",
+     w:"Endereço com nome próprio não leva artigo nenhum.",
+     regra:"sem artigo antes de nomes de rua."},
+    {q:"Errado: “Stay in the hotel near a city center.” Qual é o certo?", o:["Stay in the hotel near the city center.", "Stay in a hotel near a city center.", "Stay in hotel near city center.", "Stay in a hotel near the city center."], a:3,
+     e:"Os dois artigos estavam <b>trocados</b>.",
+     w:"Qualquer hotel serve (a hotel), mas o centro da cidade é único (the city center).",
+     regra:"a/an para um qualquer · the para o único."},
+    {q:"Errado: “Take tourist boat down a River Seine.” Qual é o certo?", o:["Take a tourist boat down the River Seine.", "Take the tourist boat down a River Seine.", "Take tourist boat down the River Seine.", "Take a tourist boat down River Seine."], a:0,
+     e:"Faltava <b>a</b> no barco e o rio pede <b>the</b>.",
+     w:"Nome de rio sempre leva the: the River Seine, the Amazon.",
+     regra:"the antes de nomes de rio."},
+    {q:"Errado: “The drugstore is on the Central Avenue.” Qual é o certo?", o:["A drugstore is on the Central Avenue.", "The drugstore is on Central Avenue.", "Drugstore is on Central Avenue.", "The drugstore is on a Central Avenue."], a:1,
+     e:"<i>The drugstore</i> está certo; o erro era o the na avenida.",
+     w:"Cuidado: às vezes só uma parte da frase está errada.",
+     regra:"sem artigo antes de nomes de rua."},
+    {q:"Errado: “London is the exciting city to visit.” Qual é o certo?", o:["London is a exciting city to visit.", "London is an exciting city to visit.", "London is exciting city to visit.", "The London is an exciting city to visit."], a:1,
+     e:"Não é superlativo, é uma cidade entre várias → <b>an</b>.",
+     w:"<i>the</i> daria a ideia de “a única cidade animada”. E “exciting” começa com som de vogal, então é an, não a.",
+     regra:"an antes de som de vogal."}
+  ]},
+
+  s10: { items:[
+    {q:"Walk ___ the road and then turn right.", o:["through", "down", "over", "in front of"], a:1,
+     e:"Seguir pela rua → <b>down</b> (ou along).",
+     w:"<i>through</i> serve para atravessar por dentro (a park, a tunnel), não para seguir por uma rua.",
+     regra:"down/along = seguir por uma rua."},
+    {q:"At the ___ of the road, there's a park.", o:["end", "front", "corner", "top"], a:0,
+     e:"<b>at the end of</b> = no fim de.",
+     w:"<i>at the front of</i> existe, mas quer dizer “na parte da frente de algo”, não “no fim da rua”.",
+     regra:"at the end of the road = no fim da rua."},
+    {q:"Go ___ the park and past the big tree.", o:["over", "along", "at", "through"], a:3,
+     e:"Entrar e atravessar o parque → <b>through</b>.",
+     w:"<i>over</i> seria por cima, voando ou por uma ponte. Você atravessa o parque por dentro.",
+     regra:"through = por dentro de."},
+    {q:"There's a small lake ___ you. Can you see it?", o:["across", "in front of", "past", "up"], a:1,
+     e:"<b>in front of</b> = na sua frente.",
+     w:"<i>across</i>, <i>past</i> e <i>up</i> são de movimento. Aqui o lago está parado, na sua frente.",
+     regra:"in front of é preposição de lugar."},
+    {q:"Turn right ___ the lake and go out of the park.", o:["at", "in", "for", "on"], a:0,
+     e:"O ponto onde você vira pede <b>at</b>.",
+     w:"É exatamente o erro clássico da unidade: <i>for the corner</i> / <i>in the lake</i> não existem aqui.",
+     regra:"turn right/left AT the corner, AT the traffic light, AT the lake."},
+    {q:"Go ___ the crossing and walk up the hill.", o:["along", "past", "over", "across"], a:3,
+     e:"Atravessar de um lado ao outro → <b>across</b>.",
+     w:"<i>along</i> seria andar em cima da faixa no sentido do comprimento — não é o que se faz.",
+     regra:"across = de um lado para o outro."},
+    {q:"Climb ___ the mountain.", o:["down", "past", "up", "across"], a:2,
+     e:"Subir → <b>up</b>.",
+     w:"<i>down</i> é descer. Quem escala uma montanha sobe.",
+     regra:"up = subindo · down = descendo."},
+    {q:"Fly ___ the city.", o:["over", "through", "along", "at the end of"], a:0,
+     e:"Por cima → <b>over</b>.",
+     w:"<i>through</i> seria voar por dentro da cidade, entre os prédios.",
+     regra:"over = por cima de."},
+    {q:"Mine is the blue house ___ the street.", o:["across", "at the end of", "over", "through"], a:1,
+     e:"<b>at the end of</b> = no fim de.",
+     w:"As outras três são de movimento; aqui a casa está parada em um lugar.",
+     regra:"at the end of é preposição de lugar."},
+    {q:"Walk ___ a clothes store and turn left.", o:["through", "past", "up", "in front of"], a:1,
+     e:"Passar pela frente sem entrar → <b>past</b>.",
+     w:"<i>through</i> significaria entrar e atravessar a loja por dentro.",
+     regra:"past = passando por."},
+    {q:"Which sentence is CORRECT?", o:["Turn left for the corner.", "Turn left in the corner.", "Turn left at the corner.", "Turn left on the corner."], a:2,
+     e:"<b>at the corner</b>.",
+     w:"É o COMMON ERROR do livro. Guarde: o ponto da virada é sempre com at.",
+     regra:"turn left/right AT + ponto de referência."},
+    {q:"We usually use a ___ after the preposition.", o:["verb", "adjective", "noun phrase", "question"], a:2,
+     e:"Depois da preposição vem um substantivo: the road, the bridge.",
+     w:"O verbo vem <b>antes</b> (go, take, turn), não depois.",
+     regra:"verbo + preposição + substantivo: go over the bridge."},
+    {q:"Which one is a preposition of MOVEMENT?", o:["along", "behind", "next to", "between"], a:0,
+     e:"<b>along</b> mostra como você vai.",
+     w:"behind, next to e between dizem apenas onde algo está — são de lugar.",
+     regra:"movement: across, along, up, down, over, through, past."},
+    {q:"Which one is a preposition of PLACE?", o:["through", "across", "past", "behind"], a:3,
+     e:"<b>behind</b> diz onde algo está.",
+     w:"through, across e past descrevem um trajeto, não uma posição.",
+     regra:"place: behind, in front of, next to, between, at the end of."}
+  ]},
+
+  s14: { items:[
+    {q:"Text 2 says “Found!”. Whose phone was it?", o:["Emily's phone", "The police officer's phone", "Joseph's grandpa's phone", "We don't know whose phone it is"], a:3, e:"Emily <b>achou</b> um celular e está procurando o dono."},
+    {q:"What did Emily do with the phone?", o:["She took it to the police station", "She kept it at home", "She sold it at the department store", "She gave it to Joseph"], a:0, e:"“I picked it up… and then I took it to the police station.”"},
+    {q:"Why do Lewis, Charlie and Sophie want money?", o:["To pay for a trip", "To buy orange juice for themselves", "To open a new store", "To buy new sports equipment for the school"], a:3, e:"A escola precisa de rackets e cricket bats e não tem dinheiro."},
+    {q:"What are they going to give people on Saturday?", o:["cricket bats", "coffee and small cakes", "orange juice", "books"], a:2, e:"“They're going to give people their orange juice.”"},
+    {q:"What is Joanne Mills going to do at the bookstore?", o:["Sell the store", "Answer questions and write messages for her fans", "Open a café", "Look for her lost book"], a:1, e:"“She's happy to answer questions and write messages for her fans.”"},
+    {q:"Can you buy snacks at the bus station grocery store today?", o:["Yes, it opened last week", "Yes, but only in the morning", "No — it opens tomorrow", "No — it closed yesterday"], a:2, e:"“a grocery store is opening tomorrow.”"},
+    {q:"What did Joseph's grandpa lose, and where?", o:["his money, at the bank", "his backpack, at the gas station", "his keys, in the park", "his phone, at the bus station"], a:1, e:"A mochila, no posto — com celular e chaves dentro."},
+    {q:"Which text is a NEWSPAPER ARTICLE?", o:["4 · New grocery store at bus station", "1 · Can you help?", "2 · Found!", "5 · Lost!"], a:0, e:"Traz notícia e declaração de uma pessoa (“Margarida Costa said…”)."}
+  ]},
+
+  s16: { items:[
+    {q:"Where does the bicycle tour start?", o:["at Dublin Castle", "in Phoenix Park", "in front of Christ Church Cathedral", "at Trinity College"], a:2, e:"“The bicycle tour starts in front of Christ Church Cathedral.”"},
+    {q:"How much does the tour cost and how long is it?", o:["10 euros · two hours", "25 euros · three hours", "25 euros · all day", "13 euros · one hour"], a:1, e:"“Tours cost 25 euros per person… are three hours long.”"},
+    {q:"When was Dublin Castle built?", o:["in 1843", "400 years ago", "last summer", "in the 13th century"], a:3, e:"“The castle was built in the 13th century.”"},
+    {q:"Why do people like to go to Temple Bar in the evening?", o:["to study at the university", "to listen to music and dance", "to see the President", "to visit the zoo"], a:1, e:"“People like to come here in the evening to listen to music and dance.”"},
+    {q:"What is Trinity College?", o:["the oldest and most important university in Ireland", "a department store", "a museum of art", "the President's house"], a:0, e:"“This is the oldest and most important university in Ireland.”"},
+    {q:"What is the Áras an Uachtaráin?", o:["a bridge over the River Liffey", "the largest park in Europe", "where the President of Ireland lives", "the oldest church in Ireland"], a:2, e:"“This large white building is where the President of Ireland lives.”"},
+    {q:"Where does the tour finish?", o:["in the park near Dublin Zoo", "at the cathedral", "at Arnotts Department Store", "on the bridge"], a:0, e:"“The tour finishes in the park near Dublin Zoo.”"},
+    {q:"What type of text is this?", o:["a review", "a guidebook", "a journal entry", "a pamphlet"], a:3, e:"<b>Pamphlet</b>: papel com informação e fotos para divulgar um serviço."}
+  ]},
+
+  s18: { items:[
+    {q:"Where do Bruno and Cruz decide to go?", o:["the park", "the zoo", "Bruno's grandparents' house", "the bus station"], a:0, e:"O zoológico foi descartado; eles escolheram o parque."},
+    {q:"Why don't they go to the zoo?", o:["It's too far", "It's closed tomorrow", "It's going to rain", "The tickets are very expensive and Leonor doesn't like zoos"], a:3, e:"“the tickets are very expensive. And Leonor doesn't like zoos.”"},
+    {q:"What can they do at the park?", o:["ride bikes and see animals", "have a picnic, swim and go windsurfing", "go shopping", "visit a museum"], a:1, e:"Tem lago com praia: piquenique, nadar e windsurf."},
+    {q:"Who is very good at windsurfing?", o:["Bruno", "Cruz", "Leonor", "nobody"], a:2, e:"“She's very good at it” — falando da Leonor."},
+    {q:"How far is the park and how do they get there?", o:["30 minutes by bus", "one hour by car", "10 minutes walking", "far — two hours by train"], a:0, e:"“It's about 30 minutes by bus.”"},
+    {q:"Which phrase is used to ARRANGE a meeting?", o:["How far is it?", "Meet me at the bus station at 10 a.m.", "Sounds fantastic!", "I don't know if that's a good idea."], a:1, e:"<b>Meet me at… (lugar + hora)</b> é a frase de combinar o encontro."}
+  ]}
+};
+
+/* ---------- ordem das palavras ---------- */
+const ORDER = {
+  o1: { tip:"São instruções de direção. Comece pelo <b>verbo</b> (go, turn, walk, keep) e ponha a preposição antes do lugar.",
+    items:[
+      {w:["Go","down","this","road","and","turn","left"],                        a:"Go down this road and turn left.",                     why:"verbo + preposição de movimento + rua."},
+      {w:["Turn","right","at","the","traffic","light"],                          a:"Turn right at the traffic light.",                     why:"o ponto da virada pede <b>at</b>."},
+      {w:["Go","straight","until","you","see","the","park"],                     a:"Go straight until you see the park.",                  why:"<i>until you see…</i> = até você ver."},
+      {w:["The","museum","is","in","front","of","you"],                          a:"The museum is in front of you.",                       why:"<b>in front of</b> é preposição de lugar."},
+      {w:["Walk","across","the","crossing","and","go","past","the","zoo"],       a:"Walk across the crossing and go past the zoo.",        why:"<b>across</b> = atravessar · <b>past</b> = passar por."},
+      {w:["Can","you","tell","me","the","way","to","the","bus","station"],       a:"Can you tell me the way to the bus station?",          why:"pedido educado: <i>Can you tell me the way to…?</i>"},
+      {w:["Keep","going","until","you","see","the","bridge"],                    a:"Keep going until you see the bridge.",                 why:"<i>keep going</i> = continue andando."},
+      {w:["My","house","is","at","the","end","of","the","street"],               a:"My house is at the end of the street.",                why:"<b>at the end of</b> = no fim de."}
+    ]}
+
+};
+
+/* ---------- cartas de fala rápida ---------- */
+const DRILL = [
+  {pic:"🚦", qty:"virar à direita · no semáforo",          say:"Turn right at the traffic light."},
+  {pic:"📐", qty:"virar à esquerda · na esquina",           say:"Turn left at the corner."},
+  {pic:"🌉", qty:"ir · por cima da ponte",                  say:"Go over the bridge."},
+  {pic:"🌳", qty:"atravessar · o parque",                   say:"Go through the park."},
+  {pic:"🚸", qty:"atravessar · a faixa",                    say:"Walk across the crossing."},
+  {pic:"🏬", qty:"passar por · a loja de departamentos",    say:"Go past the department store."},
+  {pic:"⬆️", qty:"seguir em frente · até ver o museu",      say:"Go straight until you see the museum."},
+  {pic:"🏛️", qty:"o museu · na sua frente",                 say:"The museum is in front of you."},
+  {pic:"🏠", qty:"a minha casa · no fim da rua",            say:"My house is at the end of the street."},
+  {pic:"🙋", qty:"pedir o caminho · para a rodoviária",     say:"Can you tell me the way to the bus station?"},
+  {pic:"📏", qty:"perguntar se é longe",                    say:"Is it far?"},
+  {pic:"🚶", qty:"responder que é perto",                   say:"No, it isn't. It's a short walk."}
+];
+
+/* ---------- leituras ---------- */
+const READS = {
+  r1: { em:"📌", title:"Notices and messages", set:"s14",
+    html:`
+      <p><b>1 · POSTER — CAN YOU HELP?</b><br>
+      <b>No equipment.</b> Our school needs new sports equipment, like tennis rackets and cricket bats.
+      Coach Talbot says the school doesn't have enough money, so we have a plan!<br>
+      <b>See us at the gym!</b> Lewis, Charlie and Sophie are going to be outside the gym on North Street on
+      Saturday. They're going to give people their orange juice.<br>
+      <b>What you can do:</b> Ask your friends, family and neighbors to give them some money for a healthy drink.</p>
+
+      <p><b>2 · ONLINE POST — Emily: Found!</b><br>
+      Did you lose a cell phone in the department store this afternoon? It looks new, and it's valuable. It's
+      silver or gray (sorry — I can't remember!), and it's in a blue case with flowers on it. I picked it up and
+      looked after it for an hour, and then I took it to the police station. Call the station if it's yours!</p>
+
+      <p><b>3 · NOTICE — Meet the writer</b><br>
+      Our favorite writer, Joanne Mills, is going to be here at Isaac's Bookstore from 2 p.m. to 5 p.m. on Friday
+      with her latest book. She's happy to answer questions and write messages for her fans. There's going to be
+      coffee and small cakes, too. You can buy a book on the day or in advance. Please call the store for more
+      information.</p>
+
+      <p><b>4 · NEWSPAPER ARTICLE — New grocery store at bus station</b><br>
+      People who travel to or from the bus station will be happy to hear that a grocery store is opening tomorrow.
+      High school student Margarida Costa said, “It's great news. We need somewhere to buy snacks.”</p>
+
+      <p><b>5 · ONLINE POST — Joseph: Lost!</b><br>
+      My grandpa lost his backpack at the gas station this morning. He thinks he put it on the car roof and then
+      drove away. There are a lot of important things inside, like his cell phone and house keys. Do you know where
+      it is? Please message me.</p>
+
+      <div class="gl">🔑 <b>equipment</b> = equipamento · <b>racket</b> = raquete ·
+      <b>neighbor</b> = vizinho · <b>valuable</b> = valioso · <b>case</b> = capa ·
+      <b>to pick up</b> = pegar do chão · <b>to look after</b> = cuidar de ·
+      <b>latest</b> = mais recente · <b>in advance</b> = com antecedência ·
+      <b>roof</b> = teto (do carro) · <b>keys</b> = chaves</div>` },
+
+  r2: { em:"🚲", title:"CULTURE · Bicycle tours around Dublin", set:"s16",
+    html:`
+      <p><i>Join us to see the city of Dublin on two wheels! Cycling tours with local tour guides leave Monday to
+      Saturday at 10 a.m. and 2 p.m. and are three hours long. Tours cost 25 euros per person.</i></p>
+
+      <p><b>WHERE WE GO.</b> The bicycle tour starts in front of Christ Church Cathedral. Here you collect your
+      bike and pay your tour guide. This beautiful building is the oldest church in Ireland. From the cathedral, it
+      is a short ride to Dublin Castle. The castle was built in the 13th century and is now visited by tourists
+      from around the world. In the summer, there are music concerts in the castle gardens.</p>
+
+      <p>From the castle, we ride <b>through</b> Temple Bar. People like to come here in the evening to listen to
+      music and dance. There are also lots of cool shops, cafés and places to see street art in this area of the
+      city.</p>
+
+      <p>Before crossing the River Liffey, we go <b>past</b> Trinity College. This is the oldest and most important
+      university in Ireland. <b>Over</b> the bridge, you can see Arnotts Department Store. It was opened in 1843 and
+      is the oldest department store in Ireland. We turn left and ride <b>along</b> the river until we get to the
+      National Museum of Ireland. Here you can see interesting art, furniture and clothes. You can learn about the
+      history of Ireland, too.</p>
+
+      <p>From the museum, we ride <b>into</b> Phoenix Park. This is the largest city park in Europe. You can look at
+      the beautiful trees, lakes and flowers. You can also see the Áras an Uachtaráin. This large white building is
+      where the President of Ireland lives.</p>
+
+      <p>The tour finishes in the park near Dublin Zoo, where we get off our bikes to enjoy a cool drink. After the
+      tour, you can visit the zoo. More than 400 animals are kept here, including giraffes, elephants, tigers and
+      monkeys.</p>
+
+      <p>Come and enjoy learning about the city of Dublin on our small, friendly cycling tours!</p>
+
+      <div class="gl">🔑 <b>on two wheels</b> = sobre duas rodas · <b>tour guide</b> = guia ·
+      <b>to collect</b> = pegar, retirar · <b>cathedral</b> = catedral · <b>castle</b> = castelo ·
+      <b>century</b> = século · <b>street art</b> = arte de rua · <b>to cross</b> = atravessar ·
+      <b>furniture</b> = móveis · <b>to get off</b> = descer de · <b>are kept</b> = são mantidos</div>` },
+
+  r3: { em:"💬", title:"Text messages · arranging to do something", set:"s18",
+    html:`
+      <p><b>CRUZ:</b> Hi Bruno! <b>Would you like to</b> go to the zoo with me tomorrow? We both love animals and
+      there are lots of things to do there. It's going to be a nice sunny day! We can ask Leonor to come, too.</p>
+
+      <p><b>BRUNO:</b> <b>I don't know if</b> going to the zoo <b>is a good idea because</b> the tickets are very
+      expensive. And Leonor doesn't like zoos. <b>Let's</b> go to a park instead. The park near my grandparents'
+      house is fantastic. There's a lake with a beach.</p>
+
+      <p><b>CRUZ:</b> <b>Sounds fantastic!</b> We can have a picnic! Can we swim in the lake?</p>
+
+      <p><b>BRUNO:</b> Yes, we can. And we can go windsurfing if it's windy. Leonor loves windsurfing.</p>
+
+      <p><b>CRUZ:</b> Oh yes. She's very good at it. <b>How far is it?</b></p>
+
+      <p><b>BRUNO:</b> Not far. It's about 30 minutes by bus.</p>
+
+      <p><b>CRUZ:</b> Great. <b>Meet me at</b> the bus station <b>at</b> 10 a.m. First, <b>don't forget</b> your
+      sunglasses and sunscreen! I'm messaging Leonor now.</p>
+
+      <div class="gl">🔑 <b>Would you like to…?</b> = você quer…? · <b>instead</b> = em vez disso ·
+      <b>picnic</b> = piquenique · <b>windy</b> = com vento · <b>to be good at</b> = ser bom em ·
+      <b>How far is it?</b> = fica a que distância? · <b>sunscreen</b> = protetor solar ·
+      <b>to message</b> = mandar mensagem</div>` }
+};
+
+/* ---------- quiz final ---------- */
+const FINALE = [
+  /* 🥉 EASY */
+  {t:1, q:"A store that sells medicine is a…", o:["grocery store", "drugstore", "bookstore", "bank"], a:1, e:"<b>drugstore</b>."},
+  {t:1, q:"A place where you can send letters is the…", o:["post office", "police station", "bus station", "gym"], a:0, e:"<b>post office</b>."},
+  {t:1, q:"You can go when the traffic light is…", o:["red", "yellow", "green", "blue"], a:2, e:"Verde = pode ir."},
+  {t:1, q:"“bookstore” in British English is…", o:["bookshop", "chemist's", "supermarket", "jeweller's"], a:0, e:"bookstore (EUA) = <b>bookshop</b> (Reino Unido)."},
+  {t:1, q:"My grandpa had ___ bike. It was red.", o:["the", "an", "a", "—"], a:2, e:"Primeira menção → <b>a</b>.",
+   w:"Só na segunda vez que falamos da bicicleta é que ela vira <i>the bike</i>.", regra:"a/an na primeira vez."},
+  {t:1, q:"Turn left ___ the corner.", o:["for", "at", "in", "on"], a:1, e:"<b>at</b> the corner.",
+   w:"É o erro clássico da unidade: <i>for the corner</i> não existe.", regra:"o ponto da virada pede at."},
+  {t:1, q:"Cars must stop when someone is on the…", o:["crossing", "corner", "bridge", "road"], a:0, e:"<b>crossing</b> = faixa de pedestre."},
+  {t:1, q:"Don't go left or right. Go…", o:["past", "straight", "across", "over"], a:1, e:"<b>straight</b> = em frente."},
+  {t:1, q:"There are a lot of beautiful places in ___ world.", o:["a", "—", "an", "the"], a:3, e:"Só existe um mundo → <b>the</b>.",
+   w:"Coisas únicas levam the.", regra:"the quando existe só um."},
+  {t:1, q:"Which one is a preposition of MOVEMENT?", o:["behind", "across", "next to", "between"], a:1, e:"<b>across</b> mostra trajeto."},
+
+  /* 🥈 MEDIUM */
+  {t:2, q:"She lives in ___ Park and she speaks ___ French.", o:["— / —", "the / the", "a / the", "the / —"], a:0, e:"Nome de rua e idioma → sem artigo.",
+   w:"<i>Park</i> aqui é nome próprio de rua, e idioma nunca leva the.", regra:"sem artigo antes de ruas e idiomas."},
+  {t:2, q:"It is ___ most fantastic movie!", o:["a", "an", "—", "the"], a:3, e:"Superlativo → <b>the</b>.",
+   w:"Superlativo nunca fica sem the.", regra:"the antes de superlativo."},
+  {t:2, q:"Go ___ the park and past the big tree.", o:["through", "over", "along", "at"], a:0, e:"Por dentro → <b>through</b>.",
+   w:"<i>over</i> seria por cima, voando.", regra:"through = por dentro de."},
+  {t:2, q:"In text 2, Emily says “Found!”. What did she do with the phone?", o:["She kept it", "She sold it", "She lost it", "She took it to the police station"], a:3, e:"Levou à delegacia."},
+  {t:2, q:"London is ___ exciting city to visit.", o:["a", "the", "an", "—"], a:2, e:"Som de vogal → <b>an</b>.",
+   w:"Antes de som de vogal é an, mesmo quando a palavra é um adjetivo.", regra:"an antes de som de vogal."},
+  {t:2, q:"Where does the Dublin bicycle tour start?", o:["at Dublin Castle", "in Phoenix Park", "in front of Christ Church Cathedral", "at the zoo"], a:2, e:"Em frente à Christ Church Cathedral."},
+  {t:2, q:"Which phrase arranges a meeting?", o:["Is it far?", "Sounds fantastic!", "How far is it?", "Meet me at the bus station at 10 a.m."], a:3, e:"<b>Meet me at…</b> marca lugar e hora."},
+  {t:2, q:"My house is ___ the street. It's the blue one.", o:["across", "at the end of", "through", "over"], a:1, e:"<b>at the end of</b> = no fim de.",
+   w:"As outras são de movimento; aqui a casa está parada.", regra:"at the end of é preposição de lugar."},
+
+  /* 🥇 HARD */
+  {t:3, q:"Find the correct version: “It is one of most visited cities in world.”",
+   o:["It is one of the most visited cities in world.","It is one of most visited cities in the world.","It is one of the most visited cities in the world.","It is one of a most visited cities in the world."], a:2,
+   e:"Faltavam <b>dois</b> the.",
+   w:"Tem dois erros na mesma frase: o do superlativo e o de <i>the world</i>. É comum arrumar só um.",
+   regra:"the antes de superlativo e the world."},
+  {t:3, q:"Find the correct version: “Stay in the hotel near a city center.”",
+   o:["Stay in a hotel near the city center.","Stay in the hotel near the city center.","Stay in a hotel near a city center.","Stay in hotel near city center."], a:0,
+   e:"Os artigos estavam trocados.",
+   w:"Qualquer hotel serve (a hotel), mas o centro é único (the city center).",
+   regra:"a/an para um qualquer · the para o único."},
+  {t:3, q:"Which sentence uses the preposition CORRECTLY?",
+   o:["Walk along the crossing.","Go through the bridge.","Fly along the city.","Go over the bridge."], a:3,
+   e:"Ponte é por cima → <b>over the bridge</b>.",
+   w:"Na faixa a gente vai <i>across</i>; a cidade se sobrevoa (<i>over</i>); a ponte se atravessa por cima, não por dentro.",
+   regra:"over = por cima · across = de um lado ao outro · through = por dentro."},
+  {t:3, q:"“Take tourist boat down a River Seine.” What is wrong?",
+   o:["Only the article before boat","Only the article before River Seine","Both: it should be a tourist boat down the River Seine","Nothing is wrong"], a:2,
+   e:"Os dois: <b>a</b> tourist boat e <b>the</b> River Seine.",
+   w:"Nome de rio sempre leva the, e o barco aparece pela primeira vez.",
+   regra:"the antes de nomes de rio · a/an na primeira menção."},
+  {t:3, q:"Why is Dublin Castle special, according to the text?",
+   o:["It is the oldest church in Ireland","It was built in the 13th century and has music concerts in summer","It is the largest park in Europe","It is where the President lives"], a:1,
+   e:"Século XIII, com concertos nos jardins no verão."},
+  {t:3, q:"In the messages, why do Bruno and Cruz change their plan?",
+   o:["Because it's going to rain","Because the zoo tickets are expensive and Leonor doesn't like zoos","Because the park is closer to school","Because they can't swim"], a:1,
+   e:"Preço dos ingressos + a Leonor não gostar de zoológico."},
+  {t:3, q:"Which sentence has NO article mistake?",
+   o:["Come to the Paris in the spring.","Visit an Eiffel Tower at night.","Go shopping on the Avenue Victor Hugo.","Oxford Circus is in the U.K."], a:3,
+   e:"<b>the U.K.</b> é a exceção correta.",
+   w:"Paris e Avenue Victor Hugo não levam artigo; a Torre Eiffel leva the, não an.",
+   regra:"países sem artigo, exceto the U.K. e the U.S."}
+];
+
+/* ---------- estações ---------- */
+const STATIONS = {
+  intro:{ em:"📋", n:"Como funciona", d:"Leia antes de começar", kind:"intro", stars:0, act:0 },
+
+  s1: { em:"🏙️", n:"Places in Town",        d:"16 cartas de vocabulário",        kind:"vocab", set:"v1",  stars:6, act:1 },
+  s2: { em:"🔤", n:"Unscramble the Place",   d:"8 palavras embaralhadas",         kind:"scram", set:"sc1", stars:5, act:1 },
+  s3: { em:"🔍", n:"What's the Place?",      d:"10 definições",                   kind:"mcq",   set:"s3",  stars:6, act:1 },
+  s4: { em:"🇺🇸", n:"American or British?",   d:"6 pares de nomes",                kind:"match", set:"m1",  stars:4, act:1 },
+  s5: { em:"✍️", n:"Complete the Text",     d:"8 frases da descrição",           kind:"mcq",   set:"s5",  stars:5, act:1 },
+  s6: { em:"📐", n:"GRAMMAR LAB 1",         d:"articles + 14 itens",             kind:"lab",   set:"s6",  panel:"g1", stars:8, act:1 },
+
+  s7: { em:"🚦", n:"Roads & Signs",         d:"8 palavras de trânsito",          kind:"vocab", set:"v2",  stars:4, act:2 },
+  s8: { em:"🛣️", n:"Sign Sentences",        d:"8 frases para completar",         kind:"mcq",   set:"s8",  stars:5, act:2 },
+  s9: { em:"🩹", n:"Fix the Article",       d:"8 frases para corrigir",          kind:"mcq",   set:"s9",  stars:6, act:2 },
+  s10:{ em:"📐", n:"GRAMMAR LAB 2",         d:"prepositions + 14 itens",         kind:"lab",   set:"s10", panel:"g2", stars:8, act:2 },
+  s11:{ em:"🔀", n:"Place or Movement?",    d:"12 frases · 2 cestos",            kind:"sort",  set:"so1", stars:5, act:2 },
+  s12:{ em:"➡️", n:"Give the Directions",   d:"8 frases para montar",            kind:"order", set:"o1",  stars:7, act:2 },
+  s13:{ em:"🙋", n:"Asking the Way",        d:"8 pares · useful language",       kind:"match", set:"m2",  stars:5, act:2 },
+
+  s14:{ em:"📌", n:"Notices & Messages",    d:"5 avisos + 8 perguntas",          kind:"read",  set:"r1",  stars:8, act:3 },
+  s15:{ em:"🕵️", n:"Who Said That?",        d:"5 pares · fala e aviso",          kind:"match", set:"m3",  stars:4, act:3 },
+  s16:{ em:"🚲", n:"CULTURE · Dublin",      d:"pamphlet + 8 perguntas",          kind:"read",  set:"r2",  stars:8, act:3 },
+  s17:{ em:"📅", n:"Arranging a Plan",      d:"7 pares · useful language",       kind:"match", set:"m4",  stars:5, act:3 },
+  s18:{ em:"💬", n:"Text Messages",         d:"conversa + 6 perguntas",          kind:"read",  set:"r3",  stars:7, act:3 },
+  s19:{ em:"🗣️", n:"Say the Directions",    d:"12 cartas de fala rápida",        kind:"drill",             stars:6, act:3 },
+  s20:{ em:"🏆", n:"THE CITY TOUR",         d:"25 questões em 3 níveis",         kind:"quiz",              stars:15, act:3 }
+};
+
+const ACTS = {
+  1:{ n:"ATO 1 · DOWNTOWN",   em:"🏙️", c:"var(--blue)",   d:"lugares da cidade e os artigos" },
+  2:{ n:"ATO 2 · STREET SMART", em:"🚦", c:"var(--orange)", d:"sinais, preposições e direções" },
+  3:{ n:"ATO 3 · CITY GUIDE",  em:"🗺️", c:"var(--green)",  d:"avisos, Dublin e combinar programa" }
+};
+
+const MAP = [
+  { t:"📋 COMEÇANDO", eps:["intro"] },
+  { t:"🏙️ ATO 1 · DOWNTOWN — lugares da cidade e articles",      eps:["s1","s2","s3","s4","s5","s6"] },
+  { t:"🚦 ATO 2 · STREET SMART — sinais, preposições e direções", eps:["s7","s8","s9","s10","s11","s12","s13"] },
+  { t:"🗺️ ATO 3 · CITY GUIDE — leituras e o tour final",          eps:["s14","s15","s16","s17","s18","s19","s20"] }
+];
+
+const ORDERED = ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20"];
+
+const LEVELS = [
+  {s:0,n:"Tourist 🎒"},{s:25,n:"Local 🚌"},{s:55,n:"City Guide 🗺️"},
+  {s:90,n:"Tour Leader 🚲"},{s:115,n:"MAYOR 🏛️"}
+];
+/* =======================================================================
+   MOTOR
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------- HOME ---------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>=0?`<span class="no">${i+1}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ $("play").classList.remove("on"); $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------- PLAYER ---------- */
+let ORD=null, PK=null, SC=null, SO=null, MT=null, VC=null;
+let mSel=null, mDone=0, mRight=[];
+
+function actBar(s){
+  const a=ACTS[s.act]; if(!a) return "";
+  return `<div class="actbar" style="border-color:${a.c}">
+    <span class="n" style="background:${a.c}">${a.em} ${a.n}</span>
+    <span style="color:var(--dim);font-weight:800">${a.d}</span></div>`;
+}
+
+function openEp(k){
+  cur=k; hits=0; total=0;
+  ORD=null; PK=null; SC=null; SO=null; MT=null; VC=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = actBar(s) + `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = `<h2 class="sec"><span class="em">📋</span>Como funciona</h2>` + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    VC=VOCS[s.set]; total=VC.items.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">${VC.tip}</p>
+      <div class="vg">${VC.items.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="scram"){
+    SC=SCRAM[s.set]; total=SC.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">${SC.tip}</p>
+      ${SC.items.map((it,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${it.e} &nbsp;<span class="hint">${it.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="sort"){
+    SO=SORTS[s.set]; total=SO.items.length;
+    b.innerHTML = head + `<p class="how">${SO.how}</p>
+      <p class="tip" style="border-left-color:var(--green)">${SO.tip}</p>
+      ${SO.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SO.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="match"){
+    MT=MATCHES[s.set]; total=MT.pairs.length;
+    b.innerHTML = head + matchHTML(MT.pairs, MT.l, MT.r, MT.how, MT.tip);
+  }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    const tips = {
+      s3:"Leia a definição inteira antes de escolher. Cuidado com o par <b>bookstore</b> (livraria, vende) × <b>library</b> (biblioteca, empresta).",
+      s5:"São as frases do Exercise 2. A pista está sempre na <b>segunda parte</b> da frase: “to exercise”, “to buy a coat”, “I love reading”.",
+      s8:"As oito palavras de trânsito: <b>traffic light</b> semáforo · <b>crossing</b> faixa · <b>corner</b> esquina · <b>straight</b> em frente · <b>bridge</b> ponte · <b>road</b> rua · <b>left</b> esquerda · <b>right</b> direita.",
+      s9:"Cada frase tem <b>um ou dois</b> erros de artigo. Leia a frase inteira antes de escolher — às vezes só metade está errada."
+    };
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. O feedback aparece na hora.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${tips[s.set]||""}</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="lab"){
+    PK=s.set; total=QS[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Leia o painel com atenção — a explicação vem em inglês e em português. Depois faça os itens.</p>`
+      + labHTML(s.panel) + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="read"){
+    const R=READS[s.set]; PK=R.set; total=QS[R.set].items.length;
+    b.innerHTML = head + `<div class="read"><h3>${R.em} ${R.title}</h3>${R.html}</div>`
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">❓ Comprehension</h2>`
+      + mcqHTML(R.set);
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER[s.set]; total=ORD.items.length;
+    const how = ORD.prompt
+      ? "Leia a pista em verde e monte a frase com o ARTIGO certo clicando nas palavras."
+      : (ORD.steps
+        ? "Clique nos passos na ordem certa. Clique no passo de cima para devolver."
+        : "Clique nas palavras na ordem certa para montar a frase.");
+    b.innerHTML = head + `<p class="how">${how}</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORD.tip}</p>` + orderHTML(s.set);
+    initOrder();
+  }
+
+  else if(s.kind==="drill"){
+    total=DRILL.length;
+    b.innerHTML = head + `<p class="how">Leia a pista, diga a frase completa em voz alta e só então toque para conferir.</p>
+      <p class="tip" style="border-left-color:var(--red)">A carta traz o alimento e a <b>pista de quantidade ou de ordem</b>. A turma fala a frase inteira antes de você revelar.</p>
+      <div class="dg">${DRILL.map(d=>`
+        <div class="dc" onclick="openDrill(this)">
+          <div class="pic">${d.pic}</div>
+          <div class="qty">${d.qty}</div>
+          <div class="tap">TOQUE PARA CONFERIR</div>
+          <div class="say">${d.say}</div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>1.</b> São <b>20 estações</b> em três atos: 🏙️ DOWNTOWN (lugares e artigos), 🚦 STREET SMART (sinais, preposições e direções) e 🗺️ CITY GUIDE (avisos, Dublin e mensagens). Pode fazer na ordem ou escolher no mapa 🗺️.</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Tourist → Local → City Guide → Tour Leader → <b>MAYOR</b>.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>3.</b> <b>Errou? Melhor ainda.</b> Nas questões de gramática abre um quadro <b>💡 ENTENDA O ERRO</b> mostrando o que você marcou, o que era o certo, o motivo e a regra.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>4.</b> As estações <b>📐 GRAMMAR LAB</b> explicam a regra em <b>inglês e em português</b> antes dos exercícios. Leia o painel primeiro.</p>
+  <p class="tip" style="border-left-color:var(--teal)"><b>5.</b> Botão <b>🔍 Projeção</b>: letras gigantes e placar de 4 equipes, para jogar com a turma inteira no telão.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>6.</b> Botão <b>👀 Answers</b> mostra todas as respostas da estação — use só na correção!</p>`;
+}
+
+/* ---------- vocab ---------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------- scramble ---------- */
+function initScram(){
+  SC.items.forEach((it,i)=>{
+    const letters = it.w.split("").map((c,j)=>({c,j})).sort(()=>Math.random()-0.5);
+    $("bk-"+i).innerHTML = letters.map(o=>
+      `<button class="ch let" onclick="pickLet(${i},this)">${o.c}</button>`).join("");
+    $("sl-"+i).innerHTML = "";
+  });
+}
+function pickLet(i,btn){
+  const c=document.createElement("button");
+  c.className="ch let"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("sl-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).innerHTML="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckScram(i){
+  const sl=$("sl-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join("");
+  if(built===SC.items[i].w){
+    sl.className="slot ok";
+    $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+    if(!already) bump();
+  } else { sl.className="slot no"; $("fb-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`; }
+}
+function shScram(i){
+  const already = $("sl-"+i).classList.contains("ok");
+  rsScram(i);
+  $("sl-"+i).innerHTML = SC.items[i].w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  $("sl-"+i).className="slot ok";
+  $("bk-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("fb-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${SC.items[i].w}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- sort ---------- */
+function pickSort(i,j){
+  const row=document.querySelector(`#body .srow[data-i="${i}"]`);
+  if(!row || row.dataset.done) return; row.dataset.done="1";
+  const c=SO.items[i].c;
+  row.querySelectorAll(".sb").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===c) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  $("sf-"+i).innerHTML = (j===c?`<span style="color:var(--ok)">✅ </span>`:`<span style="color:var(--bad)">❌ </span>`)
+    + `<span class="wy">${SO.items[i].e}</span>`;
+  bump();
+}
+
+/* ---------- match ---------- */
+function matchHTML(pairs,l,r,how,tip){
+  mRight = pairs.map((p,i)=>({t:p[1],i})).sort(()=>Math.random()-0.5);
+  return `<p class="how">${how}</p><p class="tip" style="border-left-color:var(--purple)">${tip}</p>
+  <div class="mg">
+    <div><div class="mh">${l}</div>${pairs.map((p,i)=>
+      `<button class="mi" id="L-${i}" onclick="mPick('L',${i})">${p[0]}</button>`).join("")}</div>
+    <div><div class="mh">${r}</div>${mRight.map((o,k)=>
+      `<button class="mi" id="R-${k}" onclick="mPick('R',${k})">${o.t}</button>`).join("")}</div>
+  </div>
+  <div class="fb" id="mfb" style="margin-top:14px"></div>`;
+}
+function mPick(side,idx){
+  const el=$(side+"-"+idx);
+  if(el.classList.contains("got")) return;
+  if(side==="L"){
+    document.querySelectorAll("#body .mi.sel").forEach(x=>x.classList.remove("sel"));
+    mSel=idx; el.classList.add("sel"); return;
+  }
+  if(mSel===null){ $("mfb").innerHTML=`<span style="color:var(--bad)">👈 Escolha primeiro na coluna da esquerda.</span>`; return; }
+  if(mRight[idx].i===mSel){
+    const L=$("L-"+mSel); L.classList.remove("sel"); L.classList.add("got"); el.classList.add("got");
+    mDone++; mSel=null;
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+    bump();
+  } else {
+    el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320);
+    $("mfb").innerHTML=`<span style="color:var(--bad)">❌ Not this one. Try again!</span>`;
+  }
+}
+
+/* ---------- mcq ---------- */
+function mcqHTML(ns){
+  const d=QS[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-ns="${ns}" data-q="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+      <div class="opts ${d.two?"two":"four"}">${it.o.map((o,j)=>
+        `<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}</div>
+      <div class="fb" id="f-${ns}-${i}"></div>
+    </div>`).join("");
+}
+function ansMcq(ns,i,j){
+  const box=document.querySelector(`#body .ex[data-ns="${ns}"][data-q="${i}"]`);
+  if(!box || box.dataset.done) return; box.dataset.done="1";
+  const it=QS[ns].items[i];
+  box.querySelectorAll(".op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===it.a) b.classList.add("right"); else if(k===j) b.classList.add("wrong");
+  });
+  const acertou = (j===it.a);
+  const escolhida = it.o[j], certa = it.o[it.a];
+  $(`f-${ns}-${i}`).innerHTML =
+    (acertou ? `<span style="color:var(--ok)">✅ Correct!</span>`
+             : `<span style="color:var(--bad)">❌ Not this one.</span>`)
+    + `<span class="wy">${it.e}</span>`
+    + (acertou ? "" : erroHTML(it, escolhida, certa));
+  bump();
+}
+
+/* ---------- quadro de explicação quando erra ---------- */
+function erroHTML(it, escolhida, certa){
+  if(!it.w && !it.regra) return "";
+  return `<div class="oops">
+    <div class="t">💡 ENTENDA O ERRO</div>
+    <div class="cmp">
+      <div class="x"><b>Você marcou:</b> ${escolhida}</div>
+      <div class="v"><b>O certo é:</b> ${certa}</div>
+    </div>
+    ${it.w ? `<div class="pq">${it.w}</div>` : ""}
+    ${it.regra ? `<div class="rg">📐 <b>Regra:</b> ${it.regra}</div>` : ""}
+  </div>`;
+}
+
+/* ---------- word order / recipe steps ---------- */
+function orderHTML(ns){
+  const d=ORDER[ns];
+  return d.items.map((it,i)=>`
+    <div class="ex" data-o="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${d.prompt?("🟢 "+it.q):(d.steps?("📜 "+it.a):"Build the sentence")}</div>
+      <div class="slot ${d.steps?"steps":""}" id="os-${i}"></div>
+      <div class="bank ${d.steps?"steps":""}" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  if(!ORD) return;
+  const st = ORD.steps ? " steps" : "";
+  ORD.items.forEach((it,i)=>{
+    const sh = it.w.map((w,j)=>({w,j})).sort(()=>Math.random()-0.5);
+    const bk = $("ob-"+i); if(!bk) return;
+    bk.innerHTML = sh.map(o=>`<button class="ch" onclick="pickWord(${i},this)">${o.w}</button>`).join("");
+    $("os-"+i).innerHTML="";
+    $("os-"+i).className="slot"+st;
+  });
+}
+function pickWord(i,btn){
+  const c=document.createElement("button");
+  c.className="ch"; c.textContent=btn.textContent;
+  c.onclick=()=>{ c.remove(); btn.classList.remove("used"); };
+  $("os-"+i).appendChild(c); btn.classList.add("used");
+}
+function rsOrd(i){
+  const st = ORD.steps ? " steps" : "";
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"+st; $("of-"+i).innerHTML="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.remove("used"));
+}
+function ckOrd(i){
+  const it=ORD.items[i], sl=$("os-"+i);
+  const already = sl.classList.contains("ok");
+  const built=[...sl.children].map(c=>c.textContent).join(" ");
+  if(built===it.w.join(" ")){
+    sl.className="slot ok"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+    if(!already) bump();
+  } else {
+    sl.className="slot no"+(ORD.steps?" steps":"");
+    $("of-"+i).innerHTML=`<span style="color:var(--bad)">❌ Try again!</span>`;
+  }
+}
+function shOrd(i){
+  const it=ORD.items[i];
+  const already = $("os-"+i).classList.contains("ok");
+  rsOrd(i);
+  $("os-"+i).innerHTML = it.w.map(w=>`<span class="ch">${w}</span>`).join("");
+  $("os-"+i).className="slot ok"+(ORD.steps?" steps":"");
+  $("ob-"+i).querySelectorAll(".ch").forEach(c=>c.classList.add("used"));
+  $("of-"+i).innerHTML=`<span style="color:var(--ok)">✅ ${ORD.steps?"Perfect order!":it.a}</span><span class="wy">${it.why}</span>`;
+  if(!already) bump();
+}
+
+/* ---------- drill ---------- */
+function openDrill(el){
+  if(!el.classList.contains("open")){ el.classList.add("open"); bump(); }
+}
+
+/* ---------- painel de gramática bilíngue ---------- */
+function labHTML(key){
+  const g=GRAM[key];
+  return `<div class="lab">
+    <h3>📐 ${g.title}</h3>
+    ${g.rows.map(r=>`
+      <div class="labrow">
+        <div class="fm"><b>${r.form}</b><code>${r.forms}</code></div>
+        ${r.en?`<div class="en">${r.en}</div>`:""}
+        ${r.pt?`<div class="ptx">${r.pt}</div>`:""}
+        <div class="exm">${r.ex}</div>
+      </div>`).join("")}
+    <div class="cerr">
+      <div class="t">⚠️ COMMON ERROR · ERRO CLÁSSICO</div>
+      <div class="w">${g.error.wrong}</div>
+      <div class="r">✅ ${g.error.right}</div>
+      <div class="n">${g.error.note}</div>
+    </div>
+  </div>`;
+}
+
+/* ---------- quiz ---------- */
+let qT=1, qI=0, qHit=0; const qA={};
+function quizHTML(){
+  return `<p class="how">25 questões em 3 níveis. Comece pelo bronze!</p>
+  <div class="tiers">
+    <button class="tb on" id="t1" onclick="setT(1)">🥉 EASY · 10 pts</button>
+    <button class="tb" id="t2" onclick="setT(2)">🥈 MEDIUM · 20 pts</button>
+    <button class="tb" id="t3" onclick="setT(3)">🥇 HARD · 30 pts</button>
+  </div>
+  <div id="qmeta"></div>
+  <div class="ex" id="qbox"></div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn" onclick="qGo(-1)">◀ prev</button>
+    <button class="btn b" onclick="qGo(1)">next ▶</button>
+    <span class="fb" id="qsc"></span>
+  </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(qI>=L.length) qI=L.length-1;
+  const c=L[qI];
+  $("qmeta").innerHTML = `QUESTION ${qI+1} / ${L.length} · <b>${qT*10} points</b>`;
+  $("qbox").innerHTML = `<div class="qn">${c.q.q}</div>
+    <div class="opts four">${c.q.o.map((o,j)=>
+      `<button class="op" onclick="qPick(${c.i},${j})">${o}</button>`).join("")}</div>
+    <div class="fb" id="qfb"></div>`;
+  if(qA[c.i]!==undefined) qShow(c.i,qA[c.i]);
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; if(j===FINALE[gi].a) qHit++;
+  qShow(gi,j); bump();
+  $("qsc").textContent = "⭐ " + qHit + " / " + Object.keys(qA).length;
+}
+function qShow(gi,pick){
+  const q=FINALE[gi];
+  document.querySelectorAll("#qbox .op").forEach((b,k)=>{
+    b.disabled=true;
+    if(k===q.a) b.classList.add("right"); else if(k===pick) b.classList.add("wrong");
+  });
+  $("qfb").innerHTML = (pick===q.a
+    ? `<span style="color:var(--ok)">✅ Correct! +${qT*10}</span>`
+    : `<span style="color:var(--bad)">❌ Not this one.</span>`) + `<span class="wy">${q.e}</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+/* ---------- reveal ---------- */
+function revealAll(){
+  if(!cur) return;
+  const k=STATIONS[cur].kind;
+  if(k==="vocab") document.querySelectorAll("#body .vc").forEach(c=>flip(c));
+  else if(k==="scram") SC.items.forEach((_,i)=>shScram(i));
+  else if(k==="sort") SO.items.forEach((it,i)=>pickSort(i,it.c));
+  else if(k==="match"){
+    MT.pairs.forEach((p,i)=>{
+      const ri = mRight.findIndex(o=>o.i===i);
+      const L=$("L-"+i), R=$("R-"+ri);
+      if(L&&R&&!L.classList.contains("got")){ L.classList.add("got"); L.classList.remove("sel"); R.classList.add("got"); mDone++; bump(); }
+    });
+    $("mfb").innerHTML=`<span style="color:var(--ok)">✅ ${mDone} / ${total}</span>`;
+  }
+  else if(k==="mcq"||k==="lab"||k==="read") QS[PK].items.forEach((it,i)=>ansMcq(PK,i,it.a));
+  else if(k==="order") ORD.items.forEach((_,i)=>shOrd(i));
+  else if(k==="drill") document.querySelectorAll("#body .dc").forEach(c=>openDrill(c));
+  else if(k==="quiz"){ const c=tList()[qI]; if(qA[c.i]===undefined) qPick(c.i,FINALE[c.i].a); }
+}
+
+/* ---------- projeção / equipes ---------- */
+function drawTeams(){
+  $("tin").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-10)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},10)">+</button></div>`).join("")
+    + `<div class="tm"><button onclick="rsTeams()" style="width:auto;padding:4px 10px">zerar</button></div>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Modo aluno" : "🔍 Projeção";
+}
+
+/* ---------- inicia ---------- */
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") home();
+  else if(e.key==="ArrowRight" && cur) stepEp(1);
+  else if(e.key==="ArrowLeft" && cur) stepEp(-1);
+});
+
+drawTeams(); drawMap(); addStars(0);
+
+
+
+/* =========================================================================
+   MELHORIAS · progresso salvo · pronúncia · rever meus erros
+   Cole este bloco no FIM do <script> de cada jogo. Ele detecta sozinho qual
+   motor o jogo usa e desliga o que não se aplica. Não altera nada do resto.
+   ========================================================================= */
+(function(){
+if (window.__melhorias) return;   /* já aplicado */
+
+/* ---------- 1. qual motor é este? ---------- */
+var DIA = null;
+try { if (typeof STATIONS !== "undefined" && typeof prog !== "undefined" && typeof stars !== "undefined") DIA = "A"; } catch(e){}
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof xp !== "undefined") DIA = "B"; } catch(e){} }
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof pts !== "undefined") DIA = "C"; } catch(e){} }
+
+var CFG = {
+  A: { foot:"foot",  body:"body",  home:"homeView", wSel:".fr .w, .front .w", exSel:".bk .ex, .back .ex" },
+  B: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" },
+  C: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" }
+}[DIA] || { foot:null, body:null, home:null, wSel:".front .w, .fr .w", exSel:".back .ex, .bk .ex" };
+
+var $$ = function(id){ return document.getElementById(id); };
+var bodyEl = function(){ return CFG.body ? $$(CFG.body) : null; };
+var scope  = function(){ return bodyEl() || document; };
+
+/* ---------- 2. estado, de forma independente do motor ---------- */
+function ler(){
+  try {
+    if (DIA === "A") return { s: stars, d: done,    p: prog     };
+    if (DIA === "B") return { s: xp,    d: doneEp,  p: progress };
+    if (DIA === "C") return { s: pts,   d: doneEp,  p: progress };
+  } catch(e){}
+  return null;
+}
+function atual(){
+  try {
+    if (DIA === "A") return cur;
+    if (DIA === "B" || DIA === "C") return curEp;
+  } catch(e){}
+  return null;
+}
+function aplicar(o){
+  var t = ler(); if (!t) return;
+  Object.keys(o.d || {}).forEach(function(k){ t.d[k] = o.d[k]; });
+  Object.keys(o.p || {}).forEach(function(k){ t.p[k] = o.p[k]; });
+  try {
+    if (DIA === "A") { stars = 0; addStars(o.s || 0); drawMap(); }
+    if (DIA === "B") { xp    = 0; addXp(o.s || 0);    drawRows(); }
+    if (DIA === "C") { pts   = 0; addPts(o.s || 0);   drawRows(); }
+  } catch(e){}
+}
+
+/* ---------- 3. gravação no aparelho do aluno ---------- */
+var CHAVE = "english-linus:" + (location.pathname || "jogo").replace(/[^a-z0-9]/gi, "_") + ":v1";
+var podeGravar = (function(){
+  try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; }
+  catch(e){ return false; }
+})();
+
+function gravar(){
+  if (!podeGravar || !DIA) return;
+  var t = ler(); if (!t) return;
+  try {
+    localStorage.setItem(CHAVE, JSON.stringify({
+      s: t.s, d: t.d, p: t.p, erros: serializaErros(),
+      quando: Date.now(), estacao: atual()
+    }));
+    piscaSalvo();
+  } catch(e){}
+}
+function lido(){
+  if (!podeGravar) return null;
+  try { return JSON.parse(localStorage.getItem(CHAVE) || "null"); } catch(e){ return null; }
+}
+function apagar(){ try { localStorage.removeItem(CHAVE); } catch(e){} }
+
+/* ---------- 4. registro dos erros ---------- */
+var ERROS = {};                                  /* { estacao: { chave: true } } */
+function marcaErro(est, chave){
+  if (!est) return;
+  (ERROS[est] = ERROS[est] || {})[chave] = true;
+  atualizaBotaoErros();
+}
+function limpaErro(est, chave){
+  if (est && ERROS[est]) { delete ERROS[est][chave]; atualizaBotaoErros(); }
+}
+function serializaErros(){ return ERROS; }
+function contaErros(est){ return est && ERROS[est] ? Object.keys(ERROS[est]).length : 0; }
+
+/* ---------- 5. embrulha as funções do motor ---------- */
+function embrulha(nome, antes, depois){
+  try {
+    var f = eval(nome);
+    if (typeof f !== "function") return false;
+    window["__orig_" + nome] = f;
+    var novo = function(){
+      var args = arguments;
+      if (antes) { try { antes.apply(null, args); } catch(e){} }
+      var r = window["__orig_" + nome].apply(this, args);
+      if (depois) { try { depois.apply(null, args); } catch(e){} }
+      return r;
+    };
+    window.__novo = novo;
+    eval(nome + " = window.__novo");
+    delete window.__novo;
+    return true;
+  } catch(e){ return false; }
+}
+
+/* grava sempre que a pontuação ou o progresso mudam — os motores usam nomes
+   diferentes, então embrulhamos todos os candidatos que existirem */
+["bump", "addStars", "addXp", "addPts", "setProgress"].forEach(function(n){
+  embrulha(n, null, function(){ gravar(); });
+});
+
+/* múltipla escolha: ansMcq(ns,i,j) · ans(ns,i,j) · pickAns(i,j,a) */
+function itemQS(ns, i){
+  var it = null;
+  try { it = QS[ns].items[i]; } catch(e){}
+  if (!it) { try { it = QS[ns][i]; } catch(e){} }
+  return it || null;
+}
+function registra(ns, i, j){
+  var it = itemQS(ns, i);
+  if (!it) return;
+  var k = ns + "#" + i;
+  if (j === it.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+}
+embrulha("ansMcq", null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("ans",    null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("pickAns", null, function(i, j, a){
+  var k = "q#" + i;
+  if (j === a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* cestos: pickSort(i,j) · sortPick(i,j) */
+embrulha("pickSort", null, function(i, j){
+  var c = null;
+  try { c = (typeof SO !== "undefined" && SO) ? SO.items[i].c : SORT.items[i].c; } catch(e){}
+  if (c === null || c === undefined) { try { c = SORT[i].c; } catch(e){} }
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+embrulha("sortPick", null, function(i, j){
+  var c = null;
+  try { c = SORT[i].c; } catch(e){}
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* quiz final: qPick(gi,j) */
+embrulha("qPick", null, function(gi, j){
+  var q = null; try { q = FINALE[gi]; } catch(e){}
+  if (!q) return;
+  var k = "quiz#" + gi;
+  if (j === q.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* toda vez que abre uma estação: põe os alto-falantes e ajusta o botão */
+embrulha("openEp", null, function(){
+  pararFala();
+  poeAudio();
+  atualizaBotaoErros();
+});
+
+/* ---------- 6. pronúncia com a voz do navegador ---------- */
+var TEM_FALA = (typeof window.speechSynthesis !== "undefined" &&
+                typeof window.SpeechSynthesisUtterance !== "undefined");
+var vozEN = null;
+function achaVoz(){
+  if (!TEM_FALA) return null;
+  if (vozEN) return vozEN;
+  var vs = [];
+  try { vs = window.speechSynthesis.getVoices() || []; } catch(e){}
+  var pref = ["en-US", "en_US", "en-GB", "en_GB", "en"];
+  for (var p = 0; p < pref.length; p++)
+    for (var i = 0; i < vs.length; i++)
+      if (vs[i].lang && vs[i].lang.indexOf(pref[p]) === 0) { vozEN = vs[i]; return vozEN; }
+  return null;
+}
+if (TEM_FALA) { try { window.speechSynthesis.onvoiceschanged = achaVoz; achaVoz(); } catch(e){} }
+
+function pararFala(){ if (TEM_FALA) { try { window.speechSynthesis.cancel(); } catch(e){} } }
+
+function fala(txt, devagar, botao){
+  if (!TEM_FALA || !txt) return;
+  pararFala();
+  var u = new window.SpeechSynthesisUtterance(String(txt).replace(/[“”"]/g, ""));
+  var v = achaVoz(); if (v) u.voice = v;
+  u.lang = (v && v.lang) || "en-US";
+  u.rate = devagar ? 0.7 : 0.92;
+  if (botao) {
+    botao.classList.add("mlFalando");
+    u.onend = u.onerror = function(){ botao.classList.remove("mlFalando"); };
+  }
+  try { window.speechSynthesis.speak(u); } catch(e){}
+}
+
+function textoProprio(el){
+  var t = "";
+  for (var i = 0; i < el.childNodes.length; i++) {
+    var n = el.childNodes[i];
+    if (n.nodeType === 3) t += n.nodeValue;                       /* nó de texto */
+    else if (n.nodeType === 1 && !/^(SPAN|DIV|P)$/.test(n.tagName)) t += n.textContent;
+    else if (n.nodeType === 1 && n.className &&
+             /\b(b|i|em|strong)\b/i.test(n.tagName)) t += n.textContent;
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+function botaoAudio(txt, titulo, devagar){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.className = "mlSpk";
+  b.innerHTML = devagar ? "🐢" : "🔊";
+  b.title = titulo || "Ouvir em inglês";
+  b.setAttribute("aria-label", b.title);
+  b.addEventListener("click", function(ev){
+    ev.stopPropagation(); ev.preventDefault();
+    fala(txt, devagar, b);
+  });
+  return b;
+}
+
+function poeAudio(){
+  if (!TEM_FALA) return;
+  var raiz = scope();
+
+  /* cartas de vocabulário: palavra (normal + devagar) e frase de exemplo */
+  raiz.querySelectorAll(".vc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var w = c.querySelector(CFG.wSel);
+    if (w && w.textContent.trim()) {
+      var cx = document.createElement("span");
+      cx.className = "mlSpkBox";
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir a palavra"));
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir bem devagar", true));
+      w.appendChild(cx);
+    }
+    var ex = c.querySelector(CFG.exSel);
+    if (ex && ex.textContent.trim())
+      ex.appendChild(botaoAudio(ex.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* cartas de fala rápida */
+  raiz.querySelectorAll(".dc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var s = c.querySelector(".say");
+    if (s && s.textContent.trim())
+      s.appendChild(botaoAudio(s.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* deck de projeção (English Rewind): só nos trechos que são inglês */
+  if (!DIA && document.querySelectorAll("section.slide").length > 5) {
+    /* frases completas em inglês */
+    raiz.querySelectorAll("span.ans, div.q").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.length > 3) el.appendChild(botaoAudio(t, "Ouvir em inglês"));
+    });
+    /* .scr tem dois tipos: frase com lacuna (serve) e palavras embaralhadas (não serve) */
+    raiz.querySelectorAll("span.scr").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.indexOf("/") >= 0) return;                 /* embaralhado: não faz sentido ouvir */
+      if (t.length > 3) el.appendChild(botaoAudio(t.replace(/_+/g, " blank "), "Ouvir em inglês"));
+    });
+    /* alternativas do quiz: o botão do jogo já é <button>, então o som vai ao lado, fora dele */
+    raiz.querySelectorAll("button.opt").forEach(function(b){
+      if (b.dataset.mlAudio) return; b.dataset.mlAudio = "1";
+      var t = b.textContent.trim().replace(/^[a-d]\)\s*/i, "");
+      if (t.length < 4) return;
+      var s2 = botaoAudio(t, "Ouvir a alternativa");
+      s2.style.marginLeft = "4px";
+      if (b.parentNode) b.parentNode.insertBefore(s2, b.nextSibling);
+    });
+  }
+
+  /* textos de leitura: barra no topo + alto-falante por parágrafo */
+  raiz.querySelectorAll(".read, .rd, .reading, .txtbox").forEach(function(r){
+    if (r.dataset.mlAudio) return; r.dataset.mlAudio = "1";
+    var paras = [].slice.call(r.querySelectorAll("p"))
+      .filter(function(p){ return p.textContent.trim().length > 25; });
+    if (!paras.length) return;
+    var barra = document.createElement("div");
+    barra.className = "mlRead";
+    var tudo = paras.map(function(p){ return p.textContent.trim(); }).join(" ");
+    var ouvir = botaoAudio(tudo, "Ouvir o texto inteiro");
+    ouvir.innerHTML = "🔊 Ouvir o texto";
+    ouvir.className = "mlSpk mlWide";
+    var parar = document.createElement("button");
+    parar.type = "button"; parar.className = "mlSpk mlWide"; parar.innerHTML = "⏹️ Parar";
+    parar.addEventListener("click", function(ev){ ev.stopPropagation(); pararFala(); });
+    barra.appendChild(ouvir); barra.appendChild(parar);
+    var dica = document.createElement("span");
+    dica.className = "mlHint";
+    dica.textContent = "ou clique no 🔊 de cada parágrafo";
+    barra.appendChild(dica);
+    r.insertBefore(barra, r.firstChild);
+    paras.forEach(function(p){ p.appendChild(botaoAudio(p.textContent.trim(), "Ouvir este parágrafo")); });
+  });
+}
+
+/* ---------- 7. rever só os itens errados ---------- */
+function chaveDoBloco(el){
+  if (el.hasAttribute("data-q")) {
+    var ns = el.getAttribute("data-ns");
+    return (ns ? ns : "q") + "#" + el.getAttribute("data-q");
+  }
+  if (el.classList.contains("srow")) return "sort#" + el.getAttribute("data-i");
+  return null;
+}
+function reverErros(){
+  var est = atual();
+  if (!est || !contaErros(est)) return;
+  var alvos = ERROS[est];
+
+  /* quiz final: libera as questões erradas para responder de novo */
+  var soQuiz = Object.keys(alvos).every(function(k){ return k.indexOf("quiz#") === 0; });
+  if (soQuiz) {
+    var n = 0;
+    Object.keys(alvos).forEach(function(k){
+      var gi = parseInt(k.split("#")[1], 10);
+      try { if (qA[gi] !== undefined) { delete qA[gi]; n++; } } catch(e){}
+    });
+    try { qRender(); } catch(e){}
+    aviso("🔁 " + n + " questão(ões) liberada(s) para refazer. Navegue com ◀ ▶.");
+    return;
+  }
+
+  /* demais estações: reabre e esconde o que já estava certo */
+  try { openEp(est); } catch(e){ return; }
+  (function(){
+    var raiz = scope(), achou = 0;
+    var blocos = [].slice.call(raiz.querySelectorAll("[data-q], .srow"));
+    blocos.forEach(function(b){
+      var k = chaveDoBloco(b);
+      if (k && alvos[k]) { b.classList.add("mlAlvo"); achou++; }
+      else if (k) b.classList.add("mlOculto");
+    });
+    if (!achou) { blocos.forEach(function(b){ b.classList.remove("mlOculto"); }); return; }
+    var faixa = document.createElement("div");
+    faixa.className = "mlFaixa";
+    faixa.innerHTML = "🔁 <b>Refazendo " + achou + " item(ns) que você errou.</b> " +
+      "<button type='button' class='mlSpk mlWide' id='mlTudo'>Mostrar tudo de novo</button>";
+    raiz.insertBefore(faixa, raiz.firstChild);
+    var bt = document.getElementById("mlTudo");
+    if (bt) bt.addEventListener("click", function(){
+      raiz.querySelectorAll(".mlOculto").forEach(function(x){ x.classList.remove("mlOculto"); });
+      faixa.remove();
+    });
+    poeAudio();
+    try { window.scrollTo(0, 0); } catch(e){}
+  })();
+}
+
+function atualizaBotaoErros(){
+  var b = document.getElementById("mlErros");
+  if (!b) return;
+  var n = contaErros(atual());
+  b.textContent = n ? "🔁 Rever meus erros (" + n + ")" : "🔁 Rever meus erros";
+  b.disabled = !n;
+}
+
+/* ---------- 8. avisos ---------- */
+function aviso(msg){
+  try { if (typeof toast === "function") { toast(msg); return; } } catch(e){}
+  var d = document.createElement("div");
+  d.className = "mlAviso"; d.textContent = msg;
+  document.body.appendChild(d);
+  setTimeout(function(){ d.remove(); }, 2600);
+}
+var tSalvo = null;
+function piscaSalvo(){
+  var p = document.getElementById("mlSalvo");
+  if (!p) return;
+  p.classList.add("on");
+  clearTimeout(tSalvo);
+  tSalvo = setTimeout(function(){ p.classList.remove("on"); }, 1200);
+}
+
+/* ---------- 9. interface ---------- */
+var CSS = ""
++ ".mlSpk{border:2px solid currentColor;border-radius:9px;background:rgba(255,255,255,.85);"
++ "color:inherit;font:inherit;font-size:12px;line-height:1;padding:3px 6px;margin-left:6px;"
++ "cursor:pointer;vertical-align:middle;opacity:.75;transition:.12s;}"
++ ".mlSpk:hover{opacity:1;transform:translateY(-1px);}"
++ ".mlSpk:disabled{opacity:.35;cursor:default;transform:none;}"
++ ".mlSpk.mlWide{font-size:13px;font-weight:800;padding:6px 11px;}"
++ ".mlSpk.mlFalando{animation:mlPulse .8s infinite;}"
++ "@keyframes mlPulse{0%,100%{opacity:.6}50%{opacity:1}}"
++ ".mlSpkBox{display:inline-flex;gap:3px;margin-left:6px;}"
++ ".mlRead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding-bottom:10px;"
++ "border-bottom:2px dashed rgba(0,0,0,.15);}"
++ ".mlHint{font-size:12px;opacity:.7;}"
++ ".mlOculto{display:none !important;}"
++ ".mlAlvo{outline:3px dashed rgba(255,150,0,.75);outline-offset:4px;border-radius:12px;}"
++ ".mlFaixa{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:10px 14px;"
++ "border:3px solid #e08a1e;border-radius:14px;background:#fff6e5;font-size:14px;}"
++ ".mlBar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 auto 18px;"
++ "max-width:1100px;padding:10px 14px;border:2px solid rgba(0,0,0,.15);border-radius:14px;"
++ "background:rgba(255,255,255,.75);font-size:13px;}"
++ ".mlBar b{font-size:14px;}"
++ "#mlSalvo{opacity:0;transition:.2s;font-weight:800;}"
++ "#mlSalvo.on{opacity:1;}"
++ ".mlAviso{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9999;"
++ "background:#111;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;"
++ "font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.3);}"
++ "#mlErros:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}"
++ ".mlBtn{white-space:nowrap;}"
++ "@media print{.mlSpk,.mlRead,.mlBar,.mlFaixa{display:none !important;}}";
+
+(function(){
+  var st = document.createElement("style");
+  st.textContent = CSS;
+  document.head.appendChild(st);
+})();
+
+/* botão no rodapé do player */
+(function(){
+  var f = CFG.foot ? $$(CFG.foot) : null;
+  if (!f) return;
+  var b = document.createElement("button");
+  b.type = "button"; b.id = "mlErros";
+  var modelo = f.querySelector("button");
+  if (modelo && modelo.className) { b.className = modelo.className; b.classList.add("mlBtn"); }
+  else { b.className = "mlSpk mlWide"; }
+  b.textContent = "🔁 Rever meus erros";
+  b.disabled = true;
+  b.addEventListener("click", reverErros);
+  var alvo = f.querySelector(".grow");
+  if (alvo) f.insertBefore(b, alvo); else f.appendChild(b);
+})();
+
+/* faixa na tela inicial: progresso salvo, continuar e zerar */
+(function(){
+  if (!DIA) return;
+  var h = CFG.home ? $$(CFG.home) : null;
+  if (!h) return;
+  var bar = document.createElement("div");
+  bar.className = "mlBar";
+  var salvo = lido();
+  var txt = !podeGravar
+    ? "⚠️ Este navegador não deixa salvar o progresso. O jogo funciona, mas não guarda onde você parou."
+    : (salvo ? "💾 <b>Você já jogou aqui.</b> Progresso guardado: <b>⭐ " + (salvo.s || 0) + "</b>."
+             : "💾 O seu progresso fica salvo <b>neste aparelho</b>, sem login. Pode fechar e voltar depois.");
+  bar.innerHTML = "<span>" + txt + "</span><span id='mlSalvo'>💾 salvo</span><span class='grow' style='flex:1'></span>";
+  if (podeGravar && salvo) {
+    var c = document.createElement("button");
+    c.type = "button"; c.className = "mlSpk mlWide"; c.textContent = "▶️ Continuar de onde parei";
+    c.addEventListener("click", function(){
+      aplicar(salvo);
+      ERROS = salvo.erros || {};
+      atualizaBotaoErros();
+      aviso("▶️ Progresso restaurado: ⭐ " + (salvo.s || 0));
+      c.remove();
+    });
+    bar.appendChild(c);
+  }
+  if (podeGravar) {
+    var z = document.createElement("button");
+    z.type = "button"; z.className = "mlSpk mlWide"; z.textContent = "🗑️ Zerar meu progresso";
+    z.addEventListener("click", function(){
+      apagar(); ERROS = {}; atualizaBotaoErros();
+      aviso("🗑️ Progresso apagado deste aparelho. Recarregue a página para começar limpo.");
+    });
+    bar.appendChild(z);
+  }
+  h.insertBefore(bar, h.firstChild);
+})();
+
+/* põe os alto-falantes no que já estiver na tela */
+poeAudio();
+
+/* atalho: S para ouvir de novo a última coisa clicada não é necessário —
+   ESC também para a fala, além do que o jogo já faz */
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape") pararFala();
+});
+
+window.__melhorias = { versao: 1, motor: DIA, fala: TEM_FALA, grava: podeGravar };
+})();
+
+</script>
+</body>
+</html>
