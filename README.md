@@ -40,13 +40,21 @@ https://souzajvanessa.github.io/english-linus/8ano/chefs-table/   → CHEF'S TAB
 
 ## Como adicionar uma atividade nova
 
-Crie uma pasta com um nome curto e sem acentos, coloque o arquivo dentro dela renomeado como `index.html`, e acrescente um cartão no `index.html` da raiz copiando um dos blocos `<a class="card">`.
+Estrutura fixa: **`turma / nome-da-atividade / index.html`**
+
+1. Crie a pasta da atividade dentro da pasta da turma e coloque o arquivo lá, renomeado como `index.html`.
+2. Abra o `index.html` da **raiz** e acrescente um bloco na lista `ATIVIDADES`, que está no alto do arquivo, dentro da área marcada como editável. Copie um bloco existente e troque os campos.
+3. Dê duplo clique no `index.html` da raiz para conferir se o cartão apareceu.
+4. Suba a pasta nova **e** o `index.html` da raiz.
+
+Turmas já configuradas na lista `TURMAS`: `4ano`, `5ano`, `8ano`, `9ano`, `1ano`. As seções aparecem no site na ordem dessa lista, e turma sem atividade não aparece.
 
 ## Regras da pasta
 
 - O arquivo principal de cada atividade **precisa** se chamar `index.html` — é isso que gera o link curto e bonito.
 - Não apague o arquivo `.nojekyll`. Ele impede o GitHub de tentar processar as páginas e quebrar o layout.
-- Nomes de pasta e arquivo: **sem espaços, sem acentos, tudo minúsculo**.
+- Nomes de pasta e arquivo: **sem espaços, sem acentos, tudo minúsculo, separados por hífen**.
+- Nunca edite o cartão direto no HTML: a página inicial monta os cartões sozinha a partir da lista `ATIVIDADES`. Mexer só ali evita quebrar o layout.
 
 ## ⚠️ O que NUNCA subir aqui
 
