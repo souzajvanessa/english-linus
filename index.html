@@ -81,6 +81,11 @@
     padding:12px 14px; border-radius:12px; transition:.15s;
   }
   .dlcard a.dlbtn:hover{background:#96281b; transform:translateY(-2px);}
+  .dlgroup{
+    grid-column:1 / -1; margin:18px 0 -2px; font-size:12px; letter-spacing:3px; font-weight:900;
+    color:#8a6f45; border-bottom:2px solid #e8dcc0; padding-bottom:7px;
+  }
+  .dlgroup:first-child{margin-top:0;}
   .dlnote{
     margin-top:20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px;
     font-size:13.5px; color:#5c4a33; line-height:1.5;
@@ -402,16 +407,32 @@ if (PDFS.length) {
     </div>
     <div class="dlgrid">`;
   const ORDEM = ["4º ANO","5º ANO","6º ANO","7º ANO","8º ANO","9º ANO","1º ANO A"];
-  const pos = t => { const i = ORDEM.indexOf(t); return i < 0 ? 99 : i; };
-  [...PDFS].sort((a,b) => pos(a.turma) - pos(b.turma)).forEach(p => {
-    html += `
+  /* número da unidade da folha, para ordenar dentro da turma */
+  const unFolha = p => {
+    const m = String(p.unidade || "").match(/Unit\s*(\d+)/i);
+    return m ? parseInt(m[1], 10) : 999;
+  };
+  const etiqueta = p => {
+    const m = String(p.unidade || "").match(/Unit\s*(\d+)/i);
+    return m ? ("UNIT " + m[1]) : "REVISÃO";
+  };
+  /* monta um grupo por turma, na ordem certa, e dentro do grupo ordena por unidade */
+  const turmasComFolha = ORDEM.filter(t => PDFS.some(p => p.turma === t))
+    .concat(PDFS.map(p => p.turma).filter(t => ORDEM.indexOf(t) < 0));
+  [...new Set(turmasComFolha)].forEach(turma => {
+    const lista = PDFS.filter(p => p.turma === turma).sort((a,b) => unFolha(a) - unFolha(b));
+    if (!lista.length) return;
+    html += `<div class="dlgroup">${turma}</div>`;
+    lista.forEach(p => {
+      html += `
       <div class="dlcard">
-        <span class="yr">${p.turma}</span>
+        <span class="yr">${etiqueta(p)}</span>
         <h4>${p.titulo}</h4>
         <div class="un">${p.unidade}</div>
         <div class="meta"><span>📄 ${p.paginas} páginas</span><span>PDF</span><span>A4</span></div>
         <a class="dlbtn" href="${p.url}" target="_blank" rel="noopener">⬇️ Baixar e imprimir</a>
       </div>`;
+    });
   });
   html += `</div>
     <div class="dlnote">
