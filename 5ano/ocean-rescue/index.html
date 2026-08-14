@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>OCEAN RESCUE · Unit 5 · 5º ano</title>
+<style>
+  :root{
+    --bg:#eef7fb; --card:#ffffff; --ink:#12303d; --dim:#557483; --line:#cde3ee;
+    --red:#c0483c; --orange:#e08a2b; --yellow:#f2c744; --green:#149a6e; --teal:#0e7f92;
+    --blue:#1c7ea8; --deep:#0d5878; --purple:#6d4f8f; --pink:#d05a86; --sand:#f6e3bd;
+    --ok:#1fbd7c; --bad:#ff5a5f;
+    --r:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:
+      radial-gradient(820px 460px at 88% -6%, rgba(28,126,168,.26), transparent 62%),
+      radial-gradient(760px 460px at 2% 100%, rgba(20,154,110,.22), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Trebuchet MS",Verdana,"Segoe UI",system-ui,sans-serif;
+    min-height:100vh;
+  }
+  ::-webkit-scrollbar{height:12px; width:12px;}
+  ::-webkit-scrollbar-thumb{background:#9dc6d8; border-radius:99px;}
+  svg.ico{width:1em; height:1em; vertical-align:-.12em;}
+
+  /* ================= TOP BAR ================= */
+  #bar{
+    position:sticky; top:0; z-index:200; display:flex; align-items:center; gap:10px;
+    padding:10px 16px; background:rgba(255,255,255,.94); backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--line); flex-wrap:wrap;
+  }
+  #logo{font-weight:900; font-size:19px; letter-spacing:-.5px; cursor:pointer; white-space:nowrap; line-height:1.05;}
+  #logo span{display:block; font-size:9.5px; letter-spacing:2.5px; color:var(--dim); font-weight:800;}
+  .grow{flex:1;}
+  .btn{
+    border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:14px; padding:8px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink); transition:.1s; white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 5px 0 var(--ink);}
+  .btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--ink);}
+  .btn.y{background:var(--yellow);} .btn.g{background:var(--green); color:#fff;}
+  .btn.b{background:var(--blue); color:#fff;} .btn.p{background:var(--purple); color:#fff;}
+  .btn.r{background:var(--red); color:#fff;} .btn.on{background:var(--ink); color:var(--yellow);}
+  .btn:disabled{opacity:.45; cursor:default; transform:none; box-shadow:0 3px 0 var(--ink);}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:#fff; border:3px solid var(--ink);
+    border-radius:99px; padding:5px 13px; font-weight:900; font-size:14px; white-space:nowrap;
+  }
+  #stars{color:var(--orange); letter-spacing:1px;}
+
+  /* ================= HOME ================= */
+  #hero{padding:34px 5vw 10px; max-width:1200px; margin:0 auto; text-align:center;}
+  #hero .big{font-size:64px; line-height:1;}
+  #hero h1{
+    font-size:clamp(32px,6.5vw,62px); line-height:.98; letter-spacing:-1.5px; font-weight:900;
+    margin:8px 0 6px;
+  }
+  #hero h1 em{font-style:normal; color:var(--blue);}
+  #hero .sub{font-size:clamp(15px,2vw,20px); color:var(--dim); font-weight:800;}
+  .tags{display:flex; justify-content:center; flex-wrap:wrap; gap:7px; margin:16px 0 6px;}
+  .tag{background:#fff; border:2.5px solid var(--ink); border-radius:99px; padding:5px 13px;
+    font-size:12.5px; font-weight:900;}
+  main{max-width:1200px; margin:0 auto; padding:16px 5vw 90px;}
+  .maptitle{display:flex; align-items:center; gap:10px; margin:26px 0 14px; font-size:15px;
+    font-weight:900; letter-spacing:2px; color:var(--dim);}
+  .maptitle::after{content:""; flex:1; height:3px; background:var(--line); border-radius:9px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:16px;}
+  .st{
+    background:var(--card); border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 5px 0 var(--ink); padding:16px 14px; cursor:pointer; text-align:left;
+    font:inherit; color:inherit; transition:.12s; position:relative; overflow:hidden;
+  }
+  .st:hover{transform:translateY(-4px); box-shadow:0 9px 0 var(--ink);}
+  .st .no{position:absolute; top:0; right:0; background:var(--ink); color:#fff; font-size:11px;
+    font-weight:900; padding:4px 10px; border-radius:0 0 0 12px;}
+  .st .em{font-size:42px; line-height:1;}
+  .st .nm{font-weight:900; font-size:17.5px; margin-top:8px; line-height:1.1;}
+  .st .ds{font-size:12.5px; color:var(--dim); font-weight:700; margin-top:4px; line-height:1.35;}
+  .st .bar{height:9px; background:#e4eff4; border:2px solid var(--ink); border-radius:99px; margin-top:11px; overflow:hidden;}
+  .st .bar i{display:block; height:100%; background:var(--green); width:0%;}
+  .st.done{background:#e7fbf2;}
+  .st .chk{position:absolute; bottom:10px; right:12px; font-size:26px;}
+
+  /* ================= PLAYER ================= */
+  #play{display:none; max-width:1100px; margin:0 auto; padding:20px 5vw 120px;}
+  #play.on{display:block;}
+  h2.sec{font-size:clamp(24px,4vw,40px); font-weight:900; letter-spacing:-1px; line-height:1.05;}
+  h2.sec .em{margin-right:8px;}
+  p.tip{background:#fff; border:3px solid var(--ink); border-left-width:12px; border-radius:14px;
+    padding:12px 16px; font-size:15.5px; font-weight:700; margin:14px 0 18px; line-height:1.5;}
+  p.tip b{background:var(--yellow); padding:0 4px; border-radius:4px;}
+  p.how{color:var(--dim); font-weight:800; font-size:15px; margin:6px 0 14px;}
+
+  /* vocab cards */
+  .vg{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:13px;}
+  .vc{background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:14px 12px; text-align:center; cursor:pointer; min-height:140px;
+    display:flex; flex-direction:column; justify-content:center; transition:.12s; position:relative;}
+  .vc:hover{transform:translateY(-3px);}
+  .vc.flip{background:var(--sand);}
+  .vc .e{font-size:40px; line-height:1;}
+  .vc .w{font-weight:900; font-size:20px; margin-top:6px;}
+  .vc .tap{font-size:10.5px; color:var(--dim); font-weight:900; letter-spacing:1.5px; margin-top:5px;}
+  .vc .bk{display:none;}
+  .vc.flip .fr{display:none;} .vc.flip .bk{display:block;}
+  .vc .pt{font-weight:900; font-size:19px;}
+  .vc .ex{font-size:13px; font-weight:700; margin-top:7px; color:#6a5330;}
+
+  .ex{background:#fff; border:3px solid var(--ink); border-radius:var(--r);
+    box-shadow:0 4px 0 var(--ink); padding:15px 17px; margin-bottom:14px;}
+  .qn{font-size:clamp(17px,2.1vw,22px); font-weight:900; line-height:1.4; margin-bottom:11px;}
+  .qn .n{display:inline-grid; place-items:center; width:28px; height:28px; border-radius:9px;
+    background:var(--blue); color:#fff; font-size:14px; margin-right:9px; vertical-align:2px;}
+  .opts{display:grid; gap:9px;}
+  .opts.two{grid-template-columns:1fr 1fr;}
+  .opts.four{grid-template-columns:1fr 1fr;}
+  @media(max-width:640px){.opts.two,.opts.four{grid-template-columns:1fr;}}
+  .op{border:3px solid var(--ink); border-radius:14px; background:#fff; color:var(--ink);
+    font:inherit; font-weight:900; font-size:17px; padding:12px 15px; cursor:pointer;
+    text-align:left; box-shadow:0 3px 0 var(--ink); transition:.1s;}
+  .op:hover:not(:disabled){transform:translateY(-2px); background:#f4fbff;}
+  .op.right{background:#c9f5dd; border-color:var(--ok);}
+  .op.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+  .fb{font-weight:900; font-size:15.5px; margin-top:10px;}
+  .fb .wy{display:block; font-weight:700; color:var(--dim); font-size:14px; margin-top:3px;}
+
+  /* quadro ENTENDA O ERRO */
+  .oops{margin-top:12px; background:#fff6e9; border:3px solid var(--orange); border-radius:14px; padding:12px 15px;}
+  .oops .t{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--orange); margin-bottom:9px;}
+  .oops .cmp{display:grid; gap:6px; margin-bottom:9px;}
+  .oops .x{background:#ffe6e6; border-left:5px solid var(--bad); padding:6px 10px; border-radius:9px; font-size:15px; font-weight:800;}
+  .oops .v{background:#e2fbef; border-left:5px solid var(--ok); padding:6px 10px; border-radius:9px; font-size:15px; font-weight:800;}
+  .oops .pq{font-size:15px; line-height:1.5; font-weight:700; color:#4a3a20;}
+  .oops .rg{margin-top:8px; font-size:14.5px; font-weight:800; color:var(--deep); background:#e8f4f9; padding:7px 11px; border-radius:9px;}
+
+  /* chips */
+  .slot{min-height:58px; border:3px dashed var(--dim); border-radius:14px; background:#f9fdff;
+    padding:8px; display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-bottom:10px;}
+  .slot.ok{border-style:solid; border-color:var(--ok); background:#e9fbf2;}
+  .slot.no{border-style:solid; border-color:var(--bad); background:#fff0f0;}
+  .bank{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px;}
+  .ch{border:3px solid var(--ink); border-radius:12px; background:#9fd6ea; color:var(--ink);
+    font:inherit; font-weight:900; font-size:19px; padding:9px 14px; cursor:pointer;
+    box-shadow:0 3px 0 var(--ink);}
+  .ch:hover{transform:translateY(-2px);}
+  .ch.used{opacity:.2; pointer-events:none;}
+  .ch.let{background:var(--pink); color:#fff; min-width:46px; text-align:center; font-size:22px;}
+  .row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hint{font-size:15px; font-weight:800; color:var(--dim);}
+
+  /* sort */
+  .srow{background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:11px 14px; margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .srow .it{font-weight:900; font-size:19px; min-width:200px; flex:1;}
+  .sb{border:3px solid var(--ink); border-radius:12px; background:#fff; font:inherit;
+    font-weight:900; font-size:14.5px; padding:8px 13px; cursor:pointer; box-shadow:0 3px 0 var(--ink);}
+  .sb:hover:not(:disabled){background:#f4fbff;}
+  .sb.right{background:#c9f5dd; border-color:var(--ok);}
+  .sb.wrong{background:#ffd9da; border-color:var(--bad); opacity:.8;}
+
+  /* match */
+  .mg{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:640px){.mg{grid-template-columns:1fr;}}
+  .mh{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--dim); margin-bottom:8px;}
+  .mi{display:block; width:100%; text-align:left; border:3px solid var(--ink); border-radius:14px;
+    background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:16.5px;
+    padding:11px 14px; margin-bottom:9px; cursor:pointer; box-shadow:0 3px 0 var(--ink);}
+  .mi:hover:not(:disabled){background:#f4fbff;}
+  .mi.sel{background:var(--yellow);}
+  .mi.got{background:#c9f5dd; border-color:var(--ok); cursor:default; box-shadow:none;}
+  .mi.err{background:#ffd9da; animation:shk .3s;}
+  @keyframes shk{25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  /* reading */
+  .read{background:#fffdf6; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:20px 22px; margin-bottom:18px; font-size:18px; line-height:1.68; font-weight:600;}
+  .read h3{font-size:23px; font-weight:900; margin-bottom:10px; color:var(--blue);}
+  .read p{margin-bottom:10px;}
+  .read .gl{margin-top:14px; font-size:14px; font-weight:800; color:#5b4a2a;
+    background:var(--yellow); border-radius:12px; padding:9px 13px;}
+  .poster{border:4px solid var(--deep); border-radius:16px; background:#e9f6fb; padding:16px 18px; margin-top:6px;}
+  .poster.alt{background:#fff4e2; border-color:var(--orange); margin-top:12px;}
+  .poster .ph{font-size:22px; font-weight:900; letter-spacing:1px; text-align:center;
+    color:var(--deep); margin-bottom:12px;}
+  .poster.alt .ph{color:var(--orange);}
+  .poster .pr{display:flex; gap:12px; justify-content:space-between; border-bottom:2px dotted #bcd6e2;
+    padding:6px 0; font-size:16.5px;}
+  .poster .pr b{color:var(--red);}
+
+  /* grammar lab */
+  .lab{background:#fff; border:3px solid var(--ink); border-radius:var(--r); box-shadow:0 5px 0 var(--ink);
+    padding:18px 20px; margin-bottom:18px;}
+  .lab h3{font-size:clamp(19px,2.2vw,25px); font-weight:900; letter-spacing:-.4px; margin-bottom:14px;}
+  .labrow{border-top:2px dashed var(--line); padding:13px 0;}
+  .labrow:first-of-type{border-top:0; padding-top:2px;}
+  .labrow .fm{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:7px;}
+  .labrow .fm b{font-size:16px; background:var(--ink); color:#fff; padding:3px 11px; border-radius:99px;}
+  .labrow .fm code{font-family:Consolas,monospace; font-size:15.5px; color:var(--teal); font-weight:700;}
+  .labrow .en, .labrow .ptx{font-size:16px; line-height:1.5; padding:7px 12px; border-radius:10px; margin-bottom:6px;}
+  .labrow .en{background:#e9f4f7; border-left:5px solid var(--teal);}
+  .labrow .ptx{background:#fdf1e2; border-left:5px solid var(--orange);}
+  .labrow .en::before{content:"EN  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--teal);}
+  .labrow .ptx::before{content:"PT  "; font-weight:900; font-size:11px; letter-spacing:1.5px; color:var(--orange);}
+  .labrow .exm{font-size:16.5px; font-weight:800; margin-top:6px; color:var(--green);}
+  .labrow .exm::before{content:"\25B8  ";}
+  .cerr{margin-top:16px; background:#fdecea; border:3px solid var(--red); border-radius:14px; padding:13px 16px;}
+  .cerr .t{font-size:11.5px; letter-spacing:2px; font-weight:900; color:var(--red); margin-bottom:8px;}
+  .cerr .w{font-size:17px; font-weight:800; text-decoration:line-through; color:var(--red); margin-bottom:4px;}
+  .cerr .r{font-size:17px; font-weight:900; color:var(--green); margin-bottom:7px;}
+  .cerr .n{font-size:15px; line-height:1.5; color:#4a3020;}
+
+  /* ===== CROSSWORD ===== */
+  .cwwrap{display:grid; grid-template-columns:minmax(280px,auto) 1fr; gap:20px; align-items:start;}
+  @media(max-width:820px){.cwwrap{grid-template-columns:1fr;}}
+  .cwgrid{display:grid; gap:2px; background:var(--ink); padding:3px; border-radius:10px; width:max-content;
+    border:3px solid var(--ink);}
+  .cwcell{width:34px; height:34px; position:relative; background:#0d3141;}
+  .cwcell.open{background:#fff;}
+  .cwcell input{width:100%; height:100%; border:0; background:transparent; text-align:center;
+    font:inherit; font-weight:900; font-size:19px; text-transform:uppercase; color:var(--ink); padding:0;}
+  .cwcell input:focus{outline:0; background:var(--yellow);}
+  .cwcell.hi input{background:#dff0f8;}
+  .cwcell.hi input:focus{background:var(--yellow);}
+  .cwcell.good input{background:#c9f5dd; color:#0a5b3b;}
+  .cwcell.bad input{background:#ffd9da;}
+  .cwcell .cn{position:absolute; top:0; left:2px; font-size:9.5px; font-weight:900; color:var(--dim); line-height:1;}
+  .cwclues{display:grid; gap:16px;}
+  .cwclues h4{font-size:12px; letter-spacing:2px; color:var(--dim); margin-bottom:7px;}
+  .cwclue{border:3px solid var(--line); border-radius:12px; background:#fff; padding:8px 12px;
+    margin-bottom:7px; font-size:15px; font-weight:700; cursor:pointer; line-height:1.4;}
+  .cwclue:hover{border-color:var(--blue);}
+  .cwclue.sel{border-color:var(--blue); background:#eaf6fb;}
+  .cwclue.got{background:#e7fbf2; border-color:var(--ok);}
+  .cwclue b{color:var(--blue); margin-right:6px;}
+  body.proj .cwcell{width:46px; height:46px;}
+  body.proj .cwcell input{font-size:26px;}
+  @media(max-width:560px){ .cwcell{width:27px; height:27px;} .cwcell input{font-size:15px;} }
+
+  /* ===== SAVE THE TURTLE ===== */
+  .tgwrap{display:grid; grid-template-columns:300px 1fr; gap:20px; align-items:start;}
+  @media(max-width:760px){.tgwrap{grid-template-columns:1fr;}}
+  .sea{position:relative; height:230px; border:3px solid var(--ink); border-radius:18px; overflow:hidden;
+    background:linear-gradient(#bfe8f7,#5fb6d8 55%,#2e86ad); box-shadow:0 5px 0 var(--ink);}
+  .sea .turtle{position:absolute; left:50%; top:52%; transform:translate(-50%,-50%); font-size:62px;
+    transition:.3s; z-index:2;}
+  .sea .junk{position:absolute; font-size:26px; opacity:0; transition:.4s; z-index:3;}
+  .sea .junk.on{opacity:1;}
+  .sea .sky{position:absolute; inset:0 0 auto 0; height:26%; background:#dff3fb;}
+  .sea .sand{position:absolute; left:0; right:0; bottom:0; height:20%; background:#f0dcae;}
+  .sea .msg{position:absolute; left:0; right:0; bottom:6px; text-align:center; font-weight:900;
+    font-size:14px; color:#0b3346; z-index:4;}
+  .lives{display:flex; gap:5px; justify-content:center; margin-top:10px; font-size:22px;}
+  .word{display:flex; gap:7px; flex-wrap:wrap; justify-content:center; margin:14px 0;}
+  .wl{width:36px; height:46px; border-bottom:5px solid var(--ink); font-size:28px; font-weight:900;
+    display:grid; place-items:center; color:var(--deep);}
+  .wl.sp{border:0; width:16px;}
+  .keys{display:grid; grid-template-columns:repeat(auto-fit,minmax(42px,1fr)); gap:6px;}
+  .ky{border:3px solid var(--ink); border-radius:10px; background:#fff; font:inherit; font-weight:900;
+    font-size:18px; padding:9px 0; cursor:pointer; box-shadow:0 3px 0 var(--ink);}
+  .ky:hover:not(:disabled){background:#f4fbff;}
+  .ky.hit{background:#c9f5dd; border-color:var(--ok);}
+  .ky.miss{background:#ffd9da; border-color:var(--bad); opacity:.55;}
+  .ky:disabled{cursor:default; transform:none;}
+  body.proj .wl{width:46px; height:58px; font-size:36px;}
+
+  /* ===== WRITING ===== */
+  .wbox input.tx{width:100%; border:3px solid var(--ink); border-radius:12px; font:inherit;
+    font-weight:800; font-size:18px; padding:11px 14px; background:#fdfffe;}
+  .wbox input.tx:focus{outline:0; border-color:var(--blue); background:#f2fbff;}
+  .wbox input.tx.good{background:#c9f5dd; border-color:var(--ok);}
+  .wbox input.tx.bad{background:#ffe9ea; border-color:var(--bad);}
+  .wskel{font-family:Consolas,monospace; font-size:14.5px; color:var(--dim); font-weight:700; margin-bottom:9px;}
+
+  /* ===== SPEAKING ===== */
+  .spcard{background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 18px; margin-bottom:13px;}
+  .spcard .en{font-size:clamp(19px,2.4vw,26px); font-weight:900; line-height:1.3;}
+  .spcard .pt{font-size:15px; font-weight:700; color:var(--dim); margin-top:4px;}
+  .spcard .heard{margin-top:10px; font-size:15.5px; font-weight:800; background:#eef6fa;
+    border-radius:10px; padding:8px 12px; min-height:38px;}
+  .spcard .heard b{color:var(--green);}
+  .mic{width:60px; height:60px; border-radius:50%; border:3px solid var(--ink); background:var(--red);
+    color:#fff; font-size:26px; cursor:pointer; box-shadow:0 4px 0 var(--ink); line-height:1;}
+  .mic:hover{transform:translateY(-2px);}
+  .mic.rec{background:var(--green); animation:pulse 1s infinite;}
+  @keyframes pulse{50%{transform:scale(1.08);}}
+  .score{font-size:22px; letter-spacing:2px;}
+  #micwarn{background:#fff6e9; border:3px solid var(--orange); border-radius:14px; padding:11px 15px;
+    font-size:14.5px; font-weight:800; margin-bottom:14px; line-height:1.5;}
+
+  /* ===== LISTENING ===== */
+  .lncard{background:#fff; border:3px solid var(--ink); border-radius:18px; box-shadow:0 4px 0 var(--ink);
+    padding:16px 18px; margin-bottom:13px;}
+  .lncard .ctl{display:flex; gap:9px; flex-wrap:wrap; align-items:center; margin-bottom:11px;}
+  .lncard .qq{font-weight:900; font-size:18px; margin-bottom:10px;}
+  .lncard .txt{display:none; margin-top:10px; font-size:16px; font-weight:800; color:var(--deep);
+    background:#eef6fa; border-radius:10px; padding:8px 12px;}
+  .lncard.shown .txt{display:block;}
+
+  /* ===== POSTER BUILDER ===== */
+  .pbwrap{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start;}
+  @media(max-width:860px){.pbwrap{grid-template-columns:1fr;}}
+  .pf{margin-bottom:12px;}
+  .pf label{display:block; font-weight:900; font-size:14px; margin-bottom:4px;}
+  .pf .hp{font-size:12.5px; color:var(--dim); font-weight:700; margin-bottom:5px;}
+  .pf input, .pf textarea{width:100%; border:3px solid var(--ink); border-radius:12px; font:inherit;
+    font-weight:800; font-size:16px; padding:9px 12px; background:#fdfffe;}
+  .pf input:focus, .pf textarea:focus{outline:0; border-color:var(--blue); background:#f2fbff;}
+  #pview{border:5px solid var(--deep); border-radius:18px; background:linear-gradient(#e9f6fb,#fff);
+    padding:20px; position:sticky; top:86px;}
+  #pview .t{font-size:26px; font-weight:900; text-align:center; color:var(--deep); line-height:1.1;
+    margin-bottom:4px; word-break:break-word;}
+  #pview .s{text-align:center; font-size:13px; font-weight:900; letter-spacing:2px; color:var(--orange); margin-bottom:14px;}
+  #pview .l{display:flex; justify-content:space-between; gap:10px; border-bottom:2px dotted #b9d6e3;
+    padding:6px 0; font-size:16px; font-weight:800;}
+  #pview .l b{color:var(--red); white-space:nowrap;}
+  #pview .body{margin-top:12px; font-size:16px; font-weight:700; line-height:1.55;}
+  #pview .fin{margin-top:12px; text-align:center; font-size:14px; font-weight:900; color:var(--green);}
+
+  /* drill / teams / foot / toast */
+  .actbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 14px;
+    padding:10px 14px; border:3px solid var(--ink); border-radius:16px; background:#fff;
+    box-shadow:0 4px 0 var(--ink); font-weight:900; font-size:13px; letter-spacing:.5px;}
+  .actbar .n{background:var(--ink); color:#fff; border-radius:99px; padding:3px 10px; font-size:11px;}
+  .tiers{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px;}
+  .tb{border:3px solid var(--ink); border-radius:99px; background:#fff; font:inherit; font-weight:900;
+    font-size:14px; padding:8px 16px; cursor:pointer; box-shadow:0 3px 0 var(--ink);}
+  .tb.on{background:var(--ink); color:var(--yellow);}
+  #qmeta{font-weight:900; color:var(--dim); font-size:14px; margin-bottom:11px;}
+  #qmeta b{color:var(--orange);}
+  #teams{display:none; position:sticky; top:64px; z-index:150; margin:0 auto 8px; max-width:1200px; padding:0 5vw;}
+  #teams.on{display:block;}
+  .tin{background:#fff; border:3px solid var(--ink); border-radius:16px; box-shadow:0 4px 0 var(--ink);
+    padding:10px 12px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;}
+  .tm{display:flex; align-items:center; gap:5px; font-weight:900;}
+  .tm .nm{font-size:13px;}
+  .tm .pt{font-size:20px; color:var(--green); min-width:38px; text-align:center;}
+  .tm button{width:28px; height:28px; border:2.5px solid var(--ink); border-radius:9px; background:#fff;
+    font-weight:900; cursor:pointer; font-size:15px; line-height:1;}
+  .tm button:hover{background:var(--yellow);}
+  #foot{position:fixed; bottom:0; left:0; right:0; z-index:200; display:flex; gap:9px; flex-wrap:wrap;
+    align-items:center; padding:10px 16px; background:rgba(255,255,255,.96); border-top:3px solid var(--line);}
+  #foot small{color:var(--dim); font-weight:800; font-size:12px;}
+  #toast{position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(26px); z-index:400;
+    background:var(--green); color:#fff; font-weight:900; font-size:17px; padding:13px 26px;
+    border:3px solid var(--ink); border-radius:99px; box-shadow:0 5px 0 var(--ink);
+    opacity:0; pointer-events:none; transition:.28s;}
+  #toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* PROJEÇÃO */
+  body.proj{font-size:1.2em;}
+  body.proj .qn{font-size:clamp(22px,2.6vw,32px);}
+  body.proj .op{font-size:21px; padding:15px 18px;}
+  body.proj .ch{font-size:24px; padding:11px 17px;}
+  body.proj .ch.let{font-size:28px; min-width:54px;}
+  body.proj .read{font-size:22px;}
+  body.proj .mi{font-size:20px;}
+  body.proj .vc .w{font-size:24px;} body.proj .vc .e{font-size:52px;}
+  body.proj .srow .it{font-size:23px;}
+  body.proj .lab h3{font-size:30px;}
+  body.proj .labrow .en, body.proj .labrow .ptx{font-size:19px;}
+  body.proj .labrow .exm{font-size:20px;}
+  body.proj .cerr .w, body.proj .cerr .r{font-size:21px;}
+
+  /* IMPRESSÃO — só o pôster */
+  @media print{
+    #bar,#foot,#teams,#toast,.pbform,.actbar,h2.sec,p.how,p.tip{display:none !important;}
+    #pview{position:static; border-width:4px; page-break-inside:avoid;}
+    .pbwrap{grid-template-columns:1fr;}
+    body{background:#fff;}
+  }
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div id="logo" onclick="home()">🌊 OCEAN RESCUE<span>UNIT 5 · HELP OUR OCEANS · 5º ANO</span></div>
+  <a href="../../" style="text-decoration:none;border:3px solid #1C6F94;border-radius:14px;background:#fff;color:#1C6F94;font-weight:900;font-size:14px;padding:8px 14px;box-shadow:0 3px 0 #1C6F94;white-space:nowrap">⌂ Início</a>
+  <div class="grow"></div>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+  <div class="pill" id="lvlpill">🏅 <span id="lvl">Beach Helper 🩴</span></div>
+  <button class="btn b" onclick="toggleProj()" id="projBtn">🔍 Projeção</button>
+  <button class="btn" onclick="home()">🗺️ Mapa</button>
+</div>
+
+<div id="teams"><div class="tin" id="teamsIn"></div></div>
+
+<div id="homeView">
+  <div id="hero">
+    <div class="big">🌊🐢🐬</div>
+    <h1>OCEAN <em>RESCUE</em></h1>
+    <div class="sub">Unit 5 · <b>Help our oceans!</b> · 21 estações de inglês</div>
+    <div class="tags">
+      <span class="tag">🔊 Áudio em tudo</span>
+      <span class="tag">🇧🇷 Tradução</span>
+      <span class="tag">🎤 Speaking</span>
+      <span class="tag">✏️ Writing</span>
+      <span class="tag">🎧 Listening</span>
+      <span class="tag">🧩 Crossword</span>
+      <span class="tag">🐢 Save the turtle</span>
+    </div>
+  </div>
+  <main><div id="mapArea"></div></main>
+</div>
+
+<div id="play"><div id="body"></div></div>
+
+<div id="foot">
+  <button class="btn" onclick="stepEp(-1)">◀ Anterior</button>
+  <button class="btn" onclick="stepEp(1)">Próxima ▶</button>
+  <button class="btn y" onclick="revealAll()">👀 Answers</button>
+  <div class="grow"></div>
+  <small>Prof.ª Vanessa · Inglês</small>
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+/* =======================================================================
+   OCEAN RESCUE · Unit 5 "Help our oceans!" · 5º ano · CONTEÚDO
+   ======================================================================= */
+
+/* ícones desenhados para os bichos que não têm emoji confiável */
+const IC = {
+  seahorse:`<svg viewBox="0 0 64 64" class="ico"><path d="M40 8c6 0 9 4 8 9-1 4-5 5-8 4 3 5 3 11 1 16-2 6-7 9-9 14-2 6 1 10 5 10 3 0 5-2 5-5" fill="none" stroke="#0e6b8c" stroke-width="5" stroke-linecap="round"/><path d="M32 15c-5 1-9 5-10 10s1 9 4 12" fill="none" stroke="#38a0c4" stroke-width="4" stroke-linecap="round"/><circle cx="41" cy="14" r="2.4" fill="#0e3a4d"/><path d="M46 10l6-3-2 6z" fill="#f0a93b"/></svg>`,
+  starfish:`<svg viewBox="0 0 64 64" class="ico"><path d="M32 6l7 17 18 1-14 12 5 18-16-10-16 10 5-18L7 24l18-1z" fill="#f08a3c" stroke="#a8541c" stroke-width="3.5" stroke-linejoin="round"/><circle cx="32" cy="30" r="2.2" fill="#a8541c"/><circle cx="25" cy="38" r="2" fill="#a8541c"/><circle cx="39" cy="38" r="2" fill="#a8541c"/></svg>`,
+  jellyfish:`<svg viewBox="0 0 64 64" class="ico"><path d="M12 30a20 16 0 0 1 40 0z" fill="#c9a2e0" stroke="#6d4f8f" stroke-width="3.5" stroke-linejoin="round"/><path d="M19 31c0 9-4 12-2 20M28 31c0 10-3 13-1 21M36 31c0 10 3 13 1 21M45 31c0 9 4 12 2 20" fill="none" stroke="#6d4f8f" stroke-width="3.5" stroke-linecap="round"/></svg>`
+};
+
+/* =====================  ATOS  ===================== */
+const ACTS = {
+  a1:{n:"ACT 1 · OCEAN WATCH",   em:"🌊", c:"#1c7ea8", d:"Os animais do mar e as formas de ajudar"},
+  a2:{n:"ACT 2 · WHAT ARE THEY DOING?", em:"🐬", c:"#0f8a6a", d:"Present continuous: is/are + -ing"},
+  a3:{n:"ACT 3 · THE BEACH CLEAN-UP", em:"🏖️", c:"#d98026", d:"was / were, leitura e o seu pôster"}
+};
+
+/* =====================  VOCABULÁRIO  ===================== */
+const VOCS = {
+  v1:{tip:"São os <b>10 ocean animals</b> das páginas 54 e 55. Toque para ver o português e uma frase do jogo.",
+    items:[
+      {e:"🦈", w:"shark",     pt:"tubarão",       ex:"The shark is swimming."},
+      {e:"🐋", w:"whale",     pt:"baleia",        ex:"The whales are singing."},
+      {e:"🐬", w:"dolphin",   pt:"golfinho",      ex:"The dolphins are jumping."},
+      {e:"🐙", w:"octopus",   pt:"polvo",         ex:"The octopuses are eating."},
+      {e:"🦀", w:"crab",      pt:"caranguejo",    ex:"The crabs are waving with their claws."},
+      {e:"🦭", w:"seal",      pt:"foca",          ex:"The seals are sleeping in the ocean."},
+      {e:"🐌", w:"snail",     pt:"caramujo",      ex:"The snails are climbing."},
+      {e:IC.seahorse,  w:"seahorse",  pt:"cavalo-marinho", ex:"The seahorses are hiding in the plants."},
+      {e:IC.starfish,  w:"starfish",  pt:"estrela-do-mar", ex:"The starfish are hiding in the sand."},
+      {e:IC.jellyfish, w:"jellyfish", pt:"água-viva",      ex:"The jellyfish are swimming."}
+    ]},
+  v2:{tip:"São as <b>6 ways of taking care of the oceans</b> da página 56. Repare: quase todas começam com um <b>verbo</b>.",
+    items:[
+      {e:"🌊", w:"clean the oceans",   pt:"limpar os oceanos",   ex:"We can clean the oceans together."},
+      {e:"🏖️", w:"have a beach clean-up", pt:"fazer um mutirão de limpeza na praia", ex:"Let's have a beach clean-up!"},
+      {e:"🗑️", w:"pick up trash",      pt:"recolher o lixo",     ex:"They're picking up trash."},
+      {e:"♻️", w:"recycle trash",      pt:"reciclar o lixo",      ex:"We can recycle trash."},
+      {e:"🎬", w:"make a movie",       pt:"fazer um filme",      ex:"They're making a movie about ocean trash."},
+      {e:"📣", w:"tell people",        pt:"contar para as pessoas", ex:"We can tell people about the oceans."}
+    ]}
+};
+
+/* =====================  CROSSWORD  ===================== */
+const CROSS = {
+  c1:{rows:12, cols:15,
+    tip:"Escreva os <b>ocean animals</b>. Toque numa dica ou numa casinha e digite. As <b>setas do teclado</b> andam pela grade e o <b>🔊</b> lê a dica em inglês.",
+    words:[
+      {w:"SEAL",      r:0, c:4, dir:"a", clue:"It has hands and feet, and it sleeps in the ocean."},
+      {w:"STARFISH",  r:0, c:4, dir:"d", clue:"It has arms, but it doesn't have hands. It hides in the sand."},
+      {w:"CRAB",      r:2, c:2, dir:"a", clue:"It has legs and claws, but it doesn't have paws."},
+      {w:"SNAIL",     r:5, c:1, dir:"a", clue:"It is very slow and it carries its house on its back."},
+      {w:"SHARK",     r:5, c:1, dir:"d", clue:"It has a lot of teeth and it swims very fast."},
+      {w:"OCTOPUS",   r:6, c:8, dir:"a", clue:"It has eight arms and it lives in the rocks."},
+      {w:"WHALE",     r:7, c:3, dir:"a", clue:"It is the biggest animal in the ocean and it sings."},
+      {w:"DOLPHIN",   r:5, c:11, dir:"d", clue:"It is very friendly and it jumps out of the water."}
+    ]}
+};
+
+/* =====================  SALVE A TARTARUGA  ===================== */
+const HANG = {
+  h1:{tip:"Adivinhe a palavra letra por letra. Cada <b>erro</b> joga mais lixo no mar. Cada <b>acerto</b> deixa a água mais limpa!",
+    rounds:[
+      {w:"JELLYFISH",  hint:"Ocean animal · água-viva"},
+      {w:"SEAHORSE",   hint:"Ocean animal · cavalo-marinho"},
+      {w:"RECYCLE",    hint:"Verb · a gente faz isso com o lixo"},
+      {w:"BEACH",      hint:"Place · praia"},
+      {w:"OCTOPUS",    hint:"Ocean animal · tem oito braços"},
+      {w:"TRASH",      hint:"Noun · o que a gente recolhe na praia"}
+    ]}
+};
+
+/* =====================  MATCHING  ===================== */
+const MATCHES = {
+  m1:{l:"ANIMAL", r:"DEFINITION", how:"Toque num animal e depois na definição em inglês. Se acertar, o par fica verde.",
+    tip:"São as definições do livro. Leia até o fim antes de escolher — <b>arms</b> braços · <b>claws</b> garras · <b>paws</b> patas.",
+    pairs:[
+      {a:"🦈 shark",     b:"It has a lot of teeth and it swims very fast."},
+      {a:"🦀 crab",      b:"It has legs and claws, but it doesn't have paws."},
+      {a:"⭐ starfish",  b:"It has arms, but it doesn't have hands."},
+      {a:"🦭 seal",      b:"It has hands and feet, and it sleeps in the ocean."},
+      {a:"🐙 octopus",   b:"It has eight arms and it lives in the rocks."},
+      {a:"🐋 whale",     b:"It's the biggest animal in the ocean and it sings."},
+      {a:"🐬 dolphin",   b:"It's very friendly and it jumps out of the water."},
+      {a:"🐌 snail",     b:"It's very slow and it carries its house on its back."}
+    ]},
+  m2:{l:"ENGLISH", r:"PORTUGUÊS", how:"Ligue a frase em inglês com a tradução certa.",
+    tip:"Estas são as frases de <b>perguntar sobre um evento</b> da página 59. Você vai usá-las na estação do microfone.",
+    pairs:[
+      {a:"When is the beach clean-up?", b:"Quando é o mutirão na praia?"},
+      {a:"It's on Sunday.",             b:"É no domingo."},
+      {a:"What time does it start?",    b:"Que horas começa?"},
+      {a:"It starts at ten o'clock.",   b:"Começa às dez horas."},
+      {a:"Where is it?",                b:"Onde é?"},
+      {a:"It's at Sunny Beach.",        b:"É na Praia Sunny."},
+      {a:"Was it fun?",                 b:"Foi divertido?"},
+      {a:"Yes, it was!",                b:"Sim, foi!"}
+    ]}
+};
+
+/* =====================  SORT  ===================== */
+const SORTS = {
+  s1:{cats:["💚 HELPS the ocean","💔 HURTS the ocean"],
+    how:"Leia e escolha: isso ajuda ou machuca o oceano?",
+    tip:"Pense no que o Ben escreveu no blog dele: <b>“It isn't safe for the animals in the ocean.”</b>",
+    items:[
+      {it:"pick up trash on the beach", c:0},
+      {it:"throw a plastic bottle in the sea", c:1},
+      {it:"recycle trash", c:0},
+      {it:"leave a plastic bag on the sand", c:1},
+      {it:"make a movie about ocean trash", c:0},
+      {it:"tell people about the oceans", c:0},
+      {it:"drop trash in the river", c:1},
+      {it:"have a beach clean-up", c:0}
+    ]},
+  s2:{cats:["some / any","a lot of / many"],
+    how:"Qual grupo cabe melhor na frase?",
+    tip:"<b>some</b> e <b>any</b> = alguns / nenhum &nbsp;·&nbsp; <b>a lot of</b> e <b>many</b> = muitos. Em pergunta e frase negativa a gente usa <b>any</b>.",
+    items:[
+      {it:"Are there ______ snails? (pergunta)", c:0},
+      {it:"There are ______ snails. (poucos)", c:0},
+      {it:"There is ______ plastic trash in the ocean. (muito)", c:1},
+      {it:"There aren't ______ dolphins here. (nenhum)", c:0},
+      {it:"How ______ crabs can you see? (quantos)", c:1},
+      {it:"There are ______ starfish in the sand. (alguns)", c:0}
+    ]}
+};
+
+/* =====================  UNSCRAMBLE  ===================== */
+const SCRAM = {
+  u1:{tip:"Monte os <b>verbos com -ing</b>. Lembre: depois de <b>is</b> ou <b>are</b>, o verbo sempre ganha <b>-ing</b>.",
+    items:[
+      {e:"MMSWIGNI",  pt:"nadando",     w:"SWIMMING"},
+      {e:"DIHNGI",    pt:"escondendo",  w:"HIDING"},
+      {e:"CLNIYCERG", pt:"reciclando",  w:"RECYCLING"},
+      {e:"PJMUGNI",   pt:"pulando",     w:"JUMPING"},
+      {e:"NAGLENIC",  pt:"limpando",    w:"CLEANING"},
+      {e:"IEELNSPG",  pt:"dormindo",    w:"SLEEPING"},
+      {e:"KGIMAN",    pt:"fazendo",     w:"MAKING"},
+      {e:"NGITEA",    pt:"comendo",     w:"EATING"}
+    ]}
+};
+
+/* =====================  MÚLTIPLA ESCOLHA  ===================== */
+const QS = {
+  q1:{items:[
+    {q:"The shark ______ swimming.", o:["is","are","am","be"], a:0,
+      w:"<b>shark</b> é um só → <b>is</b>.", regra:"um animal → is · vários animais → are"},
+    {q:"The dolphins ______ jumping.", o:["is","was","are","do"], a:2,
+      w:"<b>dolphins</b> está no plural → <b>are</b>.", regra:"um animal → is · vários animais → are"},
+    {q:"The starfish are hiding. They ______ jumping.", o:["isn't","aren't","don't","not"], a:1,
+      w:"<b>They</b> é plural, então o negativo é <b>aren't</b>.", regra:"is + not = isn't · are + not = aren't"},
+    {q:"The crab ______ waving with its claws.", o:["are","were","have","is"], a:3,
+      w:"<b>crab</b> é um só → <b>is</b>.", regra:"um animal → is"},
+    {q:"The seals ______ playing with a ball. They're sleeping.", o:["isn't","don't","aren't","not"], a:2,
+      w:"<b>seals</b> é plural e a frase é negativa → <b>aren't</b>.", regra:"are + not = aren't"},
+    {q:"The octopuses are ______ .", o:["eating","eatting","eatin","eateing"], a:0,
+      w:"<b>eat</b> só ganha <b>-ing</b>: eat → eating. Nada de dobrar o t.", regra:"eat → eating"},
+    {q:"The seahorses are ______ in the plants.", o:["hideing","hidding","hided","hiding"], a:3,
+      w:"<b>hide</b> termina em <b>-e</b>: tira o e e põe -ing → <b>hiding</b>.", regra:"verbo com -e → tira o e + ing"},
+    {q:"The snails are ______ the rocks.", o:["climing","climbing","climbbing","climbeing"], a:1,
+      w:"<b>climb</b> → climb + ing = <b>climbing</b>. O b fica.", regra:"climb → climbing"},
+    {q:"The jellyfish ______ swimming in the ocean.", o:["is","are","am","be"], a:1,
+      w:"Aqui <b>jellyfish</b> está no plural (várias) → <b>are</b>.", regra:"vários → are"},
+    {q:"The whale isn't walking. It ______ swimming.", o:["are","were","isn't","is"], a:3,
+      w:"É a mesma baleia, e agora a frase é afirmativa → <b>is</b>.", regra:"um animal → is"}
+  ]},
+  q2:{items:[
+    {q:"______ are they doing? — They're picking up trash.", o:["What","Where","When","Who"], a:0,
+      w:"A resposta diz uma <b>ação</b>, então a pergunta é <b>What are they doing?</b>", regra:"What are they doing? = O que eles estão fazendo?"},
+    {q:"Are they cleaning the beach? — Yes, ______ .", o:["they do","they is","they are","it is"], a:2,
+      w:"A pergunta começou com <b>Are</b>, então a resposta curta usa <b>are</b>.", regra:"Are they…? → Yes, they are. / No, they aren't."},
+    {q:"Are they playing at the beach? — No, ______ . They're working!", o:["they don't","they isn't","they not","they aren't"], a:3,
+      w:"Resposta curta negativa de <b>Are they…?</b> é <b>No, they aren't.</b>", regra:"Are they…? → No, they aren't."},
+    {q:"______ the dolphin jumping? — Yes, it is!", o:["Are","Is","Do","Does"], a:1,
+      w:"<b>the dolphin</b> é um só → começa a pergunta com <b>Is</b>.", regra:"Is + um · Are + vários"},
+    {q:"What ______ the seals doing?", o:["is","does","are","do"], a:2,
+      w:"<b>the seals</b> é plural → <b>are</b>.", regra:"What are + plural + doing?"},
+    {q:"Are the children making a movie? — ______ , they are.", o:["Yes","No","Not","Never"], a:0,
+      w:"Se a resposta termina com <b>they are</b>, ela é positiva → <b>Yes</b>.", regra:"Yes, they are. / No, they aren't."},
+    {q:"Choose the correct question: the answer is “They're recycling trash.”",
+      o:["What are they doing?","What do they doing?","What they are doing?","What is they doing?"], a:0,
+      w:"A ordem certa é <b>What + are + they + doing?</b>", regra:"palavra-pergunta + verbo be + sujeito + -ing"},
+    {q:"Is the octopus eating? — No, ______ . It's sleeping.", o:["it aren't","it doesn't","it isn't","is not it"], a:2,
+      w:"<b>the octopus</b> é um só → <b>it isn't</b>.", regra:"Is it…? → No, it isn't."}
+  ]},
+  q3:{items:[
+    {q:"The beach clean-up ______ on Sunday. (ontem)", o:["is","was","were","are"], a:1,
+      w:"Já passou e é <b>uma coisa só</b> → <b>was</b>.", regra:"I / he / she / it → was"},
+    {q:"Adam and Holly ______ at the clean-up.", o:["was","is","are","were"], a:3,
+      w:"São <b>duas pessoas</b> → <b>were</b>.", regra:"you / we / they → were"},
+    {q:"______ you at the beach yesterday? — Yes, I was.", o:["Was","Are","Were","Did"], a:2,
+      w:"Com <b>you</b> a gente usa <b>were</b>.", regra:"Were you…? → Yes, I was."},
+    {q:"Was it fun? — No, ______ . It was a lot of work!", o:["it wasn't","it weren't","it isn't","it didn't"], a:0,
+      w:"Negativo de <b>was</b> é <b>wasn't</b>.", regra:"was + not = wasn't · were + not = weren't"},
+    {q:"The children ______ very happy after the clean-up.", o:["was","is","am","were"], a:3,
+      w:"<b>children</b> é plural → <b>were</b>.", regra:"plural → were"},
+    {q:"Where ______ the movie? — It was at the Ocean Museum.", o:["were","was","are","did"], a:1,
+      w:"<b>the movie</b> é uma coisa só → <b>was</b>.", regra:"it → was"},
+    {q:"______ Adam and Holly at the clean-up? — Yes, they were.", o:["Was","Were","Are","Is"], a:1,
+      w:"Duas pessoas → <b>Were</b>.", regra:"Were they…? → Yes, they were."},
+    {q:"It ______ good to help the ocean.", o:["were","are","being","was"], a:3,
+      w:"<b>It</b> pede sempre <b>was</b>.", regra:"it → was"}
+  ]},
+  q4:{items:[
+    {q:"How old is Ben?", o:["He's 10.","He's 4.","He's 12.","He's 9."], a:0,
+      w:"No começo do blog: “<b>I'm 10 years old</b>”."},
+    {q:"Where does Boyan Slat come from?", o:["Hawaii","Los Angeles","the Netherlands","Brazil"], a:2,
+      w:"“Boyan Slat <b>from the Netherlands</b> has an Ocean Clean-Up project.”"},
+    {q:"What does Boyan Slat's team do with the trash?", o:["They burn it.","They sell it.","They leave it.","They recycle it."], a:3,
+      w:"“His team picks up trash in the oceans. <b>Then they recycle the trash.</b>”"},
+    {q:"What are the schoolchildren from Hawaii doing?", o:["Having a party.","Making a movie.","Selling fish.","Building a boat."], a:1,
+      w:"“Some schoolchildren from Hawaii are <b>making a movie</b> about trash in the ocean.”"},
+    {q:"How many children were at Kids' Ocean Day in Los Angeles?", o:["400","40","4,000","14"], a:2,
+      w:"“There are <b>4,000 children</b> at a beach clean-up.”"},
+    {q:"What is the best title for Ben's blog post?", o:["Young people and the oceans","My vacation by the ocean","Animals in the ocean","How to swim"], a:0,
+      w:"O texto todo fala de <b>jovens ajudando os oceanos</b>."},
+    {q:"Is plastic trash dangerous for ocean animals?", o:["Yes, it is.","No, it isn't.","Only in rivers.","Only in winter."], a:0,
+      w:"“This trash is <b>dangerous</b> for the animals!”"}
+  ]},
+  q5:{items:[
+    {q:"What is the name of the movie?", o:["Ocean animals","Beach clean-up","Clean oceans","Sunny Beach"], a:2,
+      w:"O título grande do cartaz é <b>Clean oceans</b>."},
+    {q:"The movie is about plastic trash in rivers.", o:["True","False"], a:1,
+      w:"O cartaz fala de <b>oceans</b>, não de rios."},
+    {q:"When is the movie?", o:["Sunday at two o'clock","Saturday at two o'clock","Saturday at nine o'clock","Friday at ten o'clock"], a:1,
+      w:"“<b>2:00 p.m. Saturday May 5th</b>.”"},
+    {q:"Where can you buy tickets?", o:["At the beach","At the movie theater door","Online","At the information desk"], a:3,
+      w:"“Tickets: $3 <b>from the information desk</b>.”"},
+    {q:"How much is a ticket?", o:["$1","$5","$3","It's free."], a:2,
+      w:"“Tickets: <b>$3</b>.”"},
+    {q:"Which animals does the poster name?", o:["sharks, sea turtles and starfish","crabs and snails","seals and whales","dolphins only"], a:0,
+      w:"“How can we help the <b>sharks, sea turtles, and starfish</b>?”"},
+    {q:"The movie is in March.", o:["True","False"], a:1,
+      w:"É em <b>May</b> (maio), dia 5."}
+  ]},
+  q6:{items:[
+    {q:"Which word has the SAME ending sound as “beaches”?", o:["whales","grapes","socks","sandwiches"], a:3,
+      w:"<b>beaches</b> e <b>sandwiches</b> terminam com o som /ɪz/ — uma sílaba a mais."},
+    {q:"Which word has the SAME ending sound as “seahorses”?", o:["grapes","dresses","sharks","crabs"], a:1,
+      w:"<b>seahorses</b> e <b>dresses</b> ganham uma sílaba: /ɪz/."},
+    {q:"Which word does NOT have the /ɪz/ ending?", o:["princes","whales","beaches","dresses"], a:1,
+      w:"<b>whales</b> termina com um /z/ simples, sem sílaba nova."}
+  ]}
+};
+
+/* =====================  ORDER (montar frases)  ===================== */
+const ORDER = {
+  o1:{tip:"Clique nas palavras na ordem certa. Comece sempre pelo <b>sujeito</b> e depois o <b>is</b> ou <b>are</b>.",
+    items:[
+      {c:["The shark","is","swimming","in the ocean."], t:"O tubarão está nadando no oceano."},
+      {c:["The starfish","aren't","jumping."], t:"As estrelas-do-mar não estão pulando."},
+      {c:["The children","are","picking up","trash."], t:"As crianças estão recolhendo lixo."},
+      {c:["What","are","they","doing?"], t:"O que eles estão fazendo?"},
+      {c:["Are","they","cleaning","the beach?"], t:"Eles estão limpando a praia?"},
+      {c:["The seals","are","eating","the trash."], t:"As focas estão comendo o lixo."},
+      {c:["We","can","recycle","the plastic."], t:"Nós podemos reciclar o plástico."},
+      {c:["The beach clean-up","was","on","Sunday."], t:"O mutirão na praia foi no domingo."}
+    ]}
+};
+
+/* =====================  GRAMMAR LABS  ===================== */
+const LABS = {
+  L1:{t:"📐 GRAMMAR LAB 1 · The shark IS swimming",
+    rows:[
+      {f:"AFFIRMATIVE", code:"subject + is/are + verb-ING",
+       en:"We use the present continuous to talk about what is happening <b>now</b>. One animal takes <b>is</b>. Two or more animals take <b>are</b>.",
+       pt:"Usamos o present continuous para falar do que está acontecendo <b>agora</b>. Um animal pede <b>is</b>. Dois ou mais pedem <b>are</b>.",
+       ex:"The shark <b>is</b> swim<b>ming</b>. · The dolphins <b>are</b> jump<b>ing</b>."},
+      {f:"NEGATIVE", code:"subject + isn't/aren't + verb-ING",
+       en:"To make it negative, just add <b>not</b> to <b>is</b> or <b>are</b>. We almost always use the short form.",
+       pt:"Para deixar negativo, é só juntar <b>not</b> ao <b>is</b> ou ao <b>are</b>. Quase sempre usamos a forma curta.",
+       ex:"It <b>isn't</b> walking. · They <b>aren't</b> jumping."},
+      {f:"SPELLING", code:"-e → -ing · consoante dobrada",
+       en:"Verbs ending in <b>-e</b> lose the e: hide → hiding. Short verbs ending in one vowel + one consonant double it: swim → swimming.",
+       pt:"Verbos terminados em <b>-e</b> perdem o e: hide → hiding. Verbos curtos com uma vogal + uma consoante dobram a consoante: swim → swimming.",
+       ex:"make → mak<b>ing</b> · hide → hid<b>ing</b> · swim → swim<b>ming</b> · eat → eat<b>ing</b>"}
+    ],
+    err:{w:"The shark swimming.", r:"The shark <b>is</b> swimming.",
+      n:"Nunca esqueça o <b>is</b> ou o <b>are</b>. Em português a gente diz “o tubarão nadando”, mas em inglês o verbo <b>be</b> é obrigatório."}},
+  L2:{t:"📐 GRAMMAR LAB 2 · What are they doing?",
+    rows:[
+      {f:"WH- QUESTION", code:"What + is/are + subject + verb-ING?",
+       en:"To ask what someone is doing right now, start with <b>What</b>, then <b>is</b> or <b>are</b>, then the person, then the -ing verb.",
+       pt:"Para perguntar o que alguém está fazendo agora, comece com <b>What</b>, depois <b>is</b> ou <b>are</b>, depois quem, e por último o verbo com -ing.",
+       ex:"<b>What are they doing?</b> — They're picking up trash."},
+      {f:"YES/NO QUESTION", code:"Is/Are + subject + verb-ING?",
+       en:"For a yes/no question, put <b>is</b> or <b>are</b> at the front. No “do” and no “does” here!",
+       pt:"Na pergunta de sim ou não, o <b>is</b> ou <b>are</b> vai para a frente. Aqui não entra “do” nem “does”!",
+       ex:"<b>Are they</b> cleaning the beach? — Yes, they are."},
+      {f:"SHORT ANSWERS", code:"Yes, they are. / No, they aren't.",
+       en:"Answer with the same verb that started the question. Never repeat the -ing verb.",
+       pt:"Responda com o mesmo verbo que abriu a pergunta. Não repita o verbo com -ing.",
+       ex:"Is it eating? — <b>Yes, it is.</b> / <b>No, it isn't.</b>"}
+    ],
+    err:{w:"Yes, they do.", r:"Yes, they <b>are</b>.",
+      n:"A pergunta era <b>Are they…?</b>, então a resposta tem que devolver o mesmo verbo: <b>are</b>."}},
+  L3:{t:"📐 GRAMMAR LAB 3 · was / were",
+    rows:[
+      {f:"PAST OF BE", code:"was (um) · were (vários)",
+       en:"<b>Was</b> and <b>were</b> are the past of <b>be</b>. Use <b>was</b> with I, he, she, it. Use <b>were</b> with you, we, they.",
+       pt:"<b>Was</b> e <b>were</b> são o passado do verbo <b>be</b>. Use <b>was</b> com I, he, she, it. Use <b>were</b> com you, we, they.",
+       ex:"The clean-up <b>was</b> on Sunday. · Adam and Holly <b>were</b> there."},
+      {f:"NEGATIVE", code:"wasn't · weren't",
+       en:"Add <b>not</b>: was not → wasn't, were not → weren't.",
+       pt:"Junte o <b>not</b>: was not → wasn't, were not → weren't.",
+       ex:"It <b>wasn't</b> boring. · They <b>weren't</b> late."},
+      {f:"QUESTIONS", code:"Was/Were + subject … ?",
+       en:"Move <b>was</b> or <b>were</b> to the front. The short answer repeats it.",
+       pt:"Leve o <b>was</b> ou o <b>were</b> para a frente. A resposta curta repete ele.",
+       ex:"<b>Were you</b> at the clean-up? — Yes, I <b>was</b>."}
+    ],
+    err:{w:"Were it fun?", r:"<b>Was</b> it fun?",
+      n:"<b>It</b> é uma coisa só, então pede <b>was</b>. <b>Were</b> fica com you, we e they."}}
+};
+
+/* =====================  ESCRITA COM CORREÇÃO  ===================== */
+const WRITE = {
+  w1:{tip:"Escreva a frase inteira em inglês. Não se preocupe com maiúscula — o jogo aceita dos dois jeitos.",
+    items:[
+      {q:"Look at the picture: 🦈 + swim. Write the sentence.", a:["the shark is swimming","the shark is swimming."],
+       h:"the shark ___ swim___", sol:"The shark is swimming."},
+      {q:"🐬🐬 + jump. Write the sentence.", a:["the dolphins are jumping","the dolphins are jumping."],
+       h:"the dolphins ___ jump___", sol:"The dolphins are jumping."},
+      {q:"⭐⭐ + hide (in the sand). Write the sentence.", a:["the starfish are hiding in the sand","the starfish are hiding in the sand."],
+       h:"the starfish ___ hid___ in the sand", sol:"The starfish are hiding in the sand."},
+      {q:"Ask about the picture: “O que eles estão fazendo?”", a:["what are they doing","what are they doing?"],
+       h:"what ___ they do___ ?", sol:"What are they doing?"},
+      {q:"Answer: Are they picking up trash? (sim)", a:["yes they are","yes, they are","yes they are."],
+       h:"yes, they ___ .", sol:"Yes, they are."},
+      {q:"Answer: Is the octopus sleeping? (não)", a:["no it isn't","no, it isn't","no it is not","no, it is not"],
+       h:"no, it ___ .", sol:"No, it isn't."},
+      {q:"Ask about the event: “Quando é o mutirão na praia?”", a:["when is the beach clean-up","when is the beach clean-up?"],
+       h:"when ___ the beach clean-up ?", sol:"When is the beach clean-up?"},
+      {q:"Complete with the past of be: The clean-up ___ on Sunday.", a:["was","the clean-up was on sunday","the clean-up was on sunday."],
+       h:"uma palavra só serve", sol:"The clean-up was on Sunday."}
+    ]}
+};
+
+/* =====================  SPEAKING (microfone)  ===================== */
+const SPEAK = {
+  sp1:{tip:"Toque no microfone e fale a frase em inglês. Fale <b>perto do aparelho</b> e sem pressa. Se o microfone não funcionar aí, use o botão “ouvir e repetir”.",
+    items:[
+      {en:"The shark is swimming.",            pt:"O tubarão está nadando."},
+      {en:"The dolphins are jumping.",         pt:"Os golfinhos estão pulando."},
+      {en:"They aren't picking up trash.",     pt:"Eles não estão recolhendo lixo."},
+      {en:"What are they doing?",              pt:"O que eles estão fazendo?"},
+      {en:"Yes, they are.",                    pt:"Sim, estão."},
+      {en:"When is the beach clean-up?",       pt:"Quando é o mutirão na praia?"},
+      {en:"It starts at ten o'clock.",         pt:"Começa às dez horas."},
+      {en:"We can help our oceans!",           pt:"Nós podemos ajudar nossos oceanos!"}
+    ]}
+};
+
+/* =====================  LISTENING  ===================== */
+const LISTEN = {
+  li1:{tip:"Toque em <b>🔊 Play</b>, ouça com atenção e escolha o que você ouviu. Pode ouvir quantas vezes quiser — e o botão 🐢 fala bem devagar.",
+    items:[
+      {audio:"The seals are sleeping in the ocean.", q:"O que os seals estão fazendo?",
+       o:["swimming","eating","jumping","sleeping"], a:3},
+      {audio:"The crabs aren't hiding in the sand.", q:"A frase é afirmativa ou negativa?",
+       o:["affirmative","negative"], a:1},
+      {audio:"The beach clean-up was on Sunday.", q:"Que dia foi o mutirão?",
+       o:["Sunday","Saturday","Monday","Friday"], a:0},
+      {audio:"It starts at ten o'clock.", q:"Que horas começa?",
+       o:["two o'clock","nine o'clock","ten o'clock","eleven o'clock"], a:2},
+      {audio:"Are they making a movie about ocean trash?", q:"Isso é uma pergunta ou uma afirmação?",
+       o:["a question","a statement"], a:0},
+      {audio:"Four thousand children were at the beach.", q:"Quantas crianças estavam na praia?",
+       o:["400","40,000","14","4,000"], a:3},
+      {audio:"The jellyfish are swimming and the starfish are hiding.", q:"Quem está se escondendo?",
+       o:["the jellyfish","the starfish","the crabs","the seals"], a:1}
+    ]}
+};
+
+/* =====================  LEITURAS  ===================== */
+const READS = {
+  r1:{em:"💻", title:"Ben's blog · March 3rd", set:"q4",
+    html:`<p><b>Hello! I'm Ben and I'm 10 years old.</b> Welcome to my blog! I like writing about the world around us. I hope you enjoy reading my blog.</p>
+      <p>Today, I want to talk about our oceans! There's a lot of trash in the ocean. This trash is <b>dangerous</b> for the animals! How can young people help? Let's find out!</p>
+      <p><b>Clean the oceans!</b> Boyan Slat from the Netherlands has an Ocean Clean-Up project. His team picks up trash in the oceans. Then they <b>recycle</b> the trash. It's a great project!</p>
+      <p><b>Make a movie!</b> Some schoolchildren from Hawaii, United States, are making a movie about trash in the ocean. There's a lot of plastic trash on the beaches in Hawaii. It's a terrible problem. It isn't <b>safe</b> for the animals in the ocean. This movie is a great way to tell people about ocean trash.</p>
+      <p><b>Go to a beach clean-up!</b> It's Kids' Ocean Day in Los Angeles, United States. Look! There are <b>4,000 children</b> at a beach clean-up! They're picking up trash. They're making a big picture of an animal on the beach, too.</p>
+      <p>All these young people are helping the oceans but everyone can help. And I want to help, too! Let's have a clean-up at our beach!</p>`,
+    gl:"<b>trash</b> lixo · <b>dangerous</b> perigoso · <b>safe</b> seguro · <b>terrible</b> terrível · <b>great</b> ótimo · <b>recycle</b> reciclar"},
+  r2:{em:"🎟️", title:"Come and see: Clean oceans", set:"q5",
+    html:`<div class="poster">
+        <div class="ph">CLEAN OCEANS 🌊</div>
+        <p>Plastic bottles and plastic bags are terrible for our beautiful oceans. How can we help the <b>sharks, sea turtles, and starfish</b>? Come and watch this movie!</p>
+        <div class="pr"><b>Tickets</b><span>$3 from the information desk</span></div>
+        <div class="pr"><b>When?</b><span>2:00 p.m. Saturday May 5th</span></div>
+        <div class="pr"><b>Where?</b><span>Ocean Museum, movie theater</span></div>
+      </div>
+      <p style="margin-top:14px">Now look at a second poster from the book:</p>
+      <div class="poster alt">
+        <div class="ph">SUNNY BEACH CLEAN-UP 🏖️</div>
+        <div class="pr"><b>Where?</b><span>Sunny Beach</span></div>
+        <div class="pr"><b>When?</b><span>Sunday August 4th</span></div>
+        <div class="pr"><b>What time?</b><span>9:00 – 12:00</span></div>
+        <p style="margin-top:10px">Come and help! This is our beautiful beach. Let's clean it up! We can help the seals, dolphins, and whales. We can pick up trash from the beach and we can recycle it. See you at nine o'clock in front of New Hotel!</p>
+      </div>`,
+    gl:"<b>tickets</b> ingressos · <b>information desk</b> balcão de informações · <b>in front of</b> em frente a"}
+};
+
+/* =====================  PÔSTER DO ALUNO  ===================== */
+const POSTER = {
+  fields:[
+    {k:"title", lb:"Name of your clean-up", ph:"Sunny Beach Clean-Up", help:"Dê um nome. Ex.: <i>Praia da Costa Clean-Up</i>"},
+    {k:"where", lb:"Where?",  ph:"Praia da Costa", help:"O lugar."},
+    {k:"when",  lb:"When?",   ph:"Sunday, September 6th", help:"O dia. Em inglês o mês vem com letra maiúscula."},
+    {k:"time",  lb:"What time?", ph:"9:00 – 12:00", help:"A hora de começar e de terminar."},
+    {k:"who",   lb:"Which animals can we help?", ph:"the seals, the dolphins and the whales", help:"Use os ocean animals da Unit 5."},
+    {k:"what",  lb:"What can we do?", ph:"We can pick up trash and we can recycle it.", help:"Use <b>We can…</b> duas vezes."},
+    {k:"meet",  lb:"Where do people meet?", ph:"in front of the big blue kiosk", help:"Onde todo mundo se encontra."}
+  ]
+};
+
+/* =====================  QUIZ FINAL  ===================== */
+const FINALE = [
+  {t:1,q:"🦈 It has a lot of teeth. What is it?", o:["a whale","a crab","a shark","a snail"], a:2},
+  {t:1,q:"How do you say “água-viva” in English?", o:["jellyfish","seahorse","starfish","seal"], a:0},
+  {t:1,q:"The dolphin ______ jumping.", o:["is","are","were","am"], a:0},
+  {t:1,q:"The crabs ______ waving with their claws.", o:["is","was","are","am"], a:2},
+  {t:1,q:"“Recolher o lixo” em inglês é…", o:["make a movie","pick up trash","tell people","clean the room"], a:1},
+  {t:1,q:"⭐ It has arms but it doesn't have hands.", o:["an octopus","a seal","a whale","a starfish"], a:3},
+  {t:1,q:"The seals ______ sleeping.", o:["is","am","are","was"], a:2},
+  {t:1,q:"Which one is a way of helping the oceans?", o:["recycle trash","throw plastic in the sea","leave bags on the sand","drop bottles"], a:0},
+  {t:1,q:"“Reciclar” em inglês é…", o:["reuse","refuse","return","recycle"], a:3},
+
+  {t:2,q:"The starfish are hiding. They ______ jumping.", o:["isn't","aren't","don't","not"], a:1},
+  {t:2,q:"______ are they doing? — They're cleaning the beach.", o:["Where","What","When","Who"], a:1},
+  {t:2,q:"Are they picking up trash? — Yes, ______ .", o:["they do","they is","it is","they are"], a:3},
+  {t:2,q:"hide + ing = ?", o:["hiding","hideing","hidding","hided"], a:0},
+  {t:2,q:"swim + ing = ?", o:["swiming","swimeing","swimming","swiminng"], a:2},
+  {t:2,q:"Is the octopus eating? — No, ______ .", o:["it aren't","it doesn't","they aren't","it isn't"], a:3},
+  {t:2,q:"Are there ______ snails? (pergunta)", o:["some","any","a lot","much"], a:1},
+  {t:2,q:"There are ______ starfish in the sand. (alguns)", o:["any","much","some","a"], a:2},
+  {t:2,q:"Put in order: doing / they / are / What / ?", o:["What are they doing?","What they are doing?","Are what they doing?","They are what doing?"], a:0},
+
+  {t:3,q:"The beach clean-up ______ on Sunday. (passado)", o:["was","is","were","are"], a:0},
+  {t:3,q:"Adam and Holly ______ at the clean-up.", o:["was","is","were","are"], a:2},
+  {t:3,q:"Was it fun? — No, ______ .", o:["it weren't","it wasn't","it isn't","it didn't"], a:1},
+  {t:3,q:"Where does Boyan Slat come from?", o:["Hawaii","Los Angeles","Brazil","the Netherlands"], a:3},
+  {t:3,q:"How many children were at Kids' Ocean Day?", o:["400","40","4,000","14"], a:2},
+  {t:3,q:"Which word ends with the same sound as “beaches”?", o:["sandwiches","whales","grapes","sharks"], a:0},
+  {t:3,q:"On the poster: “What time does it start?” — It starts at…", o:["ten o'clock","two o'clock","noon","nine o'clock"], a:3}
+];
+
+/* =====================  ESTAÇÕES  ===================== */
+const STATIONS = {
+  intro:{n:"Como funciona", em:"📋", d:"Leia antes de começar", stars:0},
+
+  s1 :{act:"a1", kind:"vocab",  set:"v1", n:"Ocean animals",       em:"🐠", d:"10 cartas com áudio e tradução",       stars:6},
+  s2 :{act:"a1", kind:"cross",  set:"c1", n:"Ocean crossword",     em:"🧩", d:"Palavras cruzadas dos animais",        stars:8},
+  s3 :{act:"a1", kind:"hang",   set:"h1", n:"Save the turtle",     em:"🐢", d:"Adivinhe a palavra e limpe o mar",     stars:7},
+  s4 :{act:"a1", kind:"match",  set:"m1", n:"Who am I?",           em:"🔎", d:"Animal × definição em inglês",         stars:6},
+  s5 :{act:"a1", kind:"vocab",  set:"v2", n:"Ways to help",        em:"♻️", d:"6 formas de cuidar dos oceanos",       stars:5},
+  s6 :{act:"a1", kind:"sort",   set:"s1", n:"Help or hurt?",       em:"💚", d:"Ajuda ou machuca o oceano?",           stars:6},
+
+  s7 :{act:"a2", kind:"lab",    set:"q1", panel:"L1", n:"Grammar Lab 1", em:"📐", d:"is / are + -ing · afirmativo e negativo", stars:8},
+  s8 :{act:"a2", kind:"scram",  set:"u1", n:"Verb unscramble",     em:"🔤", d:"Monte os verbos com -ing",             stars:6},
+  s9 :{act:"a2", kind:"order",  set:"o1", n:"Build the sentence",  em:"🧱", d:"Coloque as palavras na ordem",         stars:7},
+  s10:{act:"a2", kind:"lab",    set:"q2", panel:"L2", n:"Grammar Lab 2", em:"❓", d:"Perguntas e respostas curtas",   stars:8},
+  s11:{act:"a2", kind:"write",  set:"w1", n:"Write it!",           em:"✏️", d:"Escreva e o jogo corrige na hora",     stars:8},
+  s12:{act:"a2", kind:"speak",  set:"sp1", n:"Say it out loud",    em:"🎤", d:"Fale no microfone e veja se acertou",  stars:7},
+  s13:{act:"a2", kind:"sort",   set:"s2", n:"some · any · many",   em:"🔢", d:"Quantidades em inglês",                stars:6},
+
+  s14:{act:"a3", kind:"lab",    set:"q3", panel:"L3", n:"Grammar Lab 3", em:"⏪", d:"was / were · o passado do be",   stars:8},
+  s15:{act:"a3", kind:"listen", set:"li1", n:"Listen and choose",  em:"🎧", d:"Ouça a frase e responda",              stars:7},
+  s16:{act:"a3", kind:"match",  set:"m2", n:"Event phrases",       em:"🗓️", d:"Perguntar sobre um evento",            stars:6},
+  s17:{act:"a3", kind:"read",   set:"r1", n:"Ben's blog",          em:"💻", d:"Leitura longa + 7 perguntas",          stars:8},
+  s18:{act:"a3", kind:"read",   set:"r2", n:"Come and see!",       em:"🎟️", d:"Dois cartazes + 7 perguntas",          stars:7},
+  s19:{act:"a3", kind:"mcq",    set:"q6", n:"Sounds like beaches", em:"🔊", d:"Pronúncia do final -es",               stars:5},
+  s20:{act:"a3", kind:"poster", n:"Make your poster",              em:"🎨", d:"Monte e imprima o seu cartaz",         stars:8},
+  s21:{act:"a3", kind:"quiz",   n:"OCEAN FINALE",                  em:"🏆", d:"25 perguntas em 3 níveis",             stars:10}
+};
+
+const MAP = [
+  {t:"🚀 COMECE AQUI", eps:["intro"]},
+  {t:"🌊 ACT 1 · OCEAN WATCH", eps:["s1","s2","s3","s4","s5","s6"]},
+  {t:"🐬 ACT 2 · WHAT ARE THEY DOING?", eps:["s7","s8","s9","s10","s11","s12","s13"]},
+  {t:"🏖️ ACT 3 · THE BEACH CLEAN-UP", eps:["s14","s15","s16","s17","s18","s19","s20","s21"]}
+];
+const ORDERED = ["intro","s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16","s17","s18","s19","s20","s21"];
+
+const LEVELS = [
+  {s:0,   n:"Beach Helper 🩴"},
+  {s:32,  n:"Ocean Friend 🐚"},
+  {s:68,  n:"Sea Guardian 🐬"},
+  {s:105, n:"Ocean Hero 🌊"},
+  {s:138, n:"OCEAN CAPTAIN 👑"}
+];
+
+/* =======================================================================
+   MOTOR · OCEAN RESCUE
+   ======================================================================= */
+const $ = id => document.getElementById(id);
+let stars = 0, cur = null, total = 0, hits = 0;
+const done = {}, prog = {};
+const teams = [{n:"TEAM 1",p:0},{n:"TEAM 2",p:0},{n:"TEAM 3",p:0},{n:"TEAM 4",p:0}];
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("on"),2200); }
+
+function addStars(n){
+  stars += n;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(stars>=l.s) lv=i; });
+  $("stars").textContent = stars;
+  $("lvl").textContent = LEVELS[lv].n;
+}
+function bump(){
+  hits++;
+  const pc = total ? Math.min(100, Math.round(hits/total*100)) : 100;
+  prog[cur] = Math.max(prog[cur]||0, pc);
+  if(pc>=100 && !done[cur]){
+    done[cur]=true; addStars(STATIONS[cur].stars);
+    toast("🎉 " + STATIONS[cur].n + " · +" + STATIONS[cur].stars + " ⭐");
+  }
+  drawMap();
+}
+
+/* ---------------- voz ---------------- */
+const TTS = (typeof window.speechSynthesis !== "undefined" &&
+             typeof window.SpeechSynthesisUtterance !== "undefined");
+let _voice = null;
+function pickVoice(){
+  if(!TTS) return null;
+  if(_voice) return _voice;
+  let vs = []; try{ vs = window.speechSynthesis.getVoices() || []; }catch(e){}
+  const pref = ["en-US","en_US","en-GB","en_GB","en"];
+  for(const p of pref) for(const v of vs) if(v.lang && v.lang.indexOf(p)===0){ _voice=v; return _voice; }
+  return null;
+}
+if(TTS){ try{ window.speechSynthesis.onvoiceschanged = pickVoice; pickVoice(); }catch(e){} }
+function say(txt, slow, btn){
+  if(!TTS || !txt) return;
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  const u = new window.SpeechSynthesisUtterance(String(txt).replace(/<[^>]+>/g,"").replace(/[“”"]/g,""));
+  const v = pickVoice(); if(v) u.voice = v;
+  u.lang = (v && v.lang) || "en-US";
+  u.rate = slow ? 0.62 : 0.9;
+  if(btn){ btn.classList.add("rec"); u.onend = u.onerror = () => btn.classList.remove("rec"); }
+  try{ window.speechSynthesis.speak(u); }catch(e){}
+}
+function stopSay(){ if(TTS){ try{ window.speechSynthesis.cancel(); }catch(e){} } }
+
+/* ---------------- HOME ---------------- */
+function drawMap(){
+  $("mapArea").innerHTML = MAP.map(g=>`
+    <div class="maptitle">${g.t}</div>
+    <div class="grid">${g.eps.map(k=>{
+      const s=STATIONS[k], pc=prog[k]||0, i=ORDERED.indexOf(k);
+      return `<button class="st ${done[k]?"done":""}" onclick="openEp('${k}')">
+        ${i>0?`<span class="no">${i}</span>`:""}
+        <div class="em">${s.em}</div>
+        <div class="nm">${s.n}</div>
+        <div class="ds">${s.d}</div>
+        ${s.stars?`<div class="ds" style="color:var(--orange)">⭐ ${s.stars} stars</div>`:""}
+        ${pc>0?`<div class="bar"><i style="width:${pc}%"></i></div>`:""}
+        ${done[k]?`<span class="chk">✅</span>`:""}
+      </button>`;
+    }).join("")}</div>`).join("");
+}
+function home(){ stopSay(); stopMic(); $("play").classList.remove("on");
+  $("homeView").style.display="block"; cur=null; window.scrollTo(0,0); }
+
+/* ---------------- estado por estação ---------------- */
+let ORD=null, PK=null, SC=null, SO=null, MT=null, VC=null, CW=null, HG=null, WR=null, SP=null, LN=null;
+let mSel=null, mDone=0;
+
+function actBar(s){
+  const a=ACTS[s.act]; if(!a) return "";
+  return `<div class="actbar" style="border-color:${a.c}">
+    <span class="n" style="background:${a.c}">${a.em} ${a.n}</span>
+    <span style="color:var(--dim);font-weight:800">${a.d}</span></div>`;
+}
+
+function openEp(k){
+  stopSay(); stopMic();
+  cur=k; hits=0; total=0;
+  ORD=PK=SC=SO=MT=VC=CW=HG=WR=SP=LN=null; mSel=null; mDone=0;
+  const s=STATIONS[k];
+  $("homeView").style.display="none"; $("play").classList.add("on");
+  const b=$("body");
+  const head = actBar(s) + `<h2 class="sec"><span class="em">${s.em}</span>${s.n}</h2>`;
+
+  if(k==="intro"){ b.innerHTML = `<h2 class="sec"><span class="em">📋</span>Como funciona</h2>` + introHTML(); }
+
+  else if(s.kind==="vocab"){
+    VC=VOCS[s.set]; total=VC.items.length;
+    b.innerHTML = head + `<p class="how">Toque na carta para virar. Diga a palavra em inglês antes de virar!</p>
+      <p class="tip" style="border-left-color:var(--yellow)">${VC.tip}</p>
+      <div class="vg">${VC.items.map(v=>`
+        <div class="vc" onclick="flip(this)">
+          <div class="fr"><div class="e">${v.e}</div><div class="w">${v.w}</div><div class="tap">TOQUE PARA VIRAR</div></div>
+          <div class="bk"><div class="e">${v.e}</div><div class="pt">${v.pt}</div><div class="ex">“${v.ex}”</div></div>
+        </div>`).join("")}</div>`;
+  }
+
+  else if(s.kind==="cross"){
+    CW = buildCross(CROSS[s.set]); total = CW.words.length;
+    b.innerHTML = head + `<p class="how">Complete a grade com os nomes dos animais do mar.</p>
+      <p class="tip" style="border-left-color:var(--blue)">${CROSS[s.set].tip}</p>` + crossHTML();
+    setTimeout(()=>cwSelect(0), 0);
+  }
+
+  else if(s.kind==="hang"){
+    HG = {set:HANG[s.set], i:0, wrong:0, got:{}, solved:0};
+    total = HANG[s.set].rounds.length;
+    b.innerHTML = head + `<p class="how">Descubra a palavra escondida antes que o mar encha de lixo.</p>
+      <p class="tip" style="border-left-color:var(--green)">${HANG[s.set].tip}</p>
+      <div id="hgArea"></div>`;
+    hgRender();
+  }
+
+  else if(s.kind==="match"){
+    MT=MATCHES[s.set]; total=MT.pairs.length;
+    b.innerHTML = head + matchHTML(MT);
+  }
+
+  else if(s.kind==="sort"){
+    SO=SORTS[s.set]; total=SO.items.length;
+    b.innerHTML = head + `<p class="how">${SO.how}</p>
+      <p class="tip" style="border-left-color:var(--green)">${SO.tip}</p>
+      ${SO.items.map((it,i)=>`
+        <div class="srow" data-i="${i}">
+          <span class="it">${it.it}</span>
+          ${SO.cats.map((c,j)=>`<button class="sb" onclick="pickSort(${i},${j})">${c}</button>`).join("")}
+          <span class="fb" id="sf-${i}"></span>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="scram"){
+    SC=SCRAM[s.set]; total=SC.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas letras na ordem certa. Clique na letra de cima para devolver.</p>
+      <p class="tip" style="border-left-color:var(--pink)">${SC.tip}</p>
+      ${SC.items.map((it,i)=>`
+        <div class="ex" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${it.e} &nbsp;<span class="hint">${it.pt}</span></div>
+          <div class="slot" id="sl-${i}"></div>
+          <div class="bank" id="bk-${i}"></div>
+          <div class="row">
+            <button class="btn g" onclick="ckScram(${i})">✔ Check</button>
+            <button class="btn" onclick="rsScram(${i})">↺ Reset</button>
+            <button class="btn y" onclick="shScram(${i})">👀 Answer</button>
+            <span class="fb" id="fb-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+    initScram();
+  }
+
+  else if(s.kind==="order"){
+    ORD=ORDER[s.set]; total=ORD.items.length;
+    b.innerHTML = head + `<p class="how">Clique nas palavras na ordem certa para montar a frase.</p>
+      <p class="tip" style="border-left-color:var(--blue)">${ORD.tip}</p>` + orderHTML();
+    initOrder();
+  }
+
+  else if(s.kind==="mcq"){
+    PK=s.set; total=QS[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Escolha a opção certa. Se errar, o jogo explica o porquê.</p>` + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="lab"){
+    PK=s.set; total=QS[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Leia o painel com calma — a explicação vem em inglês e em português. Depois faça os itens.</p>`
+      + labHTML(s.panel) + mcqHTML(s.set);
+  }
+
+  else if(s.kind==="write"){
+    WR=WRITE[s.set]; total=WR.items.length;
+    b.innerHTML = head + `<p class="how">Escreva a frase em inglês e clique em ✔ Check. Maiúsculas e o ponto final não contam.</p>
+      <p class="tip" style="border-left-color:var(--purple)">${WR.tip}</p>
+      ${WR.items.map((it,i)=>`
+        <div class="ex wbox" data-i="${i}">
+          <div class="qn"><span class="n">${i+1}</span>${it.q}</div>
+          <div class="wskel">✎ ${esc(it.h)}</div>
+          <input class="tx" id="wi-${i}" autocomplete="off" spellcheck="false"
+            onkeydown="if(event.key==='Enter'){wCheck(${i});}">
+          <div class="row" style="margin-top:10px">
+            <button class="btn g" onclick="wCheck(${i})">✔ Check</button>
+            <button class="btn y" onclick="wShow(${i})">👀 Answer</button>
+            <button class="btn b" onclick="say(WR.items[${i}].sol,false,this)">🔊 Ouvir</button>
+            <span class="fb" id="wf-${i}"></span>
+          </div>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="speak"){
+    SP={set:SPEAK[s.set], i:-1, ok:{}}; total=SPEAK[s.set].items.length;
+    b.innerHTML = head + `<p class="how">Ouça, repita e depois grave a sua voz.</p>
+      <p class="tip" style="border-left-color:var(--red)">${SPEAK[s.set].tip}</p>
+      <div id="micwarn">${MIC_OK
+        ? "🎤 <b>Como funciona:</b> toque no microfone e fale a frase. Da primeira vez o navegador vai pedir permissão — toque em <b>Permitir</b>. Funciona melhor no <b>Chrome</b>."
+        : "🎤 Este navegador não reconhece a voz. Sem problema: use <b>🔊 Ouvir</b>, repita em voz alta e marque <b>✅ Eu consegui</b>."}</div>
+      ${SP.set.items.map((it,i)=>`
+        <div class="spcard" id="sp-${i}">
+          <div class="en">${it.en}</div>
+          <div class="pt">${it.pt}</div>
+          <div class="row" style="margin-top:12px">
+            <button class="btn b" onclick="say(SP.set.items[${i}].en,false,this)">🔊 Ouvir</button>
+            <button class="btn" onclick="say(SP.set.items[${i}].en,true,this)">🐢 Devagar</button>
+            ${MIC_OK?`<button class="mic" id="mc-${i}" onclick="micGo(${i})" aria-label="Gravar">🎤</button>`:""}
+            <button class="btn g" onclick="spDone(${i})">✅ Eu consegui</button>
+            <span class="score" id="ss-${i}"></span>
+          </div>
+          <div class="heard" id="sh-${i}">${MIC_OK?"Toque no 🎤 e fale a frase.":"Repita em voz alta e marque ✅."}</div>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="listen"){
+    LN=LISTEN[s.set]; total=LN.items.length;
+    b.innerHTML = head + `<p class="how">Ouça primeiro. Só depois olhe as opções.</p>
+      <p class="tip" style="border-left-color:var(--teal)">${LN.tip}</p>
+      ${LN.items.map((it,i)=>`
+        <div class="lncard" id="ln-${i}">
+          <div class="ctl">
+            <button class="btn b" onclick="say(LN.items[${i}].audio,false,this)">🔊 Play</button>
+            <button class="btn" onclick="say(LN.items[${i}].audio,true,this)">🐢 Devagar</button>
+            <button class="btn y" onclick="lnShow(${i})">👀 Ver o texto</button>
+          </div>
+          <div class="qq"><span class="n" style="display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--teal);color:#fff;font-size:13px;margin-right:8px;vertical-align:2px">${i+1}</span>${it.q}</div>
+          <div class="opts ${it.o.length>2?"four":"two"}">
+            ${it.o.map((o,j)=>`<button class="op" onclick="lnPick(${i},${j})">${o}</button>`).join("")}
+          </div>
+          <span class="fb" id="lf-${i}"></span>
+          <div class="txt">🗣️ “${it.audio}”</div>
+        </div>`).join("")}`;
+  }
+
+  else if(s.kind==="read"){
+    const R=READS[s.set]; PK=R.set; total=QS[R.set].items.length;
+    b.innerHTML = head + `<div class="read"><h3>${R.em} ${R.title}</h3>${R.html}<div class="gl">${R.gl}</div></div>`
+      + `<h2 class="sec" style="font-size:24px; margin:26px 0 12px">❓ Comprehension</h2>` + mcqHTML(R.set);
+  }
+
+  else if(s.kind==="poster"){
+    total=POSTER.fields.length;
+    b.innerHTML = head + `<p class="how">Preencha os campos em inglês. O cartaz vai se montando do lado — no fim é só imprimir.</p>
+      <p class="tip" style="border-left-color:var(--orange)">Use o cartaz do <b>Sunny Beach Clean-Up</b> da página 61 como modelo. Cada campo preenchido conta ponto.</p>
+      <div class="pbwrap">
+        <div class="pbform">
+          ${POSTER.fields.map(f=>`
+            <div class="pf">
+              <label for="pf-${f.k}">${f.lb}</label>
+              <div class="hp">${f.help}</div>
+              <input id="pf-${f.k}" placeholder="${esc(f.ph)}" oninput="pbUpdate('${f.k}')" autocomplete="off">
+            </div>`).join("")}
+          <div class="row">
+            <button class="btn g" onclick="window.print()">🖨️ Imprimir o cartaz</button>
+            <button class="btn y" onclick="pbFill()">👀 Ver um exemplo</button>
+          </div>
+        </div>
+        <div id="pview"></div>
+      </div>`;
+    pbUpdate();
+  }
+
+  else if(s.kind==="quiz"){ total=FINALE.length; b.innerHTML = head + quizHTML(); initQuiz(); }
+
+  window.scrollTo(0,0);
+}
+function stepEp(d){
+  const i=ORDERED.indexOf(cur);
+  openEp(i<0 ? ORDERED[0] : ORDERED[Math.max(0,Math.min(ORDERED.length-1,i+d))]);
+}
+
+function introHTML(){
+  return `<p class="how">Leia com a turma antes de começar.</p>
+  <p class="tip" style="border-left-color:var(--blue)"><b>1.</b> São <b>21 estações</b> em três atos: 🌊 OCEAN WATCH (os animais e as formas de ajudar), 🐬 WHAT ARE THEY DOING? (present continuous) e 🏖️ THE BEACH CLEAN-UP (was/were, leituras e o seu cartaz).</p>
+  <p class="tip" style="border-left-color:var(--orange)"><b>2.</b> Cada estação terminada dá ⭐ estrelas. Junte estrelas e suba de nível: Beach Helper → Ocean Friend → Sea Guardian → Ocean Hero → <b>OCEAN CAPTAIN</b>.</p>
+  <p class="tip" style="border-left-color:var(--teal)"><b>3.</b> <b>🔊 Áudio em tudo.</b> Toque no alto-falante para ouvir qualquer palavra ou frase em inglês. O 🐢 fala bem devagar.</p>
+  <p class="tip" style="border-left-color:var(--red)"><b>4.</b> Na estação <b>🎤 Say it out loud</b> você fala e o jogo escuta. Se aparecer um pedido de permissão do microfone, toque em <b>Permitir</b>.</p>
+  <p class="tip" style="border-left-color:var(--green)"><b>5.</b> Errou? Sem problema. O jogo mostra o <b>ENTENDA O ERRO</b> e explica a regra. Depois é só continuar.</p>
+  <p class="tip" style="border-left-color:var(--purple)"><b>6.</b> Botão <b>🔍 Projeção</b>: letras gigantes e placar de 4 equipes, para jogar com a turma inteira no telão.</p>
+  <p class="tip" style="border-left-color:var(--yellow)"><b>7.</b> Botão <b>👀 Answers</b> mostra todas as respostas da estação — use só na correção!</p>`;
+}
+
+/* ---------------- vocab ---------------- */
+function flip(el){ if(!el.classList.contains("flip")){ el.classList.add("flip"); bump(); } }
+
+/* ---------------- CROSSWORD ---------------- */
+function buildCross(def){
+  const cells = {};                       /* "r,c" -> {sol, wi:[índices]} */
+  const words = def.words.map((w,i)=>({...w, i, cells:[], num:0, ok:false}));
+  words.forEach(w=>{
+    for(let n=0;n<w.w.length;n++){
+      const r = w.dir==="a" ? w.r : w.r+n;
+      const c = w.dir==="a" ? w.c+n : w.c;
+      const id = r+","+c;
+      if(!cells[id]) cells[id] = {r, c, sol:w.w[n], wi:[]};
+      cells[id].wi.push(w.i);
+      w.cells.push(id);
+    }
+  });
+  /* numeração padrão: varre linha a linha e numera quem começa palavra */
+  const starts = {};
+  words.forEach(w=> starts[w.r+","+w.c] = true);
+  let n=0;
+  Object.keys(cells).map(k=>cells[k]).sort((a,b)=> a.r-b.r || a.c-b.c).forEach(cl=>{
+    if(starts[cl.r+","+cl.c]){ n++; cl.num = n; }
+  });
+  words.forEach(w=>{ w.num = cells[w.r+","+w.c].num; });
+  return {def, cells, words, sel:0};
+}
+function crossHTML(){
+  const d=CW.def, rows=d.rows, cols=d.cols;
+  let g = `<div style="overflow:auto"><div class="cwgrid" style="grid-template-columns:repeat(${cols},auto)">`;
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+    const cl = CW.cells[r+","+c];
+    if(!cl){ g += `<div class="cwcell"></div>`; continue; }
+    g += `<div class="cwcell open" id="cc-${r}-${c}">
+        ${cl.num?`<span class="cn">${cl.num}</span>`:""}
+        <input maxlength="1" id="ci-${r}-${c}" inputmode="text" autocomplete="off"
+          onfocus="cwFocus(${r},${c})" oninput="cwType(${r},${c})" onkeydown="cwKey(event,${r},${c})">
+      </div>`;
+  }
+  g += `</div></div>`;
+  const list = dir => CW.words.filter(w=>w.dir===dir).sort((a,b)=>a.num-b.num).map(w=>`
+    <div class="cwclue" id="cq-${w.i}" onclick="cwSelect(${w.i})">
+      <b>${w.num}.</b>${w.clue}
+      <button class="btn b" style="font-size:11px;padding:3px 8px;margin-left:6px"
+        onclick="event.stopPropagation();say(CW.words[${w.i}].clue,false,this)">🔊</button>
+    </div>`).join("");
+  return `<div class="cwwrap">
+    ${g}
+    <div class="cwclues">
+      <div><h4>➡️ ACROSS</h4>${list("a")}</div>
+      <div><h4>⬇️ DOWN</h4>${list("d")}</div>
+      <div class="row">
+        <button class="btn g" onclick="cwCheck()">✔ Check</button>
+        <button class="btn y" onclick="cwReveal()">👀 Answers</button>
+      </div>
+    </div></div>`;
+}
+function cwSelect(i){
+  if(!CW || !CW.words[i] || !$("cq-"+i)) return;   /* já saiu da estação */
+  CW.sel = i;
+  CW.words.forEach(w=>{ const e=$("cq-"+w.i); if(e) e.classList.toggle("sel", w.i===i); });
+  Object.keys(CW.cells).forEach(k=>{
+    const cl=CW.cells[k], e=$("cc-"+cl.r+"-"+cl.c);
+    if(e) e.classList.toggle("hi", cl.wi.indexOf(i)>=0);
+  });
+  const w=CW.words[i], first=w.cells.find(k=>!$("ci-"+k.replace(",","-")).value) || w.cells[0];
+  const el=$("ci-"+first.replace(",","-")); if(el) el.focus();
+}
+function cwFocus(r,c){
+  const cl=CW.cells[r+","+c]; if(!cl) return;
+  if(cl.wi.indexOf(CW.sel)<0) cwSelect(cl.wi[0]);
+}
+function cwStep(r,c,d){
+  const w=CW.words[CW.sel]; if(!w) return;
+  const nr = w.dir==="a" ? r : r+d, nc = w.dir==="a" ? c+d : c;
+  const el=$("ci-"+nr+"-"+nc); if(el) el.focus();
+}
+function cwType(r,c){
+  const el=$("ci-"+r+"-"+c);
+  el.value = (el.value||"").toUpperCase().replace(/[^A-Z]/g,"");
+  $("cc-"+r+"-"+c).classList.remove("good","bad");
+  if(el.value) cwStep(r,c,1);
+  cwWordCheck();
+}
+function cwKey(e,r,c){
+  if(e.key==="Backspace" && !$("ci-"+r+"-"+c).value){ cwStep(r,c,-1); }
+  else if(e.key==="ArrowRight"){ e.preventDefault(); const el=$("ci-"+r+"-"+(c+1)); if(el) el.focus(); }
+  else if(e.key==="ArrowLeft"){ e.preventDefault(); const el=$("ci-"+r+"-"+(c-1)); if(el) el.focus(); }
+  else if(e.key==="ArrowDown"){ e.preventDefault(); const el=$("ci-"+(r+1)+"-"+c); if(el) el.focus(); }
+  else if(e.key==="ArrowUp"){ e.preventDefault(); const el=$("ci-"+(r-1)+"-"+c); if(el) el.focus(); }
+}
+function cwWordCheck(){
+  CW.words.forEach(w=>{
+    if(w.ok) return;
+    const got = w.cells.map(k=>($("ci-"+k.replace(",","-")).value||"")).join("");
+    if(got===w.w){
+      w.ok=true;
+      $("cq-"+w.i).classList.add("got");
+      w.cells.forEach(k=>$("cc-"+k.replace(",","-")).classList.add("good"));
+      say(w.w); bump();
+    }
+  });
+}
+function cwCheck(){
+  CW.words.forEach(w=>{
+    if(w.ok) return;
+    w.cells.forEach(k=>{
+      const el=$("ci-"+k.replace(",","-")), box=$("cc-"+k.replace(",","-"));
+      if(!el.value) return;
+      box.classList.toggle("bad", el.value!==CW.cells[k].sol);
+    });
+  });
+  const n=CW.words.filter(w=>w.ok).length;
+  toast(n===CW.words.length ? "🏆 Grade completa!" : `✔ ${n} de ${CW.words.length} palavras prontas`);
+}
+function cwReveal(){
+  CW.words.forEach(w=>{
+    w.cells.forEach(k=>{
+      const el=$("ci-"+k.replace(",","-"));
+      el.value = CW.cells[k].sol;
+      $("cc-"+k.replace(",","-")).classList.remove("bad"); $("cc-"+k.replace(",","-")).classList.add("good");
+    });
+    $("cq-"+w.i).classList.add("got");
+  });
+}
+
+/* ---------------- SAVE THE TURTLE ---------------- */
+const JUNK = ["🥤","🛍️","🧴","🍾","🧃","📦"];
+const JPOS = [[14,18],[70,14],[24,66],[76,62],[46,10],[52,74]];
+function hgRender(){
+  const R = HG.set.rounds[HG.i];
+  const shown = R.w.split("").map(ch => ch===" " ? `<div class="wl sp"></div>`
+      : `<div class="wl">${HG.got[ch]?ch:""}</div>`).join("");
+  const junk = JUNK.map((j,n)=>`<span class="junk ${n<HG.wrong?"on":""}"
+      style="left:${JPOS[n][0]}%;top:${JPOS[n][1]}%">${j}</span>`).join("");
+  const lost = HG.wrong>=6;
+  const won  = R.w.split("").every(ch => ch===" " || HG.got[ch]);
+  const face = lost ? "😵" : (won ? "🐢" : "🐢");
+  const msg  = lost ? "O mar encheu de lixo… tente de novo!"
+             : (won ? "Você salvou a tartaruga! 🎉" : "Cada erro joga mais lixo no mar.");
+  const keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(L=>{
+    const used = HG.got[L] !== undefined;
+    const hit  = HG.got[L] === true;
+    return `<button class="ky ${used?(hit?"hit":"miss"):""}" ${used||lost||won?"disabled":""}
+      onclick="hgPick('${L}')">${L}</button>`;
+  }).join("");
+  $("hgArea").innerHTML = `
+    <div class="tgwrap">
+      <div>
+        <div class="sea">
+          <div class="sky"></div><div class="sand"></div>
+          <div class="turtle" style="opacity:${lost?.35:1}">${face}</div>
+          ${junk}
+          <div class="msg">${msg}</div>
+        </div>
+        <div class="lives">${[0,1,2,3,4,5].map(n=>n<6-HG.wrong?"💙":"🖤").join("")}</div>
+        <div style="text-align:center;font-weight:900;font-size:13px;color:var(--dim);margin-top:8px">
+          PALAVRA ${HG.i+1} DE ${HG.set.rounds.length} · ✅ ${HG.solved}
+        </div>
+      </div>
+      <div>
+        <div class="row" style="justify-content:center;margin-bottom:6px">
+          <span class="hint">💡 ${R.hint}</span>
+          <button class="btn b" onclick="say(HG.set.rounds[${HG.i}].hint,false,this)">🔊</button>
+        </div>
+        <div class="word">${shown}</div>
+        ${(won||lost)?`<div class="row" style="justify-content:center;margin-bottom:12px">
+            <button class="btn b" onclick="say('${R.w}',false,this)">🔊 Ouvir a palavra</button>
+            ${lost?`<button class="btn y" onclick="hgAgain()">↺ Tentar de novo</button>`:""}
+            ${HG.i < HG.set.rounds.length-1 ? `<button class="btn g" onclick="hgNext()">Próxima ▶</button>`
+              : `<button class="btn g" onclick="home()">🗺️ Voltar ao mapa</button>`}
+          </div>`:""}
+        <div class="keys">${keys}</div>
+      </div>
+    </div>`;
+}
+function hgPick(L){
+  const R = HG.set.rounds[HG.i];
+  const hit = R.w.indexOf(L) >= 0;
+  HG.got[L] = hit;
+  if(!hit) HG.wrong++;
+  const won = R.w.split("").every(ch => ch===" " || HG.got[ch]);
+  if(won){ HG.solved++; bump(); say(R.w); }
+  hgRender();
+}
+function hgAgain(){ HG.wrong=0; HG.got={}; hgRender(); }
+function hgNext(){ HG.i++; HG.wrong=0; HG.got={}; hgRender(); }
+
+/* ---------------- match ---------------- */
+function matchHTML(M){
+  const rs = M.pairs.map((p,i)=>({t:p.b,i})).sort(()=>Math.random()-.5);
+  return `<p class="how">${M.how}</p>
+    <p class="tip" style="border-left-color:var(--purple)">${M.tip}</p>
+    <div class="mg">
+      <div><div class="mh">${M.l}</div>
+        ${M.pairs.map((p,i)=>`<button class="mi" id="ml-${i}" onclick="mPick('l',${i})">${p.a}</button>`).join("")}</div>
+      <div><div class="mh">${M.r}</div>
+        ${rs.map(o=>`<button class="mi" id="mr-${o.i}" onclick="mPick('r',${o.i})">${o.t}</button>`).join("")}</div>
+    </div>`;
+}
+function mPick(side,i){
+  const el = $((side==="l"?"ml-":"mr-")+i);
+  if(el.classList.contains("got")) return;
+  if(!mSel){ mSel={side,i}; el.classList.add("sel"); say(MT.pairs[i][side==="l"?"a":"b"]); return; }
+  if(mSel.side===side){ $((side==="l"?"ml-":"mr-")+mSel.i).classList.remove("sel"); mSel={side,i}; el.classList.add("sel"); return; }
+  const a=$((mSel.side==="l"?"ml-":"mr-")+mSel.i);
+  if(mSel.i===i){ a.classList.remove("sel"); a.classList.add("got"); el.classList.add("got"); mDone++; bump(); }
+  else { a.classList.remove("sel"); el.classList.add("err"); setTimeout(()=>el.classList.remove("err"),320); }
+  mSel=null;
+}
+
+/* ---------------- sort ---------------- */
+function pickSort(i,j){
+  const row=document.querySelector('.srow[data-i="'+i+'"]');
+  if(row.dataset.ok) return;
+  const bs=row.querySelectorAll(".sb"), ok = j===SO.items[i].c;
+  bs[j].classList.add(ok?"right":"wrong");
+  if(ok){ row.dataset.ok="1"; bs.forEach(b=>b.disabled=true); $("sf-"+i).innerHTML="✅"; bump(); }
+  else { $("sf-"+i).innerHTML='<span style="color:var(--bad)">Tente o outro 🤔</span>'; }
+}
+
+/* ---------------- scramble ---------------- */
+function initScram(){
+  SC.items.forEach((it,i)=>{
+    const L=it.w.split("").sort(()=>Math.random()-.5);
+    $("bk-"+i).innerHTML = L.map((c,n)=>`<button class="ch let" id="l-${i}-${n}" onclick="pickLet(${i},this)">${c}</button>`).join("");
+    $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).textContent="";
+  });
+}
+function pickLet(i,btn){
+  const slot=$("sl-"+i);
+  if(btn.parentElement===slot){ btn.remove(); const o=$(btn.dataset.src); if(o) o.classList.remove("used"); return; }
+  const cl=btn.cloneNode(true); cl.dataset.src=btn.id; cl.id="";
+  cl.setAttribute("onclick","pickLet("+i+",this)");
+  slot.appendChild(cl); btn.classList.add("used");
+}
+function rsScram(i){
+  $("sl-"+i).innerHTML=""; $("sl-"+i).className="slot"; $("fb-"+i).textContent="";
+  $("bk-"+i).querySelectorAll(".ch").forEach(b=>b.classList.remove("used"));
+}
+function ckScram(i){
+  const got=[...$("sl-"+i).children].map(c=>c.textContent).join("");
+  const slot=$("sl-"+i);
+  if(got===SC.items[i].w){
+    slot.className="slot ok"; $("fb-"+i).innerHTML='<span style="color:var(--green)">✅ Perfeito!</span>';
+    say(SC.items[i].w);
+    if(!slot.dataset.ok){ slot.dataset.ok="1"; bump(); }
+  } else { slot.className="slot no"; $("fb-"+i).innerHTML='<span style="color:var(--bad)">Ainda não… olhe a tradução 🤔</span>'; }
+}
+function shScram(i){
+  const w=SC.items[i].w, slot=$("sl-"+i);
+  slot.innerHTML = w.split("").map(c=>`<span class="ch let">${c}</span>`).join("");
+  slot.className="slot ok"; $("fb-"+i).innerHTML='<span style="color:var(--dim)">👀 resposta</span>';
+  $("bk-"+i).querySelectorAll(".ch").forEach(b=>b.classList.add("used"));
+}
+
+/* ---------------- order ---------------- */
+function orderHTML(){
+  return ORD.items.map((it,i)=>`
+    <div class="ex" data-i="${i}">
+      <div class="qn"><span class="n">${i+1}</span><span class="hint">${it.t}</span></div>
+      <div class="slot" id="os-${i}"></div>
+      <div class="bank" id="ob-${i}"></div>
+      <div class="row">
+        <button class="btn g" onclick="ckOrd(${i})">✔ Check</button>
+        <button class="btn" onclick="rsOrd(${i})">↺ Reset</button>
+        <button class="btn y" onclick="shOrd(${i})">👀 Answer</button>
+        <span class="fb" id="of-${i}"></span>
+      </div>
+    </div>`).join("");
+}
+function initOrder(){
+  ORD.items.forEach((it,i)=>{
+    const W=[...it.c].sort(()=>Math.random()-.5);
+    $("ob-"+i).innerHTML = W.map((w,n)=>`<button class="ch" id="w-${i}-${n}" onclick="pickWord(${i},this)">${w}</button>`).join("");
+    $("os-"+i).innerHTML=""; $("os-"+i).className="slot"; $("of-"+i).textContent="";
+  });
+}
+function pickWord(i,btn){
+  const slot=$("os-"+i);
+  if(btn.parentElement===slot){ btn.remove(); const o=$(btn.dataset.src); if(o) o.classList.remove("used"); return; }
+  const cl=btn.cloneNode(true); cl.dataset.src=btn.id; cl.id="";
+  cl.setAttribute("onclick","pickWord("+i+",this)");
+  slot.appendChild(cl); btn.classList.add("used");
+}
+function rsOrd(i){
+  $("os-"+i).innerHTML=""; $("os-"+i).className="slot"; $("of-"+i).textContent="";
+  $("ob-"+i).querySelectorAll(".ch").forEach(b=>b.classList.remove("used"));
+}
+function ckOrd(i){
+  const got=[...$("os-"+i).children].map(c=>c.textContent).join(" ");
+  const want=ORD.items[i].c.join(" "), slot=$("os-"+i);
+  if(got===want){
+    slot.className="slot ok"; $("of-"+i).innerHTML='<span style="color:var(--green)">✅ Perfeito!</span>';
+    say(want);
+    if(!slot.dataset.ok){ slot.dataset.ok="1"; bump(); }
+  } else { slot.className="slot no"; $("of-"+i).innerHTML='<span style="color:var(--bad)">Comece pelo sujeito 🤔</span>'; }
+}
+function shOrd(i){
+  const slot=$("os-"+i);
+  slot.innerHTML = ORD.items[i].c.map(w=>`<span class="ch">${w}</span>`).join("");
+  slot.className="slot ok"; $("of-"+i).innerHTML='<span style="color:var(--dim)">👀 resposta</span>';
+  $("ob-"+i).querySelectorAll(".ch").forEach(b=>b.classList.add("used"));
+}
+
+/* ---------------- mcq ---------------- */
+function mcqHTML(ns){
+  return QS[ns].items.map((it,i)=>`
+    <div class="ex" data-i="${i}">
+      <div class="qn"><span class="n">${i+1}</span>${it.q}
+        <button class="btn b" style="font-size:11px;padding:3px 8px;margin-left:6px"
+          onclick="say(QS['${ns}'].items[${i}].q,false,this)">🔊</button></div>
+      <div class="opts ${it.o.length>2?"four":"two"}">
+        ${it.o.map((o,j)=>`<button class="op" onclick="ansMcq('${ns}',${i},${j})">${o}</button>`).join("")}
+      </div>
+      <span class="fb" id="mf-${ns}-${i}"></span>
+    </div>`).join("");
+}
+function erroHTML(it, escolhida, certa){
+  if(!it.w && !it.regra) return "";
+  return `<div class="oops">
+    <div class="t">💡 ENTENDA O ERRO</div>
+    <div class="cmp">
+      <div class="x"><b>Você marcou:</b> ${escolhida}</div>
+      <div class="v"><b>O certo é:</b> ${certa}</div>
+    </div>
+    ${it.w ? `<div class="pq">${it.w}</div>` : ""}
+    ${it.regra ? `<div class="rg">📐 <b>Regra:</b> ${it.regra}</div>` : ""}
+  </div>`;
+}
+function ansMcq(ns,i,j){
+  const fbEl=$("mf-"+ns+"-"+i);
+  const el=fbEl ? fbEl.closest(".ex") : null;
+  if(!el || el.dataset.ok) return;
+  const it=QS[ns].items[i], ops=el.querySelectorAll(".op"), ok = j===it.a;
+  ops[j].classList.add(ok?"right":"wrong");
+  const fb=$("mf-"+ns+"-"+i);
+  if(ok){
+    el.dataset.ok="1"; ops.forEach(o=>o.disabled=true); ops[it.a].classList.add("right");
+    fb.innerHTML='<span style="color:var(--green)">✅ Isso!</span>';
+    bump();
+  } else {
+    fb.innerHTML = erroHTML(it, it.o[j], it.o[it.a]);
+  }
+}
+
+/* ---------------- grammar lab ---------------- */
+function labHTML(key){
+  const L=LABS[key];
+  return `<div class="lab"><h3>${L.t}</h3>
+    ${L.rows.map(r=>`<div class="labrow">
+      <div class="fm"><b>${r.f}</b><code>${r.code}</code></div>
+      <div class="en">${r.en}</div>
+      <div class="ptx">${r.pt}</div>
+      <div class="exm">${r.ex}</div>
+    </div>`).join("")}
+    <div class="cerr"><div class="t">⚠️ ERRO MAIS COMUM</div>
+      <div class="w">${L.err.w}</div><div class="r">${L.err.r}</div><div class="n">${L.err.n}</div></div>
+  </div>`;
+}
+
+/* ---------------- writing ---------------- */
+function norm(s){
+  return String(s||"").toLowerCase()
+    .replace(/[’´`]/g,"'").replace(/[.!?,;:]/g,"")
+    .replace(/\s+/g," ").trim();
+}
+function wCheck(i){
+  const el=$("wi-"+i), it=WR.items[i], fb=$("wf-"+i);
+  const got=norm(el.value);
+  if(!got){ fb.innerHTML='<span style="color:var(--dim)">Escreva alguma coisa 🙂</span>'; return; }
+  const ok = it.a.some(a=>norm(a)===got);
+  el.classList.remove("good","bad");
+  if(ok){
+    el.classList.add("good"); fb.innerHTML='<span style="color:var(--green)">✅ Perfeito!</span>';
+    say(it.sol);
+    if(!el.dataset.ok){ el.dataset.ok="1"; bump(); }
+  } else {
+    el.classList.add("bad");
+    fb.innerHTML = `<div class="oops"><div class="t">💡 QUASE LÁ</div>
+      <div class="cmp"><div class="x"><b>Você escreveu:</b> ${esc(el.value)}</div></div>
+      <div class="pq">Confira o modelo: <b>${esc(it.h)}</b>. Falta o <b>is</b>, o <b>are</b> ou o <b>-ing</b>?</div></div>`;
+  }
+}
+function wShow(i){
+  const el=$("wi-"+i);
+  el.value = WR.items[i].sol; el.classList.remove("bad"); el.classList.add("good");
+  $("wf-"+i).innerHTML='<span style="color:var(--dim)">👀 resposta</span>';
+  say(WR.items[i].sol);
+}
+
+/* ---------------- speaking (microfone) ---------------- */
+const SRC = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+const MIC_OK = !!SRC;
+let rec = null, recIdx = -1;
+function stopMic(){ if(rec){ try{ rec.abort(); }catch(e){} rec=null; recIdx=-1; } }
+function micGo(i){
+  if(!MIC_OK) return;
+  if(recIdx===i){ stopMic(); $("mc-"+i).classList.remove("rec"); return; }
+  stopMic(); stopSay();
+  try{ rec = new SRC(); }catch(e){ $("sh-"+i).textContent="Não deu para abrir o microfone."; return; }
+  rec.lang="en-US"; rec.interimResults=false; rec.maxAlternatives=5;
+  recIdx=i;
+  const btn=$("mc-"+i); btn.classList.add("rec");
+  $("sh-"+i).innerHTML="🎙️ Escutando… fale agora!";
+  rec.onresult = e => {
+    const alts=[]; for(let k=0;k<e.results[0].length;k++) alts.push(e.results[0][k].transcript);
+    spJudge(i, alts);
+  };
+  rec.onerror = e => {
+    $("sh-"+i).innerHTML = e.error==="not-allowed"
+      ? "🚫 O microfone está bloqueado. Toque no cadeado da barra do navegador e permita o microfone — ou use ✅ Eu consegui."
+      : "Não escutei nada. Tente de novo, mais perto do aparelho.";
+  };
+  rec.onend = () => { btn.classList.remove("rec"); if(recIdx===i){ rec=null; recIdx=-1; } };
+  try{ rec.start(); }catch(e){ btn.classList.remove("rec"); }
+}
+function words(s){ return norm(s).split(" ").filter(Boolean); }
+function spScore(alvo, dito){
+  const A=words(alvo), D=words(dito);
+  if(!A.length) return 0;
+  const pool=[...D];
+  let hit=0;
+  A.forEach(w=>{ const k=pool.indexOf(w); if(k>=0){ hit++; pool.splice(k,1); } });
+  return hit/A.length;
+}
+function spJudge(i, alts){
+  const it=SP.set.items[i];
+  let best=0, bestTxt=alts[0]||"";
+  alts.forEach(a=>{ const s=spScore(it.en,a); if(s>best){ best=s; bestTxt=a; } });
+  const pct=Math.round(best*100);
+  const stars5 = best>=.95?"⭐⭐⭐" : best>=.7?"⭐⭐" : best>=.45?"⭐" : "";
+  $("ss-"+i).textContent = stars5;
+  $("sh-"+i).innerHTML = `Eu ouvi: <b>“${esc(bestTxt)}”</b> · ${pct}% das palavras`
+    + (best>=.7 ? " · 👏 muito bom!" : " · tente de novo, mais devagar 🐢");
+  if(best>=.7 && !SP.ok[i]){ SP.ok[i]=true; bump(); }
+}
+function spDone(i){
+  if(SP.ok[i]) return;
+  SP.ok[i]=true; $("ss-"+i).textContent="✅";
+  $("sh-"+i).innerHTML="Marcado como feito. Continue treinando em voz alta!";
+  bump();
+}
+
+/* ---------------- listening ---------------- */
+function lnPick(i,j){
+  const card=$("ln-"+i); if(card.dataset.ok) return;
+  const it=LN.items[i], ops=card.querySelectorAll(".op"), ok=j===it.a;
+  ops[j].classList.add(ok?"right":"wrong");
+  if(ok){
+    card.dataset.ok="1"; ops.forEach(o=>o.disabled=true);
+    $("lf-"+i).innerHTML='<span style="color:var(--green)">✅ Isso!</span>';
+    card.classList.add("shown"); bump();
+  } else {
+    $("lf-"+i).innerHTML='<span style="color:var(--bad)">Ouça de novo com o 🐢 devagar.</span>';
+  }
+}
+function lnShow(i){ $("ln-"+i).classList.add("shown"); }
+
+/* ---------------- poster ---------------- */
+function pbVal(k){ const e=$("pf-"+k); return e ? e.value.trim() : ""; }
+function pbUpdate(k){
+  if(k){
+    const e=$("pf-"+k);
+    if(e && e.value.trim() && !e.dataset.ok){ e.dataset.ok="1"; bump(); }
+  }
+  const g = key => esc(pbVal(key)) || `<span style="color:#9db6c2">…</span>`;
+  $("pview").innerHTML = `
+    <div class="t">${g("title")}</div>
+    <div class="s">COME AND HELP!</div>
+    <div class="l"><b>Where?</b><span>${g("where")}</span></div>
+    <div class="l"><b>When?</b><span>${g("when")}</span></div>
+    <div class="l"><b>What time?</b><span>${g("time")}</span></div>
+    <div class="body">This is our beautiful beach. Let's clean it up!<br>
+      We can help ${g("who")}.<br>${g("what")}</div>
+    <div class="fin">See you ${g("meet")}! 🌊</div>`;
+}
+function pbFill(){
+  const ex={title:"Praia da Costa Clean-Up", where:"Praia da Costa, Vila Velha",
+    when:"Sunday, September 6th", time:"9:00 – 12:00",
+    who:"the seals, the dolphins and the whales",
+    what:"We can pick up trash from the beach and we can recycle it.",
+    meet:"in front of the big blue kiosk"};
+  Object.keys(ex).forEach(k=>{ const e=$("pf-"+k); if(e && !e.value) e.placeholder=ex[k]; });
+  toast("👀 Os exemplos apareceram em cinza nos campos");
+}
+
+/* ---------------- quiz ---------------- */
+let qT=1, qI=0; const qA={};
+function quizHTML(){
+  return `<p class="how">25 perguntas em três níveis. Comece pelo 🟢 e vá subindo.</p>
+    <div class="tiers">
+      <button class="tb on" id="t1" onclick="setT(1)">🟢 Nível 1 · Words</button>
+      <button class="tb" id="t2" onclick="setT(2)">🟡 Nível 2 · Grammar</button>
+      <button class="tb" id="t3" onclick="setT(3)">🔴 Nível 3 · Reading</button>
+    </div>
+    <div id="qmeta"></div><div id="qbox"></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn" onclick="qGo(-1)">◀</button>
+      <button class="btn" onclick="qGo(1)">▶</button>
+    </div>`;
+}
+function initQuiz(){ qT=1; qI=0; qRender(); }
+function tList(){ return FINALE.map((q,i)=>({q,i})).filter(o=>o.q.t===qT); }
+function setT(t){ qT=t; qI=0; [1,2,3].forEach(k=>$("t"+k).classList.toggle("on",k===t)); qRender(); }
+function qRender(){
+  const L=tList(); if(!L.length) return;
+  qI=Math.max(0,Math.min(L.length-1,qI));
+  const o=L[qI], q=o.q, gi=o.i;
+  $("qmeta").innerHTML = `Pergunta <b>${qI+1}</b> de ${L.length} · nível ${qT}`;
+  $("qbox").innerHTML = `<div class="ex" data-i="${gi}">
+    <div class="qn">${q.q}
+      <button class="btn b" style="font-size:11px;padding:3px 8px;margin-left:6px"
+        onclick="say(FINALE[${gi}].q,false,this)">🔊</button></div>
+    <div class="opts ${q.o.length>2?"four":"two"}">
+      ${q.o.map((x,j)=>`<button class="op" onclick="qPick(${gi},${j})">${x}</button>`).join("")}
+    </div>
+    <span class="fb" id="qf-${gi}"></span></div>`;
+  if(qA[gi]!==undefined) qShow(gi,qA[gi]);
+}
+function qPick(gi,j){
+  if(qA[gi]!==undefined) return;
+  qA[gi]=j; qShow(gi,j);
+  if(j===FINALE[gi].a) bump();
+}
+function qShow(gi,pick){
+  const q=FINALE[gi], box=$("qbox") && $("qbox").querySelector('.ex[data-i="'+gi+'"]');
+  const fb=$("qf-"+gi);
+  if(!box || !fb) return;               /* a pergunta não está na tela agora */
+  const ops=box.querySelectorAll(".op");
+  ops.forEach((o,j)=>{ o.disabled=true;
+    if(j===q.a) o.classList.add("right");
+    else if(j===pick) o.classList.add("wrong"); });
+  fb.innerHTML = pick===q.a
+    ? '<span style="color:var(--green)">✅ Isso!</span>'
+    : `<span style="color:var(--bad)">A resposta é <b>${q.o[q.a]}</b>.</span>`;
+}
+function qGo(d){ const L=tList(); qI=Math.max(0,Math.min(L.length-1,qI+d)); qRender(); }
+
+
+/* ---------------- answers ---------------- */
+function revealAll(){
+  const s=STATIONS[cur]; if(!s) return;
+  if(s.kind==="cross"){ cwReveal(); return; }
+  if(s.kind==="scram"){ SC.items.forEach((x,i)=>shScram(i)); return; }
+  if(s.kind==="order"){ ORD.items.forEach((x,i)=>shOrd(i)); return; }
+  if(s.kind==="write"){ WR.items.forEach((x,i)=>wShow(i)); return; }
+  if(s.kind==="listen"){
+    LN.items.forEach((it,i)=>{ const c=$("ln-"+i); c.classList.add("shown");
+      const ops=c.querySelectorAll(".op"); ops[it.a].classList.add("right"); ops.forEach(o=>o.disabled=true); });
+    return;
+  }
+  if(s.kind==="sort"){
+    SO.items.forEach((it,i)=>{ const r=document.querySelector('.srow[data-i="'+i+'"]');
+      const bs=r.querySelectorAll(".sb"); bs[it.c].classList.add("right"); bs.forEach(b=>b.disabled=true); });
+    return;
+  }
+  if(s.kind==="quiz"){
+    tList().forEach(o=>{ if(qA[o.i]===undefined) qA[o.i]=FINALE[o.i].a; });
+    qRender(); return;
+  }
+  const ns = s.kind==="read" ? READS[s.set].set : s.set;
+  if(QS[ns]){
+    QS[ns].items.forEach((it,i)=>{
+      const fb=$("mf-"+ns+"-"+i); if(!fb) return;
+      const el=fb.closest(".ex"); if(!el || el.dataset.ok) return;
+      const ops=el.querySelectorAll(".op");
+      ops[it.a].classList.add("right"); ops.forEach(o=>o.disabled=true);
+      fb.innerHTML='<span style="color:var(--dim)">👀 resposta</span>';
+    });
+    return;
+  }
+  toast("Esta estação não tem gabarito para mostrar 🙂");
+}
+
+/* ---------------- equipes e projeção ---------------- */
+function drawTeams(){
+  $("teamsIn").innerHTML = teams.map((t,i)=>`
+    <div class="tm"><span class="nm">${t.n}</span>
+      <button onclick="tp(${i},-1)">−</button>
+      <span class="pt">${t.p}</span>
+      <button onclick="tp(${i},1)">+</button></div>`).join("")
+    + `<button class="btn" onclick="rsTeams()">↺ Zerar</button>`;
+}
+function tp(i,v){ teams[i].p=Math.max(0,teams[i].p+v); drawTeams(); }
+function rsTeams(){ teams.forEach(t=>t.p=0); drawTeams(); }
+function toggleProj(){
+  const on = document.body.classList.toggle("proj");
+  $("teams").classList.toggle("on", on);
+  $("projBtn").classList.toggle("on", on);
+  $("projBtn").textContent = on ? "🔍 Projeção ON" : "🔍 Projeção";
+  if(on) drawTeams();
+}
+
+/* ---------------- start ---------------- */
+addStars(0);
+drawMap();
+
+/* =========================================================================
+   MELHORIAS · progresso salvo · pronúncia · rever meus erros
+   Cole este bloco no FIM do <script> de cada jogo. Ele detecta sozinho qual
+   motor o jogo usa e desliga o que não se aplica. Não altera nada do resto.
+   ========================================================================= */
+(function(){
+if (window.__melhorias) return;   /* já aplicado */
+
+/* ---------- 1. qual motor é este? ---------- */
+var DIA = null;
+try { if (typeof STATIONS !== "undefined" && typeof prog !== "undefined" && typeof stars !== "undefined") DIA = "A"; } catch(e){}
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof xp !== "undefined") DIA = "B"; } catch(e){} }
+if (!DIA) { try { if (typeof EPS !== "undefined" && typeof pts !== "undefined") DIA = "C"; } catch(e){} }
+
+var CFG = {
+  A: { foot:"foot",  body:"body",  home:"homeView", wSel:".fr .w, .front .w", exSel:".bk .ex, .back .ex" },
+  B: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" },
+  C: { foot:"pfoot", body:"pbody", home:"home",     wSel:".front .w",         exSel:".back .ex" }
+}[DIA] || { foot:null, body:null, home:null, wSel:".front .w, .fr .w", exSel:".back .ex, .bk .ex" };
+
+var $$ = function(id){ return document.getElementById(id); };
+var bodyEl = function(){ return CFG.body ? $$(CFG.body) : null; };
+var scope  = function(){ return bodyEl() || document; };
+
+/* ---------- 2. estado, de forma independente do motor ---------- */
+function ler(){
+  try {
+    if (DIA === "A") return { s: stars, d: done,    p: prog     };
+    if (DIA === "B") return { s: xp,    d: doneEp,  p: progress };
+    if (DIA === "C") return { s: pts,   d: doneEp,  p: progress };
+  } catch(e){}
+  return null;
+}
+function atual(){
+  try {
+    if (DIA === "A") return cur;
+    if (DIA === "B" || DIA === "C") return curEp;
+  } catch(e){}
+  return null;
+}
+function aplicar(o){
+  var t = ler(); if (!t) return;
+  Object.keys(o.d || {}).forEach(function(k){ t.d[k] = o.d[k]; });
+  Object.keys(o.p || {}).forEach(function(k){ t.p[k] = o.p[k]; });
+  try {
+    if (DIA === "A") { stars = 0; addStars(o.s || 0); drawMap(); }
+    if (DIA === "B") { xp    = 0; addXp(o.s || 0);    drawRows(); }
+    if (DIA === "C") { pts   = 0; addPts(o.s || 0);   drawRows(); }
+  } catch(e){}
+}
+
+/* ---------- 3. gravação no aparelho do aluno ---------- */
+var CHAVE = "english-linus:" + (location.pathname || "jogo").replace(/[^a-z0-9]/gi, "_") + ":v1";
+var podeGravar = (function(){
+  try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; }
+  catch(e){ return false; }
+})();
+
+function gravar(){
+  if (!podeGravar || !DIA) return;
+  var t = ler(); if (!t) return;
+  try {
+    localStorage.setItem(CHAVE, JSON.stringify({
+      s: t.s, d: t.d, p: t.p, erros: serializaErros(),
+      quando: Date.now(), estacao: atual()
+    }));
+    piscaSalvo();
+  } catch(e){}
+}
+function lido(){
+  if (!podeGravar) return null;
+  try { return JSON.parse(localStorage.getItem(CHAVE) || "null"); } catch(e){ return null; }
+}
+function apagar(){ try { localStorage.removeItem(CHAVE); } catch(e){} }
+
+/* ---------- 4. registro dos erros ---------- */
+var ERROS = {};                                  /* { estacao: { chave: true } } */
+function marcaErro(est, chave){
+  if (!est) return;
+  (ERROS[est] = ERROS[est] || {})[chave] = true;
+  atualizaBotaoErros();
+}
+function limpaErro(est, chave){
+  if (est && ERROS[est]) { delete ERROS[est][chave]; atualizaBotaoErros(); }
+}
+function serializaErros(){ return ERROS; }
+function contaErros(est){ return est && ERROS[est] ? Object.keys(ERROS[est]).length : 0; }
+
+/* ---------- 5. embrulha as funções do motor ---------- */
+function embrulha(nome, antes, depois){
+  try {
+    var f = eval(nome);
+    if (typeof f !== "function") return false;
+    window["__orig_" + nome] = f;
+    var novo = function(){
+      var args = arguments;
+      if (antes) { try { antes.apply(null, args); } catch(e){} }
+      var r = window["__orig_" + nome].apply(this, args);
+      if (depois) { try { depois.apply(null, args); } catch(e){} }
+      return r;
+    };
+    window.__novo = novo;
+    eval(nome + " = window.__novo");
+    delete window.__novo;
+    return true;
+  } catch(e){ return false; }
+}
+
+/* grava sempre que a pontuação ou o progresso mudam — os motores usam nomes
+   diferentes, então embrulhamos todos os candidatos que existirem */
+["bump", "addStars", "addXp", "addPts", "setProgress"].forEach(function(n){
+  embrulha(n, null, function(){ gravar(); });
+});
+
+/* múltipla escolha: ansMcq(ns,i,j) · ans(ns,i,j) · pickAns(i,j,a) */
+function itemQS(ns, i){
+  var it = null;
+  try { it = QS[ns].items[i]; } catch(e){}
+  if (!it) { try { it = QS[ns][i]; } catch(e){} }
+  return it || null;
+}
+function registra(ns, i, j){
+  var it = itemQS(ns, i);
+  if (!it) return;
+  var k = ns + "#" + i;
+  if (j === it.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+}
+embrulha("ansMcq", null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("ans",    null, function(ns, i, j){ registra(ns, i, j); });
+embrulha("pickAns", null, function(i, j, a){
+  var k = "q#" + i;
+  if (j === a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* cestos: pickSort(i,j) · sortPick(i,j) */
+embrulha("pickSort", null, function(i, j){
+  var c = null;
+  try { c = (typeof SO !== "undefined" && SO) ? SO.items[i].c : SORT.items[i].c; } catch(e){}
+  if (c === null || c === undefined) { try { c = SORT[i].c; } catch(e){} }
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+embrulha("sortPick", null, function(i, j){
+  var c = null;
+  try { c = SORT[i].c; } catch(e){}
+  if (c === null || c === undefined) return;
+  var k = "sort#" + i;
+  if (j === c) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* quiz final: qPick(gi,j) */
+embrulha("qPick", null, function(gi, j){
+  var q = null; try { q = FINALE[gi]; } catch(e){}
+  if (!q) return;
+  var k = "quiz#" + gi;
+  if (j === q.a) limpaErro(atual(), k); else marcaErro(atual(), k);
+});
+
+/* toda vez que abre uma estação: põe os alto-falantes e ajusta o botão */
+embrulha("openEp", null, function(){
+  pararFala();
+  poeAudio();
+  atualizaBotaoErros();
+});
+
+/* ---------- 6. pronúncia com a voz do navegador ---------- */
+var TEM_FALA = (typeof window.speechSynthesis !== "undefined" &&
+                typeof window.SpeechSynthesisUtterance !== "undefined");
+var vozEN = null;
+function achaVoz(){
+  if (!TEM_FALA) return null;
+  if (vozEN) return vozEN;
+  var vs = [];
+  try { vs = window.speechSynthesis.getVoices() || []; } catch(e){}
+  var pref = ["en-US", "en_US", "en-GB", "en_GB", "en"];
+  for (var p = 0; p < pref.length; p++)
+    for (var i = 0; i < vs.length; i++)
+      if (vs[i].lang && vs[i].lang.indexOf(pref[p]) === 0) { vozEN = vs[i]; return vozEN; }
+  return null;
+}
+if (TEM_FALA) { try { window.speechSynthesis.onvoiceschanged = achaVoz; achaVoz(); } catch(e){} }
+
+function pararFala(){ if (TEM_FALA) { try { window.speechSynthesis.cancel(); } catch(e){} } }
+
+function fala(txt, devagar, botao){
+  if (!TEM_FALA || !txt) return;
+  pararFala();
+  var u = new window.SpeechSynthesisUtterance(String(txt).replace(/[“”"]/g, ""));
+  var v = achaVoz(); if (v) u.voice = v;
+  u.lang = (v && v.lang) || "en-US";
+  u.rate = devagar ? 0.7 : 0.92;
+  if (botao) {
+    botao.classList.add("mlFalando");
+    u.onend = u.onerror = function(){ botao.classList.remove("mlFalando"); };
+  }
+  try { window.speechSynthesis.speak(u); } catch(e){}
+}
+
+function textoProprio(el){
+  var t = "";
+  for (var i = 0; i < el.childNodes.length; i++) {
+    var n = el.childNodes[i];
+    if (n.nodeType === 3) t += n.nodeValue;                       /* nó de texto */
+    else if (n.nodeType === 1 && !/^(SPAN|DIV|P)$/.test(n.tagName)) t += n.textContent;
+    else if (n.nodeType === 1 && n.className &&
+             /\b(b|i|em|strong)\b/i.test(n.tagName)) t += n.textContent;
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+function botaoAudio(txt, titulo, devagar){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.className = "mlSpk";
+  b.innerHTML = devagar ? "🐢" : "🔊";
+  b.title = titulo || "Ouvir em inglês";
+  b.setAttribute("aria-label", b.title);
+  b.addEventListener("click", function(ev){
+    ev.stopPropagation(); ev.preventDefault();
+    fala(txt, devagar, b);
+  });
+  return b;
+}
+
+function poeAudio(){
+  if (!TEM_FALA) return;
+  var raiz = scope();
+
+  /* cartas de vocabulário: palavra (normal + devagar) e frase de exemplo */
+  raiz.querySelectorAll(".vc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var w = c.querySelector(CFG.wSel);
+    if (w && w.textContent.trim()) {
+      var cx = document.createElement("span");
+      cx.className = "mlSpkBox";
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir a palavra"));
+      cx.appendChild(botaoAudio(w.textContent.trim(), "Ouvir bem devagar", true));
+      w.appendChild(cx);
+    }
+    var ex = c.querySelector(CFG.exSel);
+    if (ex && ex.textContent.trim())
+      ex.appendChild(botaoAudio(ex.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* cartas de fala rápida */
+  raiz.querySelectorAll(".dc").forEach(function(c){
+    if (c.dataset.mlAudio) return; c.dataset.mlAudio = "1";
+    var s = c.querySelector(".say");
+    if (s && s.textContent.trim())
+      s.appendChild(botaoAudio(s.textContent.trim(), "Ouvir a frase"));
+  });
+
+  /* deck de projeção (English Rewind): só nos trechos que são inglês */
+  if (!DIA && document.querySelectorAll("section.slide").length > 5) {
+    /* frases completas em inglês */
+    raiz.querySelectorAll("span.ans, div.q").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.length > 3) el.appendChild(botaoAudio(t, "Ouvir em inglês"));
+    });
+    /* .scr tem dois tipos: frase com lacuna (serve) e palavras embaralhadas (não serve) */
+    raiz.querySelectorAll("span.scr").forEach(function(el){
+      if (el.dataset.mlAudio) return; el.dataset.mlAudio = "1";
+      var t = textoProprio(el);
+      if (t.indexOf("/") >= 0) return;                 /* embaralhado: não faz sentido ouvir */
+      if (t.length > 3) el.appendChild(botaoAudio(t.replace(/_+/g, " blank "), "Ouvir em inglês"));
+    });
+    /* alternativas do quiz: o botão do jogo já é <button>, então o som vai ao lado, fora dele */
+    raiz.querySelectorAll("button.opt").forEach(function(b){
+      if (b.dataset.mlAudio) return; b.dataset.mlAudio = "1";
+      var t = b.textContent.trim().replace(/^[a-d]\)\s*/i, "");
+      if (t.length < 4) return;
+      var s2 = botaoAudio(t, "Ouvir a alternativa");
+      s2.style.marginLeft = "4px";
+      if (b.parentNode) b.parentNode.insertBefore(s2, b.nextSibling);
+    });
+  }
+
+  /* textos de leitura: barra no topo + alto-falante por parágrafo */
+  raiz.querySelectorAll(".read, .rd, .reading, .txtbox").forEach(function(r){
+    if (r.dataset.mlAudio) return; r.dataset.mlAudio = "1";
+    var paras = [].slice.call(r.querySelectorAll("p"))
+      .filter(function(p){ return p.textContent.trim().length > 25; });
+    if (!paras.length) return;
+    var barra = document.createElement("div");
+    barra.className = "mlRead";
+    var tudo = paras.map(function(p){ return p.textContent.trim(); }).join(" ");
+    var ouvir = botaoAudio(tudo, "Ouvir o texto inteiro");
+    ouvir.innerHTML = "🔊 Ouvir o texto";
+    ouvir.className = "mlSpk mlWide";
+    var parar = document.createElement("button");
+    parar.type = "button"; parar.className = "mlSpk mlWide"; parar.innerHTML = "⏹️ Parar";
+    parar.addEventListener("click", function(ev){ ev.stopPropagation(); pararFala(); });
+    barra.appendChild(ouvir); barra.appendChild(parar);
+    var dica = document.createElement("span");
+    dica.className = "mlHint";
+    dica.textContent = "ou clique no 🔊 de cada parágrafo";
+    barra.appendChild(dica);
+    r.insertBefore(barra, r.firstChild);
+    paras.forEach(function(p){ p.appendChild(botaoAudio(p.textContent.trim(), "Ouvir este parágrafo")); });
+  });
+}
+
+/* ---------- 7. rever só os itens errados ---------- */
+function chaveDoBloco(el){
+  if (el.hasAttribute("data-q")) {
+    var ns = el.getAttribute("data-ns");
+    return (ns ? ns : "q") + "#" + el.getAttribute("data-q");
+  }
+  if (el.classList.contains("srow")) return "sort#" + el.getAttribute("data-i");
+  return null;
+}
+function reverErros(){
+  var est = atual();
+  if (!est || !contaErros(est)) return;
+  var alvos = ERROS[est];
+
+  /* quiz final: libera as questões erradas para responder de novo */
+  var soQuiz = Object.keys(alvos).every(function(k){ return k.indexOf("quiz#") === 0; });
+  if (soQuiz) {
+    var n = 0;
+    Object.keys(alvos).forEach(function(k){
+      var gi = parseInt(k.split("#")[1], 10);
+      try { if (qA[gi] !== undefined) { delete qA[gi]; n++; } } catch(e){}
+    });
+    try { qRender(); } catch(e){}
+    aviso("🔁 " + n + " questão(ões) liberada(s) para refazer. Navegue com ◀ ▶.");
+    return;
+  }
+
+  /* demais estações: reabre e esconde o que já estava certo */
+  try { openEp(est); } catch(e){ return; }
+  (function(){
+    var raiz = scope(), achou = 0;
+    var blocos = [].slice.call(raiz.querySelectorAll("[data-q], .srow"));
+    blocos.forEach(function(b){
+      var k = chaveDoBloco(b);
+      if (k && alvos[k]) { b.classList.add("mlAlvo"); achou++; }
+      else if (k) b.classList.add("mlOculto");
+    });
+    if (!achou) { blocos.forEach(function(b){ b.classList.remove("mlOculto"); }); return; }
+    var faixa = document.createElement("div");
+    faixa.className = "mlFaixa";
+    faixa.innerHTML = "🔁 <b>Refazendo " + achou + " item(ns) que você errou.</b> " +
+      "<button type='button' class='mlSpk mlWide' id='mlTudo'>Mostrar tudo de novo</button>";
+    raiz.insertBefore(faixa, raiz.firstChild);
+    var bt = document.getElementById("mlTudo");
+    if (bt) bt.addEventListener("click", function(){
+      raiz.querySelectorAll(".mlOculto").forEach(function(x){ x.classList.remove("mlOculto"); });
+      faixa.remove();
+    });
+    poeAudio();
+    try { window.scrollTo(0, 0); } catch(e){}
+  })();
+}
+
+function atualizaBotaoErros(){
+  var b = document.getElementById("mlErros");
+  if (!b) return;
+  var n = contaErros(atual());
+  b.textContent = n ? "🔁 Rever meus erros (" + n + ")" : "🔁 Rever meus erros";
+  b.disabled = !n;
+}
+
+/* ---------- 8. avisos ---------- */
+function aviso(msg){
+  try { if (typeof toast === "function") { toast(msg); return; } } catch(e){}
+  var d = document.createElement("div");
+  d.className = "mlAviso"; d.textContent = msg;
+  document.body.appendChild(d);
+  setTimeout(function(){ d.remove(); }, 2600);
+}
+var tSalvo = null;
+function piscaSalvo(){
+  var p = document.getElementById("mlSalvo");
+  if (!p) return;
+  p.classList.add("on");
+  clearTimeout(tSalvo);
+  tSalvo = setTimeout(function(){ p.classList.remove("on"); }, 1200);
+}
+
+/* ---------- 9. interface ---------- */
+var CSS = ""
++ ".mlSpk{border:2px solid currentColor;border-radius:9px;background:rgba(255,255,255,.85);"
++ "color:inherit;font:inherit;font-size:12px;line-height:1;padding:3px 6px;margin-left:6px;"
++ "cursor:pointer;vertical-align:middle;opacity:.75;transition:.12s;}"
++ ".mlSpk:hover{opacity:1;transform:translateY(-1px);}"
++ ".mlSpk:disabled{opacity:.35;cursor:default;transform:none;}"
++ ".mlSpk.mlWide{font-size:13px;font-weight:800;padding:6px 11px;}"
++ ".mlSpk.mlFalando{animation:mlPulse .8s infinite;}"
++ "@keyframes mlPulse{0%,100%{opacity:.6}50%{opacity:1}}"
++ ".mlSpkBox{display:inline-flex;gap:3px;margin-left:6px;}"
++ ".mlRead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding-bottom:10px;"
++ "border-bottom:2px dashed rgba(0,0,0,.15);}"
++ ".mlHint{font-size:12px;opacity:.7;}"
++ ".mlOculto{display:none !important;}"
++ ".mlAlvo{outline:3px dashed rgba(255,150,0,.75);outline-offset:4px;border-radius:12px;}"
++ ".mlFaixa{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;padding:10px 14px;"
++ "border:3px solid #e08a1e;border-radius:14px;background:#fff6e5;font-size:14px;}"
++ ".mlBar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 auto 18px;"
++ "max-width:1100px;padding:10px 14px;border:2px solid rgba(0,0,0,.15);border-radius:14px;"
++ "background:rgba(255,255,255,.75);font-size:13px;}"
++ ".mlBar b{font-size:14px;}"
++ "#mlSalvo{opacity:0;transition:.2s;font-weight:800;}"
++ "#mlSalvo.on{opacity:1;}"
++ ".mlAviso{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9999;"
++ "background:#111;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;"
++ "font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.3);}"
++ "#mlErros:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}"
++ ".mlBtn{white-space:nowrap;}"
++ "@media print{.mlSpk,.mlRead,.mlBar,.mlFaixa{display:none !important;}}";
+
+(function(){
+  var st = document.createElement("style");
+  st.textContent = CSS;
+  document.head.appendChild(st);
+})();
+
+/* botão no rodapé do player */
+(function(){
+  var f = CFG.foot ? $$(CFG.foot) : null;
+  if (!f) return;
+  var b = document.createElement("button");
+  b.type = "button"; b.id = "mlErros";
+  var modelo = f.querySelector("button");
+  if (modelo && modelo.className) { b.className = modelo.className; b.classList.add("mlBtn"); }
+  else { b.className = "mlSpk mlWide"; }
+  b.textContent = "🔁 Rever meus erros";
+  b.disabled = true;
+  b.addEventListener("click", reverErros);
+  var alvo = f.querySelector(".grow");
+  if (alvo) f.insertBefore(b, alvo); else f.appendChild(b);
+})();
+
+/* faixa na tela inicial: progresso salvo, continuar e zerar */
+(function(){
+  if (!DIA) return;
+  var h = CFG.home ? $$(CFG.home) : null;
+  if (!h) return;
+  var bar = document.createElement("div");
+  bar.className = "mlBar";
+  var salvo = lido();
+  var txt = !podeGravar
+    ? "⚠️ Este navegador não deixa salvar o progresso. O jogo funciona, mas não guarda onde você parou."
+    : (salvo ? "💾 <b>Você já jogou aqui.</b> Progresso guardado: <b>⭐ " + (salvo.s || 0) + "</b>."
+             : "💾 O seu progresso fica salvo <b>neste aparelho</b>, sem login. Pode fechar e voltar depois.");
+  bar.innerHTML = "<span>" + txt + "</span><span id='mlSalvo'>💾 salvo</span><span class='grow' style='flex:1'></span>";
+  if (podeGravar && salvo) {
+    var c = document.createElement("button");
+    c.type = "button"; c.className = "mlSpk mlWide"; c.textContent = "▶️ Continuar de onde parei";
+    c.addEventListener("click", function(){
+      aplicar(salvo);
+      ERROS = salvo.erros || {};
+      atualizaBotaoErros();
+      aviso("▶️ Progresso restaurado: ⭐ " + (salvo.s || 0));
+      c.remove();
+    });
+    bar.appendChild(c);
+  }
+  if (podeGravar) {
+    var z = document.createElement("button");
+    z.type = "button"; z.className = "mlSpk mlWide"; z.textContent = "🗑️ Zerar meu progresso";
+    z.addEventListener("click", function(){
+      apagar(); ERROS = {}; atualizaBotaoErros();
+      aviso("🗑️ Progresso apagado deste aparelho. Recarregue a página para começar limpo.");
+    });
+    bar.appendChild(z);
+  }
+  h.insertBefore(bar, h.firstChild);
+})();
+
+/* põe os alto-falantes no que já estiver na tela */
+poeAudio();
+
+/* atalho: S para ouvir de novo a última coisa clicada não é necessário —
+   ESC também para a fala, além do que o jogo já faz */
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape") pararFala();
+});
+
+window.__melhorias = { versao: 1, motor: DIA, fala: TEM_FALA, grava: podeGravar };
+})();
+
+</script>
+</body>
+</html>
