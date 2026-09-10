@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Revisão – Prova Parcial | 9º ano</title>
+<style>
+@page { size:A4; margin:14mm 13mm; }
+*{box-sizing:border-box;}
+body{font-family:"Segoe UI",Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#1c1c1c;
+     margin:0;background:#EFE9EA;}
+.wrap{max-width:860px;margin:0 auto;background:#fff;padding:16px 26px 34px;
+      box-shadow:0 2px 18px rgba(0,0,0,.12);}
+h1,h2,h3,h4{margin:0;}
+
+/* ══ BARRA SUPERIOR ══ */
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.topbar a{text-decoration:none;border:3px solid #7B1D2A;border-radius:14px;background:#fff;
+          color:#7B1D2A;font-weight:900;font-size:14px;padding:7px 14px;
+          box-shadow:0 3px 0 #7B1D2A;white-space:nowrap;}
+.topbar a:hover{background:#FCF6F6;}
+
+/* ══ CABEÇALHO ══ */
+.head{border:2.5px solid #7B1D2A;border-radius:10px;padding:12px 16px;background:#FCF6F6;}
+.head .title{font-size:18px;font-weight:800;color:#7B1D2A;}
+.head .sub2{font-size:14px;font-weight:700;margin-top:3px;}
+.head .meta{font-size:12px;color:#5A1020;margin-top:4px;}
+.countdown{display:inline-block;background:#7B1D2A;color:#fff;font-size:12px;font-weight:700;
+           padding:3px 11px;border-radius:12px;margin-top:7px;}
+
+/* ══ GAMIFICAÇÃO ══ */
+.game{position:sticky;top:0;z-index:50;background:#5A1020;color:#fff;border-radius:10px;
+      padding:11px 16px;margin:14px 0 8px;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+.game .row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.game .lbl{font-size:12.5px;font-weight:700;letter-spacing:.3px;}
+.game .badge{font-size:19px;}
+.bar{height:14px;background:rgba(255,255,255,.22);border-radius:8px;overflow:hidden;margin-top:8px;}
+.bar > i{display:block;height:100%;width:0;border-radius:8px;
+         background:linear-gradient(90deg,#E8B84B,#C8972B);transition:width .45s cubic-bezier(.3,1.4,.5,1);}
+.stats{display:flex;gap:18px;font-size:12px;margin-top:6px;flex-wrap:wrap;}
+.stats b{color:#E8B84B;}
+
+/* ══ BOTÕES ══ */
+.tools{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0 4px;}
+.btn{border:none;border-radius:7px;padding:9px 15px;font-size:13px;font-weight:700;cursor:pointer;
+     font-family:inherit;transition:transform .12s,filter .12s;}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08);}
+.b-pdf{background:#7B1D2A;color:#fff;}
+.b-doc{background:#1A5F6A;color:#fff;}
+.b-rst{background:#e6dcdd;color:#5A1020;}
+
+/* ══ SEÇÕES ══ */
+.sec{margin-top:18px;border-radius:8px;overflow:hidden;border:1.5px solid #7B1D2A;}
+.sec > .bar-h{background:#7B1D2A;color:#fff;padding:8px 14px;font-size:15px;font-weight:700;
+              display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.sec > .bar-h .pg{background:#E8B84B;color:#5A1020;font-size:11px;font-weight:700;
+                  padding:3px 10px;border-radius:11px;white-space:nowrap;}
+.sec > .body{padding:13px 15px;}
+.sub{font-weight:700;color:#5A1020;margin:12px 0 5px;font-size:14px;}
+.sub:first-child{margin-top:0;}
+.pt{color:#666;font-style:italic;font-size:12.5px;margin:3px 0 7px;}
+
+/* ══ MARCAR ESTUDADA ══ */
+.done{margin-top:12px;padding:9px 13px;background:#F4F9F5;border:1.5px dashed #1A4A2A;
+      border-radius:7px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;
+      font-size:13px;font-weight:700;color:#1A4A2A;transition:.2s;}
+.done:hover{background:#E8F3EA;}
+.done input{width:19px;height:19px;accent-color:#1A4A2A;cursor:pointer;margin:0;}
+.done.on{background:#DCEFE0;border-style:solid;}
+.done.on::after{content:"+10 XP ✔";margin-left:auto;color:#1A4A2A;font-size:12px;}
+
+/* ══ TABELAS ══ */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;margin:7px 0 10px;font-size:13px;}
+th{background:#7B1D2A;color:#fff;font-weight:700;padding:5px 8px;text-align:left;font-size:12.5px;}
+td{border:1px solid #d8c4c7;padding:4.5px 8px;vertical-align:top;}
+tr:nth-child(even) td{background:#FAF5F5;}
+td.k{font-weight:700;color:#5A1020;white-space:nowrap;}
+td.c{text-align:center;}
+
+/* ══ CAIXAS ══ */
+.rule{border-left:4px solid #1A5F6A;background:#F2F8F9;padding:9px 13px;margin:8px 0;border-radius:0 6px 6px 0;}
+.rule b{color:#1A5F6A;}
+.err{border-left:4px solid #C0392B;background:#FDF3F2;padding:9px 13px;margin:8px 0;border-radius:0 6px 6px 0;font-size:13px;}
+.err b{color:#C0392B;}
+.tip{border-left:4px solid #C8972B;background:#FDF9EF;padding:9px 13px;margin:8px 0;border-radius:0 6px 6px 0;font-size:13px;}
+.tip b{color:#8a6410;}
+.model{border:1.4px dashed #4A1545;background:#FBF7FC;padding:11px 14px;margin:8px 0;border-radius:6px;font-size:13px;}
+.model .t{font-weight:700;color:#4A1545;text-align:center;margin-bottom:6px;}
+ul{margin:5px 0 7px 20px;padding:0;}
+li{margin:3px 0;}
+.ex{color:#1A4A2A;}
+.ex::before{content:"▸ ";color:#1A4A2A;font-weight:700;}
+.wrong{color:#C0392B;}
+.right{color:#1A4A2A;}
+.two{display:flex;gap:14px;flex-wrap:wrap;}
+.two > div{flex:1;min-width:190px;}
+
+/* ══ EXERCÍCIOS ══ */
+.exhead{background:#1A5F6A;color:#fff;padding:9px 14px;border-radius:8px;font-size:16px;
+        font-weight:700;margin:24px 0 6px;text-align:center;}
+.part{background:#E9F1F2;color:#124a53;font-weight:700;font-size:13px;padding:5px 12px;
+      border-radius:5px;margin:15px 0 8px;}
+.q{margin:11px 0;padding:10px 12px;border:1px solid #e0d5d6;border-radius:7px;background:#fff;
+   page-break-inside:avoid;transition:.25s;}
+.q.ok{border-color:#1A4A2A;background:#F4F9F5;}
+.q.no{border-color:#C0392B;background:#FDF3F2;}
+.q .n{font-weight:700;color:#7B1D2A;}
+.opts{margin:8px 0 0 18px;display:flex;flex-direction:column;gap:5px;}
+.opt{border:1.4px solid #d9cccd;border-radius:6px;padding:6px 11px;cursor:pointer;font-size:13px;
+     background:#fff;transition:.15s;text-align:left;font-family:inherit;}
+.opt:hover:not(:disabled){border-color:#7B1D2A;background:#FCF6F6;}
+.opt:disabled{cursor:default;}
+.opt.pick-ok{border-color:#1A4A2A;background:#DCEFE0;font-weight:700;}
+.opt.pick-no{border-color:#C0392B;background:#F9DEDB;font-weight:700;}
+.opt.show-ok{border-color:#1A4A2A;background:#EFF7F1;}
+.fill{margin:8px 0 0 18px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.fill input{border:1.5px solid #c9b9ba;border-radius:6px;padding:6px 10px;font-size:13px;
+            font-family:inherit;min-width:190px;}
+.fill input:focus{outline:none;border-color:#7B1D2A;}
+.fill input.ok{border-color:#1A4A2A;background:#F0F8F2;}
+.fill input.no{border-color:#C0392B;background:#FCF0EE;}
+.fill .ck{background:#7B1D2A;color:#fff;border:none;border-radius:6px;padding:6px 13px;
+          font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;}
+.fb{margin:8px 0 0 18px;font-size:12.5px;padding:7px 11px;border-radius:6px;display:none;}
+.fb.on{display:block;}
+.fb.y{background:#DCEFE0;color:#134a1f;border-left:3px solid #1A4A2A;}
+.fb.n{background:#F9DEDB;color:#8d2318;border-left:3px solid #C0392B;}
+
+/* ══ RESULTADO ══ */
+.result{margin-top:22px;border:2.5px solid #1A4A2A;border-radius:10px;padding:16px;
+        background:#F4F9F5;text-align:center;}
+.result .big{font-size:40px;margin-bottom:4px;}
+.result .sc{font-size:24px;font-weight:800;color:#1A4A2A;}
+.result .msg{font-size:13.5px;color:#2c4a34;margin-top:6px;}
+.foot{margin-top:18px;text-align:center;font-size:11.5px;color:#777;font-style:italic;}
+
+/* ══ MOBILE ══ */
+@media(max-width:620px){
+  .wrap{padding:12px 11px 26px;}
+  body{font-size:13.5px;}
+  table{font-size:11.5px;}
+  th,td{padding:3.5px 6px;}
+  .sec > .body{padding:10px 9px;}
+  .sec > .bar-h{font-size:13.5px;padding:7px 10px;}
+  .opts,.fill,.fb{margin-left:4px;}
+  .fill input{min-width:0;flex:1 1 130px;}
+  .stats{gap:11px;font-size:11px;}
+  .head .title{font-size:16px;}
+}
+
+/* ══ IMPRESSÃO / PDF ══ */
+@media print{
+  body{background:#fff;font-size:10.4pt;}
+  .wrap{max-width:none;box-shadow:none;padding:0;}
+  .no-print{display:none !important;}
+  .exhead{page-break-before:always;}
+  .sec,.q{page-break-inside:avoid;}
+  .opt{border-color:#bbb !important;background:#fff !important;font-weight:400 !important;}
+  .fill input{min-width:220px;}
+  .q{background:#fff !important;border-color:#ccc !important;}
+  .fb{display:none !important;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topbar no-print">
+  <a href="../../">⌂ Início</a>
+</div>
+
+<div id="printable">
+<div class="head">
+  <div class="title">🎯 Revisão – Prova Parcial</div>
+  <div class="sub2">Unit 6 · Global English &nbsp;+&nbsp; Unit 7 · All about Animals</div>
+  <div class="meta">English &nbsp;|&nbsp; 9º ano &nbsp;|&nbsp; Prof.ª Vanessa</div>
+  <div class="countdown">📅 PROVA: quinta-feira, 17/09</div>
+</div>
+</div>
+
+<div class="game no-print">
+  <div class="row">
+    <span class="lbl">🎯 SEU PROGRESSO</span>
+    <span><span class="badge" id="badge">🌱</span> <b id="lvl" style="font-size:13px">Iniciante</b></span>
+  </div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="stats">
+    <span>XP: <b id="xp">0</b> / 150</span>
+    <span>Seções: <b id="secs">0</b> / 5</span>
+    <span>Acertos: <b id="hits">0</b> / 20</span>
+  </div>
+</div>
+
+<div class="tools no-print">
+  <button class="btn b-pdf" onclick="window.print()">📄 Baixar PDF</button>
+  <button class="btn b-doc" onclick="toWord()">📝 Baixar Word</button>
+  <button class="btn b-rst" onclick="location.reload()">🔄 Recomeçar</button>
+</div>
+
+<div id="printable2">
+
+<!-- ═══ 1. QUANTIFIERS ═══ -->
+<div class="sec">
+  <div class="bar-h"><span>1 · GRAMMAR — Quantifiers with or without <i>of</i></span><span class="pg">SB p. 71</span></div>
+  <div class="body">
+    <p style="margin:0 0 6px">Quantifiers tell us <b>how many</b> or <b>how much</b>. They come before a noun.</p>
+    <div class="pt">Os <i>quantifiers</i> indicam quantidade. Vêm antes do substantivo.</div>
+    <div class="tw"><table>
+      <tr><th style="width:20%">Quantifier</th><th style="width:13%" class="c">Amount</th><th>Example</th></tr>
+      <tr><td class="k">all</td><td class="c">100%</td><td>All of the students love music.</td></tr>
+      <tr><td class="k">most</td><td class="c">~90%</td><td>Most players attend practice every week.</td></tr>
+      <tr><td class="k">many / a lot of</td><td class="c">~60%</td><td>Many of the girls speak two languages.</td></tr>
+      <tr><td class="k">some</td><td class="c">~40%</td><td>Some students want to be professional players.</td></tr>
+      <tr><td class="k">a few</td><td class="c">~10%</td><td>A few girls were born in another country.</td></tr>
+      <tr><td class="k">none</td><td class="c">0%</td><td>None of our parents want to wash our uniform.</td></tr>
+    </table></div>
+
+    <div class="sub">RULE 1 — Use <i>of</i> when there is a determiner</div>
+    <div class="rule">Use <b>quantifier + of</b> when a determiner (<b>the, my, your, our, this, these, those</b>) comes before the noun.
+      <div class="pt">Use <i>of</i> quando houver um determinante antes do substantivo.</div>
+      <ul><li class="ex">All <b>of the</b> children speak English.</li>
+          <li class="ex">Many <b>of my</b> friends live abroad.</li>
+          <li class="ex">Most <b>of these</b> players are professional.</li></ul></div>
+
+    <div class="sub">RULE 2 — No <i>of</i> when we speak in general</div>
+    <div class="rule">Use the <b>quantifier alone</b> when you talk about people or things <b>in general</b>.
+      <div class="pt">Sem <i>of</i> quando falamos de pessoas ou coisas em geral.</div>
+      <ul><li class="ex">All <b>cats</b> love milk.</li>
+          <li class="ex">Most <b>players</b> attend practice.</li>
+          <li class="ex">Many <b>people</b> love animals.</li></ul></div>
+
+    <div class="sub">RULE 3 — <i>none</i> always takes <i>of</i></div>
+    <div class="rule">We <b>cannot</b> use <i>of</i> with <b>no</b>. We must use <b>none of</b> + determiner.
+      <ul><li class="right">✓ <b>None of the</b> students speak Japanese.</li>
+          <li class="wrong">✗ <s>No of the students</s> speak Japanese.</li></ul></div>
+
+    <div class="err"><b>COMMON ERRORS</b>
+      <ul><li><span class="wrong">✗ None students speak Japanese.</span> → <span class="right">✓ None <b>of the</b> students speak Japanese.</span></li>
+          <li><span class="wrong">✗ All the cats love milk.</span> <i>(gatos em geral)</i> → <span class="right">✓ All cats love milk.</span></li></ul></div>
+
+    <div class="tip"><b>TESTE RÁPIDO:</b> tem <i>the / my / these</i> depois do quantifier? → usa <b>of</b>. Não tem? → <b>sem of</b>.</div>
+    <label class="done no-print" data-sec="1"><input type="checkbox" onchange="mark(this)"> Estudei esta seção</label>
+  </div>
+</div>
+
+<!-- ═══ 2. ANIMALS ═══ -->
+<div class="sec">
+  <div class="bar-h"><span>2 · VOCABULARY — Animals</span><span class="pg">SB p. 79</span></div>
+  <div class="body">
+    <div class="tw"><table>
+      <tr><th style="width:20%">English</th><th style="width:30%">Português</th><th style="width:20%">English</th><th>Português</th></tr>
+      <tr><td class="k">bee</td><td>abelha</td><td class="k">kangaroo</td><td>canguru</td></tr>
+      <tr><td class="k">butterfly</td><td>borboleta</td><td class="k">mosquito</td><td>mosquito / pernilongo</td></tr>
+      <tr><td class="k">donkey</td><td>burro / jumento</td><td class="k">shark</td><td>tubarão</td></tr>
+      <tr><td class="k">frog</td><td>sapo / rã</td><td class="k">wings</td><td>asas</td></tr>
+      <tr><td class="k">fur</td><td>pelo / pelagem</td><td class="k">zebra</td><td>zebra</td></tr>
+    </table></div>
+    <div class="sub">Categories — estude em grupos!</div>
+    <div class="tw"><table>
+      <tr><th>Parts of animals</th><th>Animals that fly</th><th>Animals that swim</th><th>Animals that run</th><th>Animals that jump</th></tr>
+      <tr><td>fur, wings</td><td>bee, butterfly, mosquito</td><td>shark, frog</td><td>donkey, zebra</td><td>frog, kangaroo</td></tr>
+    </table></div>
+    <div class="sub">Guess the animal! — definições do livro</div>
+    <ul>
+      <li class="ex">This animal makes honey. → <b>a bee</b></li>
+      <li class="ex">This animal has colorful wings. → <b>a butterfly</b></li>
+      <li class="ex">This animal looks like a horse with longer ears. → <b>a donkey</b></li>
+      <li class="ex">This animal jumps. It's always close to fresh water. → <b>a frog</b></li>
+      <li class="ex">This animal also jumps. It is found only in Australia. → <b>a kangaroo</b></li>
+      <li class="ex">This animal bites people and drinks their blood. → <b>a mosquito</b></li>
+      <li class="ex">This is the scariest animal in the ocean. → <b>a shark</b></li>
+      <li class="ex">This animal's stripes help it hide from other animals. → <b>a zebra</b></li>
+    </ul>
+    <label class="done no-print" data-sec="2"><input type="checkbox" onchange="mark(this)"> Estudei esta seção</label>
+  </div>
+</div>
+
+<!-- ═══ 3. ANIMAL ACTIONS ═══ -->
+<div class="sec">
+  <div class="bar-h"><span>3 · VOCABULARY — Animal actions (verbs)</span><span class="pg">SB p. 82</span></div>
+  <div class="body">
+    <div class="tw"><table>
+      <tr><th style="width:16%">Verb</th><th style="width:22%">Português</th><th>Example</th></tr>
+      <tr><td class="k">to attack</td><td>atacar</td><td>Kangaroos sometimes <b>attack</b> people if they think they are in danger.</td></tr>
+      <tr><td class="k">to bite</td><td>morder / picar</td><td>Mosquitoes <b>bite</b> some people more than others because of their smell.</td></tr>
+      <tr><td class="k">to chase</td><td>perseguir</td><td>If you run, the bear will probably <b>chase</b> you.</td></tr>
+      <tr><td class="k">to defend</td><td>defender</td><td>Elephants work together to <b>defend</b> their babies from dangerous animals.</td></tr>
+      <tr><td class="k">to hide</td><td>esconder-se</td><td>A zebra's stripes help it <b>hide</b> from other animals, such as lions.</td></tr>
+      <tr><td class="k">to hunt</td><td>caçar</td><td>Some sharks like to <b>hunt</b> at night when other animals can't see them.</td></tr>
+      <tr><td class="k">to protect</td><td>proteger</td><td>Some birds act dead to <b>protect</b> their nest.</td></tr>
+      <tr><td class="k">to sting</td><td>picar / ferroar</td><td>A honeybee can <b>sting</b> only once in its life.</td></tr>
+    </table></div>
+    <div class="tip"><b>NÃO CONFUNDA:</b> <b>bite</b> = dentes (mosquito, cobra, cão) · <b>sting</b> = ferrão (abelha, vespa) · <b>defend</b> = defender de um ataque · <b>protect</b> = manter seguro.</div>
+    <label class="done no-print" data-sec="3"><input type="checkbox" onchange="mark(this)"> Estudei esta seção</label>
+  </div>
+</div>
+
+<!-- ═══ 4. POLITE SUGGESTIONS ═══ -->
+<div class="sec">
+  <div class="bar-h"><span>4 · SPEAKING — Making polite suggestions</span><span class="pg">SB p. 84</span></div>
+  <div class="body">
+    <p style="margin:0 0 6px">Usamos estas estruturas para sugerir uma ideia de forma <b>educada</b> — não como ordem.</p>
+    <div class="tw"><table>
+      <tr><th style="width:34%">Structure</th><th>Example</th></tr>
+      <tr><td class="k">How about + verb-<b>ing</b>?</td><td>How about <b>traveling</b> together?</td></tr>
+      <tr><td class="k">What about + verb-<b>ing</b>?</td><td>What about <b>going</b> in July?</td></tr>
+      <tr><td class="k">Why don't we + <b>base verb</b>?</td><td>Why don't we <b>make</b> a vlog about the trip?</td></tr>
+      <tr><td class="k">Shall we + <b>base verb</b>?</td><td>Shall we <b>get</b> jobs there?</td></tr>
+      <tr><td class="k">We could + <b>base verb</b></td><td>We <b>could travel</b> to all four countries.</td></tr>
+      <tr><td class="k">Maybe we should + <b>base verb</b></td><td>Maybe we <b>should go</b> after we graduate.</td></tr>
+      <tr><td class="k">Let's + <b>base verb</b></td><td>Let's <b>stay</b> together.</td></tr>
+      <tr><td class="k">If you + past, you could…</td><td>If you <b>went</b> to South Africa, you <b>could go</b> on a safari!</td></tr>
+    </table></div>
+    <div class="two">
+      <div><div class="sub">Accepting</div>
+        <ul><li class="ex">That's a great idea!</li><li class="ex">Sounds good to me.</li><li class="ex">Sure, let's do that.</li></ul></div>
+      <div><div class="sub">Disagreeing politely</div>
+        <ul><li class="ex">I'm not sure about that.</li><li class="ex">I'd prefer to travel in July.</li><li class="ex">That sounds nice, but…</li></ul></div>
+    </div>
+    <div class="err"><b>ATENÇÃO!</b><br>
+      <span class="wrong">✗ How about <s>to travel</s> together?</span> → <span class="right">✓ How about <b>traveling</b> together?</span><br>
+      <span class="wrong">✗ Why don't we <s>going</s> to Italy?</span> → <span class="right">✓ Why don't we <b>go</b> to Italy?</span></div>
+    <label class="done no-print" data-sec="4"><input type="checkbox" onchange="mark(this)"> Estudei esta seção</label>
+  </div>
+</div>
+
+<!-- ═══ 5. PERSUASIVE AD ═══ -->
+<div class="sec">
+  <div class="bar-h"><span>5 · WRITING — A persuasive ad</span><span class="pg">SB p. 85</span></div>
+  <div class="body">
+    <p style="margin:0 0 6px">Um anúncio persuasivo tenta <b>convencer</b> o leitor a fazer algo — geralmente ajudar uma causa.</p>
+    <div class="sub">Structure — 3 parts</div>
+    <div class="tw"><table>
+      <tr><th style="width:10%" class="c">Part</th><th style="width:33%">What it does</th><th>Example</th></tr>
+      <tr><td class="c k">A</td><td>Apresenta o <b>problema</b> e prende a atenção com um dado surpreendente</td><td><i>Did you know that almost 33% of them have died since 2018?</i></td></tr>
+      <tr><td class="c k">B</td><td>Apresenta a <b>solução</b> — o que a organização faz</td><td><i>First, we are working with local communities… Second, we are asking the government…</i></td></tr>
+      <tr><td class="c k">C</td><td><b>Pede ajuda</b> ao leitor</td><td><i>Will you help us to save their lives?</i></td></tr>
+    </table></div>
+    <div class="sub">Persuasive techniques</div>
+    <div class="tw"><table>
+      <tr><th style="width:30%">Technique</th><th>Example</th></tr>
+      <tr><td class="k">Rhetorical questions</td><td>Did you know…? · Can you help us? · What can we do to help?</td></tr>
+      <tr><td class="k">Statistics &amp; facts</td><td>almost 33% of them have died since 2018</td></tr>
+      <tr><td class="k">Emotive language</td><td>beautiful, amazing, incredible, life-changing</td></tr>
+      <tr><td class="k">Direct address (<i>you / your</i>)</td><td>You can save these beautiful animals!</td></tr>
+      <tr><td class="k">Imperatives</td><td>Donate now! · Help us today! · Send us a photo.</td></tr>
+      <tr><td class="k">Sequencers</td><td>First… Second… Finally…</td></tr>
+    </table></div>
+    <div class="sub">Por que o autor usa perguntas</div>
+    <div class="tw"><table>
+      <tr><th style="width:52%">Question</th><th>Purpose</th></tr>
+      <tr><td><i>Did you know that almost 33% of them have died?</i></td><td>prender a atenção com um dado surpreendente</td></tr>
+      <tr><td><i>What other dangers do koalas face?</i></td><td>manter a atenção e ver se o leitor sabe a resposta</td></tr>
+      <tr><td><i>Can you help us?</i></td><td>pedir ajuda</td></tr>
+      <tr><td><i>Do you want some good news?</i></td><td>oferecer esperança e apresentar a solução</td></tr>
+    </table></div>
+    <div class="model"><div class="t">MODEL — Save the Sea Turtles</div>
+      <b>Do you love the ocean?</b> Every year, more than 1,000 sea turtles die because of plastic in Brazilian waters.
+      <b>What can we do to help them?</b> First, we clean the beaches every month. Second, we teach students about
+      recycling. Finally, we take injured turtles to our animal clinic. <b>You can make a difference!</b> Send a
+      donation or come and volunteer with us. These <b>amazing</b> animals depend on us. <b>Will you help us save them?</b></div>
+    <label class="done no-print" data-sec="5"><input type="checkbox" onchange="mark(this)"> Estudei esta seção</label>
+  </div>
+</div>
+
+<div class="exhead">PRACTICE — 20 QUESTIONS</div>
+<p style="text-align:center;font-size:12.5px;color:#666;margin:0 0 4px"><i>Responda cada questão para ver a correção e a explicação na hora.</i></p>
+<div class="part">PART A — Quantifiers with or without <i>of</i> (1–6)</div>
+<div id="qbox"></div>
+
+<div class="result no-print" id="result" style="display:none">
+  <div class="big" id="rIcon">🎯</div>
+  <div class="sc" id="rScore">0 / 20</div>
+  <div class="msg" id="rMsg"></div>
+</div>
+
+<div class="foot">Prof.ª Vanessa · 9º ano · 3º Trimestre / 2026</div>
+</div><!-- /printable2 -->
+</div><!-- /wrap -->
+
+<script>
+const QS=[
+ {p:"PART A",t:"mc",q:"Choose the correct option. <i>(100%)</i><br>______ of the students in my class play a musical instrument.",
+  o:["None","All","A few","Not many"],a:1,e:"100% = <b>all</b>. Como há <i>the</i> antes de <i>students</i>, usamos <b>of</b>."},
+ {t:"mc",q:"Choose the correct option. <i>(0%)</i><br>______ of my classmates play the drums.",
+  o:["All","Most","None","Many"],a:2,e:"0% = <b>none</b>, que sempre aparece com <b>of</b> + determinante."},
+ {t:"mc",q:"Complete the sentence.<br>Most ______ players attend practice every week.",
+  o:["of","of the","— (nada)","of these"],a:2,e:"Não há determinante antes de <i>players</i> — é uma frase geral, então <b>sem of</b>."},
+ {t:"mc",q:"Complete the sentence.<br>A few ______ my friends were born in another country.",
+  o:["— (nada)","of","the","that"],a:1,e:"Há o determinante <i>my</i> antes de <i>friends</i> → usa <b>of</b>."},
+ {t:"fill",q:"Find and correct the mistake.<br><i>None students speak Japanese.</i>",
+  ph:"Escreva a frase corrigida",a:["none of the students speak japanese"],
+  e:"Correto: <b>None of the students speak Japanese.</b> — <i>none</i> exige <b>of + determinante</b>."},
+ {t:"fill",q:"Find and correct the mistake. <i>(falando de gatos em geral)</i><br><i>All the cats love milk.</i>",
+  ph:"Escreva a frase corrigida",a:["all cats love milk"],
+  e:"Correto: <b>All cats love milk.</b> — frase geral, então sem <i>the</i> e sem <i>of</i>."},
+
+ {p:"PART B — Vocabulary: Animals (7–12)",t:"fill",q:"This animal makes honey.",ph:"animal",a:["bee","a bee"],e:"<b>bee</b> = abelha."},
+ {t:"fill",q:"This animal has colorful wings.",ph:"animal",a:["butterfly","a butterfly"],e:"<b>butterfly</b> = borboleta."},
+ {t:"fill",q:"This animal jumps and is found only in Australia.",ph:"animal",a:["kangaroo","a kangaroo"],e:"<b>kangaroo</b> = canguru."},
+ {t:"fill",q:"This animal looks like a horse but has longer ears.",ph:"animal",a:["donkey","a donkey"],e:"<b>donkey</b> = burro / jumento."},
+ {t:"fill",q:"This animal's stripes help it hide from other animals.",ph:"animal",a:["zebra","a zebra"],e:"<b>zebra</b> = zebra."},
+ {t:"fill2",q:"Complete: Birds and butterflies have ______ , and cats and bears have ______ .",
+  ph:["1º espaço","2º espaço"],a:[["wings"],["fur"]],e:"<b>wings</b> = asas · <b>fur</b> = pelo."},
+
+ {p:"PART C — Vocabulary: Animal actions (13–16)",t:"fill",q:"A honeybee can ______ you only once in its life.",ph:"verbo",a:["sting"],
+  e:"<b>sting</b> — a abelha usa o ferrão, não os dentes."},
+ {t:"fill",q:"A zebra's stripes help it ______ from other animals, such as lions.",ph:"verbo",a:["hide"],e:"<b>hide</b> = esconder-se."},
+ {t:"fill",q:"Elephants work together to ______ their babies from dangerous animals.",ph:"verbo",a:["defend","protect"],
+  e:"<b>defend</b> (ou <i>protect</i>) = defender / proteger de um ataque."},
+ {t:"fill",q:"Some sharks like to ______ at night, when other animals can't see them.",ph:"verbo",a:["hunt"],e:"<b>hunt</b> = caçar."},
+
+ {p:"PART D — Making polite suggestions (17–18)",t:"mc",q:"Which sentence is a <b>polite suggestion</b>?",
+  o:["You must come to Africa with me.","How about traveling to Africa together?","I want to go to Africa.","Africa is a great place to visit."],
+  a:1,e:"<b>How about + verb-ing</b> é sugestão educada. <i>You must</i> soa como ordem."},
+ {t:"fill",q:"Rewrite as a polite suggestion using the word in parentheses.<br><i>Let's make a vlog about the trip.</i> <b>(Why)</b>",
+  ph:"Escreva a sugestão",a:["why don't we make a vlog about the trip","why dont we make a vlog about the trip"],
+  e:"<b>Why don't we make a vlog about the trip?</b> — <i>Why don't we</i> + verbo na forma base."},
+
+ {p:"PART E — Writing: A persuasive ad (19–20)",t:"mc",
+  q:"Read this sentence from an ad: <i>\"Did you know that almost 33% of koalas have died since 2018?\"</i><br>What is the writer's purpose?",
+  o:["To ask the reader for money.","To catch the reader's attention with a surprising fact.","To describe the koala's body.","To tell a funny story."],
+  a:1,e:"É a técnica da <b>estatística surpreendente</b>, usada no início para prender a atenção."},
+ {t:"mc",q:"Which sentence is the <b>MOST persuasive</b> for an animal charity ad?",
+  o:["There are many koalas in Australia.","Koalas usually live in eucalyptus trees.","You can save these beautiful animals — help us today!","Koalas sleep for many hours every day."],
+  a:2,e:"Usa <i>you</i> (direct address), <i>beautiful</i> (emotive language) e <i>help us</i> (imperativo)."}
+];
+
+let secs=new Set(), answered={}, hits=0;
+const norm=s=>s.toLowerCase().trim().replace(/[.!?;,]+$/,"").replace(/[’´`]/g,"'").replace(/\s+/g," ");
+
+const box=document.getElementById('qbox');
+QS.forEach((Q,i)=>{
+  if(Q.p && i>0){const p=document.createElement('div');p.className='part';p.innerHTML=Q.p;box.appendChild(p);}
+  const d=document.createElement('div'); d.className='q'; d.id='q'+i;
+  let h=`<span class="n">${i+1}.</span> <span class="stem">${Q.q}</span>`;
+  if(Q.t==='mc'){
+    h+=`<div class="opts">`+Q.o.map((o,j)=>`<button class="opt" onclick="pick(${i},${j})">${'abcd'[j]}) ${o}</button>`).join('')+`</div>`;
+  } else if(Q.t==='fill'){
+    h+=`<div class="fill"><input id="i${i}" placeholder="${Q.ph}" onkeydown="if(event.key==='Enter')chk(${i})">
+        <button class="ck" onclick="chk(${i})">Verificar</button></div>`;
+  } else {
+    h+=`<div class="fill"><input id="i${i}a" placeholder="${Q.ph[0]}" onkeydown="if(event.key==='Enter')chk(${i})">
+        <input id="i${i}b" placeholder="${Q.ph[1]}" onkeydown="if(event.key==='Enter')chk(${i})">
+        <button class="ck" onclick="chk(${i})">Verificar</button></div>`;
+  }
+  h+=`<div class="fb" id="f${i}"></div>`;
+  d.innerHTML=h; box.appendChild(d);
+});
+
+function pick(i,j){
+  if(answered[i]!==undefined) return;
+  const Q=QS[i], ok=(j===Q.a), d=document.getElementById('q'+i);
+  d.querySelectorAll('.opt').forEach((b,k)=>{
+    b.disabled=true;
+    if(k===Q.a) b.classList.add(ok&&k===j?'pick-ok':'show-ok');
+    if(k===j&&!ok) b.classList.add('pick-no');
+  });
+  finish(i,ok,Q.e);
+}
+function chk(i){
+  if(answered[i]!==undefined) return;
+  const Q=QS[i]; let ok,els;
+  if(Q.t==='fill'){
+    const el=document.getElementById('i'+i); els=[el];
+    ok=Q.a.some(a=>norm(a)===norm(el.value));
+  } else {
+    const a=document.getElementById('i'+i+'a'), b=document.getElementById('i'+i+'b'); els=[a,b];
+    ok=Q.a[0].some(x=>norm(x)===norm(a.value)) && Q.a[1].some(x=>norm(x)===norm(b.value));
+  }
+  els.forEach(e=>{e.readOnly=true;e.classList.add(ok?'ok':'no');});
+  document.getElementById('q'+i).querySelector('.ck').disabled=true;
+  finish(i,ok,Q.e);
+}
+function finish(i,ok,exp){
+  answered[i]=ok; if(ok) hits++;
+  const d=document.getElementById('q'+i); d.classList.add(ok?'ok':'no');
+  const f=document.getElementById('f'+i);
+  f.className='fb on '+(ok?'y':'n');
+  f.innerHTML=(ok?'✅ <b>Correto!</b> ':'❌ <b>Ainda não.</b> ')+exp;
+  update();
+}
+function mark(cb){
+  const l=cb.closest('.done'), s=l.dataset.sec;
+  if(cb.checked){secs.add(s);l.classList.add('on');} else {secs.delete(s);l.classList.remove('on');}
+  update();
+}
+function update(){
+  const xp=secs.size*10+hits*5, pct=Math.round(xp/150*100);
+  document.getElementById('xp').textContent=xp;
+  document.getElementById('secs').textContent=secs.size;
+  document.getElementById('hits').textContent=hits;
+  document.getElementById('fill').style.width=pct+'%';
+  let ic='🌱',lv='Iniciante';
+  if(pct>=25){ic='🥉';lv='Bronze';}
+  if(pct>=50){ic='🥈';lv='Prata';}
+  if(pct>=75){ic='🥇';lv='Ouro';}
+  if(pct>=100){ic='🏆';lv='Mestre!';}
+  document.getElementById('badge').textContent=ic;
+  document.getElementById('lvl').textContent=lv+' · '+pct+'%';
+  if(Object.keys(answered).length===20){
+    const r=document.getElementById('result'); r.style.display='block';
+    document.getElementById('rScore').textContent=hits+' / 20';
+    let ic2,msg;
+    if(hits>=18){ic2='🏆';msg='Excelente! Você está pronto para a prova do dia 17/09.';}
+    else if(hits>=14){ic2='🥈';msg='Bom trabalho! Revise as questões que você errou antes da prova.';}
+    else{ic2='📚';msg='Volte às páginas 71, 79, 82, 84 e 85 do Student Book e refaça esta revisão.';}
+    document.getElementById('rIcon').textContent=ic2;
+    document.getElementById('rMsg').textContent=msg;
+  }
+}
+function toWord(){
+  const clone=document.createElement('div');
+  clone.innerHTML=document.getElementById('printable').innerHTML+document.getElementById('printable2').innerHTML;
+  clone.querySelectorAll('.no-print,.fb').forEach(e=>e.remove());
+  clone.querySelectorAll('button.opt').forEach(b=>{
+    const p=document.createElement('div'); p.className='opt'; p.textContent=b.textContent; b.replaceWith(p);
+  });
+  clone.querySelectorAll('button').forEach(e=>e.remove());
+  clone.querySelectorAll('input').forEach(e=>e.replaceWith(document.createTextNode(' ____________________ ')));
+  const css=`body{font-family:Arial;font-size:11pt;line-height:1.4;}
+    table{border-collapse:collapse;width:100%;margin:6pt 0;font-size:10pt;}
+    th{background:#7B1D2A;color:#fff;padding:4pt 6pt;text-align:left;}
+    td{border:1px solid #d8c4c7;padding:3pt 6pt;}
+    .bar-h{background:#7B1D2A;color:#fff;padding:6pt 10pt;font-weight:bold;font-size:12pt;}
+    .exhead{background:#1A5F6A;color:#fff;padding:7pt;text-align:center;font-weight:bold;font-size:13pt;}
+    .part{background:#E9F1F2;padding:4pt 8pt;font-weight:bold;}
+    .rule,.err,.tip,.model{padding:6pt 10pt;margin:5pt 0;border:1px solid #ccc;}
+    .head{border:2px solid #7B1D2A;padding:8pt 12pt;}
+    .title{font-size:14pt;font-weight:bold;color:#7B1D2A;}
+    .opt{display:block;margin:2pt 0 2pt 18pt;}
+    .q{margin:7pt 0;} .pt{color:#666;font-style:italic;font-size:9.5pt;}`;
+  const html='<html xmlns:o="urn:schemas-microsoft-com:office:office" '+
+    'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">'+
+    '<head><meta charset="utf-8"><title>Revisão 9º ano</title>'+
+    '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->'+
+    '<style>@page{size:A4;margin:2cm;}'+css+'</style></head><body>'+clone.innerHTML+'</body></html>';
+  const blob=new Blob(['﻿',html],{type:'application/msword'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='Revisao_Prova_Parcial_9ano.doc';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1200);
+}
+update();
+</script>
+</body>
+</html>
